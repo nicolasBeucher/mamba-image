@@ -1,0 +1,176 @@
+\NeedsTeXFormat{LaTeX2e}[1999/01/01]
+\ProvidesPackage{mamba}
+
+\RequirePackage[T1]{fontenc}
+\RequirePackage{ucs}
+\RequirePackage{xcolor}
+\RequirePackage[utf8x]{inputenc}
+\RequirePackage[top=2.5cm, bottom=3cm, left=2cm, right=2cm]{geometry}
+\RequirePackage[pdftex,colorlinks=true,urlcolor=blue,linkcolor=tocLink]{hyperref}
+\RequirePackage{listings}
+\RequirePackage{graphicx}
+\RequirePackage{fancyhdr}
+\RequirePackage{tikz}
+\RequirePackage{array}
+\RequirePackage{setspace}
+\RequirePackage{multirow}
+\RequirePackage{multicol}
+\RequirePackage{pifont}
+
+\usetikzlibrary{calc}
+
+\setlength{\headheight}{2cm}
+\setlength{\topmargin}{-2.35cm}
+\setlength{\headsep}{0.85cm}
+\setlength{\textheight}{710pt}
+
+\def\mambaVersion{undef}
+
+% Color definitions
+\definecolor{white}{rgb}{1,1,1}
+\definecolor{darkred}{rgb}{.75,.0,.2}
+\definecolor{darkblue}{rgb}{.0,.0,.7}
+\definecolor{tocLink}{rgb}{.0,.0,.4}
+\definecolor{darkgreen}{rgb}{.0,.7,.0}
+\definecolor{mambaLightBg}{HTML}{6FADE9}
+\definecolor{mambaTipBg}{HTML}{7FBDF9}
+\definecolor{mambaWarnBg}{HTML}{FFD050}
+\definecolor{mambaBg}{HTML}{408AD2}
+\definecolor{mambaTextFg}{HTML}{FFC640}
+
+% Header and footer definition for all the documents
+\fancypagestyle{mambaTitleStyle}{ %
+    \fancyhf{} % remove everything
+    \renewcommand{\headrulewidth}{0pt} % remove lines as well
+    \renewcommand{\footrulewidth}{0pt}
+    \pagecolor{mambaBg}
+}
+
+\fancypagestyle{mambaPageStyle}{ %
+    \fancyhf{} % remove everything
+    \renewcommand{\headrulewidth}{0pt} % remove lines as well
+    \renewcommand{\footrulewidth}{0pt}
+    \pagecolor{white}
+    \fancyhead[C]{
+        \begin{tikzpicture}[overlay, remember picture]
+        \draw ($(current page.north west)$)
+          node[below right, minimum width=\paperwidth, minimum height=2.3cm, anchor=north west, rectangle, fill=mambaBg, text width=\paperwidth-2cm]
+        {\includegraphics[height=1.7cm]{mamba_logo.pdf}};
+        \end{tikzpicture}
+        \begin{tabular*}{\textwidth}{ @{ \extracolsep{\fill} } lr}
+        & \textcolor{mambaTextFg}{\large{\textbf{\@title}}} \\
+        & \textcolor{mambaTextFg}{\today}
+        \end{tabular*}
+    }
+    \fancyfoot[C]{
+        \begin{tikzpicture}[overlay, remember picture]
+        \draw ($(current page.south west)$)
+          node[above right, minimum width=\paperwidth, minimum height=1cm, anchor=south west, rectangle, fill=mambaBg]
+        {\begin{tabular*}{\textwidth}{ @{ \extracolsep{\fill} } lr}
+        \textcolor{white}{\textbf{\thepage}} & \textcolor{white}{\textbf{www.mamba-image.org}}
+        \end{tabular*}};
+        \end{tikzpicture}
+    }
+}
+
+% Python language colours to apply for code extracts
+\lstset{% general command to set parameter(s)
+   basicstyle=\small,          % print whole listing small
+   keywordstyle=\color{darkblue}\bfseries, % bold blue keywords
+   commentstyle=\color{darkred}, % red comments
+   stringstyle=\color{darkgreen}\ttfamily,% typewriter type for strings
+   showstringspaces=false      % no special string spaces
+}
+
+% cover command to create the cover of the document
+\newcommand{\mambaCover}{
+    \pagestyle{mambaTitleStyle}
+    \begin{titlepage}
+    \begin{center}
+    { 
+    \color{mambaTextFg}
+    % Upper part of the page
+    \includegraphics[width=\textwidth]{mamba_logo.pdf}\\[0.4cm]
+    
+    % Title
+    {\huge \textbf{\@title}}\\[2cm]
+     
+    % Author
+    {\large
+    \begin{minipage}{0.4\textwidth}
+    \begin{flushleft}
+      \begin{tabular}[t]{c}
+        \@author
+      \end{tabular}
+    \end{flushleft}
+    \end{minipage}
+    }
+    \vfill
+     
+    }
+    % Bottom of the page
+    {\large
+    \begin{minipage}{0.4\textwidth}
+    \begin{center}
+        \textcolor{white}{\textbf{www.mamba-image.org}}
+    \end{center}
+    \end{minipage}
+    }\\[1cm]
+    
+    % License
+    \begin{minipage}{0.9\textwidth}
+    \begin{center} \small
+      \begin{tabular}[t]{cm{0.8\textwidth}}
+        \includegraphics[width=0.1\textwidth]{by.pdf} &
+        Except where otherwise \textbf{noted}, the Mamba Documentation Project
+        is covered by the \textbf{Creative Commons Attribution 3.0 License}
+        (see \url{http://creativecommons.org/licenses/by/3.0/}) \\
+      \end{tabular}
+    \end{center}
+    \end{minipage}\\[1cm]
+    
+    % Date
+    {\large \@date}
+    
+    \end{center}
+    \end{titlepage}
+}
+
+% The tables for content and figures
+\newcommand{\mambaContent}{
+    \pagestyle{mambaPageStyle}
+    \tableofcontents
+    \addcontentsline{toc}{section}{Contents}
+    \pagebreak
+    \listoffigures
+    \addcontentsline{toc}{section}{List of Figures}
+    \pagebreak
+}
+
+%warn and tip boxes
+\newcommand{\warnBox}[1]{
+    \begin{center}
+    \begin{tikzpicture}
+    \node[minimum width=\textwidth, text width=0.9\textwidth, rectangle, fill=mambaWarnBg, rounded corners] {
+    \begin{tabular}{ c b{0.8\textwidth} }
+    \includegraphics[width=0.1\textwidth]{Crystal_Clear_app_error.png} & #1 \\
+    \end{tabular}
+    };
+    \end{tikzpicture}
+    \end{center}
+}
+
+\newcommand{\tipBox}[1]{
+    \begin{center}
+    \begin{tikzpicture}
+    \node[minimum width=\textwidth, text width=0.9\textwidth, rectangle, fill=mambaTipBg, rounded corners] {
+    \begin{tabular}{ c b{0.8\textwidth} }
+    \includegraphics[width=0.1\textwidth]{Crystal_Clear_action_info.png} & #1 \\
+    \end{tabular}
+    };
+    \end{tikzpicture}
+    \end{center}
+}
+
+\endinput
+
