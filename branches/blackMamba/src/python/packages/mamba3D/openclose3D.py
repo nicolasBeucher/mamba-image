@@ -181,4 +181,18 @@ def infClose3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):
         mamba.raiseExceptionOnError(core.ERR_BAD_PARAMETER)
     m3D.copy3D(imWrk1, imOut)
     
-
+def openByCylinder3D(imInOut, height, section):
+    """
+    Opening using the dilation and erosion by a cylinder.
+    """
+    
+    m3D.erodeByCylinder3D(imInOut, height, section)
+    m3D.dilateByCylinder3D(imInOut, height, section)
+    
+def closeByCylinder3D(imInOut, height, section):
+    """
+    Closing using the dilation and erosion by a cylinder.
+    """
+    
+    m3D.dilateByCylinder3D(imInOut, height, section)
+    m3D.erodeByCylinder3D(imInOut, height, section)

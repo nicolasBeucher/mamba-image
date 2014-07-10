@@ -22,20 +22,102 @@ from mambaDisplay import getDisplayer
 # Image counter
 _image3D_index = 1
 
-class image3DMb(mamba.sequenceMb):
+class image3DMb:
     """
     A 3D image is represented by an instance of this class.
     """
     
-    def __init__(self, *args, **kwargs):
+        def __init__(self, *args, **kwargs):
         """
-        Refer to mamba.sequenceMb constructor documentation.
+        Constructor for a mamba 3D image.
+        A 3D image is a stack of images defined by width, height and length
+        (the number of images in it).
+        
+        There is a wide range of possibilities :
+            * image3DMb() : without arguments will create an empty greyscale 3D
+            image.
+            * image3DMb(im3D) : will create a 3D image using the same size, depth 
+             and length than 3D image 'im3D'.
+            * image3DMb(im) : will create a 3D image using the same size and 
+            depth than 2D image 'im'.
+            * image3DMb(depth) : will create a 3D image with the desired 
+            'depth' (1, 8 or 32) for the mamba images.
+            * image3DMb(path) : will load the 3D image (sequence) located in
+            'path', see the load method.
+            * image3DMb(im3D, depth) : will create a 3D image using the same size
+            than 3D image 'im3D' and the specified 'depth'.
+            * image3DMb(im, length) : will create a 3D image using the same size
+            than 2D image 'im' and the specified 'length'.
+            * image3DMb(path, depth) : will load the 3D image (sequence)
+            located in 'path' and convert it to the specified 'depth'.
+            * image3DMb(width, height, length) : will create a 3D image
+            with size 'width'x'height' and 'length'.
+            * image3DMb(width, height, length, depth) : will create a 3D image 
+            with size 'width'x'height', 'depth' and 'length'.
+            
+        When not specified, the width, height and length of the 3D image will 
+        be set to 256. The default depth is 8 (greyscale).
+        
+        When loading a 3D image as a sequence make sure all the images have
+        the same size.
         """
+        
         global _image3D_index
-        mamba.sequenceMb.__init__(self, *args, **kwargs)
+        self._index = 0
         
         self.name = "Image3D "+str(_image3D_index)
         _image3D_index = _image3D_index + 1
+        
+        # List of all the parameters that must be retrieved from the arguments
+        self.rgbfilter = None
+        
+        # First we look into the dictionnary to see if they were specified
+        # specifically by the user
+        if "rgbfilter" in kwargs:
+            self.rgbfilter = kwargs["rgbfilter"]
+            
+        # We analyze the arguments given to the constructor
+        if len(args)==0:
+            # First case : no arguments were given, default sequence
+            # -> sequenceMb()
+            self._createSeq(256,256,8,256)
+        elif len(args)==1:
+            # Second case : the user gives only one argument
+            if isinstance(args[0], sequenceMb):
+                # -> sequenceMb(seq)
+                self._createSeq(args[0].width, args[0].height, args[0].depth, args[0].length)
+            elif isinstance(args[0], mamba.imageMb):
+                # -> sequenceMb(im)
+                self._createSeq(args[0].mbIm.width, args[0].mbIm.height, args[0].mbIm.depth, 256)
+            elif isinstance(args[0], str):
+                # -> sequenceMb(path)
+                self.seq = []
+                self.depth = 8
+                self.load(args[0], rgbfilter=self.rgbfilter)
+            else:
+                # -> sequence(depth)
+                self._createSeq(256,256,args[0],256)
+        elif len(args)==2:
+            # Third case : two arguments
+            if isinstance(args[0], mamba.imageMb):
+                # -> sequenceMb(im, length)
+                self._createSeq(args[0].mbIm.width, args[0].mbIm.height, args[0].mbIm.depth, args[1])
+            elif isinstance(args[0], str):
+                # -> sequenceMb(path, depth)
+                self.seq = []
+                self.depth = args[1]
+                self.load(args[0])
+            else:
+                # -> sequenceMb(seq, depth)
+                self._createSeq(args[0].width, args[0].height, args[1], args[0].length)
+        elif len(args)==3:
+            # Fourth case : three arguments
+            # -> sequenceMb(width, height, length)
+            self._createSeq(args[0],args[1],8,args[2])
+        else:
+            # Last case: at least 4 arguments are given
+            # -> sequenceMb(width, height, length, depth)
+            self._createSeq(args[0],args[1],args[3],args[2])
         
         self.displayId = ''
         self.palette = None
@@ -48,6 +130,42 @@ class image3DMb(mamba.sequenceMb):
         for position,im in enumerate(self.seq):
             err = core.MB3D_Stack(self.mb3DIm, im.mbIm, position)
             mamba.raiseExceptionOnError(err)
+            
+    def _createSeq(self, w, h, d, l):
+        # Create the sequence according to the parameters
+        self.length = l
+        self.seq = []
+        for i in range(self.length):
+            self.seq.append(mamba.imageMb(w, h, d, rgbfilter=self.rgbfilter))
+        self.width, self.height = self.seq[0].getSize()
+        self.depth = self.seq[0].getDepth()
+        
+    def __iter__(self):
+        """
+        Makes a mamba image sequence iterable.
+        """
+        return self
+
+    def __next__(self):
+        # Support for iterator in python 3
+        return self.next()
+        
+    def next(self):
+        """
+        The next method for the iteration.
+        """
+        if self._index == self.length :
+            self._index = 0
+            raise StopIteration
+        im = self.seq[self._index]
+        self._index = self._index + 1
+        return im
+
+    def __getitem__(self, key):
+        """
+        Handles direct acces to the image inside the sequence.
+        """
+        return self.seq[key]
             
     def __str__(self):
         return 'Mamba 3D image object : '+self.name+' - '+str(self.depth)
@@ -106,6 +224,120 @@ class image3DMb(mamba.sequenceMb):
             data += s
         return data
         
+        
+    def load(self, path, rgbfilter=None):
+        """
+        Loads a 3D image stack (sequence) of image as found in directory 'path'.
+
+        To be valid a sequence of images must be composed of at least 'length'
+        images to be able to fill the sequence. Their file names must be of
+        the form X.ext where X is a number and ext is an image file extension
+        (like jpg or png). The sequence will be read in increasing order
+        (1 then 2 and so on). However it is not mandatory that the numbers
+        follow each other (1 then 5 is legal). You can also mix image
+        formats (1.bmp then 2.jpg is legal) but you should make sure
+        that files that are not images (txt, pdf, ...) are not named
+        following that pattern. Also ensure that two images do not get
+        the same number (like 1 and 01).
+        """
+        
+        self.name = path
+        all_files = glob.glob(os.path.join(path, '*'))
+        files_dict = {}
+        for f in all_files:
+            try:
+                nb = int(os.path.splitext(os.path.basename(f))[0])
+                files_dict[nb] = f
+            except ValueError:
+                # This file is not named <a_number>.ext
+                pass
+        files_keys = sorted(files_dict.keys())
+        
+        if self.seq == []:
+            # there no image yet in the sequence
+            self.length = len(files_keys)
+            im = mamba.imageMb(files_dict[files_keys[0]], self.depth, rgbfilter=rgbfilter)
+            self.width = im.mbIm.width
+            self.height = im.mbIm.height
+            self.seq.append(im)
+            for i in range(1,self.length):
+                self.seq.append(mamba.imageMb(self.width, self.height, self.depth, rgbfilter=rgbfilter))
+                self.seq[i].load(files_dict[files_keys[i]], rgbfilter=rgbfilter)
+        else:
+            l = min(len(files_keys),self.length)
+            # the sequence is overloaded 
+            for i in range(l):
+                self.seq[i].load(files_dict[files_keys[i]], rgbfilter=rgbfilter)
+                
+    def save(self, path, extension=".png"):
+        """
+        Saves the images of the 3D image stack (sequence) inside a directory
+        located at 'path'.
+        
+        The function will create the directory if it doesn't exist. If the
+        directory exists and already contains images they will be overwritten.
+        The images are stored following this pattern (1.png, 2.png ...). You
+        can modify the format of the image by changing the optional parameter
+        'extension' (refer to PIL documentation for supported format).
+        """
+        if not os.path.isdir(path):
+            os.mkdir(path)
+            
+        for i,im in enumerate(self.seq):
+            im.save(os.path.join(path,"%d%s" % (i+1,extension)))
+    
+    def getDepth(self):
+        """
+        Returns the depth of the 3D image.
+        """
+        
+        return self.depth
+    
+    def getSize(self):
+        """
+        Returns the size (tuple with width, height) of the 3D image.
+        """
+        
+        return (self.width, self.height)
+            
+    def __len__(self):
+        """
+        Returns the length of the 3D image.
+        """
+        
+        return self.length
+            
+    def getLength(self):
+        """
+        Returns the length of the 3D image.
+        """
+        
+        return self.length
+            
+    def getName(self):
+        """
+        Returns the name of the 3D image.
+        """
+        
+        return self.name
+
+    def fill(self,v):
+        """
+        Fills the 3D image with value 'v'
+        A zero value makes the image completely dark.
+        """
+        
+        for im in self.seq:
+            im.fill(v)
+
+    def reset(self):
+        """
+        Reset the 3D image (all the pixels are put to 0).
+        """
+        
+        for im in self.seq:
+            im.reset()
+        
     def convert(self, depth):
         """
         Converts the image depth to the given 'depth'.
@@ -140,6 +372,21 @@ class image3DMb(mamba.sequenceMb):
         """
         if self.displayId != '':
             self.gd.hideWindow(self.displayId)
+            
+
+    def showImage(self, index):
+        """
+        Activates the image display for image at 'index' in the 3D image stack.
+        """
+        
+        self.seq[index].show()
+
+    def hideImage(self, index):
+        """
+        Deactivates the image display for image at 'index' in the 3D image stack.
+        """
+        
+        self.seq[index].hide()
 
     def update(self):
         """
@@ -213,4 +460,12 @@ class image3DMb(mamba.sequenceMb):
             mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
         err = core.MB_PutPixel(self.seq[z].mbIm, value, position[0], position[1])
         mamba.raiseExceptionOnError(err)
+
+class sequenceMb(image3DMb):
+    """
+    A sequence of images is represented by an instance of this class.
+    This is a complete alias to image3DMb class kept for compatibility
+    reasons.
+    """
+    pass
 

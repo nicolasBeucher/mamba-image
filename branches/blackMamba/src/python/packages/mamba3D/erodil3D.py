@@ -207,4 +207,38 @@ def linearErode3D( imIn, imOut, d, n=1, grid=m3D.DEFAULT_GRID3D, edge=mamba.FILL
     se = m3D.structuringElement3D([0,d], grid)
     m3D.copy3D(imIn, imOut)
     m3D.erode3D(imOut, imOut, n, se=se, edge=edge)
+    
+def erodeByCylinder3D(imInOut, height, section):
+    """
+    Erodes 3D image 'imInOut' using a cylinder with an hexagonal section of size 
+    2x'section' and a height of 2x'height'. The image is modified by this
+    function.
+    """
+    
+    l = imInOut.getLength()
+    for im in imInOut:
+        mamba.erode(im, im, section, se=mamba.HEXAGON)
+    provIm3D = m3D.image3DMb(imInOut)
+    for i in range(l):
+        mamba.copy(imInOut[i], provIm3D[i])
+        for j in range(max(0,i-height), min(l,i+height+1)):
+            mamba.logic(provIm3D[i], imInOut[j], provIm3D[i], "inf")
+    m3D.copy3D(provSeq, imInOut)
+        
+def dilateByCylinder3D(imInOut, height, section):
+    """
+    Dilates 3D image 'imInOut' using a cylinder with an hexagonal section of size 
+    2x'section' and a height of 2x'height'. The image is modified by this
+    function.
+    """
+    
+    l = imInOut.getLength()
+    for im in imInOut:
+        mamba.dilate(im, im, section, se=mamba.HEXAGON)
+    provIm3D = m3D.image3DMb(imInOut)
+    for i in range(l):
+        mamba.copy(imInOut[i], provIm3D[i])
+        for j in range(max(0,i-height), min(l,i+height+1)):
+            mamba.logic(provIm3D[i], imInOut[j], provIm3D[i], "sup")
+    m3D.copy3D(provIm3D, imInOut)
 
