@@ -20,7 +20,7 @@ im1 = mamba.imageMb(im, 1)
 im2 = mamba.imageMb(im, 1)
 
 # Opening of image
-mamba.open(im, im1, 3)
+mamba.opening(im, im1, 3)
 # Selection of the outside region
 mamba.negate(im1, im2)
 mamba.removeEdgeParticles(im2, im1)
@@ -28,7 +28,7 @@ mamba.diff(im2, im1, im2)
 # Extracting the wheel teeth
 mamba.logic(im, im2, im2, "inf")
 # Cleaning the image
-mamba.open(im2, im2)
+mamba.opening(im2, im2)
 # Counting and marking each tooth
 mamba.thinD(im2, im1)
 nb_teeth = mamba.computeVolume(im1)

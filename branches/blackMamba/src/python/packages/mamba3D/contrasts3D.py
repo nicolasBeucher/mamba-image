@@ -54,7 +54,7 @@ def whiteTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON):
     """
     
     imWrk = m3D.image3DMb(imIn)
-    m3D.open3D(imIn, imWrk, n, se=se)
+    m3D.opening3D(imIn, imWrk, n, se=se)
     m3D.sub3D(imIn, imWrk, imOut)
 
 def blackTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON):
@@ -66,7 +66,7 @@ def blackTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON):
     """
     
     imWrk = m3D.image3DMb(imIn)
-    m3D.close3D(imIn, imWrk, n, se=se)
+    m3D.closing3D(imIn, imWrk, n, se=se)
     m3D.sub3D(imWrk, imIn, imOut)
 
 def supWhiteTopHat3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):

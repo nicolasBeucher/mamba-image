@@ -3,8 +3,8 @@ Test cases for the open and close functions found in the openclose module of
 mamba package.
 
 Python functions and classes:
-    open
-    close
+    opening
+    closing
     linearOpen
     linearClose
     buildOpen
@@ -41,7 +41,7 @@ class TestOpenClose(unittest.TestCase):
         del(self.im32_2)
         del(self.im32_3)
         
-    def testOpen(self):
+    def testOpening(self):
         """Verifies the correct computation of an opening operation using open"""
         (w,h) = self.im8_1.getSize()
         for n in range(0,10):
@@ -50,11 +50,11 @@ class TestOpenClose(unittest.TestCase):
             dilate(self.im8_1, self.im8_1, n)
             for i in range(n+1):
                 copy(self.im8_1, self.im8_2)
-                open(self.im8_2, self.im8_2, i)
+                opening(self.im8_2, self.im8_2, i)
                 (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
                 self.assertLess(x, 0)
             copy(self.im8_1, self.im8_2)
-            open(self.im8_2, self.im8_2, n+1)
+            opening(self.im8_2, self.im8_2, n+1)
             vol = computeVolume(self.im8_2)
             self.assertEqual(vol, 0, "%d : vol=%d"%(n,vol))
         
@@ -67,11 +67,11 @@ class TestOpenClose(unittest.TestCase):
             erode(self.im8_1, self.im8_1, n)
             for i in range(n+1):
                 copy(self.im8_1, self.im8_2)
-                close(self.im8_2, self.im8_2, i)
+                closing(self.im8_2, self.im8_2, i)
                 (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
                 self.assertLess(x, 0)
             copy(self.im8_1, self.im8_2)
-            close(self.im8_2, self.im8_2, n+1)
+            closing(self.im8_2, self.im8_2, n+1)
             vol = computeVolume(self.im8_2)
             self.assertEqual(vol, w*h*255, "%d : vol=%d"%(n,vol))
         
@@ -85,11 +85,11 @@ class TestOpenClose(unittest.TestCase):
             erode(self.im8_1, self.im8_1, n)
             for i in range(n+1):
                 copy(self.im8_1, self.im8_2)
-                close(self.im8_2, self.im8_2, i, edge=EMPTY)
+                closing(self.im8_2, self.im8_2, i, edge=EMPTY)
                 (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
                 self.assertLess(x, 0)
             copy(self.im8_1, self.im8_2)
-            close(self.im8_2, self.im8_2, n+1, edge=EMPTY)
+            closing(self.im8_2, self.im8_2, n+1, edge=EMPTY)
             self.im8_1.fill(255)
             self.im8_1.setPixel(0, (0,h//2))
             erode(self.im8_1, self.im8_1, n)

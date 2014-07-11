@@ -16,7 +16,7 @@ import mamba3D as m3D
 import mamba
 import mamba.core as core
 
-def open3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON, edge=mamba.FILLED):
+def opening3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON, edge=mamba.FILLED):
     """
     Performs an opening operation on 3D image 'imIn' and puts the result
     in 'imOut'. 'n' controls the size of the opening and 'se' the
@@ -29,7 +29,7 @@ def open3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON, edge=mamba.FILLED):
     m3D.erode3D(imIn, imOut, n, se=se, edge=edge)
     m3D.dilate3D(imOut, imOut, n, se=se.transpose())
 
-def close3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON, edge=mamba.FILLED):
+def closing3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON, edge=mamba.FILLED):
     """
     Performs a closing operation on 3D image 'imIn' and puts the result
     in 'imOut'. 'n' controls the size of the closing and 'se' the

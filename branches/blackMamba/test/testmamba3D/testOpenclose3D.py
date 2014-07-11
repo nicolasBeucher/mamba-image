@@ -3,8 +3,8 @@ Test cases for the open and close family of operators found in the
 openclose3D module of mamba3D package.
 
 Python functions:
-    open3D
-    close3D
+    opening3D
+    closing3D
     buildOpen3D
     buildClose3D
     linearOpen3D
@@ -61,7 +61,7 @@ class TestOpenclose3D(unittest.TestCase):
         self.assertRaises(MambaError, supOpen3D, self.im8_1, self.im8_2, 1, grid=CENTER_CUBIC)
         self.assertRaises(MambaError, infClose3D, self.im8_1, self.im8_2, 1, grid=CENTER_CUBIC)
         
-    def testOpen3D(self):
+    def testOpening3D(self):
         """Verifies the correct behavior of the 3D open operator"""
         (w,h) = self.im8_1.getSize()
         l = self.im8_1.getLength()
@@ -76,7 +76,7 @@ class TestOpenclose3D(unittest.TestCase):
                 self.im8_3.setPixel(255, (w//2,h//2,l//2))
                 dilate3D(self.im8_3, self.im8_3, 5)
             
-            open3D(self.im8_1, self.im8_2, i)
+            opening3D(self.im8_1, self.im8_2, i)
             (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_2)
             self.assertLess(x, 0, "%d" %(i))
         
@@ -95,7 +95,7 @@ class TestOpenclose3D(unittest.TestCase):
                 self.im8_3.setPixel(0, (w//2,h//2,l//2))
                 erode3D(self.im8_3, self.im8_3, 5)
             
-            close3D(self.im8_1, self.im8_2, i)
+            closing3D(self.im8_1, self.im8_2, i)
             (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_2)
             self.assertLess(x, 0, "%d" %(i))
             
@@ -107,7 +107,7 @@ class TestOpenclose3D(unittest.TestCase):
         self.im8_3.reset()
         drawCube(self.im8_3, (1,1,1,w-2,h-2,l-2), 255)
             
-        close3D(self.im8_1, self.im8_2, 3, se=CUBE3X3X3, edge=EMPTY)
+        closing3D(self.im8_1, self.im8_2, 3, se=CUBE3X3X3, edge=EMPTY)
         (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_2)
         self.assertLess(x, 0, "%d" %(i))
         

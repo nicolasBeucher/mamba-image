@@ -51,7 +51,7 @@ def whiteTopHat(imIn, imOut, n, se=mamba.DEFAULT_SE):
     """
     
     imWrk = mamba.imageMb(imIn)
-    mamba.open(imIn, imWrk, n, se=se)
+    mamba.opening(imIn, imWrk, n, se=se)
     mamba.sub(imIn, imWrk, imOut)
 
 def blackTopHat(imIn, imOut, n, se=mamba.DEFAULT_SE):
@@ -63,7 +63,7 @@ def blackTopHat(imIn, imOut, n, se=mamba.DEFAULT_SE):
     """
     
     imWrk = mamba.imageMb(imIn)
-    mamba.close(imIn, imWrk, n, se=se)
+    mamba.closing(imIn, imWrk, n, se=se)
     mamba.sub(imWrk, imIn, imOut)
 
 def supWhiteTopHat(imIn, imOut, n, grid=mamba.DEFAULT_GRID):

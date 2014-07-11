@@ -45,7 +45,7 @@ copyBytePlane3D(imE, 0, imF)
 # The distance function is filtered in order to keep its most significant
 # maxima (markers of the pellets). Their number gives the number of pellets.
 imG = image3DMb(imA, 8)
-open3D(imF, imG, 3)
+opening3D(imF, imG, 3)
 maxima3D(imG, imB)
 # The distance function is inverted.
 negate3D(imF, imF)

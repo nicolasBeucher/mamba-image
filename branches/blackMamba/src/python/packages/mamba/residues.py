@@ -141,7 +141,7 @@ def skeletonByOpening(imIn, imOut1, imOut2, grid=mamba.DEFAULT_GRID):
     while v1 > v2:
         i += 1
         v1 = v2
-        mamba.open(imWrk1, imWrk2, se=se)
+        mamba.opening(imWrk1, imWrk2, se=se)
         mamba.sub(imWrk1, imWrk2, imWrk2)
         _generateMask_(imWrk2, imOut1, maskIm)
         mamba.convertByMask(maskIm, imWrk3, 0, i)

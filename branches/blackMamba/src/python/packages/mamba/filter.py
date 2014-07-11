@@ -15,11 +15,11 @@ def alternateFilter(imIn, imOut,n, openFirst, se=mamba.DEFAULT_SE):
     """
     
     if openFirst:
-        mamba.open(imIn, imOut, n, se=se)
-        mamba.close(imOut, imOut, n, se=se)
+        mamba.opening(imIn, imOut, n, se=se)
+        mamba.closing(imOut, imOut, n, se=se)
     else:
-        mamba.close(imIn, imOut, n, se=se)
-        mamba.open(imOut, imOut, n, se=se)
+        mamba.closing(imIn, imOut, n, se=se)
+        mamba.opening(imOut, imOut, n, se=se)
 
 def fullAlternateFilter(imIn, imOut, n, openFirst, se=mamba.DEFAULT_SE):
     """
@@ -32,11 +32,11 @@ def fullAlternateFilter(imIn, imOut, n, openFirst, se=mamba.DEFAULT_SE):
     mamba.copy(imIn, imOut)
     for i in range(1,n+1):
         if openFirst:
-            mamba.open(imOut, imOut, i, se=se)
-            mamba.close(imOut, imOut, i, se=se)
+            mamba.opening(imOut, imOut, i, se=se)
+            mamba.closing(imOut, imOut, i, se=se)
         else:
-            mamba.close(imOut, imOut, i, se=se)
-            mamba.open(imOut, imOut, i, se=se)
+            mamba.closing(imOut, imOut, i, se=se)
+            mamba.opening(imOut, imOut, i, se=se)
 
 def linearAlternateFilter(imIn, imOut, n, openFirst, grid=mamba.DEFAULT_GRID):
     """

@@ -55,6 +55,6 @@ steiner3D(im3D, 30, [11,15,22,26], CUBIC)
 # If you look at the display after this step you will see
 # a strange blur. It is because the directions does not allow to fill all
 # the space so we close the 1 pixel gaps with CUBE3X3X3
-close3D(im3D, im3D, 1, CUBE3X3X3)
+closing3D(im3D, im3D, 1, CUBE3X3X3)
 im3D.update()
 

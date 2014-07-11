@@ -18,11 +18,11 @@ def alternateFilter3D(imIn, imOut,n, openFirst, se=m3D.CUBOCTAHEDRON):
     """
     
     if openFirst:
-        m3D.open3D(imIn, imOut, n, se=se)
-        m3D.close3D(imOut, imOut, n, se=se)
+        m3D.opening3D(imIn, imOut, n, se=se)
+        m3D.closing3D(imOut, imOut, n, se=se)
     else:
-        m3D.close3D(imIn, imOut, n, se=se)
-        m3D.open3D(imOut, imOut, n, se=se)
+        m3D.closing3D(imIn, imOut, n, se=se)
+        m3D.opening3D(imOut, imOut, n, se=se)
 
 def fullAlternateFilter3D(imIn, imOut, n, openFirst, se=m3D.CUBOCTAHEDRON):
     """
@@ -35,11 +35,11 @@ def fullAlternateFilter3D(imIn, imOut, n, openFirst, se=m3D.CUBOCTAHEDRON):
     m3D.copy3D(imIn, imOut)
     for i in range(1,n+1):
         if openFirst:
-            m3D.open3D(imOut, imOut, i, se=se)
-            m3D.close3D(imOut, imOut, i, se=se)
+            m3D.opening3D(imOut, imOut, i, se=se)
+            m3D.closing3D(imOut, imOut, i, se=se)
         else:
-            m3D.close3D(imOut, imOut, i, se=se)
-            m3D.open3D(imOut, imOut, i, se=se)
+            m3D.closing3D(imOut, imOut, i, se=se)
+            m3D.opening3D(imOut, imOut, i, se=se)
 
 def linearAlternateFilter3D(imIn, imOut, n, openFirst, grid=m3D.DEFAULT_GRID3D):
     """

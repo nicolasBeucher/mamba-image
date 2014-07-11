@@ -11,7 +11,7 @@ a default edge which can be changed (see the modules erodil and geodesy).
 
 import mamba
 
-def open(imIn, imOut, n=1, se=mamba.DEFAULT_SE, edge=mamba.FILLED):
+def opening(imIn, imOut, n=1, se=mamba.DEFAULT_SE, edge=mamba.FILLED):
     """
     Performs an opening operation on image 'imIn' and puts the result in 'imOut'.
     'n' controls the size of the opening and 'se' the structuring element used.
@@ -23,7 +23,7 @@ def open(imIn, imOut, n=1, se=mamba.DEFAULT_SE, edge=mamba.FILLED):
     mamba.erode(imIn, imOut, n, se=se, edge=edge)
     mamba.dilate(imOut, imOut, n, se=se.transpose())
 
-def close(imIn, imOut, n=1, se=mamba.DEFAULT_SE, edge=mamba.FILLED):
+def closing(imIn, imOut, n=1, se=mamba.DEFAULT_SE, edge=mamba.FILLED):
     """
     Performs a closing operation on image 'imIn' and puts the result in 'imOut'.
     'n' controls the size of the closing and 'se' the structuring element used.
