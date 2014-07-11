@@ -4,13 +4,17 @@ mamba3D package.
 
 Python classes and functions:
     image3DMb
+    sequenceMb
 """
 
-from mamba import MambaError, rainbow
+from mamba import *
 from mamba3D import *
 import unittest
 import random
 import os
+import shutil
+import glob
+from PIL import Image
 
 class TestBase3D(unittest.TestCase):
 
@@ -18,7 +22,9 @@ class TestBase3D(unittest.TestCase):
         pass
         
     def tearDown(self):
-        pass
+        files = glob.glob("./[0-9][0-9][0-9].*")
+        for f in files:
+            os.remove(f)
 
     def testDepthAcceptation(self):
         """Tests that incorrect depth raises an exception"""
@@ -36,20 +42,100 @@ class TestBase3D(unittest.TestCase):
         self.assertRaises(MambaError,im1.getPixel,(0,0,-1))
         self.assertRaises(MambaError,im1.getPixel,(0,0,l))
         
-    def testImage3DMb(self):
-        """Verifies 3D image creation"""
-        im1 = image3DMb(128,128,30)
-        im2 = image3DMb(64,64,1,1)
-        im1.fill(1)
+    def testImage3DMbConstructor(self):
+        """Verifies the image3DMb class constructor"""
+        wi = random.randint(1,4000)
+        hi = random.randint(1,4000)
+        li = random.randint(10,25)
+        wc = ((wi+63)//64)*64
+        hc = ((hi+1)//2)*2
         
-        self.assertTrue(isinstance(im1, image3DMb))
-        self.assertTrue(isinstance(im2, image3DMb))
-        self.assertEqual(im1.getLength(), 30)
-        self.assertEqual(im2.getLength(), 1)
-        self.assertEqual(im1.getDepth(), 8)
+        for i in range(li):
+            ci = random.randint(0,255)
+            # Creating an image and saving it
+            Image.new("RGB", (wi,hi), (ci,ci,ci)).save("%03d.jpg" % (i))
+        
+        # first case
+        im = image3DMb()
+        self.assertEqual(im.getDepth(), 8)
+        self.assertEqual(im.getSize(), (256,256))
+        self.assertEqual(im.getLength(), 256)
+        self.assertEqual(len(im), 256)
+        self.assertNotEqual(im.getName(), '')
+        self.assertIsInstance(next(im), imageMb)
+        self.assertIsInstance(im.__next__(), imageMb)
+        self.assertTrue(isinstance(im, image3DMb))
+        # third case
+        im2D = imageMb(wi,hi,1)
+        im = image3DMb(im2D)
+        self.assertEqual(im.getDepth(), 1)
+        self.assertEqual(im.getSize(), (wc,hc))
+        self.assertEqual(im.getLength(), 256)
+        self.assertEqual(len(im), 256)
+        # second case
+        im2 = image3DMb(im)
         self.assertEqual(im2.getDepth(), 1)
-        s = str(im1)
-        self.assertNotEqual(s, '')
+        self.assertEqual(im2.getSize(), (wc,hc))
+        self.assertEqual(im2.getLength(), 256)
+        self.assertEqual(len(im2), 256)
+        # fourth case
+        im = image3DMb(32)
+        self.assertEqual(im.getDepth(), 32)
+        self.assertEqual(im.getSize(), (256,256))
+        self.assertEqual(im.getLength(), 256)
+        self.assertEqual(len(im), 256)
+        # fifth case
+        im = image3DMb(".")
+        self.assertEqual(im.getDepth(), 8)
+        self.assertEqual(im.getSize(), (wc,hc))
+        self.assertEqual(im.getLength(), li)
+        self.assertEqual(len(im), li)
+        self.assertEqual(im.getName(), ".")
+        # sixth case
+        im2 = image3DMb(im, 32)
+        self.assertEqual(im2.getDepth(), 32)
+        self.assertEqual(im2.getSize(), (wc,hc))
+        self.assertEqual(im2.getLength(), li)
+        self.assertEqual(len(im2), li)
+        # seventh case
+        im = image3DMb(im2D, li)
+        self.assertEqual(im.getDepth(), 1)
+        self.assertEqual(im.getSize(), (wc,hc))
+        self.assertEqual(im.getLength(), li)
+        self.assertEqual(len(im), li)
+        # height case
+        im = image3DMb(".", 1)
+        self.assertEqual(im.getDepth(), 1)
+        self.assertEqual(im.getSize(), (wc,hc))
+        self.assertEqual(im.getLength(), li)
+        self.assertEqual(len(im), li)
+        # ninth case
+        wi = random.randint(1,4000)
+        hi = random.randint(1,4000)
+        li = random.randint(10,45)
+        wc = ((wi+63)//64)*64
+        hc = ((hi+1)//2)*2
+        im = image3DMb(wi, hi, li)
+        self.assertEqual(im.getDepth(), 8)
+        self.assertEqual(im.getSize(), (wc,hc), "%s %s" % (im.getSize(), (wc,hc)))
+        self.assertEqual(im.getLength(), li)
+        self.assertEqual(len(im), li)
+        # tenth case
+        wi = random.randint(1,4000)
+        hi = random.randint(1,4000)
+        li = random.randint(10,45)
+        wc = ((wi+63)//64)*64
+        hc = ((hi+1)//2)*2
+        im = image3DMb(wi, hi, li, 1)
+        self.assertEqual(im.getDepth(), 1)
+        self.assertEqual(im.getSize(), (wc,hc))
+        self.assertEqual(im.getLength(), li)
+        self.assertEqual(len(im), li)
+        
+        seq = sequenceMb(wi, hi, li, 1)
+        self.assertEqual(seq.getDepth(), 1)
+        self.assertEqual(seq.getSize(), (wc,hc))
+        self.assertEqual(seq.getLength(), li)
         
     def testImage3DMbPixels(self):
         """Verifies pixel extraction and setting in 3D images"""
@@ -127,92 +213,95 @@ class TestBase3D(unittest.TestCase):
         rawdata = im32.extractRaw()
         self.assertEqual(len(rawdata), 64*64*6*4)
         self.assertEqual(rawdata, 64*64*6*b"\x44\x33\x22\x11")
+        
+    def testImage3DMbLoad(self):
+        """Verifies the loading method of the image3DMb class"""
+        im = image3DMb(256,256,9,8)
+        
+        li = random.randint(10,15)
+        ci = []
+        for i in range(li):
+            ci.append(random.randint(0,255))
+            # Creating an image and saving it
+            Image.new("RGB", (256,256), (ci[-1],ci[-1],ci[-1])).save("%03d.jpg" % (i))
             
-    def testImage3DMbConvert(self):
-        """Tests the convert method of 3D images"""
-        im1 = image3DMb(64,64,64,8,displayer=image3DDisplay)
-        im1.show("VTK")
-        im1.show("PROJECTION")
-        im1.show("USER")
-        im2 = image3DMb(64,64,64,1)
+        im.load(".")
+        for i,im in enumerate(im):
+            vol = computeVolume(im)
+            self.assertEqual(vol, ci[i]*256*256)
+
+    def testImage3DMbSave(self):
+        """Verifies the saving method of the image3DMb class"""
+        im3D = image3DMb(256,256,9,8)
         
-        self.assertEqual(im1.getDepth(), 8)
-        self.assertEqual(im2.getDepth(), 1)
-        im1.convert(8)
-        im2.convert(1)
-        self.assertEqual(im1.getDepth(), 8)
-        self.assertEqual(im2.getDepth(), 1)
-        im1.convert(1)
-        im2.convert(8)
-        self.assertEqual(im1.getDepth(), 1)
-        self.assertEqual(im2.getDepth(), 8)
+        ci = []
+        for im in im3D:
+            ci.append(random.randint(0,255))
+            im.fill(ci[-1])
+        im3D.save("test", ".bmp")
         
-    def testImage3DMbDisplay(self):
-        """Verifies display management in 3D images"""
-        opa = range(256)
-        im1 = image3DMb(64,64,64)
-        im2 = image3DMb(64,64,64)
-        im3 = image3DMb(64,64,64)
-        im4 = image3DMb(64,64,64,displayer=image3DDisplay)
-        im5 = image3DMb(64,64,64,displayer=image3DDisplay)
+        im2 = image3DMb("test")
+        for i,im in enumerate(im2):
+            vol = computeVolume(im)
+            self.assertEqual(vol, 256*256*ci[i])
+            
+        im3D.save("test", ".bmp")
         
-        im1.show()
-        im2.show("VTK")
-        im3.show("PROJECTION")
-        im4.show("USER")
-        im5.show()
+        im2 = image3DMb("test")
+        for i,im in enumerate(im2):
+            vol = computeVolume(im)
+            self.assertEqual(vol, 256*256*ci[i])
         
-        im1.setPalette(rainbow)
-        im2.setPalette(rainbow)
-        im3.setPalette(rainbow)
-        im4.setPalette(rainbow)
-        im5.setPalette(rainbow)
+        shutil.rmtree("test")
+            
+    def testImage3DMbRGBFilter(self):
+        """Verifies that the RGB filtering used when loading sequence works"""
+        ri = random.randint(0,255)
+        gi = random.randint(0,255)
+        bi = random.randint(0,255)
+        w = 256
+        h = 256
         
-        im1.resetPalette()
-        im2.resetPalette()
-        im3.resetPalette()
-        im4.resetPalette()
-        im5.resetPalette()
+        for i in range(5):
+            # Creating an image and saving it
+            Image.new("RGB", (w,h), (ri,gi,bi)).save("%03d.bmp" % (i))
+            
+        im3D = image3DMb(".", rgbfilter=(1.0,0.0,0.0))
+        for i,im in enumerate(im3D):
+            vol = computeVolume(im)
+            self.assertTrue(vol==w*h*ri or vol==w*h*(ri-1) or vol==w*h*(ri+1),
+                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
+            
+        im3D = image3DMb(".", rgbfilter=(0.0,1.0,0.0))
+        for i,im in enumerate(im3D):
+            vol = computeVolume(im)
+            self.assertTrue(vol==w*h*gi or vol==w*h*(gi-1) or vol==w*h*(gi+1),
+                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
+            
+        im3D = image3DMb(".", rgbfilter=(0.0,0.0,1.0))
+        for i,im in enumerate(im3D):
+            vol = computeVolume(im)
+            self.assertTrue(vol==w*h*bi or vol==w*h*(bi-1) or vol==w*h*(bi+1),
+                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
+            
+    def testImage3DMbFillAndReset(self):
+        """Verifies the fill and reset methods of the image3DMb class"""
+        im3D = image3DMb(256,256,9,8)
         
-        im1.setOpacity(opa)
-        im2.setOpacity(opa)
-        im3.setOpacity(opa)
-        im4.setOpacity(opa)
-        im5.setOpacity(opa)
+        ci = random.randint(0,255)
         
-        im1.resetOpacity()
-        im2.resetOpacity()
-        im3.resetOpacity()
-        im4.resetOpacity()
-        im5.resetOpacity()
-        
-        im1.hide()
-        im2.hide()
-        im3.hide()
-        im4.hide()
-        im5.hide()
-        
-        im1.show()
-        im2.show()
-        im3.show()
-        im4.show()
-        im5.show()
-        
-        im1.update()
-        im2.update()
-        im3.update()
-        im4.update()
-        im5.update()
-        
-        im1.hide()
-        im2.hide()
-        im3.hide()
-        im4.hide()
-        im5.hide()
-        
-        im1.show()
-        im2.show("VTK")
-        im3.show("PROJECTION")
-        im4.show("USER")
-        im5.show()
+        im3D.fill(ci)
+        for im in im3D:
+            vol = computeVolume(im)
+            self.assertEqual(vol, ci*256*256)
+        im3D.reset()
+        for im in im3D:
+            vol = computeVolume(im)
+            self.assertEqual(vol, 0)
+            
+    def testImage3DMbPalette(self):
+        """Verifies the palette methods of the image3DMb class"""
+        im3D = image3DMb(256,256,9,8)
+        im3D.setPalette(rainbow)
+        im3D.resetPalette()
 

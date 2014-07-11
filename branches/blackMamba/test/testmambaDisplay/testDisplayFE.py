@@ -20,7 +20,7 @@ Python functions and method:
 """
 
 from mamba import *
-import mamba.display as display
+import mambaDisplay as display
 import unittest
 import random
 from PIL import Image
@@ -234,4 +234,75 @@ class TestDisplayFE(unittest.TestCase):
         
         seq.hideImage(li//2)
         self.assertEqual(self.testDisp.getStatsOnFun("hideWindow"), li+1)
+
+
+        
+    def testImage3DMbDisplay(self):
+        """Verifies display management in 3D images"""
+        opa = range(256)
+        im1 = image3DMb(64,64,64)
+        im2 = image3DMb(64,64,64)
+        im3 = image3DMb(64,64,64)
+        im4 = image3DMb(64,64,64,displayer=image3DDisplay)
+        im5 = image3DMb(64,64,64,displayer=image3DDisplay)
+        
+        im1.show()
+        im2.show("VTK")
+        im3.show("PROJECTION")
+        im4.show("USER")
+        im5.show()
+        
+        im1.setPalette(rainbow)
+        im2.setPalette(rainbow)
+        im3.setPalette(rainbow)
+        im4.setPalette(rainbow)
+        im5.setPalette(rainbow)
+        
+        im1.resetPalette()
+        im2.resetPalette()
+        im3.resetPalette()
+        im4.resetPalette()
+        im5.resetPalette()
+        
+        im1.setOpacity(opa)
+        im2.setOpacity(opa)
+        im3.setOpacity(opa)
+        im4.setOpacity(opa)
+        im5.setOpacity(opa)
+        
+        im1.resetOpacity()
+        im2.resetOpacity()
+        im3.resetOpacity()
+        im4.resetOpacity()
+        im5.resetOpacity()
+        
+        im1.hide()
+        im2.hide()
+        im3.hide()
+        im4.hide()
+        im5.hide()
+        
+        im1.show()
+        im2.show()
+        im3.show()
+        im4.show()
+        im5.show()
+        
+        im1.update()
+        im2.update()
+        im3.update()
+        im4.update()
+        im5.update()
+        
+        im1.hide()
+        im2.hide()
+        im3.hide()
+        im4.hide()
+        im5.hide()
+        
+        im1.show()
+        im2.show("VTK")
+        im3.show("PROJECTION")
+        im4.show("USER")
+        im5.show()
 

@@ -46,24 +46,27 @@ class TesthitOrMiss(unittest.TestCase):
 
     def testDepthAcceptation(self):
         """Tests that incorrect depth raises an exception"""
-        #self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im1_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im8_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im32_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im8_1, self.im1_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im8_1, self.im8_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im8_1, self.im32_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im32_1, self.im1_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im32_1, self.im8_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im32_1, self.im32_2, 0, 1)
+        dse = doubleStructuringElement([0],[1],SQUARE)
+        #self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im1_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im8_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im32_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im8_1, self.im1_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im8_1, self.im8_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im8_1, self.im32_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im32_1, self.im1_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im32_1, self.im8_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im32_1, self.im32_2, dse)
 
     def testSizeCheck(self):
         """Tests that different sizes raise an exception"""
-        self.assertRaises(MambaError, hitOrMiss, self.im1s2_1, self.im1_2, 0, 1)
-        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im1s2_2, 0, 1)
+        dse = doubleStructuringElement([0],[1],SQUARE)
+        self.assertRaises(MambaError, hitOrMiss, self.im1s2_1, self.im1_2, dse)
+        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im1s2_2, dse)
 
     def testParameterCheck(self):
         """Tests that using same image for input and output raises an exception"""
-        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im1_1, 0, 1)
+        dse = doubleStructuringElement([0],[1],SQUARE)
+        self.assertRaises(MambaError, hitOrMiss, self.im1_1, self.im1_1, dse)
         
     def _draw3ptsLineS(self,im,imexp,x,y):
         for i in range(x,x+3):
@@ -86,13 +89,15 @@ class TesthitOrMiss(unittest.TestCase):
                 self.im1_1.setPixel(vi, (wi,hi))
         
         self.im1_2.reset()
-        hitOrMiss(self.im1_1, self.im1_2, 0, 1, grid=SQUARE)
+        dse = doubleStructuringElement([],[0],SQUARE)
+        hitOrMiss(self.im1_1, self.im1_2, dse)
         (x,y) = compare(self.im1_2, self.im1_1, self.im1_3)
         self.assertLess(x, 0)
         
         negate(self.im1_1, self.im1_3)
         self.im1_2.reset()
-        hitOrMiss(self.im1_1, self.im1_2, 1, 0, grid=SQUARE)
+        dse = doubleStructuringElement([0],[],SQUARE)
+        hitOrMiss(self.im1_1, self.im1_2, dse)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
@@ -103,7 +108,8 @@ class TesthitOrMiss(unittest.TestCase):
         self._draw3ptsLineS(self.im1_1,self.im1_3, 15,5)
         self._draw3ptsSquareS(self.im1_1,self.im1_3, 10,7,4)
         self._draw3ptsLineS(self.im1_1,self.im1_3, 15,10)
-        hitOrMiss(self.im1_1, self.im1_2, 1+8+128, 2+4+256, grid=SQUARE)
+        dse = doubleStructuringElement([0,3,7],[1,2,8],SQUARE)
+        hitOrMiss(self.im1_1, self.im1_2, dse)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
@@ -136,13 +142,15 @@ class TesthitOrMiss(unittest.TestCase):
                 self.im1_1.setPixel(vi, (wi,hi))
         
         self.im1_2.reset()
-        hitOrMiss(self.im1_1, self.im1_2, 0, 1, grid=HEXAGONAL)
+        dse = doubleStructuringElement([],[0],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse)
         (x,y) = compare(self.im1_2, self.im1_1, self.im1_3)
         self.assertLess(x, 0)
         
         negate(self.im1_1, self.im1_3)
         self.im1_2.reset()
-        hitOrMiss(self.im1_1, self.im1_2, 1, 0, grid=HEXAGONAL)
+        dse = doubleStructuringElement([0],[],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
@@ -153,7 +161,8 @@ class TesthitOrMiss(unittest.TestCase):
         self._draw3ptsLineH(self.im1_1,self.im1_3, 15,5)
         self._draw3ptsSquareH(self.im1_1,self.im1_3, 10,7,4)
         self._draw3ptsLineH(self.im1_1,self.im1_3, 15,10)
-        hitOrMiss(self.im1_1, self.im1_2, 1+4+32, 2+64, grid=HEXAGONAL)
+        dse = doubleStructuringElement([0,2,5],[1,6],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
@@ -166,13 +175,15 @@ class TesthitOrMiss(unittest.TestCase):
         
         self.im1_2.reset()
         self.im1_3.reset()
-        hitOrMiss(self.im1_1, self.im1_2, 0, 1+32, grid=HEXAGONAL, edge=EMPTY)
+        dse = doubleStructuringElement([],[0,5],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse, edge=EMPTY)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
         self.im1_3.reset()
         self.im1_3.setPixel(1, (0,h//2))
-        hitOrMiss(self.im1_1, self.im1_2, 32, 1, grid=HEXAGONAL, edge=EMPTY)
+        dse = doubleStructuringElement([5],[0],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse, edge=EMPTY)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
@@ -186,12 +197,14 @@ class TesthitOrMiss(unittest.TestCase):
         self.im1_2.reset()
         self.im1_3.reset()
         self.im1_3.setPixel(1, (0,h//2))
-        hitOrMiss(self.im1_1, self.im1_2, 0, 1+32, grid=HEXAGONAL, edge=FILLED)
+        dse = doubleStructuringElement([],[0,5],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse, edge=FILLED)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
         
         self.im1_3.reset()
-        hitOrMiss(self.im1_1, self.im1_2, 32, 1, grid=HEXAGONAL, edge=FILLED)
+        dse = doubleStructuringElement([5],[0],HEXAGONAL)
+        hitOrMiss(self.im1_1, self.im1_2, dse, edge=FILLED)
         (x,y) = compare(self.im1_2, self.im1_3, self.im1_3)
         self.assertLess(x, 0)
 

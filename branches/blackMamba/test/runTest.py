@@ -200,7 +200,6 @@ try:
         import mamba as mb
         dirname = os.path.dirname(mb.__file__)
         _morfs += glob.glob(os.path.join(dirname, '*.py'))
-        _morfs.remove(os.path.join(dirname, 'display.py'))
         _morfs.remove(os.path.join(dirname, 'extra.py'))
         _morfs.remove(os.path.join(dirname, 'utils.py'))
         _morfs.remove(os.path.join(dirname, 'core.py'))
@@ -209,7 +208,6 @@ try:
         import mamba3D as mb3D
         dirname = os.path.dirname(mb3D.__file__)
         _morfs += glob.glob(os.path.join(dirname, '*.py'))
-        _morfs.remove(os.path.join(dirname, 'display3D.py'))
         del(mb3D)
 except ImportError:
     print("mamba module not found !")

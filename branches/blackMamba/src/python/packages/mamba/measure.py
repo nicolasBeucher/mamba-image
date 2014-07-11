@@ -95,16 +95,21 @@ def computeConnectivityNumber(imIn, grid=mamba.DEFAULT_GRID):
         mamba.raiseExceptionOnError(ERR_BAD_DEPTH)
     imWrk  = mamba.imageMb(imIn)
     if grid == mamba.HEXAGONAL:
-        mamba.hitOrMiss(imIn, imWrk, 66, 1, grid=grid)
+        dse = mamba.doubleStructuringElement([1,6],[0],mamba.HEXAGONAL)
+        mamba.hitOrMiss(imIn, imWrk, dse)
         n = mamba.computeVolume(imWrk)
-        mamba.hitOrMiss(imIn, imWrk, 2, 5, grid=grid)
-        n = n - mamba.computeVolume(imWrk)   
-    else:
-        mamba.hitOrMiss(imIn, imWrk, 56, 1, grid=grid)
-        n = mamba.computeVolume(imWrk)
-        mamba.hitOrMiss(imIn, imWrk, 16, 41, grid=grid)
+        dse = mamba.doubleStructuringElement([1],[0,2],mamba.HEXAGONAL)
+        mamba.hitOrMiss(imIn, imWrk, dse)
         n = n - mamba.computeVolume(imWrk)
-        mamba.hitOrMiss(imIn, imWrk, 40, 17, grid=grid)
+    else:
+        dse = mamba.doubleStructuringElement([3,4,5],[0],mamba.SQUARE)
+        mamba.hitOrMiss(imIn, imWrk, dse)
+        n = mamba.computeVolume(imWrk)
+        dse = mamba.doubleStructuringElement([4],[0,3,5],mamba.SQUARE)
+        mamba.hitOrMiss(imIn, imWrk, dse)
+        n = n - mamba.computeVolume(imWrk)
+        dse = mamba.doubleStructuringElement([3,5],[0,4],mamba.SQUARE)
+        mamba.hitOrMiss(imIn, imWrk, dse)
         n = n + mamba.computeVolume(imWrk)
     return n
 

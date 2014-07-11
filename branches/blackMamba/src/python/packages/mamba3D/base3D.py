@@ -1,6 +1,6 @@
 """
-This modules defines the basic 3D image class (which inherits from
-the sequenceMb class and adds specific features)
+This modules defines the basic 3D image class (the 3D image can be considered
+a stack or sequence of 2D images).
 """
 
 # Contributors : Nicolas BEUCHER
@@ -10,14 +10,14 @@ import mamba3D as m3D
 import mamba
 import mamba.core as core
 from mambaDisplay import getDisplayer
+import glob
+import os
 
 ################################################################################
 # 3D IMAGE CLASS
 ################################################################################
 # image3DMb class 
-# This class is the main class of the mamba3D package. It inherits from
-# the mamba.sequenceMB class and adds some methods to it (mainly
-# for display and loading).
+# This class is the main class of the mamba3D package. 
 
 # Image counter
 _image3D_index = 1
@@ -38,16 +38,16 @@ class image3DMb:
             image.
             * image3DMb(im3D) : will create a 3D image using the same size, depth 
              and length than 3D image 'im3D'.
-            * image3DMb(im) : will create a 3D image using the same size and 
-            depth than 2D image 'im'.
+            * image3DMb(im2D) : will create a 3D image using the same size and 
+            depth than 2D image 'im2D'.
             * image3DMb(depth) : will create a 3D image with the desired 
             'depth' (1, 8 or 32) for the mamba images.
             * image3DMb(path) : will load the 3D image (sequence) located in
             'path', see the load method.
             * image3DMb(im3D, depth) : will create a 3D image using the same size
             than 3D image 'im3D' and the specified 'depth'.
-            * image3DMb(im, length) : will create a 3D image using the same size
-            than 2D image 'im' and the specified 'length'.
+            * image3DMb(im2D, length) : will create a 3D image using the same size
+            than 2D image 'im2D' and the specified 'length'.
             * image3DMb(path, depth) : will load the 3D image (sequence)
             located in 'path' and convert it to the specified 'depth'.
             * image3DMb(width, height, length) : will create a 3D image
@@ -78,45 +78,45 @@ class image3DMb:
             
         # We analyze the arguments given to the constructor
         if len(args)==0:
-            # First case : no arguments were given, default sequence
-            # -> sequenceMb()
+            # First case : no arguments were given, default 3D image
+            # -> image3DMb()
             self._createSeq(256,256,8,256)
         elif len(args)==1:
             # Second case : the user gives only one argument
-            if isinstance(args[0], sequenceMb):
-                # -> sequenceMb(seq)
+            if isinstance(args[0], image3DMb):
+                # -> image3DMb(im3D)
                 self._createSeq(args[0].width, args[0].height, args[0].depth, args[0].length)
             elif isinstance(args[0], mamba.imageMb):
-                # -> sequenceMb(im)
+                # -> image3DMb(im2D)
                 self._createSeq(args[0].mbIm.width, args[0].mbIm.height, args[0].mbIm.depth, 256)
             elif isinstance(args[0], str):
-                # -> sequenceMb(path)
+                # -> image3DMb(path)
                 self.seq = []
                 self.depth = 8
                 self.load(args[0], rgbfilter=self.rgbfilter)
             else:
-                # -> sequence(depth)
+                # -> image3DMb(depth)
                 self._createSeq(256,256,args[0],256)
         elif len(args)==2:
             # Third case : two arguments
             if isinstance(args[0], mamba.imageMb):
-                # -> sequenceMb(im, length)
+                # -> image3DMb(im2D, length)
                 self._createSeq(args[0].mbIm.width, args[0].mbIm.height, args[0].mbIm.depth, args[1])
             elif isinstance(args[0], str):
-                # -> sequenceMb(path, depth)
+                # -> image3DMb(path, depth)
                 self.seq = []
                 self.depth = args[1]
                 self.load(args[0])
             else:
-                # -> sequenceMb(seq, depth)
+                # -> image3DMb(im3D, depth)
                 self._createSeq(args[0].width, args[0].height, args[1], args[0].length)
         elif len(args)==3:
             # Fourth case : three arguments
-            # -> sequenceMb(width, height, length)
+            # -> image3DMb(width, height, length)
             self._createSeq(args[0],args[1],8,args[2])
         else:
             # Last case: at least 4 arguments are given
-            # -> sequenceMb(width, height, length, depth)
+            # -> image3DMb(width, height, length, depth)
             self._createSeq(args[0],args[1],args[3],args[2])
         
         self.displayId = ''

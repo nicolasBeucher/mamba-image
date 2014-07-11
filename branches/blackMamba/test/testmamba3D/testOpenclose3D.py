@@ -11,6 +11,8 @@ Python functions:
     linearClose3D
     supOpen3D
     infClose3D
+    openByCylinder3D
+    closeByCylinder3D
 """
 
 from mamba import *
@@ -328,4 +330,46 @@ class TestOpenclose3D(unittest.TestCase):
         infClose3D(self.im8_1, self.im8_2, 21, CUBIC)
         vol = computeVolume3D(self.im8_2)
         self.assertEqual(vol, w*h*l*255)
+        
+    def testOpenByCylinder3D(self):
+        """Verifies the opening by cylinder of a sequence"""
+        seq1 = sequenceMb(128,128,5)
+        seq2 = sequenceMb(128,128,5)
+        im = imageMb(128, 128)
+        seq1.fill(0)
+        seq1[2].setPixel(255, (64,64))
+        seq2.fill(0)
+        seq2[2].setPixel(255, (64,64))
+        dilateByCylinder3D(seq1, 1, 1)
+        dilateByCylinder3D(seq2, 1, 1)
+        openByCylinder3D(seq1, 1, 1)
+        for i in range(5):
+            (x,y) = compare(seq1[i], seq2[i], im)
+            self.assertLess(x, 0)
+        copy3D(seq2, seq1)
+        openByCylinder3D(seq1, 2, 2)
+        for i in range(5):
+            vol = computeVolume(seq1[i])
+            self.assertEqual(vol, 0)
+        
+    def testCloseByCylinder3D(self):
+        """Verifies the opening by cylinder of a sequence"""
+        seq1 = sequenceMb(128,128,5)
+        seq2 = sequenceMb(128,128,5)
+        im = imageMb(128, 128)
+        seq1.fill(255)
+        seq1[2].setPixel(0, (64,64))
+        seq2.fill(255)
+        seq2[2].setPixel(0, (64,64))
+        erodeByCylinder3D(seq1, 1, 1)
+        erodeByCylinder3D(seq2, 1, 1)
+        closeByCylinder3D(seq1, 1, 1)
+        for i in range(5):
+            (x,y) = compare(seq1[i], seq2[i], im)
+            self.assertLess(x, 0)
+        copy3D(seq2, seq1)
+        closeByCylinder3D(seq1, 2, 2)
+        for i in range(5):
+            vol = computeVolume(seq1[i])
+            self.assertEqual(vol, 255*128*128)
 

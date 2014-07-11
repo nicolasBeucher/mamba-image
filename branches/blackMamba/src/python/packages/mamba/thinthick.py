@@ -105,20 +105,20 @@ class doubleStructuringElement:
 # Hit-or-Miss, thin and thick binary operators
 ################################################################################
     
-def hitOrMiss(imIn, imOut, dse, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
+def hitOrMiss(imIn, imOut, dse, edge=mamba.EMPTY):
     """
     Performs a binary Hit-or-miss operation on image 'imIn' using the double
     structuring element 'dse'. Result is put in 'imOut'.
     
     WARNING! 'imIn' and 'imOut' must be different images.
     
-    'grid' value can be HEXAGONAL or SQUARE. 'edge' value can be EMPTY or FILLED.
+    'edge' value can be EMPTY or FILLED.
     
     You can also find a helper function (hitormissPatternSelector) in the 
     mambaExtra module.
     """
     es0, es1 = dse.getCSE()
-    err = core.MB_BinHitOrMiss(imIn.mbIm, imOut.mbIm, es0, es1, grid.id, edge.id)
+    err = core.MB_BinHitOrMiss(imIn.mbIm, imOut.mbIm, es0, es1, dse.getGrid().id, edge.id)
     mamba.raiseExceptionOnError(err)
     imOut.update()
     
@@ -132,7 +132,7 @@ def thin(imIn, imOut, dse, edge=mamba.EMPTY):
     """
     
     imWrk = mamba.imageMb(imIn)
-    hitOrMiss(imIn, imWrk, dse, grid=dse.getGrid(), edge=edge)
+    hitOrMiss(imIn, imWrk, dse, edge=edge)
     mamba.diff(imIn, imWrk, imOut)
     
 def thick(imIn, imOut, dse):
@@ -145,7 +145,7 @@ def thick(imIn, imOut, dse):
     """
     
     imWrk = mamba.imageMb(imIn)
-    hitOrMiss(imIn, imWrk, dse, grid=dse.getGrid(), edge=mamba.EMPTY)
+    hitOrMiss(imIn, imWrk, dse, edge=mamba.EMPTY)
     mamba.logic(imIn, imWrk, imOut, "or") 
     
 def rotatingThin(imIn, imOut, dse, edge=mamba.FILLED):
@@ -165,14 +165,14 @@ def rotatingThin(imIn, imOut, dse, edge=mamba.FILLED):
     if edge == mamba.FILLED:
         mamba.negate(imIn, imOut)
         for d in mamba.getDirections(dse.getGrid(), True):
-            hitOrMiss(imOut, imWrk, *dse.flip().getCSE(), grid=dse.getGrid(), edge=mamba.EMPTY)
+            hitOrMiss(imOut, imWrk, dse.flip(), edge=mamba.EMPTY)
             mamba.logic(imWrk, imOut, imOut, "sup")
             dse = dse.rotate()
         mamba.negate(imOut, imOut)
     else:
         mamba.copy(imIn, imOut)
         for d in mamba.getDirections(dse.getGrid(), True):
-            hitOrMiss(imOut, imWrk, dse, grid=dse.getGrid(), edge=mamba.EMPTY)
+            hitOrMiss(imOut, imWrk, dse, edge=mamba.EMPTY)
             mamba.diff(imOut, imWrk, imOut)
             dse = dse.rotate()
 
@@ -192,7 +192,7 @@ def rotatingThick(imIn, imOut, dse):
     imWrk = mamba.imageMb(imIn)
     mamba.copy(imIn, imOut)
     for d in mamba.getDirections(dse.getGrid(), True):
-        hitOrMiss(imOut, imWrk, dse, grid=dse.getGrid(), edge=mamba.EMPTY)
+        hitOrMiss(imOut, imWrk, dse, edge=mamba.EMPTY)
         mamba.logic(imWrk, imOut, imOut, "sup")
         dse = dse.rotate()
 
@@ -212,7 +212,7 @@ def infThin(imIn, imOut, dse, edge=mamba.EMPTY):
     mamba.copy(imIn, imOut)
     mamba.copy(imIn, imWrk1)
     for i in range(mamba.gridNeighbors(dse.getGrid())):
-        hitOrMiss(imWrk1, imWrk2, dse, grid=dse.getGrid(), edge=edge)
+        hitOrMiss(imWrk1, imWrk2, dse, edge=edge)
         mamba.diff(imOut, imWrk2, imOut)
         dse = dse.rotate()
 
@@ -232,7 +232,7 @@ def supThick(imIn, imOut, dse):
     mamba.copy(imIn, imWrk1)
     mamba.copy(imIn, imOut)
     for i in range(mamba.gridNeighbors(dse.getGrid())):
-        hitOrMiss(imWrk1, imWrk2, dse, grid=dse.getGrid())
+        hitOrMiss(imWrk1, imWrk2, dse)
         mamba.logic(imWrk2, imOut, imOut, "sup")
         dse = dse.rotate()
     
@@ -254,7 +254,7 @@ def fullThin(imIn, imOut, dse, edge=mamba.EMPTY):
         while v1 != v2:
             v2 = v1
             for i in range(mamba.gridNeighbors(dse.getGrid())):
-                hitOrMiss(imOut, imWrk, dse, grid=dse.getGrid())
+                hitOrMiss(imOut, imWrk, dse)
                 mamba.diff(imOut, imWrk, imOut)
                 dse = dse.rotate()
             v1 = mamba.computeVolume(imOut)
@@ -441,7 +441,7 @@ def endPoints(imIn, imOut, grid=mamba.DEFAULT_GRID, edge=mamba.FILLED):
     # added to avoid blocking of the process in clipping
     mamba.diff(imIn, imWrk1, imOut)
     for i in range(nb):
-        hitOrMiss(imWrk1, imWrk2, *dse1.getCSE(), grid=dse1.getGrid(), edge=edge)
+        hitOrMiss(imWrk1, imWrk2, dse1, edge=edge)
         mamba.logic(imOut, imWrk2, imOut, "sup")
         dse1 = dse1.rotate(step)
 
@@ -468,7 +468,7 @@ def multiplePoints(imIn, imOut, grid=mamba.DEFAULT_GRID):
         nb = 4
     for dse in dse_list:
         for i in range(nb):
-            hitOrMiss(imIn, imWrk1, dse, grid = dse.getGrid())
+            hitOrMiss(imIn, imWrk1, dse)
             mamba.logic(imWrk1, imWrk2, imWrk2, "sup")
             dse = dse.rotate(step)
     mamba.diff(imIn, imWrk2, imOut)
@@ -600,7 +600,7 @@ def rotatingGeodesicThick(imIn, imMask, imOut, dse):
     imWrk = mamba.imageMb(imIn)
     mamba.copy(imIn, imOut)
     for i in range(mamba.gridNeighbors(dse.getGrid())):
-        hitOrMiss(imOut, imWrk, dse, grid=dse.getGrid())    
+        hitOrMiss(imOut, imWrk, dse)
         mamba.logic(imWrk, imOut, imOut, "sup")
         mamba.logic(imMask, imOut, imOut, "inf")
         dse = dse.rotate()
@@ -644,7 +644,4 @@ def fullGeodesicThin(imIn, imMask, imOut, dse):
     mamba.diff(imMask, imIn, imOut)
     fullGeodesicThick(imOut, imMask, imOut, dse.flip())
     mamba.diff(imMask, imOut, imOut)
-    
-
-
 

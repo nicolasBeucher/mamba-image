@@ -223,7 +223,7 @@ def erodeByCylinder3D(imInOut, height, section):
         mamba.copy(imInOut[i], provIm3D[i])
         for j in range(max(0,i-height), min(l,i+height+1)):
             mamba.logic(provIm3D[i], imInOut[j], provIm3D[i], "inf")
-    m3D.copy3D(provSeq, imInOut)
+    m3D.copy3D(provIm3D, imInOut)
         
 def dilateByCylinder3D(imInOut, height, section):
     """
