@@ -27,7 +27,7 @@ class image3DMb:
     A 3D image is represented by an instance of this class.
     """
     
-        def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """
         Constructor for a mamba 3D image.
         A 3D image is a stack of images defined by width, height and length

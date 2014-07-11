@@ -19,7 +19,6 @@ from .erodilLarge import *
 from .openclose import *
 from .contrasts import *
 from .geodesy import *
-from .sequence import *
 from .filter import *
 from .residues import *
 from .thinthick import *
