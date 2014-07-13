@@ -9,7 +9,7 @@ Python functions:
     ceilingAdd
     floorSubConst
     floorSub
-    translate
+    downscale
 """
 
 from mamba import *
@@ -157,4 +157,23 @@ class TestMiscellaneous(unittest.TestCase):
         mulRealConst(self.im8_1, 1.3, self.im32_2)
         (x,y) = compare(self.im32_3, self.im32_2, self.im32_3)
         self.assertLess(x, 0)
-
+        
+    def testDownscale(self):
+        """Verifies the downscale operator"""
+        (w,h) = self.im32_1.getSize()
+        
+        drawSquare(self.im32_1, (0, 0, w/3-1, h-1), 0)
+        drawSquare(self.im32_1, (w/3, 0, 2*w/3-1, h-1), 0x80000000)
+        drawSquare(self.im32_1, (2*w/3, 0, w-1, h-1), 0xffffffff)
+        
+        drawSquare(self.im8_2, (0, 0, w/3-1, h-1), 0)
+        drawSquare(self.im8_2, (w/3, 0, 2*w/3-1, h-1), 0x7f)
+        drawSquare(self.im8_2, (2*w/3, 0, w-1, h-1), 0xff)
+        
+        downscale(self.im32_1, self.im8_1)
+        self.im32_1.show()
+        self.im8_1.show()
+        raw_input()
+        (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
+        
