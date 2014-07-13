@@ -172,17 +172,18 @@ def downscale(imIn, imOut):
     """
     Downscale a 32-bit image 'imIn', whom range can go from 0 up to 16M, to a 
     greyscale image 'imOut' of range 0 to 255. This function will ensure
-    that the minimum of 'imIn' will be mapped to 0 in 'imOut' and that the
-    maximum will be mapped to 255. All other values will be mapped linearly
-    between those two.
+    that the maximum will be mapped to 255. If the maximum in 'imIn' is below
+    256 the function will simply copy the lowest byte plane in 'imOut'.
     """
     
-    imWrk = mamba.imageMb(imIn)
     (mi, ma) = computeRange(imIn)
-    mamba.subConst(imIn, mi, imWrk)
-    mamba.mulConst(imWrk, 255, imWrk)
-    mamba.divConst(imWrk, ma-mi, imWrk)
-    mamba.copyBytePlane(imWrk, 0, imOut)
+    if ma>255:
+        imWrk = mamba.imageMb(imIn)
+        mamba.mulConst(imIn, 255, imWrk)
+        mamba.divConst(imWrk, ma, imWrk)
+        mamba.copyBytePlane(imWrk, 0, imOut)
+    else:
+        mamba.copyBytePlane(imIn, 0, imOut)
 
 def multiSuperpose(imInout, *imIns):
     """

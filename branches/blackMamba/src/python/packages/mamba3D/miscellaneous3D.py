@@ -155,15 +155,16 @@ def downscale3D(imIn, imOut):
     """
     Downscale a 32-bit image 'imIn', whom range can go from 0 up to 16M, to a 
     greyscale image 'imOut' of range 0 to 255. This function will ensure
-    that the minimum of 'imIn' will be mapped to 0 in 'imOut' and that the
-    maximum will be mapped to 255. All other values will be mapped linearly
-    between those two.
+    that the maximum will be mapped to 255. If the maximum in 'imIn' is below
+    256 the function will simply copy the lowest byte plane in 'imOut'.
     """
     
-    imWrk = m3D.image3DMb(imIn)
     (mi, ma) = computeRange3D(imIn)
-    m3D.subConst3D(imIn, mi, imWrk)
-    m3D.mulConst3D(imWrk, 255, imWrk)
-    m3D.divConst3D(imWrk, ma-mi, imWrk)
-    m3D.copyBytePlane3D(imWrk, 0, imOut)
+    if ma>255:
+        imWrk = m3D.image3DMb(imIn)
+        m3D.mulConst3D(imIn, 255, imWrk)
+        m3D.divConst3D(imWrk, ma, imWrk)
+        m3D.copyBytePlane3D(imWrk, 0, imOut)
+    else:
+        m3D.copyBytePlane3D(imIn, 0, imOut)
 
