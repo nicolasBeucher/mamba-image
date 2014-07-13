@@ -388,7 +388,7 @@ There are 4 configurable fields:
 \item \textbf{CMAKE\_CONFIGURATION\_TYPES}: Set this variable to "Release" to 
 generate only the release configuration.
 \item \textbf{CMAKE\_INSTALL\_PREFIX}: Ignore this option. It is a CMake 
-mandatory that is not used by Mamba.
+mandatory that is not used by Mamba on windows.
 \item \textbf{SELECTED\_PYTHON\_EXECUTABLE}: Make sure this option points 
 to your python executable. In particular, if you have multiple python 
 installation on your computer you should verify that you are using the 
@@ -425,6 +425,14 @@ We strongly recommand you verify the generated installer by installing it on
 your computer and running the tests (see section \ref{cha:testing_mamba}).
 
 \subsection{Linux}
+
+Here are the command to type to compile and install on linux:
+
+\texttt{cmake -C Mamba.X.X/src}\\
+\texttt{cmake -D CMAKE_BUILD_TYPE:STRING=Release -D CMAKE_INSTALL_PREFIX:STRING=/usr .}\\
+\texttt{cmake -G "Unix Makefiles" .}\\
+\texttt{make}\\
+\texttt{su -c "make install python_install"}
 
 \subsection{Other platforms}
 
