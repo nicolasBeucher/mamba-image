@@ -32,9 +32,11 @@ class TestMiscellaneous3D(unittest.TestCase):
         self.im8_2 = image3DMb(8)
         self.im8_3 = image3DMb(8)
         self.im8_4 = image3DMb(128,128,128,8)
+        self.im8_5 = image3DMb(128,128,128,8)
         self.im32_1 = image3DMb(32)
         self.im32_2 = image3DMb(32)
         self.im32_3 = image3DMb(32)
+        self.im32_4 = image3DMb(128,128,128,32)
         
     def tearDown(self):
         del(self.im1_1)
@@ -206,18 +208,18 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def testDownscale3D(self):
         """Verifies the downscale operator"""
-        (w,h) = self.im32_1.getSize()
-        l = self.im32_1.getLength()
+        (w,h) = self.im32_4.getSize()
+        l = self.im32_4.getLength()
         
-        drawCube(self.im32_1, (0, 0, 0, w/3-1, h-1, l-1), 0)
-        drawCube(self.im32_1, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x80000000)
-        drawCube(self.im32_1, (2*w/3, 0, 0, w-1, h-1, l-1), 0xffffffff)
+        drawCube(self.im32_4, (0, 0, 0, w/3-1, h-1, l-1), 0x800000)
+        drawCube(self.im32_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0xc00000)
+        drawCube(self.im32_4, (2*w/3, 0, 0, w-1, h-1, l-1), 0x1000000)
         
-        drawCube(self.im8_2, (0, 0, 0, w/3-1, h-1, l-1), 0)
-        drawCube(self.im8_2, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x7f)
-        drawCube(self.im8_2, (2*w/3, 0, 0, w-1, h-1, l-1), 0xff)
+        drawCube(self.im8_4, (0, 0, 0, w/3-1, h-1, l-1), 0)
+        drawCube(self.im8_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x7f)
+        drawCube(self.im8_4, (2*w/3, 0, 0, w-1, h-1, l-1), 0xff)
         
-        downscale3D(self.im32_1, self.im8_1)
-        (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_3)
+        downscale3D(self.im32_4, self.im8_5)
+        (x,y,z) = compare3D(self.im8_4, self.im8_5, self.im8_5)
         self.assertLess(x, 0)
 
