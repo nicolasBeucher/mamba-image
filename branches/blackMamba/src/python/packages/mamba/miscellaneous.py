@@ -170,7 +170,7 @@ def shiftVector(imIn, imOut, vector, fill):
 
 def downscale(imIn, imOut):
     """
-    Downscale a 32-bit image 'imIn', whom range can go from 0 up to 4G, to a 
+    Downscale a 32-bit image 'imIn', whom range can go from 0 up to 16M, to a 
     greyscale image 'imOut' of range 0 to 255. This function will ensure
     that the minimum of 'imIn' will be mapped to 0 in 'imOut' and that the
     maximum will be mapped to 255. All other values will be mapped linearly
