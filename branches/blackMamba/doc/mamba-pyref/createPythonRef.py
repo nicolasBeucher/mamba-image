@@ -270,12 +270,10 @@ def extractModule(path):
 cwd = os.getcwd()
 os.chdir('../../src/python/packages')
 mod_mb = glob.glob(os.path.join('mamba','[!_]*.py')) # __init__.py is not catch
-mod_mb.remove(os.path.join('mamba','display.py'))
 mod_mb.remove(os.path.join('mamba','utils.py'))
 mod_mb.remove(os.path.join('mamba','error.py'))
 mod_mb.sort()
 mod_mb3D = glob.glob(os.path.join('mamba3D','[!_]*.py')) # __init__.py is not catch
-mod_mb3D.remove(os.path.join('mamba3D','display3D.py'))
 mod_mb3D.sort()
 os.chdir(cwd)
 # The file to document

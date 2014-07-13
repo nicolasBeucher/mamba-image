@@ -1,11 +1,9 @@
 """
 This module provides a set of functions to perform residual operations.
-
 A residual transformation is built by subtracting two sequences of primitive 
 operators to get residues and by computing the supremum of these residues. The
 position in the sequence where this maximum occurs is also computed (it is
 called associated function and is generally a 32-bit image).
-
 These residues are defined on binary and greytone images. 
 """
 
