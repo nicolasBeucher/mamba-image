@@ -14,6 +14,7 @@ Python functions:
     compare3D
     shift3D
     drawEdge3D
+    downscale3D
 """
 
 from mamba import *
@@ -202,4 +203,21 @@ class TestMiscellaneous3D(unittest.TestCase):
         drawEdge3D(self.im8_1)
         (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_1)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        
+    def testDownscale3D(self):
+        """Verifies the downscale operator"""
+        (w,h) = self.im32_1.getSize()
+        l = self.im32_1.getLength()
+        
+        drawCube(self.im32_1, (0, 0, 0, w/3-1, h-1, l-1), 0)
+        drawCube(self.im32_1, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x80000000)
+        drawCube(self.im32_1, (2*w/3, 0, 0, w-1, h-1, l-1), 0xffffffff)
+        
+        drawCube(self.im8_2, (0, 0, 0, w/3-1, h-1, l-1), 0)
+        drawCube(self.im8_2, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x7f)
+        drawCube(self.im8_2, (2*w/3, 0, 0, w-1, h-1, l-1), 0xff)
+        
+        downscale3D(self.im32_1, self.im8_1)
+        (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
 
