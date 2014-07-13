@@ -92,24 +92,10 @@ class Displayer:
         converted or when a load occurred.
         """
         pass
-       
-    def colorizeWindow(self, wKey, pal=None):
-        """
-        A change of color palette occurred in the image associated with window
-        'wKey'. The new palette is given by 'pal'. If not given, the image must 
-        be displayed in greyscale.
-        """
-        pass
 
     def destroyWindow(self, wKey):
         """
         Destroys the window identified by 'wKey'.
-        """
-        pass
-       
-    def retitleWindow(self, wKey, name):
-        """
-        Changes the 'name' of the window identified by 'wKey'.
         """
         pass
         

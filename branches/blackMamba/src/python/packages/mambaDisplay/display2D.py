@@ -4,10 +4,9 @@ using the Tkinter library.
 """
 
 import constants
-import mamba.core as core
+import mamba
 import mamba.utils as utils
 from mamba.error import *
-from mamba.miscellaneous import downscale
 
 try:
     import tkinter as tk
@@ -28,25 +27,15 @@ except ImportError:
 
 ###############################################################################
 #  Utilities functions
-#
-# These functions do not perform computations but allow you to load, save or 
-# convert mamba image structures easily. They also allow you to set the global
-# variables used for computations.
-# 
-# Some of these functions are made public and some are restrained to this module
-# use only (they are encapsulated into easier-to-use functions or methods).
-    
-    
+
 def _copyFromClipboard(size=None):
     """
     Looks into the clipboard to see if an image is present and extract it if 
     this is the case.
     
-    WARNING! Under Linux, this function uses pygtk and gtk ! The function may
-    not work to your liking. Under Windows, it uses the ImageGrab module present
-    with the PIL distribution.
+    This function works only on windows.
     
-    Returns a mamba image structure or None if no image was found.
+    Returns a mamba image or None if no image was found.
     """
     import platform
         
@@ -61,7 +50,6 @@ def _copyFromClipboard(size=None):
         # !! and thus this can have very bad effects on Windows
         # !! copy/paste operations.
         im_clipbd = ImageGrab.grabclipboard()
-    
         if im_clipbd!=None:
             im = utils.loadFromPILFormat(im_clipbd, size=size)
     
@@ -76,7 +64,7 @@ def _copyFromClipboard(size=None):
 class Display2D(tk.Toplevel):
 
     # Constructor ##############################################################
-    def __init__(self, master, name):
+    def __init__(self, master):
     
         # Window creation
         tk.Toplevel.__init__(self,master)
@@ -99,13 +87,10 @@ class Display2D(tk.Toplevel):
         self.canvas_vb.grid_remove()
         
         # Internal variables
-        self.mbIm = None
+        self.im_ref = None
         self.bplane = 4
-        self.pal = None
-        self.palactive = True
         self.frozen = False
         self.freezeids = []
-        self.name = name
         self.imid = None
         self.mouse_x = 0
         self.mouse_y = 0
@@ -190,9 +175,7 @@ class Display2D(tk.Toplevel):
         y = max(min(y,self.dsize[1]-1), 0)
         x = int((float(x)/self.dsize[0])*self.osize[0])
         y = int((float(y)/self.dsize[1])*self.osize[1])
-        err, v = core.MB_GetPixel(self.mbIm, x, y)
-        raiseExceptionOnError(err)
-        v = str(v)
+        v = str(self.im_ref().getPixel((x,y)))
         self.infos[2].set("At ("+str(x)+","+str(y)+") = "+v)
         
         if event.state&0x0100==0x0100 :
@@ -275,10 +258,6 @@ class Display2D(tk.Toplevel):
                     self.setZoom(zoom)
             else:
                 self.setZoom(self.zoom-0.25)
-        elif event.char == "p":
-            # PALETTE ACTIVATION
-            self.palactive = not self.palactive
-            self.updateim()
         elif event.char == "b":
             # BYTE PLANE MODIFICATION (next)
             self.bplane = (self.bplane+1)%5
@@ -314,21 +293,17 @@ class Display2D(tk.Toplevel):
         self.dsize = imsize[:]
         self.canvas.config(width=imsize[0],height=imsize[1],
                            scrollregion=(0,0,imsize[0]-1,imsize[1]-1))
-        self.title((self.frozen and "Frozen - " or "") + self.name + 
-                   " - " + str(self.mbIm.depth) + 
-                   " - [" + str(int(self.zoom*100)) + "%]")
         self.updateim()
         # Restoring the standard geometry.
         self.geometry(self.std_geometry)
-        
-
+    
     def copyEvent(self, event):
         # Handles copy shortcut event.
         # If an image is present into the clipboard we get it. 
         self._im_to_paste = _copyFromClipboard(size=self.osize)
-        if self._im_to_paste and self.mbIm.depth==8:
+        if self._im_to_paste and self.im_ref().getDepth()==8:
             self.pasteFromClipBoard()
-                             
+    
     def contextMenuEvent(self, event):
         # Draws a contextual menu on a mouse right click.
         # If an image is present into the clipboard,
@@ -336,8 +311,8 @@ class Display2D(tk.Toplevel):
         self._im_to_paste = _copyFromClipboard(size=self.osize)
         
         # If an image was retrieved from the clipboard and the image is not a
-        # 32-bit image, the paste menu is enabled.
-        if self._im_to_paste and self.mbIm.depth==8:
+        # 8-bit image, the paste menu is enabled.
+        if self._im_to_paste and self.im_ref().getDepth()==8:
             self.context_menu.entryconfigure(2, state=tk.ACTIVE)
         else:
             self.context_menu.entryconfigure (2, state=tk.DISABLED)
@@ -355,31 +330,18 @@ class Display2D(tk.Toplevel):
         import tkFileDialog
         f_name = tkFileDialog.askopenfilename()
         if f_name:
-            im = utils.load(f_name, size=(self.mbIm.width,self.mbIm.height))
-            if self.mbIm.depth==1:
-                err = core.MB_Convert(im, self.mbIm)
-                raiseExceptionOnError(err)
-            elif self.mbIm.depth==8:
-                err = core.MB_Copy(im, self.mbIm)
-                raiseExceptionOnError(err)
-            else:
-                err = core.MB_CopyBytePlane(im, self.mbIm, 0)
-                raiseExceptionOnError(err)
-            self.updateim()
+            self.im_ref().load(f_name)
     def saveImage(self):
         # Saves the image into the selected file.
         import tkFileDialog
         filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("BMP", "*.bmp"),("all files","*")]
         f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
         if f_name:
-            utils.save(self.mbIm, f_name, self.palactive and self.pal)
+            self.im_ref().save(f_name)
     def pasteFromClipBoard(self):
         # Pastes the image obtained in the clipboard.
-        err = core.MB_Copy(self._im_to_paste, self.mbIm)
+        err = core.MB_Copy(self._im_to_paste, self.im_ref().mbIm)
         raiseExceptionOnError(err)
-        self.title((self.frozen and "Frozen - " or "") + self.name + 
-                   " - " + str(self.mbIm.depth) + 
-                   " - [" + str(int(self.zoom*100)) + "%]")
         self.updateim()
         del(self._im_to_paste)
         self._im_to_paste = None
@@ -394,9 +356,6 @@ class Display2D(tk.Toplevel):
         self.dsize[1] = int(self.zoom*self.osize[1])
         self.canvas.config(scrollregion=(0,0,self.dsize[0]-1,self.dsize[1]-1))
         self.drawImage()
-        self.title((self.frozen and "Frozen - " or "") + self.name + 
-                   " - " + str(self.mbIm.depth) + 
-                   " - [" + str(int(self.zoom*100)) + "%]")
         
         # For a zoom of only one, the scrollbar is removed.
         if self.dsize[0] <= self.csize[0]:
@@ -409,6 +368,10 @@ class Display2D(tk.Toplevel):
             self.canvas_vb.grid()
         
     def drawImage(self):
+        self.title((self.frozen and "Frozen - " or "") +
+                   self.im_ref().getName() +
+                   " - " + str(self.im_ref().getDepth()) +
+                   " - [" + str(int(self.zoom*100)) + "%]")
         # Draws the image inside the canvas.
         self.tkpi = ImageTk.PhotoImage(self.pilImage.resize(self.dsize, Image.NEAREST))
         if self.imid:
@@ -423,61 +386,44 @@ class Display2D(tk.Toplevel):
     def freeze(self):
         # freezes the display so that update has no effect
         self.frozen = True
-        self.title((self.frozen and "Frozen - " or "") + self.name +
-                   " - " + str(self.mbIm.depth) + 
+        self.title((self.frozen and "Frozen - " or "") + 
+                   self.im_ref().getName() +
+                   " - " + str(self.im_ref().getDepth()) +
                    " - [" + str(int(self.zoom*100)) + "%]")
     
     def unfreeze(self):
         # Unfreezes the display
         self.frozen = False
-        self.title((self.frozen and "Frozen - " or "") + self.name +
-                   " - " + str(self.mbIm.depth) + 
-                   " - [" + str(int(self.zoom*100)) + "%]")
         self.updateim()
         
     def updateim(self):
         # Updates the display with the new contents of the mamba image.
-        if self.mbIm and self.state()=="normal" and not self.frozen:
-            if self.mbIm.depth==32:
-                mbIm = utils.create(self.mbIm.width, self.mbIm.height, 8)
+        if self.im_ref() and self.state()=="normal" and not self.frozen:
+            if self.im_ref().getDepth()==32:
+                im = mamba.imageMb(self.im_ref(), 8)
                 if self.bplane==4:
-                    err, mi, ma = core.MB_Range(self.mbIm)
-                    raiseExceptionOnError(err)
-                    if ma>255:
-                        wmbIm = utils.create(self.mbIm.width, self.mbIm.height, 32)
-                        err = core.MB_ConMul(self.mbIm,255,wmbIm)
-                        raiseExceptionOnError(err)
-                        err = core.MB_ConDiv(wmbIm,ma,wmbIm)
-                        raiseExceptionOnError(err)
-                        err = core.MB_CopyBytePlane(wmbIm,mbIm,0)
-                        raiseExceptionOnError(err)
-                        del(wmbIm)
-                    else:
-                        err = core.MB_CopyBytePlane(self.mbIm,mbIm,0)
-                        raiseExceptionOnError(err)
+                    mamba.downscale(self.im_ref(), im)
                     self.infos[1].set("plane : all")
                 else:
-                    err = core.MB_CopyBytePlane(self.mbIm,mbIm,self.bplane)
-                    raiseExceptionOnError(err)
+                    mamba.copyBytePlane(self.im_ref(),im,self.bplane)
                     self.infos[1].set("plane : %d" % (self.bplane))
-                self.pilImage = utils.convertToPILFormat(mbIm, self.palactive and self.pal)
-                del(mbIm)
+                self.pilImage = utils.convertToPILFormat(im.mbIm, self.im_ref().palette)
+                del(im)
             else:
                 self.infos[1].set("")
-                self.pilImage = utils.convertToPILFormat(self.mbIm, self.palactive and self.pal)
-            err, volume = core.MB_Volume(self.mbIm)
+                self.pilImage = utils.convertToPILFormat(self.im_ref().mbIm, self.im_ref().palette)
+            volume = mamba.computeVolume(self.im_ref())
             self.infos[0].set("volume : "+str(volume))
             self.icon = ImageTk.PhotoImage(self.pilImage.resize(self.icon_size, Image.NEAREST))
             self.tk.call('wm','iconphoto', self._w, self.icon)
             self.drawImage()
         
-    def connect(self, im, pal):
+    def connect(self, im_ref):
         # "Connects" the window to a mamba image.
+        self.im_ref = im_ref
         
-        self.pal = pal
-        self.palactive = True
         # Size of the image, canvas and display
-        self.osize = [im.width, im.height]
+        self.osize = self.im_ref().getSize()
         imsize = self.osize[:]
         self.zoom = 1.0
         while imsize[0]<constants._MINW or imsize[1]<constants._MINH:
@@ -501,27 +447,8 @@ class Display2D(tk.Toplevel):
         size_info = str(self.osize[0]) + " x " + str(self.osize[1])
         self.context_menu.add_command(label=size_info)
         
-        self.mbIm = im
-        self.pal = pal
-        self.title((self.frozen and "Frozen - " or "") + self.name + 
-                   " - " + str(self.mbIm.depth) + 
-                   " - [" + str(int(self.zoom*100)) + "%]")
         self.updateim()
-        
-    def colorize(self, pal, opa):
-        # Changes the color palette associated with the window.
-        self.pal = pal
-        self.palactive = True
-        self.updateim()
-        
-    def retitle(self, name):
-        # Changes the title of the window.
-        self.name = name
-        self.title((self.frozen and "Frozen - " or "") + self.name + 
-                   " - " + str(self.mbIm.depth) + 
-                   " - [" + str(int(self.zoom*100)) + "%]")
-        self.updateim()
-            
+    
     def show(self):
         # Shows the display (enabling update).
         if self.state()!="normal":

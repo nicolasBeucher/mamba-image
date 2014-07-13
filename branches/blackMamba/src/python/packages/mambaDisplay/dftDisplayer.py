@@ -2,6 +2,8 @@
 This module defines a displayer.
 """
 
+import weakref
+
 import mamba
 import mamba3D
 
@@ -38,20 +40,22 @@ class DftDisplayer(mambaDisplay.Displayer):
         # Dummy mainloop to replace the mainloop that must not be called
         pass
     
-    def addWindow(self, im=None):
+    def addWindow(self, im):
         # Creates a window for image 'im'.
         # Returns the id of the window (its key).
         skey = ''
         if isinstance(im, mamba.imageMb):
-            imd = display2D.Display2D(self.root, im.name)
-            self.windows['2D'+str(imd)] = imd
-            imd.connect(im.mbIm, im.palette)
-            skey = '2D'+str(imd)[:]
+            im_ref = weakref.ref(im)
+            imd = display2D.Display2D(self.root)
+            skey = str(imd)
+            self.windows[skey] = imd
+            imd.connect(im_ref)
         elif isinstance(im, mamba3D.image3DMb):
-            imd = display3D.Display3D(self.root, im.name)
-            self.windows['3D'+str(imd)] = imd
-            imd.connect([im2D.mbIm for im2D in im.seq], im.palette, im.opacity)
-            skey = '3D'+str(imd)[:]
+            im_ref = weakref.ref(im)
+            imd = display3D.Display3D(self.root)
+            skey = str(imd)
+            self.windows[skey] = imd
+            imd.connect(im_ref)
         return skey
         
     def showWindow(self, wKey):
@@ -86,27 +90,17 @@ class DftDisplayer(mambaDisplay.Displayer):
         # Reconnects the window identified by 'wkey' with image 'im' using
         # palette 'pal' if specified.
         if isinstance(im, mamba.imageMb):
-            self.windows[wKey].connect(im.mbIm, im.palette)
+            im_ref = weakref.ref(im)
+            self.windows[wKey].connect(im_ref)
         else: #isinstance(im, mamba3D.image3DMb):
-            self.windows[wKey].connect([im2D.mbIm for im2D in im.seq], im.palette, im.opacity)
-        self.root.update()
-       
-    def colorizeWindow(self, wKey, pal=None, opa=None):
-        # Colorizes (applies palette 'pal' and opacity 'opa' to) the window
-        # identified by 'wkey'.
-        # If 'pal' is not specified then uncolorize.
-        self.windows[wKey].colorize(pal, opa)
+            im_ref = weakref.ref(im)
+            self.windows[wKey].connect(im_ref)
         self.root.update()
 
     def destroyWindow(self, wKey):
         # Destroys the window identified by 'wkey'.
         self.windows[wKey].destroy()
         del(self.windows[wKey])
-       
-    def retitleWindow(self, wKey, name):
-        # Changes the 'name' of the window identified by 'key'.
-        self.windows[wKey].retitle(name)
-        self.root.update()
         
     def tidyWindows(self):
         # Tidies the display to ensure that all the windows are visible.

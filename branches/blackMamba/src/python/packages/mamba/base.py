@@ -188,7 +188,7 @@ class imageMb:
         """
         self.name = name
         if self.displayId != '':
-            self.gd.retitleWindow(self.displayId, name)
+            self.gd.updateWindow(self.displayId)
             
     def getName(self):
         """
@@ -204,7 +204,7 @@ class imageMb:
         """
         self.palette = pal
         if self.displayId != '':
-            self.gd.colorizeWindow(self.displayId, self.palette)
+            self.gd.updateWindow(self.displayId)
             
     def resetPalette(self):
         """
@@ -213,7 +213,7 @@ class imageMb:
         """
         self.palette = None
         if self.displayId != '':
-            self.gd.colorizeWindow(self.displayId, self.palette)
+            self.gd.updateWindow(self.displayId)
             
     def load(self, path, rgbfilter=None):
         """
