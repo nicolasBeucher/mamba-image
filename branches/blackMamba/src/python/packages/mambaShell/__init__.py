@@ -8,7 +8,7 @@ try:
     # Add your import here
     from mamba import *
     from mamba3D import *
-    from mamba.extra import *
+    from mambaDisplay import *
 except ImportError as excpt:
     print("Error : Mamba could not be imported on your computer")
     print("Please check you have correctly installed it")
@@ -91,7 +91,7 @@ print("This script automatically imports Mamba. Here is the complete")
 print("imports performed:")
 print("    from mamba import *")
 print("    from mamba3D import *")
-print("    from mamba.extra import *")
+print("    from mambaDisplay import *")
 print("")
 print("The following images were created (the [d] indicates that they are")
 print("displayed). All these images have the default size (256x256).")

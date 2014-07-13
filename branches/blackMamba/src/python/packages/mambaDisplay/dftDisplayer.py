@@ -86,7 +86,7 @@ class DftDisplayer(mambaDisplay.Displayer):
         # Reconnects the window identified by 'wkey' with image 'im' using
         # palette 'pal' if specified.
         if isinstance(im, mamba.imageMb):
-            self.windows[wKey].connect(im.mbIm, im.palette, None)
+            self.windows[wKey].connect(im.mbIm, im.palette)
         else: #isinstance(im, mamba3D.image3DMb):
             self.windows[wKey].connect([im2D.mbIm for im2D in im.seq], im.palette, im.opacity)
         self.root.update()
@@ -101,8 +101,6 @@ class DftDisplayer(mambaDisplay.Displayer):
     def destroyWindow(self, wKey):
         # Destroys the window identified by 'wkey'.
         self.windows[wKey].destroy()
-        if wKey.find("2D")==0:
-            del(self.windows[wKey].mbIm)
         del(self.windows[wKey])
        
     def retitleWindow(self, wKey, name):
@@ -122,11 +120,11 @@ class DftDisplayer(mambaDisplay.Displayer):
                 l = geo.split("x")
                 w = int(l[0])+5
                 h = int(l[1])+30 # for window decoration
-                if y-h<(self.screen_size[1]/20):
+                if y-h<(self.screen_size[1]//20):
                     x = x + maxw
-                    if x>(19*self.screen_size[0])/20:
-                        x = self.screen_size[0]/20
-                    y = (19*self.screen_size[1])/20
+                    if x>(19*self.screen_size[0])//20:
+                        x = self.screen_size[0]//20
+                    y = (19*self.screen_size[1])//20
                     maxw = 0
                     y = y - h
                     geo = geo+"+"+str(x)+"+"+str(y)
