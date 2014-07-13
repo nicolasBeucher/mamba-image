@@ -211,13 +211,20 @@ class TestMiscellaneous3D(unittest.TestCase):
         (w,h) = self.im32_4.getSize()
         l = self.im32_4.getLength()
         
-        drawCube(self.im32_4, (0, 0, 0, w/3-1, h-1, l-1), 0x800000)
-        drawCube(self.im32_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0xc00000)
+        self.im32_4.reset()
+        drawCube(self.im32_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x800000)
         drawCube(self.im32_4, (2*w/3, 0, 0, w-1, h-1, l-1), 0x1000000)
         
-        drawCube(self.im8_4, (0, 0, 0, w/3-1, h-1, l-1), 0)
+        self.im8_4.reset()
         drawCube(self.im8_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x7f)
         drawCube(self.im8_4, (2*w/3, 0, 0, w-1, h-1, l-1), 0xff)
+        
+        downscale3D(self.im32_4, self.im8_5)
+        (x,y,z) = compare3D(self.im8_4, self.im8_5, self.im8_5)
+        self.assertLess(x, 0)
+        
+        self.im32_4.reset()
+        self.im8_4.reset()
         
         downscale3D(self.im32_4, self.im8_5)
         (x,y,z) = compare3D(self.im8_4, self.im8_5, self.im8_5)

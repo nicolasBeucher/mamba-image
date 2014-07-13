@@ -162,13 +162,20 @@ class TestMiscellaneous(unittest.TestCase):
         """Verifies the downscale operator"""
         (w,h) = self.im32_1.getSize()
         
-        drawSquare(self.im32_1, (0, 0, w/3-1, h-1), 0x800000)
-        drawSquare(self.im32_1, (w/3, 0, 2*w/3-1, h-1), 0xc00000)
+        self.im32_1.reset()
+        drawSquare(self.im32_1, (w/3, 0, 2*w/3-1, h-1), 0x800000)
         drawSquare(self.im32_1, (2*w/3, 0, w-1, h-1), 0x1000000)
         
-        drawSquare(self.im8_2, (0, 0, w/3-1, h-1), 0)
+        self.im8_2.reset()
         drawSquare(self.im8_2, (w/3, 0, 2*w/3-1, h-1), 0x7f)
         drawSquare(self.im8_2, (2*w/3, 0, w-1, h-1), 0xff)
+        
+        downscale(self.im32_1, self.im8_1)
+        (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
+
+        self.im32_1.reset()
+        self.im8_2.reset()
         
         downscale(self.im32_1, self.im8_1)
         (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
