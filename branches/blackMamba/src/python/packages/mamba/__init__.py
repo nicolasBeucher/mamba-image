@@ -10,7 +10,7 @@ from .error import *
 from .grids import *
 from .base import *
 from .palette import *
-from .copy import *
+from .copies import *
 from .arithmetic import *
 from .conversion import *
 from .draw import *
