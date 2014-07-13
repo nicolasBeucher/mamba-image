@@ -441,18 +441,20 @@ class Display2D(tk.Toplevel):
             if self.mbIm.depth==32:
                 mbIm = utils.create(self.mbIm.width, self.mbIm.height, 8)
                 if self.bplane==4:
-                    wmbIm = utils.create(self.mbIm.width, self.mbIm.height, 32)
                     err, mi, ma = core.MB_Range(self.mbIm)
                     raiseExceptionOnError(err)
-                    err = core.MB_ConSub(self.mbIm,mi,wmbIm)
-                    raiseExceptionOnError(err)
-                    err = core.MB_ConMul(wmbIm,255,wmbIm)
-                    raiseExceptionOnError(err)
-                    err = core.MB_ConDiv(wmbIm,ma-mi,wmbIm)
-                    raiseExceptionOnError(err)
-                    err = core.MB_CopyBytePlane(wmbIm,mbIm,0)
-                    raiseExceptionOnError(err)
-                    del(wmbIm)
+                    if ma>255:
+                        wmbIm = utils.create(self.mbIm.width, self.mbIm.height, 32)
+                        err = core.MB_ConMul(self.mbIm,255,wmbIm)
+                        raiseExceptionOnError(err)
+                        err = core.MB_ConDiv(wmbIm,ma,wmbIm)
+                        raiseExceptionOnError(err)
+                        err = core.MB_CopyBytePlane(wmbIm,mbIm,0)
+                        raiseExceptionOnError(err)
+                        del(wmbIm)
+                    else:
+                        err = core.MB_CopyBytePlane(self.mbIm,mbIm,0)
+                        raiseExceptionOnError(err)
                     self.infos[1].set("plane : all")
                 else:
                     err = core.MB_CopyBytePlane(self.mbIm,mbIm,self.bplane)
