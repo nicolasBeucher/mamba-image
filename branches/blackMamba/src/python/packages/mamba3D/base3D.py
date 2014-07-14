@@ -406,7 +406,7 @@ class image3DMb:
         """
         self.palette = pal
         if self.displayId != '':
-            self.gd.colorizeWindow(self.displayId, self.palette, self.opacity)
+            self.gd.updateWindow(self.displayId)
             
     def resetPalette(self):
         """
@@ -415,7 +415,7 @@ class image3DMb:
         """
         self.palette = None
         if self.displayId != '':
-            self.gd.colorizeWindow(self.displayId, self.palette, self.opacity)
+            self.gd.updateWindow(self.displayId)
             
     def setOpacity(self, opa):
         """
@@ -426,7 +426,7 @@ class image3DMb:
         """
         self.opacity = opa
         if self.displayId != '':
-            self.gd.colorizeWindow(self.displayId, self.palette, self.opacity)
+            self.gd.updateWindow(self.displayId)
             
     def resetOpacity(self):
         """
@@ -434,7 +434,7 @@ class image3DMb:
         """
         self.opacity = None
         if self.displayId != '':
-            self.gd.colorizeWindow(self.displayId, self.palette, self.opacity)
+            self.gd.updateWindow(self.displayId)
 
     ### Pixel manipulations ####################################################
     def getPixel(self, position):
