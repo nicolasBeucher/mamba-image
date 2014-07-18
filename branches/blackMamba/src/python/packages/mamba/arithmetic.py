@@ -268,22 +268,24 @@ def floorSub(imIn1, imIn2, imOut):
     mamba.convertByMask(imMask, imOut, 0, mamba.computeMaxRange(imOut)[1])
     mamba.logic(imOut, imWrk, imOut, "inf")
     
-def mulRealConst(imIn, v, imOut, nearest=False):
+def mulRealConst(imIn, v, imOut, nearest=False, precision=2):
     """
     Multiplies image 'imIn' by a real positive constant value 'v' and puts the 
     result in image 'imOut'. 'imIn' and 'imOut' can be 8-bit or 32-bit images.
     If 'imOut' is greyscale (8-bit), the result is saturated (results
     of the multiplication greater than 255 are limited to this value).
-    The constant 'v' is truncated so that only its two first decimal digits
-    are taken into account.
+	'precision' indicates the number of decimal digits taken into account for
+	the constant 'v' (default is 2).
     If 'nearest' is true, the result is rounded to the nearest integer value.
     If not (default), the result is simply truncated.
     """
+	
     if imIn.getDepth()==1 or imOut.getDepth()==1:
         mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     imWrk1 = mamba.imageMb(imIn, 32)
     imWrk2 = mamba.imageMb(imIn, 1)
-    v1 = int(v * 100)
+    precVal = (10 ** precision)
+    v1 = int(v * precVal)
     if imIn.getDepth()==8:
         imWrk1.reset()
         mamba.copyBytePlane(imIn, 0, imWrk1)
@@ -291,8 +293,9 @@ def mulRealConst(imIn, v, imOut, nearest=False):
         mamba.copy(imIn, imWrk1)
     mulConst(imWrk1, v1, imWrk1)
     if nearest:
-        addConst(imWrk1, 50, imWrk1)
-    divConst(imWrk1, 100, imWrk1)
+        adjVal = int(5 * (10 ** (precision - 1)))
+        addConst(imWrk1, adjVal , imWrk1)
+    divConst(imWrk1, precVal, imWrk1)
     if imOut.getDepth()==8:
         mamba.threshold(imWrk1, imWrk2, 255, mamba.computeMaxRange(imWrk1)[1])
         mamba.copyBytePlane(imWrk1, 0, imOut)
