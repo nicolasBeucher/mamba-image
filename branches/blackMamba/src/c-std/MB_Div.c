@@ -151,8 +151,8 @@ static INLINE void DIV_LINE_32_8_32(PLINE *plines_out,
  *      32-bit / 32-bit = 32-bit
  * \param src1 image 1
  * \param src2 image 2
- * \param dest image resulting of the multiplication of image 1 and 2. 
- * \return An error code (NO_ERR if successful)
+ * \param dest image resulting of the division of image 1 by 2. 
+ * \Returns An error code (NO_ERR if successful)
  */
 MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
 {
@@ -178,7 +178,7 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     /* Setting up offset */
     bytes_in = MB_LINE_COUNT(src1);
     
-    /* Evaluating the addition case : 
+    /* Evaluating the division case : 
      * 9 case can happen depending of the two input images depth
      * Only the "legal" one are being considered. Other cases make
      * The function returns with an error.
