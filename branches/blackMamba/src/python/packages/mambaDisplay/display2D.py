@@ -405,7 +405,7 @@ class Display2D(tk.Toplevel):
                     mamba.downscale(self.im_ref(), im)
                     self.infos[1].set("plane : all")
                 else:
-                    mamba.copyBytePlane(self.im_ref(),im,self.bplane)
+                    mamba.copyBytePlane(self.im_ref(),self.bplane,im)
                     self.infos[1].set("plane : %d" % (self.bplane))
                 self.pilImage = utils.convertToPILFormat(im.mbIm, self.im_ref().palette)
                 del(im)
