@@ -423,7 +423,7 @@ class Display2D(tk.Toplevel):
         self.im_ref = im_ref
         
         # Size of the image, canvas and display
-        self.osize = self.im_ref().getSize()
+        self.osize = list(self.im_ref().getSize())
         imsize = self.osize[:]
         self.zoom = 1.0
         while imsize[0]<constants._MINW or imsize[1]<constants._MINH:
