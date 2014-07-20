@@ -1,3 +1,15 @@
+"""
+Volume rendering display for 3D images.
+"""
+
+# Contributors : Nicolas BEUCHER
+
+try:
+    import tkinter as tk
+    from tkinter import ttk
+except ImportError:
+    import Tkinter as tk
+    import ttk
 
 # VTK imports
 try:
@@ -9,30 +21,29 @@ try:
 except ImportError:
     _vtk_lib_present = False
 
+import constants
+
+# Mamba imports
+import mamba3D as m3D
+import mamba
 
 ################################################################################
-# VTK Display 
+# Volume rendering display
 
-# This class is not public and is accessed through the appropriate methods
-# of the image3DMb class.
-class _image3DVTKDisplay(tk.Toplevel):
+class Display3D_VolRen(tk.Frame):
 
-    def __init__(self, name):
+    def __init__(self, master):
+        global _vtk_lib_present
+        if not _vtk_lib_present:
+            raise ValueError("no VTK")
     
         # Window creation
-        tk.Toplevel.__init__(self)
-        self.title(name)
+        tk.Frame.__init__(self, master)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         
-        # ttk style
-        self.style = ttk.Style()
-        if 'xpnative' in self.style.theme_names():
-            self.style.theme_use('xpnative')
-        else:
-            self.style.theme_use('classic')
-        
         # Renderer and associated widget
+        self.im_ref = None
         self._renWidget = vtkTkRenderWidget(self)
         self._ren = vtk.vtkRenderer()
         self._renWidget.GetRenderWindow().AddRenderer(self._ren)
@@ -92,13 +103,10 @@ class _image3DVTKDisplay(tk.Toplevel):
             v = tk.StringVar(self)
             ttk.Label(statusbar, anchor=tk.W, textvariable=v).grid(row=0, column=i, sticky=tk.E+tk.W)
             self.infos.append(v)
-        self.infos[2].set("Hit F1 for control <-")
+        self.infos[2].set("Hit Tab for control <-")
             
         # Events bindings
-        self.bind("<KeyPress-F1>", self.displayControlEvent)
-        self.bind("<KeyPress-F5>", self.displayUpdateEvent)
-        
-        self.protocol("WM_DELETE_WINDOW", self.withdraw)
+        master.bind("<KeyPress-Tab>", self.displayControlEvent)
         
     def drawControlBar(self):
         # Draw all the widgets inside the control bar
@@ -229,89 +237,67 @@ class _image3DVTKDisplay(tk.Toplevel):
         if self.controlbar.state=="hidden":
             self.controlbar.grid()
             self.controlbar.state = "displayed"
-            self.infos[2].set("Hit F1 to hide control ->")
+            self.infos[2].set("Hit Tab to hide control ->")
         else:
             self.controlbar.grid_remove()
             self.controlbar.state = "hidden"
-            self.infos[2].set("Hit F1 for control <-")
-        
-    def displayUpdateEvent(self, event):
-        # Upon hitting key F5 the display is updated in order to avoid
-        # having to call the appropriate function every time
-        self.updateim()
+            self.infos[2].set("Hit Tab for control <-")
         
     # Display update and connection ############################################
     def _convertIntoVTKImage(self):
         # Converts the associated sequence into a VTK image
         # structure to be able to display it using the rendering
         # mechanisms of VTK
-        w = self._seq[0].width
-        h = self._seq[0].height
-        l = len(self._seq)
-        volume = 0
+        W, H = self.im_ref().getSize()
+        L = self.im_ref().getLength()
+        depth = self.im_ref().getDepth()
     
-        if self._seq[0].depth==8:
+        if depth==8:
             # 8-bit 3D image
-            raw_data = ""
-            for mbIm in self._seq:
-                err,s = core.MB_Extract(mbIm)
-                mamba.raiseExceptionOnError(err)
-                err, vol = core.MB_Volume(mbIm)
-                mamba.raiseExceptionOnError(err)
-                volume += vol
-                raw_data += s
-            
+            raw_data = self.im_ref().extractRaw()
+            volume = m3D.computeVolume3D(self.im_ref())
             self.vtk_im.CopyImportVoidPointer(raw_data, len(raw_data))
             self.vtk_im.SetDataScalarType(VTK_UNSIGNED_CHAR)
-        elif self._seq[0].depth==32:
+        elif depth==32:
             # 32-bit 3D image
-            raw_data = ""
-            for mbIm in self._seq:
-                err,s = core.MB_Extract(mbIm)
-                mamba.raiseExceptionOnError(err)
-                err, vol = core.MB_Volume(mbIm)
-                mamba.raiseExceptionOnError(err)
-                volume += vol
-                raw_data += s
+            raw_data = self.im_ref().extractRaw()
+            volume = m3D.computeVolume3D(self.im_ref())
             raw_data2 = raw_data[0::4]+raw_data[1::4]+raw_data[2::4]+raw_data[3::4]
-            l = l*4
-            
+            L = L*4
             self.vtk_im.CopyImportVoidPointer(raw_data2, len(raw_data2))
             self.vtk_im.SetDataScalarType(VTK_UNSIGNED_CHAR)
         else:
             # binary 3D image
-            im8 = mamba.imageMb(self._seq[0].width, self._seq[0].height, 8)
-            raw_data = ""
-            for mbIm in self._seq:
-                err = core.MB_Convert(mbIm, im8.mbIm)
-                mamba.raiseExceptionOnError(err)
-                err,s = core.MB_Extract(im8.mbIm)
-                mamba.raiseExceptionOnError(err)
-                err, vol = core.MB_Volume(mbIm)
-                mamba.raiseExceptionOnError(err)
-                volume += vol
-                raw_data += s
+            im8 = mamba.imageMb(W, H, 8)
+            raw_data = b""
+            for im2D in self.im_ref():
+                mamba.convert(im2D, im8)
+                raw_data += im8.extractRaw()
+                volume += mamba.computeVolume(im2D)
             
             self.vtk_im.CopyImportVoidPointer(raw_data, len(raw_data))
             self.vtk_im.SetDataScalarType(VTK_UNSIGNED_CHAR)
             
         self.vtk_im.SetNumberOfScalarComponents(1)
         extent = self.vtk_im.GetDataExtent()
-        self.vtk_im.SetDataExtent(extent[0], extent[0] + w - 1,
-                                  extent[2], extent[2] + h - 1,
-                                  extent[4], extent[4] + l - 1)
-        self.vtk_im.SetWholeExtent(extent[0], extent[0] + w - 1,
-                                   extent[2], extent[2] + h - 1,
-                                   extent[4], extent[4] + l - 1)
+        self.vtk_im.SetDataExtent(extent[0], extent[0] + W - 1,
+                                  extent[2], extent[2] + H - 1,
+                                  extent[4], extent[4] + L - 1)
+        self.vtk_im.SetWholeExtent(extent[0], extent[0] + W - 1,
+                                   extent[2], extent[2] + H - 1,
+                                   extent[4], extent[4] + L - 1)
         self.volLabel.config(text="Volume = %d" % (volume))
+    
+    # Public method : called by the display window #############################
         
-    def connect(self, sequence, name=""):
-        # Connect a sequence to the display (gives the
-        # reference).
-        self._name = name
-        self._seq = sequence
-        self.dimLabel.config(text="Dimensions = %dx%dx%d" % (self._seq[0].width, self._seq[0].height, len(self._seq)))
-        if self._seq[0].depth==1:
+    def connect(self, im_ref):
+        # Connection of the 3D image to the display
+        self.im_ref = im_ref
+        W, H = self.im_ref().getSize()
+        L = self.im_ref().getLength()
+        depth = self.im_ref().getDepth()
+        self.dimLabel.config(text="Dimensions = %dx%dx%d" % (W, H, L))
+        if depth==1:
             self.opaTF.AddPoint(0, 0.0)
             self.opaTF.AddPoint(127, 0.0)
             self.opaTF.AddPoint(128, 1.0)
@@ -327,45 +313,11 @@ class _image3DVTKDisplay(tk.Toplevel):
             self.colTF.AddRGBPoint(255.0, 1.0, 1.0, 1.0)
         self.drawOpaTF()
         self.drawColTF()
-        self.updateim()
-        
-    def setColorPalette(self, pal):
-        # Called when the color palette is changed
-        self.colTF.RemoveAllPoints()
-        for i in range(256):
-            self.colTF.AddRGBPoint(i, pal[i*3]/255.0, pal[i*3+1]/255.0, pal[i*3+2]/255.0)
-        self.drawColTF()
-        self.updateim()
-        
-    def setOpacityPalette(self, pal):
-        # Called when the opacity palette is changed
-        self.opaTF.RemoveAllPoints()
-        for i in range(256):
-            self.opaTF.AddPoint(i, pal[i]/255.0)
-        self.drawOpaTF()
-        self.updateim()
         
     def updateim(self):
         # Update the display (perform a rendering)
-        if self.state()=="normal":
-            self.infos[0].set("Updating ...")
-            self.title(self._name+" - "+str(self._seq[0].depth))
-            self._convertIntoVTKImage()
-            self._renWidget.Render()
-            self.infos[0].set("")
-        
-    def show(self):
-        # Show the display
-        if self.state()!="normal":
-            self.deiconify()
-        self.updateim()
-        
-    def hide(self):
-        # Hide the display
-        self.withdraw()
-        
-    def destroy(self):
-        # Destroy the display
-        del self._seq
-        tk.Toplevel.destroy(self)
-        
+        self.infos[0].set("Updating ...")
+        self._convertIntoVTKImage()
+        self._renWidget.Render()
+        self.infos[0].set("")
+
