@@ -1,8 +1,5 @@
 """
-This module defines a 3D data displayer for mamba based on the VTK library.
-This displayer is not fast and thus does not behave similarly to the display
-embedded in mamba for 2D images (more remarkably it is not updated after
-each operation).
+This module defines a 3D data displayer for mamba.
 """
 
 # Contributors : Nicolas BEUCHER
@@ -14,244 +11,19 @@ except ImportError:
     import Tkinter as tk
     import ttk
 
-import time
-from PIL import Image
-from PIL import ImageTk
-
 import constants
-
-# Mamba imports
-import mamba3D as m3D
-import mamba
-import mamba.core as core
-
-################################################################################
-# Projection display
-
-class _planeFrame(ttk.LabelFrame):
-
-    def __init__(self,root,size,name,zoom=-1):
-        ttk.LabelFrame.__init__(self,root,text=name,labelanchor=tk.NW)
-        self.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
-        self.root = root
-        self.canvas_vb = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        self.canvas_vb.grid(row=0, column=1, sticky=tk.N+tk.S)
-        self.canvas_hb = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
-        self.canvas_hb.grid(row=1, column=0, sticky=tk.E+tk.W)
-        self.canvas = tk.Canvas(self,
-                                bd=0,
-                                takefocus=True,
-                                xscrollcommand=self.canvas_hb.set,
-                                yscrollcommand=self.canvas_vb.set)
-        self.canvas_hb.config(command=self.canvas.xview)
-        self.canvas_vb.config(command=self.canvas.yview)
-        self.canvas.grid(row=0, column=0, sticky=tk.E+tk.W+tk.S+tk.N)
-        self.canvas_hb.grid_remove()
-        self.canvas_vb.grid_remove()
-        self.osize = size[:]
-        imsize = self.osize[:]
-        if zoom<0:
-            self.zoom = 1.0
-            while  imsize < [constants._MINW, constants._MINH]:
-                imsize[0] = imsize[0]*2
-                imsize[1] = imsize[1]*2
-                self.zoom = self.zoom*2
-            while imsize > [constants._MAXW, constants._MAXH]:
-                imsize[0] = imsize[0]//2
-                imsize[1] = imsize[1]//2
-                self.zoom = self.zoom//2
-        else:
-            self.zoom = zoom
-            imsize[0] = int(imsize[0]*zoom)
-            imsize[1] = int(imsize[1]*zoom)
-        self.csize = imsize[:]
-        self.dsize = imsize[:]
-        self.canvas.config(width=imsize[0],height=imsize[1],
-                           scrollregion=(0,0,imsize[0]-1,imsize[1]-1))
-        self.config(text=name+" - [" + str(int(self.zoom*100)) + "%]")
-        
-        # Internal variables
-        self.name = name
-        self.imid = None
-        self.targetid = []
-        self.pilImage = None
-        self.mouse_x = 0
-        self.mouse_y = 0
-        
-        # Events bindings
-        self.canvas.bind("<Motion>", self.mouseMotionEvent)
-        self.canvas.bind("<Configure>", self.resizeEvent)
-        self.canvas.bind("<Button-4>", self.mouseEvent)
-        self.canvas.bind("<Button-5>", self.mouseEvent)
-        self.canvas.bind("<MouseWheel>", self.mouseEvent)
-        self.canvas.bind("<Button-1>", self.mouseEvent)
-        self.canvas.bind("<ButtonRelease-1>", self.mouseEvent)
-
-    # Events handling functions ################################################
-        
-    def resizeEvent(self, event):
-        # Handles the resizing of the display window.
-        self.csize = [event.width, event.height]
-        self.drawImage()
-        
-        # For a zoom of only one, the scrollbar is removed.
-        if self.dsize[0] <= self.csize[0]:
-            self.canvas_hb.grid_remove()
-        else:
-            self.canvas_hb.grid()
-        if self.dsize[1] <= self.csize[1]:
-            self.canvas_vb.grid_remove()
-        else:
-            self.canvas_vb.grid()
-        
-    def mouseMotionEvent(self, event):
-        # Indicates the position of the mouse inside the image.
-        # Displays in the info bar the position inside the image along with the
-        # pixel value.
-        x = self.canvas.canvasx(event.x) - max((self.csize[0]-self.dsize[0])//2,0)
-        y = self.canvas.canvasy(event.y) - max((self.csize[1]-self.dsize[1])//2,0)
-        x = max(min(x,self.dsize[0]-1), 0)
-        y = max(min(y,self.dsize[1]-1), 0)
-        x = int((x*self.osize[0])//self.dsize[0])
-        y = int((y*self.osize[1])//self.dsize[1])
-        
-        if event.state&0x0100==0x0100 :
-            if not self.dsize[0] <= self.csize[0]:
-                dx = event.x-self.mouse_x
-                posx = self.canvas_hb.get()[0] - float(dx)/self.dsize[0]
-                self.canvas.xview_moveto(posx)
-            if not self.dsize[1] <= self.csize[1]:
-                dy = event.y-self.mouse_y
-                posy = self.canvas_vb.get()[0] - float(dy)/self.dsize[1]
-                self.canvas.yview_moveto(posy)
-            
-        self.mouse_x = event.x
-        self.mouse_y = event.y
-        if event.state&0x0004==0x0004:
-            self.root.movingEvent(x,y,self.name)
-        else:
-            self.eraseTarget()
-        
-    def mouseEvent(self, event):
-        # Handles mouse events (except menu pop up)
-        # Mainly zoom in or out using the mouse wheel, and moving the image
-        if event.type=="4":
-            if event.num==1:
-                self.canvas.config(cursor="fleur")
-            elif event.num==4:
-                # Mouse wheel scroll up under linux
-                # ZOOM IN
-                if self.zoom<=0.25:
-                    self.setZoom(self.zoom*2)
-                else:
-                    self.setZoom(self.zoom+0.25)
-            elif event.num==5:
-                # Mouse wheel scroll down under linux
-                # ZOOM OUT
-                if self.zoom<=0.25:
-                    zoom = self.zoom//2
-                    if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
-                        self.setZoom(zoom)
-                else:
-                    self.setZoom(self.zoom-0.25)
-            
-        elif event.type=="5":
-            if event.num==1:
-                # Button 1 released
-                self.canvas.config(cursor="arrow")
-            
-        elif event.type=="38":
-            # Mouse wheel under windows
-            if event.delta>0:
-                # ZOOM IN
-                for i in range(abs(event.delta)//120):
-                    if self.zoom<=0.25:
-                        self.setZoom(self.zoom*2)
-                    else:
-                        self.setZoom(self.zoom+0.25)
-            else:
-                # ZOOM OUT
-                for i in range(abs(event.delta)//120):
-                    if self.zoom<=0.25:
-                        zoom = self.zoom//2
-                        if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
-                            self.setZoom(zoom)
-                    else:
-                        self.setZoom(self.zoom-0.25)
-        
-    # Helper functions #########################################################
-    
-    def setZoom(self, zoom):
-        # Sets the zoom value and changes the display accordingly.
-        oz = self.zoom
-        self.zoom = zoom
-        self.dsize[0] = int(self.zoom*self.osize[0])
-        self.dsize[1] = int(self.zoom*self.osize[1])
-        self.canvas.config(scrollregion=(0,0,self.dsize[0]-1,self.dsize[1]-1))
-        self.drawImage()
-        self.config(text=self.name+" - [" + str(int(self.zoom*100)) + "%]")
-        
-        # For a zoom of only one, the scrollbar is removed.
-        if self.dsize[0] <= self.csize[0]:
-            self.canvas_hb.grid_remove()
-        else:
-            self.canvas_hb.grid()
-        if self.dsize[1] <= self.csize[1]:
-            self.canvas_vb.grid_remove()
-        else:
-            self.canvas_vb.grid()
-    def getZoom(self):
-        # returns the value of zoom
-        return self.zoom
-            
-    def drawImage(self):
-        # Draws the image inside the canvas.
-        if self.pilImage:
-            self.tkpi = ImageTk.PhotoImage(self.pilImage.resize(self.dsize, Image.NEAREST))
-            if self.imid:
-                self.canvas.delete(self.imid)
-            self.imid = self.canvas.create_image(max((self.csize[0]-self.dsize[0])//2, 0),
-                                                 max((self.csize[1]-self.dsize[1])//2, 0),
-                                                 anchor=tk.NW,
-                                                 image=self.tkpi)
-        
-    # Public interface functions ###############################################
-
-    def display(self, im):
-        # "Connects" the window to a mamba image.
-        self.pilImage = im
-        self.drawImage()
-        
-    def drawTarget(self, x, y):
-        # Draw the target when the user moves the mouse while hold ctrl
-        self.eraseTarget()
-        esize = max(self.csize, self.dsize)
-        x = (x*self.dsize[0])//self.osize[0] + max((self.csize[0]-self.dsize[0])//2,0)
-        y = (y*self.dsize[1])//self.osize[1] + max((self.csize[1]-self.dsize[1])//2,0)
-        id = self.canvas.create_line(x,0,x,esize[1]-1,fill="red")
-        self.targetid.append(id)
-        id = self.canvas.create_line(0,y,esize[0]-1,y,fill="red")
-        self.targetid.append(id)
-        
-    def eraseTarget(self):
-        # Erase the target upon releasing the ctrl button
-        for id in self.targetid:
-            self.canvas.delete(id)
-        self.targetid = []
+import display3D_proj
+import display3D_volren
 
 class Display3D(tk.Toplevel):
     
     # Constructor ##############################################################
-    # destroy method is inherited from Toplevel
     def __init__(self, master):
     
         # Window creation
         tk.Toplevel.__init__(self, master)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.rowconfigure(1, weight=1)
         
         # ttk style
         self.style = ttk.Style()
@@ -260,199 +32,62 @@ class Display3D(tk.Toplevel):
         else:
             self.style.theme_use('classic')
         
-        # Local variables
-        self.x = 0
-        self.y = 0
-        self.z = 0
-        self.raw = ""
-        self.icon = None
-        self.im_ref = None
+        self.projFrame = display3D_proj.Display3D_Proj(self)
+        self.projFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+        try:
+            self.volrenFrame = display3D_volren.Display3D_VolRen(self)
+            self.volrenFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+            self.volrenFrame.grid_remove()
+        except ValueError as err:
+            print err
+            self.volrenFrame = None
+        self.selectedFrame = self.projFrame
         self.std_geometry = ""
-        self.bplane = 4
-        
-        # Event binding
-        self.bind("<KeyRelease>", self.keyboardEvent)
+
+        self.bind("<KeyPress-F1>", self.selectProjection)
+        self.bind("<KeyPress-F2>", self.selectVolRen)
+        self.bind("<KeyPress-F3>", self.selectPlayer)
         self.bind("<KeyPress-F5>", self.displayUpdateEvent)
         
         self.protocol("WM_DELETE_WINDOW", self.withdraw)
-        
-    # Events handling ##########################################################
+
+    # Events ###################################################################
+
+    def selectProjection(self, event):
+        self.selectedFrame.grid_remove()
+        self.selectedFrame = self.projFrame
+        self.selectedFrame.updateim()
+        self.selectedFrame.grid()
+    def selectVolRen(self, event):
+        if self.volrenFrame:
+            self.selectedFrame.grid_remove()
+            self.selectedFrame = self.volrenFrame
+            self.selectedFrame.updateim()
+            self.selectedFrame.grid()
+    def selectPlayer(self, event):
+        self.selectedFrame.grid_remove()
+        self.selectedFrame.updateim()
+        self.selectedFrame.grid()
     
-    def movingEvent(self, u, v, plane):
-        # When the mouse moves inside a plane
-        if plane=="plane Z":
-            self.x = u
-            self.y = v
-            if self.raw:
-                self.planez.drawTarget(self.x, self.y)
-                self.setImagePlaneY()
-                self.setImagePlaneX()
-        elif plane=="plane Y":
-            self.x = u
-            self.z = v
-            if self.raw:
-                self.planey.drawTarget(self.x, self.z)
-                self.setImagePlaneZ()
-                self.setImagePlaneX()
-        elif plane=="plane X":
-            self.z = u
-            self.y = v
-            if self.raw:
-                self.planex.drawTarget(self.z, self.y)
-                self.setImagePlaneY()
-                self.setImagePlaneZ()
-        value = self.im_ref().getPixel((self.z, self.x, self.y))
-        self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
-    
-    def keyboardEvent(self, event):
-        # Keyboard events handling
-        if event.keycode==37 or event.keycode==105:
-            self.planex.eraseTarget()
-            self.planey.eraseTarget()
-            self.planez.eraseTarget()
-        elif event.char == "p":
-            # PALETTE ACTIVATION
-            self.palactive = not self.palactive
-            self.updateim()
-        elif event.char == "b":
-            # BYTE PLANE MODIFICATION (next)
-            self.bplane = (self.bplane+1)%5
-            self.updateim()
-        elif event.char == "n":
-            # BYTE PLANE MODIFICATION (previous)
-            self.bplane = (self.bplane-1)%5
-            self.updateim()
-            
     def displayUpdateEvent(self, event):
         # Called when the user wants to update the display
-        self.updateim()
-        
-    # Display methods ##########################################################
-    
-    def setImagePlaneZ(self):
-        # Extract the image for plane Z
-        start = self.z*self.W*self.H
-        stop = (self.z+1)*self.W*self.H
-        im = Image.frombytes("L", (self.W,self.H), self.raw[start:stop])
-        if self.im_ref().palette:
-            im.putpalette(self.im_ref().palette)
-        self.planez.display(im)
-        self.planez.drawTarget(self.x, self.y)
-        if not self.icon:
-            start = self.L//2*self.W*self.H
-            stop = (self.L//2+1)*self.W*self.H
-            im = Image.frombytes("L", (self.W,self.H), self.raw[start:stop])
-            m = max(self.H, self.W)
-            icon_size = ((constants._icon_max_size*self.W)//m,
-                         (constants._icon_max_size*self.H)//m)
-            self.icon = ImageTk.PhotoImage(im.resize(icon_size, Image.NEAREST))
-            self.tk.call('wm','iconphoto', self._w, self.icon)
-        
-    def setImagePlaneY(self):
-        # Extract the image for plane Y
-        data = b""
-        for i in range(self.L):
-            start = self.W*(self.y+self.H*i)
-            data += self.raw[start:start+self.W]
-        im = Image.frombytes("L", (self.W,self.L), data)
-        if self.im_ref().palette:
-            im.putpalette(self.im_ref().palette)
-        self.planey.display(im)
-        self.planey.drawTarget(self.x, self.z)
-        
-    def setImagePlaneX(self):
-        # Extract the image for plane X
-        im = Image.frombytes("L", (self.H,self.L), self.raw[self.x::self.W])
-        im = im.transpose(Image.FLIP_TOP_BOTTOM)
-        im = im.transpose(Image.ROTATE_270)
-        if self.im_ref().palette:
-            im.putpalette(self.im_ref().palette)
-        self.planex.display(im)
-        self.planex.drawTarget(self.z, self.y)
-    
+        self.selectedFrame.updateim()
+
     # Public method : called by the image3DMb class ############################
     
     def connect(self, im_ref):
         # Connection of the 3D image to the display
-        self.im_ref = im_ref
-        self.W, self.H = self.im_ref().getSize()
-        self.L = self.im_ref().getLength()
-        imsize = [self.W, self.H, self.L]
-        zoom = 1.0
-        while imsize[0]<constants._MINW or imsize[1]<constants._MINH or imsize[2]<constants._MINH:
-            imsize[0] = imsize[0]*2
-            imsize[1] = imsize[1]*2
-            imsize[2] = imsize[2]*2
-            zoom = zoom*2
-        while imsize[0]>constants._MAXW or imsize[1]>constants._MAXH or imsize[2]>constants._MAXH:
-            imsize[0] = imsize[0]//2
-            imsize[1] = imsize[1]//2
-            imsize[2] = imsize[2]//2
-            zoom = zoom//2
-        self.columnconfigure(0, weight=int(100*(self.W/float(self.W+self.L))) )
-        self.rowconfigure(0, weight=int(100*(self.L/float(self.W+self.L))) )
-        self.columnconfigure(1, weight=int(100*(self.H/float(self.H+self.L))) )
-        self.rowconfigure(1, weight=int(100*(self.L/float(self.H+self.L))) )
-        self.planez = _planeFrame(self, [self.W,self.H], "plane Z", zoom=zoom)
-        self.planez.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
-        self.planey = _planeFrame(self, [self.W,self.L], "plane Y", zoom=zoom)
-        self.planey.grid(row=1, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
-        self.planex = _planeFrame(self, [self.L,self.H], "plane X", zoom=zoom)
-        self.planex.grid(row=0, column=1, sticky=tk.W+tk.E+tk.N+tk.S)
-        lb = ttk.LabelFrame(self, text="Information", labelanchor=tk.NW)
-        lb.grid(row=1, column=1, sticky=tk.W+tk.E+tk.N+tk.S)
-        self.volLabel = ttk.Label(lb, text="Volume : 0")
-        self.volLabel.grid(row=0, column=0, sticky=tk.W)
-        self.posLabel = ttk.Label(lb, text="At (0,0,0) = 0")
-        self.posLabel.grid(row=1, column=0, sticky=tk.W)
-        self.planeLabel = ttk.Label(lb, text="")
-        self.planeLabel.grid(row=2, column=0, sticky=tk.W)
+        depth = im_ref().getDepth()
+        self.title(im_ref().getName()+" - "+str(depth))
+        self.projFrame.connect(im_ref)
+        if self.volrenFrame:
+            self.volrenFrame.connect(im_ref)
         self.updateim()
         
     def updateim(self):
         # Update the display (perform a rendering)
         if self.state()=="normal":
-            depth = self.im_ref().getDepth()
-            self.title(self.im_ref().getName()+" - "+str(depth))
-            volume = 0
-            if depth==1:
-                # binary 3D image
-                im8 = mamba.imageMb(self.W, self.H, 8)
-                self.raw = b""
-                for im2D in self.im_ref():
-                    mamba.convert(im2D, im8)
-                    self.raw += im8.extractRaw()
-                    volume += mamba.computeVolume(im2D)
-            elif depth==32:
-                # 32-bit 3D image
-                if self.bplane==4:
-                    self.planeLabel.config(text="Plane : all")
-                    im3D_8 = m3D.image3DMb(self.im_ref(), 8)
-                    m3D.downscale3D(self.im_ref(), im3D_8)
-                    self.raw = im3D_8.extractRaw()
-                    volume = m3D.computeVolume3D(self.im_ref())
-                else:
-                    self.planeLabel.config(text="Plane : %d" % (self.bplane))
-                    im8 = mamba.imageMb(self.W, self.H, 8)
-                    self.raw = b""
-                    for im2D in self.im_ref():
-                        mamba.copyBytePlane(im2D, self.bplane, im8)
-                        self.raw += im8.extractRaw()
-                        volume += mamba.computeVolume(im2D)
-            else:
-                # Greyscale image
-                self.raw = self.im_ref().extractRaw()
-                volume = m3D.computeVolume3D(self.im_ref())
-            self.icon = None
-            self.setImagePlaneZ()
-            self.setImagePlaneY()
-            self.setImagePlaneX()
-            self.planex.eraseTarget()
-            self.planey.eraseTarget()
-            self.planez.eraseTarget()
-            self.volLabel.config(text="Volume : %d" % (volume))
-            value = self.im_ref().getPixel((self.z, self.x, self.y))
-            self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
+            self.selectedFrame.updateim()
         
     def hide(self):
         # Hide the display
@@ -468,5 +103,3 @@ class Display3D(tk.Toplevel):
         pass
     def unfreeze(self):
         pass
-
-

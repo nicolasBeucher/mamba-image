@@ -1,6 +1,5 @@
 """
-This module provides functions, classes and methods to display mamba images
-using the Tkinter library.
+This module defines a 2D data displayer for mamba.
 """
 
 import constants
