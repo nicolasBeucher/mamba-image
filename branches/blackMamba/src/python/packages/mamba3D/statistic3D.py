@@ -7,14 +7,27 @@ a 3D image.
 
 import mamba3D as m3D
 import mamba
-    
+
+def getHistogram3D(imIn):
+    """
+    Returns a list holding the histogram of the greyscale 3D image 'imIn'
+    (0 to 255).
+    """
+    inl = imIn.getLength()
+    histo = 256*[0]
+    for i in range(inl):
+        hist_im = mamba.getHistogram(imIn[i])
+        for i in range(256):
+            histo[i] += hist_im[i]
+    return histo
+
 def getMean3D(imIn):
     """
     Returns the average value (float) of the pixels of 'imIn' (which must be a
     greyscale 3D image).
     """
     
-    histo = m3D.getHistogram3D(imIn)
+    histo = getHistogram3D(imIn)
     s = sum(histo)
     t = 0
     for i,v in enumerate(histo):
@@ -31,7 +44,7 @@ def getMedian3D(imIn):
     'imIn' must be a greyscale 3D image.
     """
     
-    histo = m3D.getHistogram3D(imIn)
+    histo = getHistogram3D(imIn)
     s = sum(histo)
     t = 0
     for i,v in enumerate(histo):
@@ -47,7 +60,7 @@ def getVariance3D(imIn):
     """
     
     mean = getMean3D(imIn)
-    histo = m3D.getHistogram3D(imIn)
+    histo = getHistogram3D(imIn)
     s = sum(histo)
     t = 0
     for i,v in enumerate(histo):

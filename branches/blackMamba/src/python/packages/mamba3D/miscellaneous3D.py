@@ -10,19 +10,6 @@ import mamba
 import mamba.core as core
 
 # Properties operators #########################################################
-    
-def getHistogram3D(imIn):
-    """
-    Returns a list holding the histogram of the greyscale 3D image 'imIn'
-    (0 to 255).
-    """
-    inl = imIn.getLength()
-    histo = 256*[0]
-    for i in range(inl):
-        hist_im = mamba.getHistogram(imIn[i])
-        for i in range(256):
-            histo[i] += hist_im[i]
-    return histo
 
 def computeVolume3D(imIn):
     """
