@@ -289,13 +289,19 @@ def extractModule(path):
             if i>0 and l[0]!=' ':
                 in_section = l
             else:
-                if in_section=="NAME" or in_section=="FILE":
-                    # sections NAME and FILE contains only one information
+                if in_section=="NAME":
+                    # sections NAME can contain name and short description
+                    names = l[4:].split(' - ')
+                    sections[in_section] = names[0]
+                    if len(names)>1:
+                        sections["DESCRIPTION"] = names[1]
+                elif in_section=="FILE":
+                    # section FILE contains only one information
                     sections[in_section] = l[4:]
                 elif in_section=="DESCRIPTION":
                     # The DESCRIPTION can be spreaded along multiple lines
                     # here we concatened all of them
-                    sections[in_section] = sections[in_section]+' '+l[4:]
+                    sections[in_section] += ' '+l[4:]
                 elif in_section=="CLASSES":
                     # The CLASSES section lists all the classes and their methods
                     sl = l[4:].split(' ')
