@@ -3,7 +3,7 @@
 # This script automatically generates latex source file from examples found
 # in the examples directory of the sources.
 
-#Copyright (c) <2009>, <Nicolas BEUCHER>
+#Copyright (c) <2014>, <Nicolas BEUCHER>
 
 #Permission is hereby granted, free of charge, to any person
 #obtaining a copy of this software and associated documentation files
@@ -32,15 +32,6 @@ import glob
 import re
 
 ################################################################################
-# The difficulty dictionary
-################################################################################
-dif_dict = {
-    "E" : "Easy",
-    "M" : "Moderate",
-    "A" : "Advanced"
-}
-
-################################################################################
 # Human sorting
 ################################################################################
 def alphanum_key(s): 
@@ -54,9 +45,10 @@ def alphanum_key(s):
 ################################################################################
 # The example class is a storage facility for all the extracted info
 class ExampleInfo:
-    def __init__(self, name):
-        self.name = name
-        self.difficulty = dif_dict[name[7]]
+    def __init__(self, path):
+        self.path = os.path.dirname(path)
+        sp = os.path.split(self.path)
+        self.name = sp[1].replace("_"," ")
         self.title = ""
         self.desc = ""
         self.src = ""
@@ -78,7 +70,7 @@ class ExampleInfo:
         self.outIm.append(outImage)
     def generateTex(self):
         s  = "\n"
-        s += "\\subsection{"+self.difficulty+" : "+self.title+"}\n"
+        s += "\\subsection{"+self.title+"}\n"
         s += "\n"
         s += self.desc
         s += "\n"
@@ -89,12 +81,12 @@ class ExampleInfo:
             imline = ""
             nameline = ""
             for im in self.inIm:
-                imline += "\\includegraphics[width=0.25\\textwidth]{../../examples/"+im+"} &"
+                imline += "\\includegraphics[width=0.25\\textwidth]{"+os.path.join(self.path,im)+"} &"
                 nameline += self._tidy(im) + " &"
             s += imline.strip("&") + "\\\\ \n"
             s += nameline.strip("&") + "\\\\ \n"
             s += "\\end{tabular}\n"
-            s += "\\caption{Input image(s) of "+self.name+"}\n"
+            #s += "\\caption{Input image(s) of "+self.name+"}\n"
             s += "\\end{figure}\n"
             s += "\n"
         if self.outIm:
@@ -104,7 +96,7 @@ class ExampleInfo:
             imline = ""
             nameline = ""
             for index, im in enumerate(self.outIm):
-                imline += "\\includegraphics[width=0.25\\textwidth]{../../examples/"+im+"} &"
+                imline += "\\includegraphics[width=0.25\\textwidth]{"+os.path.join(self.path,im)+"} &"
                 nameline += self._tidy(im) + " &"
                 if index%3==2:
                     s += imline.strip("&") + "\\\\ \n"
@@ -115,7 +107,7 @@ class ExampleInfo:
                 s += imline.strip("&") + "\\\\ \n"
                 s += nameline.strip("&") + "\\\\ \n"
             s += "\\end{tabular}\n"
-            s += "\\caption{Output image(s) of "+self.name+"}\n"
+            #s += "\\caption{Output image(s) of "+self.name+"}\n"
             s += "\\end{figure}\n"
             s += "\n"
         s += "Here is the source code for this example (can be found in "+self.name+"):\n"
@@ -134,13 +126,17 @@ class ExampleInfo:
 # Main script
 ################################################################################
 # Getting the example files list
-exampleListEasy = glob.glob('../../examples/exampleE*.py')
+exampleListEasy = glob.glob('../../examples/Easy/*/*.py')
 exampleListEasy.sort(key=alphanum_key)
-exampleListMod = glob.glob('../../examples/exampleM*.py')
+exampleListMod = glob.glob('../../examples/Moderate/*/*.py')
 exampleListMod.sort(key=alphanum_key)
-exampleListAdv = glob.glob('../../examples/exampleA*.py')
+exampleListAdv = glob.glob('../../examples/Advanced/*/*.py')
 exampleListAdv.sort(key=alphanum_key)
-exampleList = exampleListEasy + exampleListMod + exampleListAdv
+examples = [
+    ("Easy", exampleListEasy),
+    ("Moderate", exampleListMod),
+    ("Advanced", exampleListAdv)
+]
 
 # the output tex file
 texOutput = """
@@ -157,13 +153,13 @@ texOutput = """
 \\mambaCover
 \\mambaContent
 
-\\section{Examples}
-\\label{cha:examples}
+\\section{Regarding examples}
+\\label{cha:regarding}
 
-This section presents some examples that you can retrieve in the examples
+This document presents some examples that you can retrieve in the examples
 directory of the source files.
 
-There are three types of examples :
+There are three types of examples regrouped in the following sections:
 \\begin{enumerate}
 \item \\textbf{easy}: These are mainly intended for beginners so they could refer
 to some basic examples to start their own code.
@@ -189,40 +185,42 @@ it so happens, try to see this as an exercise or e-mail us.
 #  - Title
 #  - Description
 #  - Images IN and OUT if there are ones
-for example in exampleList:
-    print(example)
-    exaInf = ExampleInfo(os.path.basename(example))
-    exaf = open(example)
-    lines = exaf.readlines()
-    exaf.close()
-    inDesc = False
-    inSrc = False
-    inTitle = False
-    for l in lines:
-        lc = l.replace('\n','').strip()
-        if lc=="" and not inSrc:
-            inDesc = False
-            inSrc = False
-            inTitle = False
-        elif inTitle:
-            exaInf.setTitle(lc[2:])
-        elif inDesc:
-            exaInf.setDesc(l[2:])
-        elif inSrc:
-            exaInf.setSrc(l)
-        elif lc[:4]=="# IN":
-            for im in lc.split(' ')[2:]:
-                exaInf.inImage(im)
-        elif lc[:5]=="# OUT":
-            for im in lc.split(' ')[2:]:
-                exaInf.outImage(im)
-        elif lc[:8]=="## TITLE":
-            inTitle = True
-        elif lc[:14]=="## DESCRIPTION":
-            inDesc = True
-        elif lc[:9]=="## SCRIPT":
-            inSrc = True
-    texOutput += exaInf.generateTex()
+for diff,exampleList in examples:
+    texOutput += "\\section{"+diff+"}\n"
+    for example in exampleList:
+        print(example)
+        exaInf = ExampleInfo(example)
+        exaf = open(example)
+        lines = exaf.readlines()
+        exaf.close()
+        inDesc = False
+        inSrc = False
+        inTitle = False
+        for l in lines:
+            lc = l.replace('\n','').strip()
+            if lc=="" and not inSrc:
+                inDesc = False
+                inSrc = False
+                inTitle = False
+            elif inTitle:
+                exaInf.setTitle(lc[2:])
+            elif inDesc:
+                exaInf.setDesc(l[2:])
+            elif inSrc:
+                exaInf.setSrc(l)
+            elif lc[:4]=="# IN":
+                for im in lc.split(' ')[2:]:
+                    exaInf.inImage(im)
+            elif lc[:5]=="# OUT":
+                for im in lc.split(' ')[2:]:
+                    exaInf.outImage(im)
+            elif lc[:8]=="## TITLE":
+                inTitle = True
+            elif lc[:14]=="## DESCRIPTION":
+                inDesc = True
+            elif lc[:9]=="## SCRIPT":
+                inSrc = True
+        texOutput += exaInf.generateTex()
 
 texOutput += "\\end{document}\n"
 
@@ -230,5 +228,5 @@ f = open("mamba-examples.tex","w")
 f.write(texOutput)
 f.close()
 #creating the pdf
-for i in range(5):
+for i in range(3):
     os.system('pdflatex mamba-examples.tex')
