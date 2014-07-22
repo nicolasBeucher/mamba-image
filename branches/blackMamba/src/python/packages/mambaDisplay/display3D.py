@@ -14,6 +14,7 @@ except ImportError:
 import constants
 import display3D_proj
 import display3D_volren
+import display3D_player
 
 class Display3D(tk.Toplevel):
     
@@ -34,6 +35,9 @@ class Display3D(tk.Toplevel):
         
         self.projFrame = display3D_proj.Display3D_Proj(self)
         self.projFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+        self.playFrame = display3D_player.Display3D_Player(self)
+        self.playFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+        self.playFrame.grid_remove()
         try:
             self.volrenFrame = display3D_volren.Display3D_VolRen(self)
             self.volrenFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
@@ -42,16 +46,39 @@ class Display3D(tk.Toplevel):
             print err
             self.volrenFrame = None
         self.selectedFrame = self.projFrame
-        self.std_geometry = ""
 
+        self.std_geometry = ""
+        self.palactive = True
+        self.bplane = 4
+
+        # Event binding
         self.bind("<KeyPress-F1>", self.selectProjection)
         self.bind("<KeyPress-F2>", self.selectVolRen)
         self.bind("<KeyPress-F3>", self.selectPlayer)
         self.bind("<KeyPress-F5>", self.displayUpdateEvent)
+
+        self.bind("<KeyRelease>", self.keyboardEvent)
         
         self.protocol("WM_DELETE_WINDOW", self.withdraw)
 
     # Events ###################################################################
+
+    def keyboardEvent(self, event):
+        # Keyboard events handling
+        if event.char == "p":
+            # PALETTE ACTIVATION
+            self.palactive = not self.palactive
+            self.updateim()
+        elif event.char == "b":
+            # BYTE PLANE MODIFICATION (next)
+            self.bplane = (self.bplane+1)%5
+            self.updateim()
+        elif event.char == "n":
+            # BYTE PLANE MODIFICATION (previous)
+            self.bplane = (self.bplane-1)%5
+            self.updateim()
+        else:
+            self.selectedFrame.keyboardEvent(event)
 
     def selectProjection(self, event):
         self.selectedFrame.grid_remove()
@@ -66,6 +93,7 @@ class Display3D(tk.Toplevel):
             self.selectedFrame.grid()
     def selectPlayer(self, event):
         self.selectedFrame.grid_remove()
+        self.selectedFrame = self.playFrame
         self.selectedFrame.updateim()
         self.selectedFrame.grid()
     
@@ -80,6 +108,7 @@ class Display3D(tk.Toplevel):
         depth = im_ref().getDepth()
         self.title(im_ref().getName()+" - "+str(depth))
         self.projFrame.connect(im_ref)
+        self.playFrame.connect(im_ref)
         if self.volrenFrame:
             self.volrenFrame.connect(im_ref)
         self.updateim()

@@ -94,6 +94,7 @@ class Display2D(tk.Toplevel):
         self.mouse_x = 0
         self.mouse_y = 0
         self.std_geometry = ""
+        self.palactive = True
         
         # Context menu
         self.createContextMenu()
@@ -243,27 +244,17 @@ class Display2D(tk.Toplevel):
         # or restore original size (r).
         xo = max((self.csize[0]-self.dsize[0])/2, 0)
         yo = max((self.csize[1]-self.dsize[1])/2, 0)
-        if event.char == "z":
-            # ZOOM IN
-            if self.zoom<=0.25:
-                self.setZoom(self.zoom*2)
-            else:
-                self.setZoom(self.zoom+0.25)
-        elif event.char == "a":
-            # ZOOM OUT
-            if self.zoom<=0.25:
-                zoom = self.zoom/2
-                if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
-                    self.setZoom(zoom)
-            else:
-                self.setZoom(self.zoom-0.25)
-        elif event.char == "b":
+        if event.char == "b":
             # BYTE PLANE MODIFICATION (next)
             self.bplane = (self.bplane+1)%5
             self.updateim()
         elif event.char == "n":
             # BYTE PLANE MODIFICATION (previous)
             self.bplane = (self.bplane-1)%5
+            self.updateim()
+        elif event.char == "p":
+            # PALETTE ACTIVATION
+            self.palactive = not self.palactive
             self.updateim()
     
     def freezeEvent(self, event):
@@ -406,11 +397,10 @@ class Display2D(tk.Toplevel):
                 else:
                     mamba.copyBytePlane(self.im_ref(),self.bplane,im)
                     self.infos[1].set("plane : %d" % (self.bplane))
-                self.pilImage = utils.convertToPILFormat(im.mbIm, self.im_ref().palette)
-                del(im)
+                self.pilImage = utils.convertToPILFormat(im.mbIm, self.palactive and self.im_ref().palette or None)
             else:
                 self.infos[1].set("")
-                self.pilImage = utils.convertToPILFormat(self.im_ref().mbIm, self.im_ref().palette)
+                self.pilImage = utils.convertToPILFormat(self.im_ref().mbIm, self.palactive and self.im_ref().palette or None)
             volume = mamba.computeVolume(self.im_ref())
             self.infos[0].set("volume : "+str(volume))
             self.icon = ImageTk.PhotoImage(self.pilImage.resize(self.icon_size, Image.NEAREST))
@@ -425,11 +415,11 @@ class Display2D(tk.Toplevel):
         self.osize = list(self.im_ref().getSize())
         imsize = self.osize[:]
         self.zoom = 1.0
-        while imsize[0]<constants._MINW or imsize[1]<constants._MINH:
+        while imsize[0]<constants._MIN or imsize[1]<constants._MIN:
             imsize[0] = imsize[0]*2
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
-        while imsize[0]>constants._MAXW or imsize[1]>constants._MAXH:
+        while imsize[0]>constants._MAX or imsize[1]>constants._MAX:
             imsize[0] = imsize[0]/2
             imsize[1] = imsize[1]/2
             self.zoom = self.zoom/2

@@ -242,6 +242,10 @@ class Display3D_VolRen(tk.Frame):
             self.controlbar.grid_remove()
             self.controlbar.state = "hidden"
             self.infos[2].set("Hit Tab for control <-")
+    
+    def keyboardEvent(self, event):
+        # Keyboard events handling
+        pass
         
     # Display update and connection ############################################
     def _convertIntoVTKImage(self):

@@ -8,7 +8,8 @@ regroups some utility functions.
 
 import mamba
 import mamba.core as core
-    
+import mamba.utils as utils
+
 # Properties operators #########################################################
 
 def compare(imIn1, imIn2, imOut):
