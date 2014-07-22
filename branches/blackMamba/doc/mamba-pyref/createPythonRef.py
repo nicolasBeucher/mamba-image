@@ -177,6 +177,8 @@ def extractModule(path):
         
     in_section = ""
     in_klass = False
+    in_klass_method_list = False
+    in_klass_method_inherited = False
     for i,l in enumerate(lines):
         l = l.replace('\n','')
         if l!='':
@@ -204,14 +206,17 @@ def extractModule(path):
                         sections[in_section].append(k)
                         in_klass = True
                         in_klass_method_list = False
+                        in_klass_method_inherited = False
                         m = ''
                     elif in_klass and len(sl)<1:
                         in_klass = False
                     elif in_klass:
                         if l.find("Methods defined here")>=0:
                             in_klass_method_list = True
-                        elif not in_klass_method_list:
-                            k.fillDesc(l[8:]+'\n')
+                        elif l.find("Methods inherited from")>=0:
+                            in_klass_method_inherited = True
+                        elif not in_klass_method_list and not in_klass_method_inherited:
+                            k.fillDesc(l[8:])
                         elif in_klass_method_list and len(sl)>3 and sl[3]!='' and l.find('(')>=0:
                             m=l[8:]
                             k.addMethod(m)
