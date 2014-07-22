@@ -4,8 +4,6 @@ Display constants.
 
 _icon_max_size = 64
 
-_MAXW = 512
-_MAXH = 512
-_MINW = 256
-_MINH = 256
+_MAX = 512
+_MIN = 256
 

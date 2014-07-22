@@ -24,9 +24,9 @@ import mamba
 ################################################################################
 # Projection display
 
-class _planeFrame(ttk.LabelFrame):
+class planeFrame(ttk.LabelFrame):
 
-    def __init__(self,root,size,name,zoom=-1):
+    def __init__(self,root,size,name,zoom):
         ttk.LabelFrame.__init__(self,root,text=name,labelanchor=tk.NW)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
@@ -47,20 +47,9 @@ class _planeFrame(ttk.LabelFrame):
         self.canvas_vb.grid_remove()
         self.osize = size[:]
         imsize = self.osize[:]
-        if zoom<0:
-            self.zoom = 1.0
-            while  imsize < [constants._MINW, constants._MINH]:
-                imsize[0] = imsize[0]*2
-                imsize[1] = imsize[1]*2
-                self.zoom = self.zoom*2
-            while imsize > [constants._MAXW, constants._MAXH]:
-                imsize[0] = imsize[0]//2
-                imsize[1] = imsize[1]//2
-                self.zoom = self.zoom//2
-        else:
-            self.zoom = zoom
-            imsize[0] = int(imsize[0]*zoom)
-            imsize[1] = int(imsize[1]*zoom)
+        self.zoom = zoom
+        imsize[0] = int(imsize[0]*zoom)
+        imsize[1] = int(imsize[1]*zoom)
         self.csize = imsize[:]
         self.dsize = imsize[:]
         self.canvas.config(width=imsize[0],height=imsize[1],
@@ -243,6 +232,8 @@ class Display3D_Proj(tk.Frame):
     
         # Window creation
         tk.Frame.__init__(self, master)
+
+        self.master = master
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         self.columnconfigure(1, weight=1)
@@ -254,10 +245,6 @@ class Display3D_Proj(tk.Frame):
         self.z = 0
         self.raw = ""
         self.im_ref = None
-        self.bplane = 4
-        
-        # Event binding
-        master.bind("<KeyRelease>", self.keyboardEvent)
         
     # Events handling ##########################################################
     
@@ -284,7 +271,7 @@ class Display3D_Proj(tk.Frame):
                 self.planex.drawTarget(self.z, self.y)
                 self.setImagePlaneY()
                 self.setImagePlaneZ()
-        value = self.im_ref().getPixel((self.z, self.x, self.y))
+        value = self.im_ref().getPixel((self.x, self.y, self.z))
         self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
     
     def keyboardEvent(self, event):
@@ -293,18 +280,6 @@ class Display3D_Proj(tk.Frame):
             self.planex.eraseTarget()
             self.planey.eraseTarget()
             self.planez.eraseTarget()
-        elif event.char == "p":
-            # PALETTE ACTIVATION
-            self.palactive = not self.palactive
-            self.updateim()
-        elif event.char == "b":
-            # BYTE PLANE MODIFICATION (next)
-            self.bplane = (self.bplane+1)%5
-            self.updateim()
-        elif event.char == "n":
-            # BYTE PLANE MODIFICATION (previous)
-            self.bplane = (self.bplane-1)%5
-            self.updateim()
         
     # Display methods ##########################################################
     
@@ -313,7 +288,7 @@ class Display3D_Proj(tk.Frame):
         start = self.z*self.W*self.H
         stop = (self.z+1)*self.W*self.H
         im = Image.frombytes("L", (self.W,self.H), self.raw[start:stop])
-        if self.im_ref().palette:
+        if self.master.palactive and self.im_ref().palette:
             im.putpalette(self.im_ref().palette)
         self.planez.display(im)
         self.planez.drawTarget(self.x, self.y)
@@ -325,7 +300,7 @@ class Display3D_Proj(tk.Frame):
             start = self.W*(self.y+self.H*i)
             data += self.raw[start:start+self.W]
         im = Image.frombytes("L", (self.W,self.L), data)
-        if self.im_ref().palette:
+        if self.master.palactive and self.im_ref().palette:
             im.putpalette(self.im_ref().palette)
         self.planey.display(im)
         self.planey.drawTarget(self.x, self.z)
@@ -335,7 +310,7 @@ class Display3D_Proj(tk.Frame):
         im = Image.frombytes("L", (self.H,self.L), self.raw[self.x::self.W])
         im = im.transpose(Image.FLIP_TOP_BOTTOM)
         im = im.transpose(Image.ROTATE_270)
-        if self.im_ref().palette:
+        if self.master.palactive and self.im_ref().palette:
             im.putpalette(self.im_ref().palette)
         self.planex.display(im)
         self.planex.drawTarget(self.z, self.y)
@@ -349,12 +324,12 @@ class Display3D_Proj(tk.Frame):
         self.L = self.im_ref().getLength()
         imsize = [self.W, self.H, self.L]
         zoom = 1.0
-        while imsize[0]<constants._MINW or imsize[1]<constants._MINH or imsize[2]<constants._MINH:
+        while imsize[0]<constants._MIN or imsize[1]<constants._MIN or imsize[2]<constants._MIN:
             imsize[0] = imsize[0]*2
             imsize[1] = imsize[1]*2
             imsize[2] = imsize[2]*2
             zoom = zoom*2
-        while imsize[0]>constants._MAXW or imsize[1]>constants._MAXH or imsize[2]>constants._MAXH:
+        while imsize[0]>constants._MAX or imsize[1]>constants._MAX or imsize[2]>constants._MAX:
             imsize[0] = imsize[0]//2
             imsize[1] = imsize[1]//2
             imsize[2] = imsize[2]//2
@@ -363,11 +338,11 @@ class Display3D_Proj(tk.Frame):
         self.rowconfigure(0, weight=int(100*(self.L/float(self.W+self.L))) )
         self.columnconfigure(1, weight=int(100*(self.H/float(self.H+self.L))) )
         self.rowconfigure(1, weight=int(100*(self.L/float(self.H+self.L))) )
-        self.planez = _planeFrame(self, [self.W,self.H], "plane Z", zoom=zoom)
+        self.planez = planeFrame(self, [self.W,self.H], "plane Z", zoom=zoom)
         self.planez.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
-        self.planey = _planeFrame(self, [self.W,self.L], "plane Y", zoom=zoom)
+        self.planey = planeFrame(self, [self.W,self.L], "plane Y", zoom=zoom)
         self.planey.grid(row=1, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
-        self.planex = _planeFrame(self, [self.L,self.H], "plane X", zoom=zoom)
+        self.planex = planeFrame(self, [self.L,self.H], "plane X", zoom=zoom)
         self.planex.grid(row=0, column=1, sticky=tk.W+tk.E+tk.N+tk.S)
         lb = ttk.LabelFrame(self, text="Information", labelanchor=tk.NW)
         lb.grid(row=1, column=1, sticky=tk.W+tk.E+tk.N+tk.S)
@@ -392,18 +367,18 @@ class Display3D_Proj(tk.Frame):
                 volume += mamba.computeVolume(im2D)
         elif depth==32:
             # 32-bit 3D image
-            if self.bplane==4:
+            if self.master.bplane==4:
                 self.planeLabel.config(text="Plane : all")
                 im3D_8 = m3D.image3DMb(self.im_ref(), 8)
                 m3D.downscale3D(self.im_ref(), im3D_8)
                 self.raw = im3D_8.extractRaw()
                 volume = m3D.computeVolume3D(self.im_ref())
             else:
-                self.planeLabel.config(text="Plane : %d" % (self.bplane))
+                self.planeLabel.config(text="Plane : %d" % (self.master.bplane))
                 im8 = mamba.imageMb(self.W, self.H, 8)
                 self.raw = b""
                 for im2D in self.im_ref():
-                    mamba.copyBytePlane(im2D, self.bplane, im8)
+                    mamba.copyBytePlane(im2D, self.master.bplane, im8)
                     self.raw += im8.extractRaw()
                     volume += mamba.computeVolume(im2D)
         else:
@@ -417,6 +392,6 @@ class Display3D_Proj(tk.Frame):
         self.planey.eraseTarget()
         self.planez.eraseTarget()
         self.volLabel.config(text="Volume : %d" % (volume))
-        value = self.im_ref().getPixel((self.z, self.x, self.y))
+        value = self.im_ref().getPixel((self.x, self.y, self.z))
         self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
 
