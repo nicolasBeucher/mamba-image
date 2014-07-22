@@ -1,5 +1,5 @@
 # exampleA22.py
-# IN traffic.png traffic_sum.png lanes_road_masks.png
+# IN traffic.png traffic_sum.png traffic_road_mask.png
 # OUT detected_vehicles.png
 
 ## TITLE #######################################################################
