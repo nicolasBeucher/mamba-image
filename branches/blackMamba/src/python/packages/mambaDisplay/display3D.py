@@ -75,20 +75,26 @@ class Display3D(tk.Toplevel):
 
     def selectProjection(self, event):
         self.selectedFrame.grid_remove()
+        self.selectedFrame.onHide()
         self.selectedFrame = self.projFrame
         self.selectedFrame.updateim()
         self.selectedFrame.grid()
+        self.selectedFrame.onShow()
     def selectVolRen(self, event):
         if self.volrenFrame:
             self.selectedFrame.grid_remove()
+            self.selectedFrame.onHide()
             self.selectedFrame = self.volrenFrame
             self.selectedFrame.updateim()
             self.selectedFrame.grid()
+            self.selectedFrame.onShow()
     def selectPlayer(self, event):
         self.selectedFrame.grid_remove()
+        self.selectedFrame.onHide()
         self.selectedFrame = self.playFrame
         self.selectedFrame.updateim()
         self.selectedFrame.grid()
+        self.selectedFrame.onShow()
     
     def displayUpdateEvent(self, event):
         # Called when the user wants to update the display

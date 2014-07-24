@@ -330,3 +330,7 @@ class Display3D_VolRen(tk.Frame):
         self._renWidget.Render()
         self.infos[0].set("")
 
+    def onHide(self):
+        pass
+    def onShow(self):
+        pass

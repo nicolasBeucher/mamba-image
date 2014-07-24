@@ -399,3 +399,7 @@ class Display3D_Proj(tk.Frame):
         value = self.im_ref().getPixel((self.x, self.y, self.z))
         self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
 
+    def onHide(self):
+        pass
+    def onShow(self):
+        pass
