@@ -169,23 +169,6 @@ def shiftVector(imIn, imOut, vector, fill):
     mamba.raiseExceptionOnError(err)
     imOut.update()
 
-def downscale(imIn, imOut):
-    """
-    Downscale a 32-bit image 'imIn', whom range can go from 0 up to 16M, to a 
-    greyscale image 'imOut' of range 0 to 255. This function will ensure
-    that the maximum will be mapped to 255. If the maximum in 'imIn' is below
-    256 the function will simply copy the lowest byte plane in 'imOut'.
-    """
-    
-    (mi, ma) = computeRange(imIn)
-    if ma>255:
-        imWrk = mamba.imageMb(imIn)
-        mamba.mulConst(imIn, 255, imWrk)
-        mamba.divConst(imWrk, ma, imWrk)
-        mamba.copyBytePlane(imWrk, 0, imOut)
-    else:
-        mamba.copyBytePlane(imIn, 0, imOut)
-
 def multiSuperpose(imInout, *imIns):
     """
     Superpose multiple binary images ('imIns') to the greyscale image
