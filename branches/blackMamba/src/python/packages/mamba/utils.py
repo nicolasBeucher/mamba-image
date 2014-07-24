@@ -173,19 +173,10 @@ def convertToPILFormat(im_in, palette=None):
     # Extracting the data from the image.
     if im_in.depth==32:
         # 32-bit images
-        im = create(im_in.width, im_in.height, 8)
-        lpilim = []
-        for i in range(4):
-            err = core.MB_CopyBytePlane(im_in, im, i)
-            raiseExceptionOnError(err)
-            err,s = core.MB_Extract(im)
-            raiseExceptionOnError(err)
-            # Creating the PIL image 
-            pilim = Image.frombytes("L",(w,h),s)
-            lpilim.append(pilim)
-        pilim = Image.new("L", (w*2,h*2))
-        for i,im in enumerate(lpilim):
-            pilim.paste(im, (w*(i%2),h*(i//2)))
+        err,s = core.MB_Extract(im_in)
+        raiseExceptionOnError(err)
+        # Creating the PIL image 
+        pilim = Image.frombytes("I",(w,h),s)
     elif im_in.depth==1:
         # binary images
         im = create(im_in.width, im_in.height, 8)
