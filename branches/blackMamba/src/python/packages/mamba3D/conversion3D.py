@@ -25,13 +25,8 @@ def convert3D(imIn, imOut):
 
     Other conversion are not supported.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
-    if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
-    
-    for i in range(outl):
-        mamba.convert(imIn[i], imOut[i])
+    err = core.MB3D_Convert(imIn.mb3DIm, imOut.mb3DIm)
+    mamba.raiseExceptionOnError(err)
     
 def convertByMask3D(imIn, imOut, mFalse, mTrue):
     """

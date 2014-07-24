@@ -174,6 +174,15 @@ MB3D_Stack(MB3D_Image *image, MB_Image *stacked, Uint32 position);
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB3D_Destroy(MB3D_Image *image);
+/**
+ * Converts a 3D image of a given depth into another depth
+ * Supported conversion are: 1->8, 8->1 and 32->8 (downscaling)
+ * \param src 3D source image
+ * \param dest 3D destination image 
+ * \return An error code (NO_ERR if successful)
+ */
+extern MB_API_ENTRY MB_errcode MB_API_CALL
+MB3D_Convert(MB3D_Image *src, MB3D_Image *dest);
 
 #ifdef __cplusplus
 }
