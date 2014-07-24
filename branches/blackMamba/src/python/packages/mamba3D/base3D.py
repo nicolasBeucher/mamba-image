@@ -384,22 +384,7 @@ class image3DMb:
         """
         if self.displayId != '':
             self.gd.hideWindow(self.displayId)
-            
-
-    def showImage(self, index):
-        """
-        Activates the image display for image at 'index' in the 3D image stack.
-        """
         
-        self.seq[index].show()
-
-    def hideImage(self, index):
-        """
-        Deactivates the image display for image at 'index' in the 3D image stack.
-        """
-        
-        self.seq[index].hide()
-
     def update(self):
         """
         Called when the display associated to the image must be updated 
@@ -419,6 +404,23 @@ class image3DMb:
         self.palette = pal
         if self.displayId != '':
             self.gd.updateWindow(self.displayId)
+            
+    def freeze(self):
+        """
+        Called to freeze the display of the image. Thus the image may evolve but
+        the display will not show these evolutions until the method unfreezeDisplay
+        is called.
+        """
+        if self.displayId != '':
+            self.gd.controlWindow(self.displayId, "FREEZE")
+            
+    def unfreeze(self):
+        """
+        Called to unfreeze the display of the image. Thus the image display will
+        be updated along with the modifications inside the image.
+        """
+        if self.displayId != '':
+            self.gd.controlWindow(self.displayId, "UNFREEZE")
             
     def resetPalette(self):
         """

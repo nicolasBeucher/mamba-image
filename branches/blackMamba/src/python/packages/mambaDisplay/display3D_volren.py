@@ -334,3 +334,5 @@ class Display3D_VolRen(tk.Frame):
         pass
     def onShow(self):
         pass
+    def onRestore(self):
+        pass

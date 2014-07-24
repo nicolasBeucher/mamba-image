@@ -43,14 +43,17 @@ class Display3D(tk.Toplevel):
         self.std_geometry = ""
         self.palactive = True
         self.bplane = 4
+        self.frozen = False
+        self.im_ref = None
 
         # Event binding
         self.bind("<KeyPress-F1>", self.selectProjection)
         self.bind("<KeyPress-F2>", self.selectVolRen)
         self.bind("<KeyPress-F3>", self.selectPlayer)
         self.bind("<KeyPress-F5>", self.displayUpdateEvent)
-
         self.bind("<KeyRelease>", self.keyboardEvent)
+        self.bind("<Control-f>", self.freezeEvent)
+        self.bind("<Control-r>", self.restoreEvent)
         
         self.protocol("WM_DELETE_WINDOW", self.withdraw)
 
@@ -99,13 +102,30 @@ class Display3D(tk.Toplevel):
     def displayUpdateEvent(self, event):
         # Called when the user wants to update the display
         self.selectedFrame.updateim()
+    
+    def freezeEvent(self, event):
+        # Freeze/Unfreeze event
+        if self.frozen:
+            self.unfreeze()
+        else:
+            self.freeze()
+
+    def restoreEvent(self, event):
+        # Restore original size event
+        # The window size and parameter are reset.
+        self.projFrame.onRestore()
+        self.playFrame.onRestore()
+        if self.volrenFrame:
+            self.volrenFrame.onRestore()
+        self.selectProjection(None)
+        # Restoring the standard geometry.
+        self.geometry(self.std_geometry)
 
     # Public method : called by the image3DMb class ############################
     
     def connect(self, im_ref):
         # Connection of the 3D image to the display
-        depth = im_ref().getDepth()
-        self.title(im_ref().getName()+" - "+str(depth))
+        self.im_ref = im_ref
         self.projFrame.connect(im_ref)
         self.playFrame.connect(im_ref)
         if self.volrenFrame:
@@ -114,7 +134,10 @@ class Display3D(tk.Toplevel):
         
     def updateim(self):
         # Update the display (perform a rendering)
-        if self.state()=="normal":
+        if self.im_ref() and self.state()=="normal" and not self.frozen:
+            self.title((self.frozen and "Frozen - " or "") +
+                       self.im_ref().getName() + 
+                       " - "+str(self.im_ref().getDepth()))
             self.selectedFrame.updateim()
         
     def hide(self):
@@ -128,6 +151,13 @@ class Display3D(tk.Toplevel):
         self.updateim()
         
     def freeze(self):
-        pass
+        # freezes the display so that update has no effect
+        self.frozen = True
+        self.title((self.frozen and "Frozen - " or "") +
+                   self.im_ref().getName() + 
+                   " - "+str(self.im_ref().getDepth()))
+
     def unfreeze(self):
-        pass
+        # Unfreezes the display
+        self.frozen = False
+        self.updateim()

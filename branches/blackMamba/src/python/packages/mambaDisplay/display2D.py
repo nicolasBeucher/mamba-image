@@ -89,7 +89,6 @@ class Display2D(tk.Toplevel):
         self.im_ref = None
         self.bplane = 4
         self.frozen = False
-        self.freezeids = []
         self.imid = None
         self.mouse_x = 0
         self.mouse_y = 0

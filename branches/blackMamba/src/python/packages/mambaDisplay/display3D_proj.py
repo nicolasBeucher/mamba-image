@@ -132,7 +132,7 @@ class planeFrame(ttk.LabelFrame):
                 # Mouse wheel scroll down under linux
                 # ZOOM OUT
                 if self.zoom<=0.25:
-                    zoom = self.zoom//2
+                    zoom = self.zoom/2
                     if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
                         self.setZoom(zoom)
                 else:
@@ -156,7 +156,7 @@ class planeFrame(ttk.LabelFrame):
                 # ZOOM OUT
                 for i in range(abs(event.delta)//120):
                     if self.zoom<=0.25:
-                        zoom = self.zoom//2
+                        zoom = self.zoom/2
                         if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
                             self.setZoom(zoom)
                     else:
@@ -332,10 +332,10 @@ class Display3D_Proj(tk.Frame):
             imsize[2] = imsize[2]*2
             zoom = zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX or imsize[2]>constants._MAX:
-            imsize[0] = imsize[0]//2
-            imsize[1] = imsize[1]//2
-            imsize[2] = imsize[2]//2
-            zoom = zoom//2
+            imsize[0] = imsize[0]/2
+            imsize[1] = imsize[1]/2
+            imsize[2] = imsize[2]/2
+            zoom = zoom/2
         self.columnconfigure(0, weight=int(100*(self.W/float(self.W+self.L))) )
         self.rowconfigure(0, weight=int(100*(self.L/float(self.W+self.L))) )
         self.columnconfigure(1, weight=int(100*(self.H/float(self.H+self.L))) )
@@ -403,3 +403,19 @@ class Display3D_Proj(tk.Frame):
         pass
     def onShow(self):
         pass
+    def onRestore(self):
+        imsize = [self.W, self.H, self.L]
+        zoom = 1.0
+        while imsize[0]<constants._MIN or imsize[1]<constants._MIN or imsize[2]<constants._MIN:
+            imsize[0] = imsize[0]*2
+            imsize[1] = imsize[1]*2
+            imsize[2] = imsize[2]*2
+            zoom = zoom*2
+        while imsize[0]>constants._MAX or imsize[1]>constants._MAX or imsize[2]>constants._MAX:
+            imsize[0] = imsize[0]/2
+            imsize[1] = imsize[1]/2
+            imsize[2] = imsize[2]/2
+            zoom = zoom/2
+        self.planez.setZoom(zoom)
+        self.planey.setZoom(zoom)
+        self.planex.setZoom(zoom)
