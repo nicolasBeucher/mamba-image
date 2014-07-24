@@ -416,25 +416,6 @@ class image3DMb:
         self.palette = None
         if self.displayId != '':
             self.gd.updateWindow(self.displayId)
-            
-    def setOpacity(self, opa):
-        """
-        Defines the opacity palette used for the volume rendering display.
-        'opa' is a tuple holding 256 value between 0 and 255. a 0
-        indicates that the corresponding value will be transparent and 255
-        indicates that the value will block light.
-        """
-        self.opacity = opa
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
-            
-    def resetOpacity(self):
-        """
-        Resets the opacity palette to its default value.
-        """
-        self.opacity = None
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
 
     ### Pixel manipulations ####################################################
     def getPixel(self, position):
