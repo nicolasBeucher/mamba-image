@@ -13,9 +13,11 @@ import display3D
 
 try:
     import tkinter as tk
+    from tkinter import ttk
 except ImportError:
     try:
         import Tkinter as tk
+        import ttk
     except ImportError:
         print("Missing Tkinter library")
         raise
@@ -35,6 +37,13 @@ class DftDisplayer(mambaDisplay.Displayer):
         # mainloop hack
         self.root.mainloop = self._dummy_mainloop
         tk.mainloop = self._dummy_mainloop
+        
+        # ttk style
+        self.style = ttk.Style()
+        if 'xpnative' in self.style.theme_names():
+            self.style.theme_use('xpnative')
+        else:
+            self.style.theme_use('clam')
         
     def _dummy_mainloop(self, n=0):
         # Dummy mainloop to replace the mainloop that must not be called

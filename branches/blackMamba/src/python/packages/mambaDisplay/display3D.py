@@ -26,13 +26,6 @@ class Display3D(tk.Toplevel):
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
         
-        # ttk style
-        self.style = ttk.Style()
-        if 'xpnative' in self.style.theme_names():
-            self.style.theme_use('xpnative')
-        else:
-            self.style.theme_use('classic')
-        
         self.projFrame = display3D_proj.Display3D_Proj(self)
         self.projFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
         self.playFrame = display3D_player.Display3D_Player(self)
