@@ -113,11 +113,8 @@ class planeFrame(ttk.LabelFrame):
             
         self.mouse_x = event.x
         self.mouse_y = event.y
-        if event.state&0x0004==0x0004:
-            self.root.movingEvent(x,y,self.name)
-        else:
-            self.eraseTarget()
-        
+        self.root.movingEvent(x,y,self.name,event.state)
+
     def mouseEvent(self, event):
         # Handles mouse events (except menu pop up)
         # Mainly zoom in or out using the mouse wheel, and moving the image
@@ -248,31 +245,36 @@ class Display3D_Proj(tk.Frame):
         
     # Events handling ##########################################################
     
-    def movingEvent(self, u, v, plane):
+    def movingEvent(self, u, v, plane, state):
         # When the mouse moves inside a plane
-        if plane=="plane Z":
-            self.x = u
-            self.y = v
-            if self.raw:
-                self.planez.drawTarget(self.x, self.y)
-                self.setImagePlaneY()
-                self.setImagePlaneX()
-        elif plane=="plane Y":
-            self.x = u
-            self.z = v
-            if self.raw:
-                self.planey.drawTarget(self.x, self.z)
-                self.setImagePlaneZ()
-                self.setImagePlaneX()
-        elif plane=="plane X":
-            self.z = u
-            self.y = v
-            if self.raw:
-                self.planex.drawTarget(self.z, self.y)
-                self.setImagePlaneY()
-                self.setImagePlaneZ()
-        value = self.im_ref().getPixel((self.x, self.y, self.z))
-        self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
+        if state&0x0004==0x0004:
+            if plane=="plane Z":
+                self.x = u
+                self.y = v
+                if self.raw:
+                    self.planez.drawTarget(self.x, self.y)
+                    self.setImagePlaneY()
+                    self.setImagePlaneX()
+            elif plane=="plane Y":
+                self.x = u
+                self.z = v
+                if self.raw:
+                    self.planey.drawTarget(self.x, self.z)
+                    self.setImagePlaneZ()
+                    self.setImagePlaneX()
+            elif plane=="plane X":
+                self.z = u
+                self.y = v
+                if self.raw:
+                    self.planex.drawTarget(self.z, self.y)
+                    self.setImagePlaneY()
+                    self.setImagePlaneZ()
+            value = self.im_ref().getPixel((self.x, self.y, self.z))
+            self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x,self.y,self.z,value))
+        else:
+            self.planex.eraseTarget()
+            self.planey.eraseTarget()
+            self.planez.eraseTarget()
     
     def keyboardEvent(self, event):
         # Keyboard events handling
@@ -359,6 +361,7 @@ class Display3D_Proj(tk.Frame):
         volume = 0
         if depth==1:
             # binary 3D image
+            self.planeLabel.config(text="")
             im8 = mamba.imageMb(self.W, self.H, 8)
             self.raw = b""
             for im2D in self.im_ref():
@@ -370,7 +373,7 @@ class Display3D_Proj(tk.Frame):
             if self.master.bplane==4:
                 self.planeLabel.config(text="Plane : all")
                 im3D_8 = m3D.image3DMb(self.im_ref(), 8)
-                m3D.downscale3D(self.im_ref(), im3D_8)
+                m3D.convert3D(self.im_ref(), im3D_8)
                 self.raw = im3D_8.extractRaw()
                 volume = m3D.computeVolume3D(self.im_ref())
             else:
@@ -383,6 +386,7 @@ class Display3D_Proj(tk.Frame):
                     volume += mamba.computeVolume(im2D)
         else:
             # Greyscale image
+            self.planeLabel.config(text="")
             self.raw = self.im_ref().extractRaw()
             volume = m3D.computeVolume3D(self.im_ref())
         self.setImagePlaneZ()

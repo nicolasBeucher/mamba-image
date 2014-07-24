@@ -99,10 +99,10 @@ class Display3D_Player(tk.Frame):
         tk.Frame.__init__(self, master)
         self.columnconfigure(0, weight=1)
         self.rowconfigure(0, weight=1)
-        self.columnconfigure(1, weight=1)
-        self.rowconfigure(1, weight=1)
         
         # Local variables
+        self.x = 0
+        self.y = 0
         self.z = 0
         self.im_ref = None
         
@@ -111,10 +111,12 @@ class Display3D_Player(tk.Frame):
         
     # Events handling ##########################################################
     
-    def movingEvent(self, x, y, plane):
+    def movingEvent(self, x, y, plane, state):
         # When the mouse moves inside a plane
-        value = self.im_ref().getPixel((self.z, x, y))
-        self.posLabel.config(text="At (%d,%d,%d) = %d" % (x,y,self.z,value))
+        self.x = x
+        self.y = y
+        value = self.im_ref().getPixel((self.x, self.y, self.z))
+        self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x, self.y, self.z,value))
     
     def keyboardEvent(self, event):
         # Keyboard events handling
@@ -128,6 +130,8 @@ class Display3D_Player(tk.Frame):
         self.im_ref = im_ref
         W, H = self.im_ref().getSize()
         self.L = self.im_ref().getLength()
+        self.x = 0
+        self.y = 0
         self.z = 0
         imsize = [W, H]
         zoom = 1.0
@@ -168,18 +172,19 @@ class Display3D_Player(tk.Frame):
         if self.im_ref().getDepth()==32:
             immb = mamba.imageMb(self.im_ref()[self.z], 8)
             if self.master.bplane==4:
-                mamba.downscale(self.im_ref()[self.z], immb)
+                mamba.convert(self.im_ref()[self.z], immb)
                 self.planeLabel.config(text="Plane : all")
             else:
                 mamba.copyBytePlane(self.im_ref()[self.z],self.master.bplane,immb)
                 self.planeLabel.config(text="Plane : %d" % (self.master.bplane))
             im = utils.convertToPILFormat(immb.mbIm, self.master.palactive and self.im_ref().palette or None)
         else:
+            self.planeLabel.config(text="")
             im = utils.convertToPILFormat(self.im_ref()[self.z].mbIm, self.master.palactive and self.im_ref().palette or None)
         self.planez.display(im)
         self.volLabel.config(text="Volume : %d" % (volume))
-        value = self.im_ref().getPixel((0, 0, self.z))
-        self.posLabel.config(text="At (%d,%d,%d) = %d" % (0,0,self.z,value))
+        value = self.im_ref().getPixel((self.x, self.y, self.z))
+        self.posLabel.config(text="At (%d,%d,%d) = %d" % (self.x, self.y, self.z,value))
 
     # Sequence playing functions and commands ##################################
 
@@ -193,12 +198,12 @@ class Display3D_Player(tk.Frame):
         self.updateim()
     def play(self):
         self.playing = True
-        self.after(100, self._playerCb)
+        self.after(50, self._playerCb)
         self.bplay.config(image=self.stopbm, command=self.stop)
     def _playerCb(self):
         if self.playing:
             self.setNextImage()
-            self.after(100, self._playerCb)
+            self.after(50, self._playerCb)
         else:
             self.bplay.config(image=self.playbm, command=self.play)
     def stop(self):

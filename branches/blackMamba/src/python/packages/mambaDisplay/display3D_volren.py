@@ -7,9 +7,11 @@ Volume rendering display for 3D images.
 try:
     import tkinter as tk
     from tkinter import ttk
+    from tkinter import colorchooser
 except ImportError:
     import Tkinter as tk
     import ttk
+    import tkColorChooser as colorchooser
 
 # VTK imports
 try:
@@ -93,6 +95,7 @@ class Display3D_VolRen(tk.Frame):
         self.drawControlBar()
         self.controlbar.grid_remove()
         self.controlbar.state = "hidden"
+        self.master = master
         
         # Creates the info status bar.
         statusbar = ttk.Frame(self)
@@ -121,13 +124,11 @@ class Display3D_VolRen(tk.Frame):
         self.colorCan = tk.Canvas(lf, bg="white", bd=2, relief=tk.RIDGE)
         self.colorCan.config(width=256, height=20, scrollregion=(0,0,255,19))
         self.colorCan.grid(row=1, column=0, sticky=tk.E+tk.W)
-        self.drawColTF()
         l = ttk.Label(lf, text="Transparency")
         l.grid(row=2, column=0, sticky=tk.E+tk.W)
         self.opaCan = tk.Canvas(lf, bg="white", bd=2, relief=tk.RIDGE)
         self.opaCan.config(width=256, height=20, scrollregion=(0,0,255,19))
         self.opaCan.grid(row=3, column=0, sticky=tk.E+tk.W)
-        self.drawOpaTF()
         self.opaCan.bind("<Button-1>", self.changeOpa)
         l = ttk.Label(lf, text="Background")
         l.grid(row=4, column=0, sticky=tk.E+tk.W)
@@ -169,13 +170,20 @@ class Display3D_VolRen(tk.Frame):
         self.dimLabel.grid(row=0, sticky=tk.W)
         self.volLabel = ttk.Label(lf)
         self.volLabel.grid(row=1, sticky=tk.W)
+        self.planeLabel = ttk.Label(lf)
+        self.planeLabel.grid(row=2, sticky=tk.W)
     
     # Functions to draw the widget inside the control bar
     def drawColTF(self):
-        for i in range(256):
-            color = [int(v*255) for v in self.colTF.GetColor(i)]
-            fill = "#%02x%02x%02x" % (color[0], color[1], color[2])
-            self.colorCan.create_line(i,0,i,20,fill=fill)
+        if self.im_ref().palette and self.master.palactive:
+            pal = self.im_ref().palette
+            for i in range(256):
+                fill = "#%02x%02x%02x" % (pal[i*3], pal[i*3+1], pal[i*3+2])
+                self.colorCan.create_line(i,0,i,20,fill=fill)
+        else:
+            for i in range(256):
+                fill = "#%02x%02x%02x" % (i,i,i)
+                self.colorCan.create_line(i,0,i,20,fill=fill)
     def drawOpaTF(self):
         for i in range(256):
             color = int(255*self.opaTF.GetValue(i))
@@ -258,29 +266,30 @@ class Display3D_VolRen(tk.Frame):
     
         if depth==8:
             # 8-bit 3D image
+            self.planeLabel.config(text="")
             raw_data = self.im_ref().extractRaw()
             volume = m3D.computeVolume3D(self.im_ref())
-            self.vtk_im.CopyImportVoidPointer(raw_data, len(raw_data))
-            self.vtk_im.SetDataScalarType(VTK_UNSIGNED_CHAR)
         elif depth==32:
             # 32-bit 3D image
-            raw_data = self.im_ref().extractRaw()
+            im3D_8 = m3D.image3DMb(self.im_ref(), 8)
+            if self.master.bplane==4:
+                self.planeLabel.config(text="Plane : all")
+                m3D.convert3D(self.im_ref(), im3D_8)
+            else:
+                self.planeLabel.config(text="Plane : %d" % (self.master.bplane))
+                m3D.copyBytePlane3D(self.im_ref(), self.master.bplane, im3D_8)
+            raw_data = im3D_8.extractRaw()
             volume = m3D.computeVolume3D(self.im_ref())
-            raw_data2 = raw_data[0::4]+raw_data[1::4]+raw_data[2::4]+raw_data[3::4]
-            L = L*4
-            self.vtk_im.CopyImportVoidPointer(raw_data2, len(raw_data2))
-            self.vtk_im.SetDataScalarType(VTK_UNSIGNED_CHAR)
         else:
             # binary 3D image
+            self.planeLabel.config(text="")
             im8 = mamba.imageMb(W, H, 8)
             raw_data = b""
             for im2D in self.im_ref():
                 mamba.convert(im2D, im8)
                 raw_data += im8.extractRaw()
                 volume += mamba.computeVolume(im2D)
-            
-            self.vtk_im.CopyImportVoidPointer(raw_data, len(raw_data))
-            self.vtk_im.SetDataScalarType(VTK_UNSIGNED_CHAR)
+        self.vtk_im.CopyImportVoidPointer(raw_data, len(raw_data))
             
         self.vtk_im.SetNumberOfScalarComponents(1)
         extent = self.vtk_im.GetDataExtent()
@@ -301,26 +310,22 @@ class Display3D_VolRen(tk.Frame):
         L = self.im_ref().getLength()
         depth = self.im_ref().getDepth()
         self.dimLabel.config(text="Dimensions = %dx%dx%d" % (W, H, L))
-        if depth==1:
-            self.opaTF.AddPoint(0, 0.0)
-            self.opaTF.AddPoint(127, 0.0)
-            self.opaTF.AddPoint(128, 1.0)
-            self.opaTF.AddPoint(256, 1.0)
-            self.colTF.AddRGBPoint(0.0, 0.0, 0.0, 0.0)
-            self.colTF.AddRGBPoint(127.0, 0.0, 0.0, 0.0)
-            self.colTF.AddRGBPoint(128.0, 1.0, 1.0, 1.0)
-            self.colTF.AddRGBPoint(256.0, 1.0, 1.0, 1.0)
-        else:
-            self.opaTF.AddPoint(0, 0.0)
-            self.opaTF.AddPoint(255, 1.0)
-            self.colTF.AddRGBPoint(0.0, 0.0, 0.0, 0.0)
-            self.colTF.AddRGBPoint(255.0, 1.0, 1.0, 1.0)
-        self.drawOpaTF()
-        self.drawColTF()
         
     def updateim(self):
         # Update the display (perform a rendering)
         self.infos[0].set("Updating ...")
+        self.opaTF.AddPoint(0, 0.0)
+        self.opaTF.AddPoint(255, 1.0)
+        self.colTF.RemoveAllPoints()
+        if self.im_ref().palette and self.master.palactive:
+            pal = self.im_ref().palette
+            for i in range(256):
+                self.colTF.AddRGBPoint(i, pal[i*3]/255.0, pal[i*3+1]/255.0, pal[i*3+2]/255.0)
+        else:
+            self.colTF.AddRGBPoint(0.0, 0.0, 0.0, 0.0)
+            self.colTF.AddRGBPoint(255.0, 1.0, 1.0, 1.0)
+        self.drawOpaTF()
+        self.drawColTF()
         self._convertIntoVTKImage()
         self._renWidget.Render()
         self.infos[0].set("")

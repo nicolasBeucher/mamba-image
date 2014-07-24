@@ -392,7 +392,7 @@ class Display2D(tk.Toplevel):
             if self.im_ref().getDepth()==32:
                 im = mamba.imageMb(self.im_ref(), 8)
                 if self.bplane==4:
-                    mamba.downscale(self.im_ref(), im)
+                    mamba.convert(self.im_ref(), im)
                     self.infos[1].set("plane : all")
                 else:
                     mamba.copyBytePlane(self.im_ref(),self.bplane,im)
