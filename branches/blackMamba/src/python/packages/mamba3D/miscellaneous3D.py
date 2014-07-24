@@ -138,20 +138,3 @@ def drawEdge3D(imOut, thick=1):
     se=m3D.structuringElement3D(list(m3D.getDirections3D(m3D.CUBIC)), m3D.CUBIC)
     m3D.dilate3D(imOut, imOut, thick, se=se, edge=mamba.FILLED)
 
-def downscale3D(imIn, imOut):
-    """
-    Downscale a 32-bit image 'imIn', whom range can go from 0 up to 16M, to a 
-    greyscale image 'imOut' of range 0 to 255. This function will ensure
-    that the maximum will be mapped to 255. If the maximum in 'imIn' is below
-    256 the function will simply copy the lowest byte plane in 'imOut'.
-    """
-    
-    (mi, ma) = computeRange3D(imIn)
-    if ma>255:
-        imWrk = m3D.image3DMb(imIn)
-        m3D.mulConst3D(imIn, 255, imWrk)
-        m3D.divConst3D(imWrk, ma, imWrk)
-        m3D.copyBytePlane3D(imWrk, 0, imOut)
-    else:
-        m3D.copyBytePlane3D(imIn, 0, imOut)
-

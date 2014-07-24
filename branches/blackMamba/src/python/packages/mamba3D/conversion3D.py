@@ -16,11 +16,14 @@ def convert3D(imIn, imOut):
     Converts the contents of 'imIn' to the depth of 'imOut' and puts the result
     in 'imOut'.
     
-    Only greyscale to binary and binary to greyscale conversion are supported.
+    Greyscale to binary and binary to greyscale conversion are supported.
     Value 255 is in a greyscale image is considered as 1 in a binary one. All other
     values are transformed to 0. The reverse convention applies.
-    
-    This function works with 3D images.
+
+    This function can also be used to downscale 32-bit images into greyscale
+    images.
+
+    Other conversion are not supported.
     """
     outl = imOut.getLength()
     inl = imIn.getLength()

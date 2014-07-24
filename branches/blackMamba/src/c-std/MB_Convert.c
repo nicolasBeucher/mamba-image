@@ -40,10 +40,6 @@ MB_errcode MB_Convert1to8(MB_Image *src, MB_Image *dest)
     PLINE *plines_in, *plines_out;
     Uint32 *pin;
     Uint8 *pout;
-
-    /* verification to ensure depth coherency with function purpose */
-    if(MB_PROBE_PAIR(src, dest) != MB_PAIR_1_8)
-        return ERR_BAD_DEPTH;
         
     /* Setting up line pointers */
     plines_in = src->plines;
@@ -80,10 +76,6 @@ MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
     PLINE *plines_in, *plines_out;
     Uint32 *pout, pix_reg;
 
-    /* verification to ensure depth coherency with function purpose */
-    if(MB_PROBE_PAIR(src, dest) != MB_PAIR_8_1)
-        return ERR_BAD_DEPTH;
-
     /* Setting up line pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
@@ -103,6 +95,52 @@ MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
         }
     }    
     
+    return NO_ERR;
+}
+
+/*
+ * Converts an 32-bit image to a 8-bit image (downscaling).
+ * \param src source image
+ * \param dest destination image 
+ * \return An error code (NO_ERR if successful)
+ */
+MB_errcode MB_Convert32to8(MB_Image *src, MB_Image *dest)
+{
+    Uint32 min, max, j, i;
+    MB_errcode err;
+    double value, multiplicator;
+    PLINE *plines_in, *plines_out;
+    PIX32 *pin;
+    PIX8 *pout;
+    
+    err = MB_Range(src, &min, &max);
+    if (err != NO_ERR) {
+        return err;
+    }
+
+    /* if the max is below the 256 value, simply copy the lower byte */
+    /* of the 32 bit image */
+    if (max<256) {
+        return MB_CopyBytePlane(src, dest, 0);
+    }
+
+    /* computing the multiplicator */
+    multiplicator = ((double) 255.0)/max;
+
+    /* Setting up line pointers */
+    plines_in = src->plines;
+    plines_out = dest->plines;
+
+    /* converting the 32-bit values in 8-bit values by downscaling */
+    for(j=0; j<src->height; j++, plines_in++, plines_out++) {
+        pin = (PIX32 *) (*plines_in);
+        pout = (PIX8 *) (*plines_out);
+        for(i=0; i<src->width; i++, pin++, pout++) {
+            value = (*pin) * multiplicator;
+            *pout = (PIX8) value;
+        }
+    }
+
     return NO_ERR;
 }
 
@@ -132,13 +170,13 @@ MB_errcode MB_Convert(MB_Image *src, MB_Image *dest)
     case MB_PAIR_8_1:
         return MB_Convert8to1(src,dest);
         break;
+    case MB_PAIR_32_8:
+        return MB_Convert32to8(src,dest);
+        break;
     case MB_PAIR_1_32:
     case MB_PAIR_8_32:
     case MB_PAIR_32_1:
-    case MB_PAIR_32_8:
-        break;
     default:
-        return ERR_BAD_DEPTH;
         break;
     }
 
