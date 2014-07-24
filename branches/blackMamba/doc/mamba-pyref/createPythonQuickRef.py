@@ -274,6 +274,7 @@ def extractModule(path):
     sections = {
                 "NAME" : '',
                 "FILE" : '',
+                "SHORT_DESCRIPTION" : '',
                 "DESCRIPTION" : '',
                 "CLASSES" : [],
                 "FUNCTIONS" : [],
@@ -295,7 +296,7 @@ def extractModule(path):
                     names = l[4:].split(' - ')
                     sections[in_section] = names[0]
                     if len(names)>1:
-                        sections["DESCRIPTION"] = names[1]
+                        sections["SHORT_DESCRIPTION"] = names[1]
                 elif in_section=="FILE":
                     # section FILE contains only one information
                     sections[in_section] = l[4:]
@@ -355,6 +356,8 @@ def extractModule(path):
     linesout.append(s)
     
     s = "\\begin{modDesc}\n"
+    linesout.append(s)
+    s = "\\textbf{"+sections["SHORT_DESCRIPTION"].strip()+"}\n"
     linesout.append(s)
     s = sections["DESCRIPTION"].strip()+"\n"
     linesout.append(s)
