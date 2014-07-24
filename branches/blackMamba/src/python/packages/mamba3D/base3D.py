@@ -344,10 +344,22 @@ class image3DMb:
         The conversion algorithm is identical to the conversion used in the 
         convert3D function (see this function for details).
         """
-        for position,im in enumerate(self.seq):
-            im.convert(depth)
-            err = core.MB3D_Stack(self.mb3DIm, im.mbIm, position)
+
+        mb3DIm = core.MB3D_Image()
+        err = core.MB3D_Create(mb3DIm, self.length)
+        mamba.raiseExceptionOnError(err)
+        seq = []
+        for i in range(self.length):
+            seq.append(mamba.imageMb(self.width, self.height, depth, rgbfilter=self.rgbfilter))
+            err = core.MB3D_Stack(mb3DIm, seq[-1].mbIm, i)
             mamba.raiseExceptionOnError(err)
+
+        err = core.MB3D_Convert(self.mb3DIm, mb3DIm)
+        mamba.raiseExceptionOnError(err)
+
+        del self.mb3DIm
+        self.mb3DIm = mb3DIm
+        self.seq = seq
         self.depth = depth
         
         if self.displayId != '':
