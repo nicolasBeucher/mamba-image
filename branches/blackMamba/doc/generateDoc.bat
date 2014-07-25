@@ -11,12 +11,18 @@ Rem mamba_logo.png and license icon by.pdf) are foundable as a package for mikte
 
 Rem USER MANUAL
 pushd mamba-um
-rem python examples2tex.py
 pdflatex mamba-um.tex
 pdflatex mamba-um.tex
 pdflatex mamba-um.tex
 copy mamba-um.pdf ..
 popd 
+
+Rem EXAMPLES
+pushd mamba-examples
+python examples2html.py
+python examples2tex.py
+copy mamba-examples.pdf ..
+popd
 
 Rem PYTHON REFERENCE
 pushd mamba-pyref

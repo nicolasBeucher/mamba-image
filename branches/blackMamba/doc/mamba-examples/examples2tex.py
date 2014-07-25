@@ -81,7 +81,7 @@ class ExampleInfo:
             imline = ""
             nameline = ""
             for im in self.inIm:
-                imline += "\\includegraphics[width=0.25\\textwidth]{"+os.path.join(self.path,im)+"} &"
+                imline += "\\includegraphics[width=0.25\\textwidth]{"+os.path.join(self.path,im).replace("\\","/")+"} &"
                 nameline += self._tidy(im) + " &"
             s += imline.strip("&") + "\\\\ \n"
             s += nameline.strip("&") + "\\\\ \n"
@@ -96,7 +96,7 @@ class ExampleInfo:
             imline = ""
             nameline = ""
             for index, im in enumerate(self.outIm):
-                imline += "\\includegraphics[width=0.25\\textwidth]{"+os.path.join(self.path,im)+"} &"
+                imline += "\\includegraphics[width=0.25\\textwidth]{"+os.path.join(self.path,im).replace("\\","/")+"} &"
                 nameline += self._tidy(im) + " &"
                 if index%3==2:
                     s += imline.strip("&") + "\\\\ \n"
