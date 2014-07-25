@@ -1,5 +1,5 @@
 """
-This module provides palette definition and functions to build specific 
+This module provides palette definitions and functions to build specific 
 palettes.
 The following palettes are pre-defined: rainbow, inverted_rainbow, patchwork
 and heatview.
