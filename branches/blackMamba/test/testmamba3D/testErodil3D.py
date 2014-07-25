@@ -60,8 +60,7 @@ class TestErodil3D(unittest.TestCase):
         
     def testErode3D(self):
         """Verifies the default erosion in 3D"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(255)
         self.im8_1.setPixel(0, (w//2,h//2,l//2))
         self.im8_2.fill(255)
@@ -72,8 +71,7 @@ class TestErodil3D(unittest.TestCase):
         
     def testDilate3D(self):
         """Verifies the default dilation in 3D"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(0)
         self.im8_1.setPixel(255, (w//2,h//2,l//2))
         self.im8_2.fill(0)
@@ -84,8 +82,7 @@ class TestErodil3D(unittest.TestCase):
         
     def _drawEdge(self, im, value):
         # draws the edge
-        (w,h) = im.getSize()
-        l = im.getLength()
+        (w,h,l) = im.getSize()
         im[0].fill(value)
         im[l-1].fill(value)
         for i in range(1,l-1):
@@ -93,8 +90,7 @@ class TestErodil3D(unittest.TestCase):
         
     def testEdgeErode3D(self):
         """Verifies the erosion correct behavior with edge"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(255)
         self.im8_2.fill(255)
         self._drawEdge(self.im8_2, 0)
@@ -104,8 +100,7 @@ class TestErodil3D(unittest.TestCase):
         
     def testEdgeDilate3D(self):
         """Verifies the dilation correct behavior with edge"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(0)
         self.im8_2.fill(0)
         self._drawEdge(self.im8_2, 255)
@@ -116,8 +111,7 @@ class TestErodil3D(unittest.TestCase):
     def testNoZeroErode3D(self):
         """Verifies the erosion correct behavior when direction 0 is missing"""
         se = structuringElement3D(range(1,27), CUBIC)
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(255)
         self.im8_1.setPixel(0, (w//2,h//2,l//2))
         self.im8_2.fill(255)
@@ -130,8 +124,7 @@ class TestErodil3D(unittest.TestCase):
     def testNoZeroDilate3D(self):
         """Verifies the dilation correct behavior when direction 0 is missing"""
         se = structuringElement3D(range(1,27), CUBIC)
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(0)
         self.im8_1.setPixel(255, (w//2,h//2,l//2))
         self.im8_2.fill(0)
@@ -143,8 +136,7 @@ class TestErodil3D(unittest.TestCase):
         
     def testLinearErode3D(self):
         """Verifies the linear erosion"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(255)
         self.im8_1.setPixel(0, (w//2,h//2,l//2))
         self.im8_2.fill(255)
@@ -157,8 +149,7 @@ class TestErodil3D(unittest.TestCase):
         
     def testLinearDilate3D(self):
         """Verifies the linear dilation"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(0)
         self.im8_1.setPixel(255, (w//2,h//2,l//2))
         self.im8_2.fill(0)

@@ -213,8 +213,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testLowerGeodesicDilate3D_1(self):
         """Verifies the lower geodesic dilation operation for binary 3D images"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_2.reset()
@@ -234,8 +233,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testUpperGeodesicDilate3D_1(self):
         """Verifies the upper geodesic dilation operation for binary 3D images"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_2.reset()
@@ -253,8 +251,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testUpperGeodesicDilate3D_8(self):
         """Verifies the upper geodesic dilation operation for greyscale 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         for i in range(min(l,64)):
@@ -269,8 +266,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testLowerGeodesicDilate3D_8(self):
         """Verifies the lower geodesic dilation operation for greyscale 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         for i in range(min(l,64)):
@@ -291,8 +287,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testLowerGeodesicErode3D_1(self):
         """Verifies the lower geodesic erosion operation for binary images"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_2.reset()
@@ -310,8 +305,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testUpperGeodesicErode3D_1(self):
         """Verifies the upper geodesic erosion operation for binary images"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_2.reset()
@@ -327,8 +321,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testUpperGeodesicErode3D_8(self):
         """Verifies the upper geodesic erosion operation for greyscale images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         for i in range(min(l,64)):
@@ -346,8 +339,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testLowerGeodesicErode3D_8(self):
         """Verifies the lower geodesic erosion operation for greyscale images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         for i in range(min(l,64)):
@@ -370,8 +362,7 @@ class TestGeodesy3D(unittest.TestCase):
         else:
             imOut.reset()
             
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         for xi in range(0,w-3,3):
             vi = random.randint(1,255)
             hi = vi-random.randint(0,vi)
@@ -405,8 +396,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testCloseHoles3D(self):
         """Verifies the closing holes 3D operator"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         for i in range(3,5):
             self.im1_1.reset()
@@ -420,8 +410,7 @@ class TestGeodesy3D(unittest.TestCase):
             
     def testRemoveEdgeParticles3D(self):
         """Tests the 3D operator removing the particles connected to the edge"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_2.reset()
@@ -441,8 +430,7 @@ class TestGeodesy3D(unittest.TestCase):
         
     def testComputeDistance3D(self):
         """Verifies the distance computation on a 3D binary set"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im32_3.reset()
@@ -458,8 +446,7 @@ class TestGeodesy3D(unittest.TestCase):
         
     def testComputeDistance3DEdge(self):
         """Verifies edge effect on the distance computation on a 3D binary set"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         drawCube(self.im1_1,(0,0,0,6,6,6), 1)

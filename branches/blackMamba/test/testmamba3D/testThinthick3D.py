@@ -89,8 +89,7 @@ class TestThinthick3D(unittest.TestCase):
         
     def testHitOrMiss3D(self):
         """Verifies the binary hit or miss 3D operator"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         dse1 = doubleStructuringElement3D([1,5,9], [0,10,14,18,19,23], CUBIC)
         dse2 = doubleStructuringElement3D([0,1,5,9], [10,14,18,19,23], CUBIC)
@@ -129,8 +128,7 @@ class TestThinthick3D(unittest.TestCase):
         
     def testThin3D(self):
         """Tests the thinning 3D operator"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         drawCube(self.im1_1, (w//2-1,h//2-1,l//2-1,w//2+1,h//2+1,l//2+1), 1)
@@ -145,8 +143,7 @@ class TestThinthick3D(unittest.TestCase):
         
     def testThick3D(self):
         """Verifies the thickening 3D operator"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         drawCube(self.im1_1, (w//2-1,h//2-1,l//2-1,w//2+1,h//2+1,l//2+1), 1)

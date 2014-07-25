@@ -58,14 +58,13 @@ class TestMiscellaneous3D(unittest.TestCase):
         self.assertRaises(MambaError,shift3D, self.im8_4, self.im8_2, 1,1,1)
         
     def _drawValueByPlane(self, im):
-        l = im.getLength()
         im.reset()
-        for i in range(l):
-            im[i].fill(i)
+        for i,im2D in enumerate(im):
+            im2D.fill(i)
         
     def testCopy3D(self):
         """Tests the copy of 3D images"""
-        l = self.im8_1.getLength()
+        l = len(self.im8_1)
         self._drawValueByPlane(self.im8_1)
         self.im8_3.reset()
         self._drawValueByPlane(self.im8_2)
@@ -82,8 +81,7 @@ class TestMiscellaneous3D(unittest.TestCase):
 
     def testCopyBitPlane3D(self):
         """Bit plane copy verification on 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im1_1.fill(1)
         self.im8_1.reset()
         self.im8_2.fill(0x4)
@@ -93,8 +91,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def testCopyBytePlane3D(self):
         """Byte plane copy verification on 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(0x25)
         self.im32_1.reset()
         self.im32_2.fill(0x250000)
@@ -104,7 +101,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def testGetHistogram3D(self):
         """Verifies the computation of the histogram on 3D images"""
-        (w,h) = self.im8_1.getSize()
+        (w,h,l) = self.im8_1.getSize()
         self._drawValueByPlane(self.im8_1)
         histo = getHistogram3D(self.im8_1)
         for i in range(256):
@@ -112,7 +109,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def testComputeVolume3D(self):
         """Verifies the computation of the volume on 3D images"""
-        (w,h) = self.im8_1.getSize()
+        (w,h,l) = self.im8_1.getSize()
         self._drawValueByPlane(self.im8_1)
         vol = computeVolume3D(self.im8_1)
         exp_vol = 0
@@ -178,8 +175,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def testShift3D(self):
         """Tests the shifting inside 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.fill(128)
         self.im8_1.setPixel(255, (w//2,h//2,l//2))
         self.im8_2.fill(128)
@@ -191,8 +187,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def _drawEdge(self, im, value):
         # draws the edge
-        (w,h) = im.getSize()
-        l = im.getLength()
+        (w,h,l) = im.getSize()
         im[0].fill(value)
         im[l-1].fill(value)
         for i in range(1,l-1):
@@ -205,28 +200,4 @@ class TestMiscellaneous3D(unittest.TestCase):
         drawEdge3D(self.im8_1)
         (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_1)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
-        
-    def testDownscale3D(self):
-        """Verifies the downscale operator"""
-        (w,h) = self.im32_4.getSize()
-        l = self.im32_4.getLength()
-        
-        self.im32_4.reset()
-        drawCube(self.im32_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x800000)
-        drawCube(self.im32_4, (2*w/3, 0, 0, w-1, h-1, l-1), 0x1000000)
-        
-        self.im8_4.reset()
-        drawCube(self.im8_4, (w/3, 0, 0, 2*w/3-1, h-1, l-1), 0x7f)
-        drawCube(self.im8_4, (2*w/3, 0, 0, w-1, h-1, l-1), 0xff)
-        
-        downscale3D(self.im32_4, self.im8_5)
-        (x,y,z) = compare3D(self.im8_4, self.im8_5, self.im8_5)
-        self.assertLess(x, 0)
-        
-        self.im32_4.reset()
-        self.im8_4.reset()
-        
-        downscale3D(self.im32_4, self.im8_5)
-        (x,y,z) = compare3D(self.im8_4, self.im8_5, self.im8_5)
-        self.assertLess(x, 0)
 

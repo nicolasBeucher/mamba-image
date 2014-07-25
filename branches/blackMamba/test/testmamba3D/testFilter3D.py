@@ -53,8 +53,7 @@ class TestFilter3D(unittest.TestCase):
         del(self.im32_5)
         
     def _drawBox3D(self, im, size, value):
-        (w,h) = im.getSize()
-        l = im.getLength()
+        (w,h,l) = im.getSize()
         (x1,y1,z1,x2,y2,z2) = size
         
         drawSquare(im[z1], (x1,y1,x2,y2), value)
@@ -63,8 +62,7 @@ class TestFilter3D(unittest.TestCase):
             drawBox(im[i], (x1,y1,x2,y2), value)
         
     def _drawAlternated3D(self, imOut):
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         
         imOut.reset()
         drawCube(imOut, (0,h//2,l//2,w-1,h-1,l-1), 255)
@@ -79,8 +77,7 @@ class TestFilter3D(unittest.TestCase):
         
     def testAlternateFilter3D(self):
         """Verifies the alternate filter 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self._drawAlternated3D(self.im8_1)
         alternateFilter3D(self.im8_1, self.im8_2, 1, True, CUBE3X3X3)
@@ -102,8 +99,7 @@ class TestFilter3D(unittest.TestCase):
         
     def testFullAlternateFilter3D(self):
         """Verifies the full alternate filter 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self._drawAlternated3D(self.im8_1)
         fullAlternateFilter3D(self.im8_1, self.im8_2, 2, True, CUBE3X3X3)
@@ -120,8 +116,7 @@ class TestFilter3D(unittest.TestCase):
         self.assertLess(x, 0)
         
     def _drawAlternatedSeg3D(self, imOut):
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         imOut.reset()
         drawCube(imOut, (0,h//2,l//2,w-1,h-1,l-1), 255)
         
@@ -140,8 +135,7 @@ class TestFilter3D(unittest.TestCase):
         
     def testLinearAlternateFilter3D(self):
         """Verifies the linear alternate filter operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self._drawAlternatedSeg3D(self.im8_1)
         linearAlternateFilter3D(self.im8_1, self.im8_2, 4, True, CUBIC)
@@ -165,8 +159,7 @@ class TestFilter3D(unittest.TestCase):
         
     def testAutoMedian3D(self):
         """Tests the auto median filter 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for n in range(1,6):
             value = n%2==1 and 255 or 0
@@ -183,8 +176,7 @@ class TestFilter3D(unittest.TestCase):
             
     def testSimpleLevelling3D(self):
         """Verifies the simple levelling 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         for i in range(21):
@@ -203,8 +195,7 @@ class TestFilter3D(unittest.TestCase):
             
     def testStrongLevelling3D(self):
         """Verifies the strong levelling 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         for i in range(21):

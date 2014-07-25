@@ -60,11 +60,22 @@ class TestConversion3D(unittest.TestCase):
         self.assertRaises(MambaError,generateSupMask3D,self.im8_1,self.im8_5,self.im1_3,False)
         self.assertRaises(MambaError,generateSupMask3D,self.im8_1,self.im8_2,self.im1_5,False)
         self.assertRaises(MambaError,lookup3D,self.im8_1,self.im1_5,256*[0])
+
+    def testDepthAcceptation(self):
+        """Tests that incorrect depth raises an exception"""
+        #self.assertRaises(MambaError, convert3D, self.im1_1, self.im1_2)
+        #self.assertRaises(MambaError, convert3D, self.im1_1, self.im8_2)
+        self.assertRaises(MambaError, convert3D, self.im1_1, self.im32_2)
+        #self.assertRaises(MambaError, convert3D, self.im8_1, self.im1_2)
+        #self.assertRaises(MambaError, convert3D, self.im8_1, self.im8_2)
+        self.assertRaises(MambaError, convert3D, self.im8_1, self.im32_2)
+        self.assertRaises(MambaError, convert3D, self.im32_1, self.im1_2)
+        #self.assertRaises(MambaError, convert, self.im32_1, self.im8_2)
+        #self.assertRaises(MambaError, convert, self.im32_1, self.im32_2)
         
-    def testConvert3D(self):
+    def testConvert3D_8_1(self):
         """Tests the 3D image greyscale/binary conversion function"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         self.im8_1[l-1].fill(255)
@@ -83,10 +94,24 @@ class TestConversion3D(unittest.TestCase):
         (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_3)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
+    def testConvert3D_32_8(self):
+        """Tests the 3D image 32-bit downscaling conversion function"""
+        (w,h,l) = self.im32_1.getSize()
+        
+        self.im32_1.reset()
+        self.im32_1[l-1].fill(0xffffffff)
+        self.im32_1[l-2].fill(0x80000000)
+        self.im8_2.reset()
+        self.im8_2[l-1].fill(255)
+        self.im8_2[l-2].fill(127)
+        
+        convert3D(self.im32_1, self.im8_1)
+        (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_3)
+        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        
     def testConvertByMask3D(self):
         """Tests the 3D image binary 2 greyscale mask conversion function"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_2.fill(27)
         self.im8_2[l-1].fill(155)
@@ -99,8 +124,7 @@ class TestConversion3D(unittest.TestCase):
         
     def testThreshold3D(self):
         """Tests the 3D image threshold function"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(l):
             self.im8_1[i].fill(i)
@@ -116,8 +140,7 @@ class TestConversion3D(unittest.TestCase):
             
     def testGenerateSupMask3D(self):
         """Verifies the superior mask generation on 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(l):
             self.im8_1[i].fill(i)
@@ -138,8 +161,7 @@ class TestConversion3D(unittest.TestCase):
         
     def testLookup3D(self):
         """Tests the look-up table conversion on 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(l):
             self.im8_1[i].fill(i)

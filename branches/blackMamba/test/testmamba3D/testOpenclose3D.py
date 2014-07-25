@@ -63,8 +63,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testOpening3D(self):
         """Verifies the correct behavior of the 3D open operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         self.im8_1.setPixel(255, (w//2,h//2,l//2))
@@ -82,8 +81,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testClose3D(self):
         """Verifies the correct behavior of the 3D close operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.fill(255)
         self.im8_1.setPixel(0, (w//2,h//2,l//2))
@@ -113,8 +111,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testBuildOpen3D(self):
         """Verifies the open by reconstruction 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         self.im8_4.reset()
@@ -150,8 +147,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testBuildClose3D(self):
         """Verifies the close by reconstruction 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.fill(255)
         self.im8_4.fill(255)
@@ -187,8 +183,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testLinearOpen3D(self):
         """Verifies the correct behavior of the directional open 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for d in getDirections3D():
             self.im8_1.reset()
@@ -207,8 +202,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testLinearClose3D(self):
         """Verifies the correct behavior of the directional close 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for d in getDirections3D():
             self.im8_1.fill(255)
@@ -241,8 +235,7 @@ class TestOpenclose3D(unittest.TestCase):
                 
     def testSupOpen3D(self):
         """Tests the superior open 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         dirs = getDirections3D(FACE_CENTER_CUBIC)[1:]
@@ -287,8 +280,7 @@ class TestOpenclose3D(unittest.TestCase):
         
     def testInfClose3D(self):
         """Tests the inferior close 3D operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.fill(255)
         dirs = getDirections3D(FACE_CENTER_CUBIC)[1:]
