@@ -111,23 +111,21 @@ def dilate3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.EMPTY):
     in use is at position 0 even if this point does not belong to it.
     """
     
-    (width,height) = imIn.getSize()
+    (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
-    inl = imIn.getLength()
-    outl = imOut.getLength()
-    if inl!=outl:
+    if length!=len(imOut):
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     zext = se.grid.getZExtension()
-    imWrk = m3D.image3DMb(width, height, outl+zext*2, depth)
+    imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     if edge==mamba.EMPTY:
         for i in range(zext):
             imWrk[i].reset()
-            imWrk[outl+zext*2-1-i].reset()
+            imWrk[length+zext*2-1-i].reset()
     else:
         value = mamba.computeMaxRange(imIn[0])[1]
         for i in range(zext):
             imWrk[i].fill(value)
-            imWrk[outl+zext*2-1-i].fill(value)
+            imWrk[length+zext*2-1-i].fill(value)
     
     m3D.copy3D(imIn, imOut)
     
@@ -136,7 +134,7 @@ def dilate3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.EMPTY):
         m3D.copy3D(imOut, imWrk, 0, 1)
         if not se.hasZero():
             imOut.reset()
-        for i in range(outl):
+        for i in range(length):
             dirs_enc = se.grid.getEncodedDirs(dirs,i)
             mamba.supNeighbor(imWrk[i], imOut[i], dirs_enc[-1], grid=se.grid.get2DGrid(), edge=edge)
             mamba.supNeighbor(imWrk[i+1], imOut[i], dirs_enc[0], grid=se.grid.get2DGrid(), edge=edge)
@@ -165,23 +163,21 @@ def erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.FILLED):
     in use is at position 0 even if this point does not belong to it.
     """
     
-    (width,height) = imIn.getSize()
+    (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
-    inl = imIn.getLength()
-    outl = imOut.getLength()
-    if inl!=outl:
+    if length!=len(imOut):
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     zext = se.grid.getZExtension()
-    imWrk = m3D.image3DMb(width, height, outl+zext*2, depth)
+    imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     if edge==mamba.EMPTY:
         for i in range(zext):
             imWrk[i].reset()
-            imWrk[outl+zext*2-1-i].reset()
+            imWrk[length+zext*2-1-i].reset()
     else:
         value = mamba.computeMaxRange(imIn[0])[1]
         for i in range(zext):
             imWrk[i].fill(value)
-            imWrk[outl+zext*2-1-i].fill(value)
+            imWrk[length+zext*2-1-i].fill(value)
     
     m3D.copy3D(imIn, imOut)
     
@@ -190,7 +186,7 @@ def erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.FILLED):
         m3D.copy3D(imOut, imWrk, 0, 1)
         if not se.hasZero():
             imOut.fill(m3D.computeMaxRange3D(imIn)[1])
-        for i in range(outl):
+        for i in range(length):
             dirs_enc = se.grid.getEncodedDirs(dirs,i)
             mamba.infNeighbor(imWrk[i], imOut[i], dirs_enc[-1], grid=se.grid.get2DGrid(), edge=edge)
             mamba.infNeighbor(imWrk[i+1], imOut[i], dirs_enc[0], grid=se.grid.get2DGrid(), edge=edge)
@@ -215,7 +211,7 @@ def erodeByCylinder3D(imInOut, height, section):
     function.
     """
     
-    l = imInOut.getLength()
+    l = len(imInOut)
     for im in imInOut:
         mamba.erode(im, im, section, se=mamba.HEXAGON)
     provIm3D = m3D.image3DMb(imInOut)
@@ -232,7 +228,7 @@ def dilateByCylinder3D(imInOut, height, section):
     function.
     """
     
-    l = imInOut.getLength()
+    l = len(imInOut)
     for im in imInOut:
         mamba.dilate(im, im, section, se=mamba.HEXAGON)
     provIm3D = m3D.image3DMb(imInOut)

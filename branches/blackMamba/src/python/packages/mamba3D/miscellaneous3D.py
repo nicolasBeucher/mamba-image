@@ -21,10 +21,9 @@ def computeVolume3D(imIn):
     Be aware that because this operator runs on 3D image, the returned value
     can be very high.
     """
-    inl = imIn.getLength()
     vol = 0
-    for i in range(inl):
-        vol += mamba.computeVolume(imIn[i])
+    for im2D in imIn:
+        vol += mamba.computeVolume(im2D)
     return vol
     
 def computeRange3D(imIn):
@@ -32,11 +31,10 @@ def computeRange3D(imIn):
     Computes the range, i.e. the minimum and maximum values, of 3D image 'imIn'.
     The values are returned in a tuple holding the minimum and the maximum.
     """
-    inl = imIn.getLength()
     mav,miv = mamba.computeMaxRange(imIn[0])
     
-    for i in range(inl):
-        mi,ma = mamba.computeRange(imIn[i])
+    for im2D in imIn:
+        mi,ma = mamba.computeRange(im2D)
         miv = min(mi,miv)
         mav = max(ma,mav)
     return (miv,mav)
@@ -56,7 +54,7 @@ def checkEmptiness3D(imIn):
     
     'imIn' can be a 1-bit, 8-bit or 32-bit image.
     """
-    inl = imIn.getLength()
+    inl = len(imIn)
     i = 0
     isEmpty = True
     while isEmpty and i<inl:
@@ -81,9 +79,9 @@ def compare3D(imIn1, imIn2, imOut):
     'imIn1', imIn2' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same
     size and depth.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
         
@@ -105,22 +103,20 @@ def shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     'amp'. The emptied space is filled with 'fill' value.
     The result is put in 'imOut'.
     """
-    (width,height) = imIn.getSize()
+    (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
-    inl = imIn.getLength()
-    outl = imOut.getLength()
-    if inl!=outl:
+    if length!=len(imOut):
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     zext = grid.getZExtension()
-    imWrk = m3D.image3DMb(width, height, outl+zext*2, depth)
+    imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     for i in range(zext):
         imWrk[i].fill(fill)
-        imWrk[outl+zext*2-1-i].fill(fill)
+        imWrk[length+zext*2-1-i].fill(fill)
     
     m3D.copy3D(imIn, imOut)
     for n in range(amp):
         m3D.copy3D(imOut, imWrk, 0, 1)
-        for i in range(outl):
+        for i in range(length):
             (planeOffset, dc) = grid.convertFromDir(d,i)
             mamba.shift(imWrk[i+1-planeOffset], imOut[i], dc, 1, fill, grid=grid.get2DGrid())
 

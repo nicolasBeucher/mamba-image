@@ -28,9 +28,9 @@ def add3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -54,9 +54,9 @@ def sub3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -80,9 +80,9 @@ def mul3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -101,9 +101,9 @@ def div3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -124,8 +124,8 @@ def addConst3D(imIn, v, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -146,8 +146,8 @@ def subConst3D(imIn, v, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -168,8 +168,8 @@ def divConst3D(imIn, v, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -188,8 +188,8 @@ def mulConst3D(imIn, v, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -203,8 +203,8 @@ def negate3D(imIn, imOut):
     The operation is a binary complement for binary images and a negation for
     greyscale and 32-bit images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -228,9 +228,9 @@ def logic3D(imIn1, imIn2 , imOut, log):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -251,9 +251,9 @@ def diff3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -273,8 +273,8 @@ def ceilingAddConst3D(imIn, v, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -295,9 +295,9 @@ def ceilingAdd3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -314,8 +314,8 @@ def floorSubConst3D(imIn, v, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -335,9 +335,9 @@ def floorSub3D(imIn1, imIn2, imOut):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     

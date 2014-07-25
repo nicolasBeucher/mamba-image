@@ -26,8 +26,7 @@ def steiner3D(imOut, n, directions, grid=DEFAULT_GRID3D):
     is only an output 'imOut'. The display is updated at the end.
     """
     imOut.reset()
-    (w,h) = imOut.getSize()
-    l = imOut.getLength()
+    (w,h,l) = imOut.getSize()
     
     v = computeMaxRange(imOut[0])[1]
     imOut.setPixel(v, (w/2,h/2,l/2))

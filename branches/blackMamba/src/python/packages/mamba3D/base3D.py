@@ -202,8 +202,7 @@ class image3DMb:
             data = preprocfunc(data)
         
         # Verification over data size
-        (w,h) = self.getSize()
-        im_size = w*h*(depth//8)
+        im_size = self.width*self.height*(depth//8)
         assert(len(data)==im_size*self.length)
         
         # Loading the data
@@ -295,25 +294,18 @@ class image3DMb:
     
     def getSize(self):
         """
-        Returns the size (tuple with width, height) of the 3D image.
+        Returns the size (tuple with width, height and length) of the 3D image.
         """
         
-        return (self.width, self.height)
-            
+        return (self.width, self.height, self.length)
+        
     def __len__(self):
         """
         Returns the length of the 3D image.
         """
         
         return self.length
-            
-    def getLength(self):
-        """
-        Returns the length of the 3D image.
-        """
         
-        return self.length
-            
     def getName(self):
         """
         Returns the name of the 3D image.
