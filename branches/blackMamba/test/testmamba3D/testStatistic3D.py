@@ -51,8 +51,7 @@ class TestStatistic3D(unittest.TestCase):
         
     def testGetMean3D(self):
         """Verifies the correct computation of pixel mean value in 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         # creating a random image
         s = 0
@@ -69,8 +68,7 @@ class TestStatistic3D(unittest.TestCase):
         
     def testGetMedian3D(self):
         """Verifies the correct computation of pixel median value in 3D images"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         # creating a random image
         his = 256*[0]
@@ -92,8 +90,7 @@ class TestStatistic3D(unittest.TestCase):
         
     def testGetVariance3D(self):
         """Verifies the correct computation of the variance value of a 3D image"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(2):
             lis = 256*[0]

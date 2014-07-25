@@ -90,8 +90,7 @@ class TestSegment3D(unittest.TestCase):
         self.assertRaises(MambaError, label3D, self.im1_1, self.im32_5)
         
     def _drawBox3D(self, im, size, value):
-        (w,h) = im.getSize()
-        l = im.getLength()
+        (w,h,l) = im.getSize()
         
         drawSquare(im[l//2-size], (w//2-size,h//2-size,w//2+size,h//2+size), value)
         drawSquare(im[l//2+size], (w//2-size,h//2-size,w//2+size,h//2+size), value)
@@ -100,8 +99,7 @@ class TestSegment3D(unittest.TestCase):
 
     def testBasinSegment3D(self):
         """Verifies that the basin segmentation 3D operator works correctly"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(l//4,(3*l)//4,3):
             # creating a wall image
@@ -126,8 +124,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testWatershedSegment3D(self):
         """Tests the 3D watershed segmentation operator"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(l//4,3*l//4,3):
             self.im8_1.reset()
@@ -169,8 +166,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testIdempotencyWatershedSegment3D(self):
         """Makes sure the computed watershed is idempotent"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         for i in range(2):
             grid = CUBIC if i%2==0 else FACE_CENTER_CUBIC
@@ -204,8 +200,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testLabel3D_1(self):
         """Verifies the labelling 3D operator on binary"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_1.setPixel(1, (31,30,30))
@@ -229,8 +224,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testLabel3D_8(self):
         """Verifies the labelling 3D operator on greyscale"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         self.im8_1.setPixel(1, (31,30,30))
@@ -254,8 +248,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testLabel3D_32(self):
         """Verifies the labelling 3D operator on 32 bit"""
-        (w,h) = self.im32_3.getSize()
-        l = self.im32_3.getLength()
+        (w,h,l) = self.im32_3.getSize()
         
         self.im32_3.reset()
         self.im32_3.setPixel(1, (31,30,30))
@@ -279,8 +272,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testWatershedSegment3D_32(self):
         """Verifies the 32-bit watershed segment 3D operator"""
-        (w,h) = self.im32_1.getSize()
-        l = self.im32_1.getLength()
+        (w,h,l) = self.im32_1.getSize()
         
         for i in range(l//2,(3*l)//4):
             # creating a wall image
@@ -330,8 +322,7 @@ class TestSegment3D(unittest.TestCase):
             
     def testBasinSegment3D_32(self):
         """Verifies the 32-bit basin segment 3D operator"""
-        (w,h) = self.im32_1.getSize()
-        l = self.im32_1.getLength()
+        (w,h,l) = self.im32_1.getSize()
         
         for i in range(l//2,(3*l)//4):
             # creating a wall image
@@ -361,8 +352,7 @@ class TestSegment3D(unittest.TestCase):
             self.assertTrue(exp_vol1<=vol and exp_vol2>=vol, "wall at %d [%d,%d]: %d//%d//%d" %(i,l//2,(3*l)//4,vol,exp_vol1,exp_vol2))
             
     def _drawWells(self, imOut, wall=[1,2,3,4]):
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         
         imOut.reset()
         if wall.count(1)>0:
@@ -384,8 +374,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testMarkerControlledWatershed3D(self):
         """Verifies the marker controlled valued watershed 3D computation"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self._drawWells(self.im8_1)
         
@@ -497,8 +486,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testFastSKIZ3D(self):
         """Verifies the fast SKIZ 3D operator based on watershed"""
-        (w,h) = self.im1_1.getSize()
-        l = self.im1_1.getLength()
+        (w,h,l) = self.im1_1.getSize()
         
         self.im1_1.reset()
         self.im1_1.setPixel(1, (w//2,h//4,3*l//4))
@@ -515,8 +503,7 @@ class TestSegment3D(unittest.TestCase):
         self.assertLess(x, 0)
         
     def _drawCubes(self, imOut):
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         
         for i in range(w//4):
             drawCube(imOut, (i,i,i,w-1-i,h-1-i,l-1-i), i+1)
@@ -525,8 +512,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testMosaic3D(self):
         """Verifies the computation of mosaic 3D image using watershed segment"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self._drawCubes(self.im8_1)
         mosaic3D(self.im8_1, self.im8_2, self.im8_3, CUBIC)
@@ -553,8 +539,7 @@ class TestSegment3D(unittest.TestCase):
         
     def testMosaicGradient3D(self):
         """Verifies the computation of 3D mosaic gradient using watershed segment"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self._drawCubes(self.im8_1)
         mosaicGradient3D(self.im8_1, self.im8_2, CUBIC)

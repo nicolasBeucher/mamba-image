@@ -35,8 +35,7 @@ class TestBase3D(unittest.TestCase):
     def testSizeCheck(self):
         """Verifies that the functions check the size of the image"""
         im1 = image3DMb()
-        (w,h) = im1.getSize()
-        l = im1.getLength()
+        (w,h,l) = im1.getSize()
         self.assertRaises(MambaError,im1.setPixel,0,(0,0,-1))
         self.assertRaises(MambaError,im1.setPixel,0,(0,0,l))
         self.assertRaises(MambaError,im1.getPixel,(0,0,-1))
@@ -58,8 +57,7 @@ class TestBase3D(unittest.TestCase):
         # first case
         im = image3DMb()
         self.assertEqual(im.getDepth(), 8)
-        self.assertEqual(im.getSize(), (256,256))
-        self.assertEqual(im.getLength(), 256)
+        self.assertEqual(im.getSize(), (256,256,256))
         self.assertEqual(len(im), 256)
         self.assertNotEqual(im.getName(), '')
         self.assertIsInstance(next(im), imageMb)
@@ -69,45 +67,38 @@ class TestBase3D(unittest.TestCase):
         im2D = imageMb(wi,hi,1)
         im = image3DMb(im2D)
         self.assertEqual(im.getDepth(), 1)
-        self.assertEqual(im.getSize(), (wc,hc))
-        self.assertEqual(im.getLength(), 256)
+        self.assertEqual(im.getSize(), (wc,hc,256))
         self.assertEqual(len(im), 256)
         # second case
         im2 = image3DMb(im)
         self.assertEqual(im2.getDepth(), 1)
-        self.assertEqual(im2.getSize(), (wc,hc))
-        self.assertEqual(im2.getLength(), 256)
+        self.assertEqual(im2.getSize(), (wc,hc,256))
         self.assertEqual(len(im2), 256)
         # fourth case
         im = image3DMb(32)
         self.assertEqual(im.getDepth(), 32)
-        self.assertEqual(im.getSize(), (256,256))
-        self.assertEqual(im.getLength(), 256)
+        self.assertEqual(im.getSize(), (256,256,256))
         self.assertEqual(len(im), 256)
         # fifth case
         im = image3DMb(".")
         self.assertEqual(im.getDepth(), 8)
-        self.assertEqual(im.getSize(), (wc,hc))
-        self.assertEqual(im.getLength(), li)
+        self.assertEqual(im.getSize(), (wc,hc,li))
         self.assertEqual(len(im), li)
         self.assertEqual(im.getName(), ".")
         # sixth case
         im2 = image3DMb(im, 32)
         self.assertEqual(im2.getDepth(), 32)
-        self.assertEqual(im2.getSize(), (wc,hc))
-        self.assertEqual(im2.getLength(), li)
+        self.assertEqual(im2.getSize(), (wc,hc,li))
         self.assertEqual(len(im2), li)
         # seventh case
         im = image3DMb(im2D, li)
         self.assertEqual(im.getDepth(), 1)
-        self.assertEqual(im.getSize(), (wc,hc))
-        self.assertEqual(im.getLength(), li)
+        self.assertEqual(im.getSize(), (wc,hc,li))
         self.assertEqual(len(im), li)
-        # height case
+        # eighth case
         im = image3DMb(".", 1)
         self.assertEqual(im.getDepth(), 1)
-        self.assertEqual(im.getSize(), (wc,hc))
-        self.assertEqual(im.getLength(), li)
+        self.assertEqual(im.getSize(), (wc,hc,li))
         self.assertEqual(len(im), li)
         # ninth case
         wi = random.randint(1,4000)
@@ -117,8 +108,7 @@ class TestBase3D(unittest.TestCase):
         hc = ((hi+1)//2)*2
         im = image3DMb(wi, hi, li)
         self.assertEqual(im.getDepth(), 8)
-        self.assertEqual(im.getSize(), (wc,hc), "%s %s" % (im.getSize(), (wc,hc)))
-        self.assertEqual(im.getLength(), li)
+        self.assertEqual(im.getSize(), (wc,hc,li), "%s %s" % (im.getSize(), (wc,hc,li)))
         self.assertEqual(len(im), li)
         # tenth case
         wi = random.randint(1,4000)
@@ -128,21 +118,18 @@ class TestBase3D(unittest.TestCase):
         hc = ((hi+1)//2)*2
         im = image3DMb(wi, hi, li, 1)
         self.assertEqual(im.getDepth(), 1)
-        self.assertEqual(im.getSize(), (wc,hc))
-        self.assertEqual(im.getLength(), li)
+        self.assertEqual(im.getSize(), (wc,hc,li))
         self.assertEqual(len(im), li)
         
         seq = sequenceMb(wi, hi, li, 1)
         self.assertEqual(seq.getDepth(), 1)
-        self.assertEqual(seq.getSize(), (wc,hc))
-        self.assertEqual(seq.getLength(), li)
+        self.assertEqual(seq.getSize(), (wc,hc,li))
         
     def testImage3DMbPixels(self):
         """Verifies pixel extraction and setting in 3D images"""
         im1 = image3DMb()
         im2 = image3DMb(1)
-        (w,h) = im1.getSize()
-        l = im1.getLength()
+        (w,h,l) = im1.getSize()
         
         for i in range(100):
             im1.reset()

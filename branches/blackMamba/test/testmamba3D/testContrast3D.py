@@ -54,8 +54,7 @@ class TestContrast3D(unittest.TestCase):
         del(self.im32_5)
         
     def _drawBox3D(self, im, size, value):
-        (w,h) = im.getSize()
-        l = im.getLength()
+        (w,h,l) = im.getSize()
         (x1,y1,z1,x2,y2,z2) = size
         
         drawSquare(im[z1], (x1,y1,x2,y2), value)
@@ -65,8 +64,7 @@ class TestContrast3D(unittest.TestCase):
 
     def testGradient3D(self):
         """Verifies the 3D gradient operation"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         self.im8_1.reset()
         drawCube(self.im8_1, (w//2-1, h//2-1, l//2-1, w//2+1, h//2+1, l//2+1), 255)
         self.im8_2.reset()
@@ -78,8 +76,7 @@ class TestContrast3D(unittest.TestCase):
 
     def testHalfGradient(self):
         """Verifies the 3D half-gradient operation"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         
         self.im8_1.reset()
         drawCube(self.im8_1, (w//2-1, h//2-1, l//2-1, w//2+1, h//2+1, l//2+1), 255)
@@ -98,8 +95,7 @@ class TestContrast3D(unittest.TestCase):
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
     def _growingSpot3D(self, imOut, n=None, se=CUBOCTAHEDRON, inv=False):
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         imOut.reset()
         prov = image3DMb(imOut)
         if n==None:
@@ -148,8 +144,7 @@ class TestContrast3D(unittest.TestCase):
             self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
     def _growingLineSpot3D(self, imOut, n=None, inv=False):
-        (w,h) = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         imOut.reset()
         prov = image3DMb(imOut)
         if n==None:
@@ -190,8 +185,7 @@ class TestContrast3D(unittest.TestCase):
             self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
     def _drawSlope3D(self, imOut, imRes, size):
-        w,h = imOut.getSize()
-        l = imOut.getLength()
+        (w,h,l) = imOut.getSize()
         imOut.reset()
         for i in range(30,30+size):
             imOut[i].fill(i-30)

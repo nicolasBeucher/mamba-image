@@ -200,7 +200,6 @@ try:
         import mamba as mb
         dirname = os.path.dirname(mb.__file__)
         _morfs += glob.glob(os.path.join(dirname, '*.py'))
-        _morfs.remove(os.path.join(dirname, 'extra.py'))
         _morfs.remove(os.path.join(dirname, 'core.py'))
         del(mb)
     if 'testmamba3D' in TEST_DIRECTORIES:

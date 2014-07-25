@@ -51,8 +51,7 @@ class TestDraw3D(unittest.TestCase):
 
     def testDrawLine3D(self):
         """Tests the line drawing function in draw3D"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         x,y,z = w//2, h//2, l//2
         e = 3
         
@@ -98,8 +97,7 @@ class TestDraw3D(unittest.TestCase):
         
     def testDrawCube(self):
         """Verifies the drawing cubes function"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         x,y,z = w//2, h//2, l//2
         e = 3
         
@@ -110,8 +108,7 @@ class TestDraw3D(unittest.TestCase):
         
     def testGetIntensityAlongLine3D(self):
         """Tests the intensity extraction function in draw3D"""
-        (w,h) = self.im8_1.getSize()
-        l = self.im8_1.getLength()
+        (w,h,l) = self.im8_1.getSize()
         x,y,z = w//2, h//2, l//2
         e = 3
         
