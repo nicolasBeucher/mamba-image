@@ -260,8 +260,7 @@ class Display3D_VolRen(tk.Frame):
         # Converts the associated sequence into a VTK image
         # structure to be able to display it using the rendering
         # mechanisms of VTK
-        W, H = self.im_ref().getSize()
-        L = self.im_ref().getLength()
+        W, H, L = self.im_ref().getSize()
         depth = self.im_ref().getDepth()
     
         if depth==8:
@@ -306,8 +305,7 @@ class Display3D_VolRen(tk.Frame):
     def connect(self, im_ref):
         # Connection of the 3D image to the display
         self.im_ref = im_ref
-        W, H = self.im_ref().getSize()
-        L = self.im_ref().getLength()
+        W, H, L = self.im_ref().getSize()
         depth = self.im_ref().getDepth()
         self.dimLabel.config(text="Dimensions = %dx%dx%d" % (W, H, L))
         

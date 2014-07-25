@@ -38,8 +38,8 @@ def convertByMask3D(imIn, imOut, mFalse, mTrue):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -59,8 +59,8 @@ def threshold3D(imIn, imOut, low, high):
     
     This function works with 3D images.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -76,9 +76,9 @@ def generateSupMask3D(imIn1, imIn2, imOut, strict):
     'imIn1' and imIn2' can be 1-bit, 8-bit or 32-bit images of same
     size, length and depth.
     """
-    outl = imOut.getLength()
-    in1l = imIn1.getLength()
-    in2l = imIn2.getLength()
+    outl = len(imOut)
+    in1l = len(imIn1)
+    in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -93,8 +93,8 @@ def lookup3D(imIn, imOut, lutable):
     'lutable' is a list containing 256 values with the first one corresponding 
     to 0 and the last one to 255.
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     

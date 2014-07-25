@@ -120,16 +120,26 @@ class Display3D_Player(tk.Frame):
     
     def keyboardEvent(self, event):
         # Keyboard events handling
-        pass
-    
+        if event.keycode==65:
+            # space bar is play/stop
+            if not self.playing:
+                self.play()
+            else:
+                self.stop()
+        elif event.keycode==112:
+            # page up is next
+            self.setNextImage()
+        elif event.keycode==117:
+            # page down is previous
+            self.setPrevImage()
+
     # Public method : called by the display window #############################
     
     def connect(self, im_ref):
         # Connection of the 3D image to the display
         self.playing = False
         self.im_ref = im_ref
-        W, H = self.im_ref().getSize()
-        self.L = self.im_ref().getLength()
+        W, H, self.L = self.im_ref().getSize()
         self.x = 0
         self.y = 0
         self.z = 0
@@ -191,7 +201,7 @@ class Display3D_Player(tk.Frame):
     def onShow(self):
         pass
     def onRestore(self):
-        W, H = self.im_ref().getSize()
+        W, H, L = self.im_ref().getSize()
         imsize = [W, H]
         zoom = 1.0
         while imsize[0]<constants._MIN or imsize[1]<constants._MIN:

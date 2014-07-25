@@ -239,10 +239,6 @@ class Display2D(tk.Toplevel):
 
     def keyboardEvent(self, event):
         # Handles keyboard events,
-        # such as zoom in (z) or out (a), activation of the color palette (p)
-        # or restore original size (r).
-        xo = max((self.csize[0]-self.dsize[0])/2, 0)
-        yo = max((self.csize[1]-self.dsize[1])/2, 0)
         if event.char == "b":
             # BYTE PLANE MODIFICATION (next)
             self.bplane = (self.bplane+1)%5

@@ -15,7 +15,7 @@ def copy3D(imIn, imOut, firstPlaneIn=0, firstPlaneOut=0):
     Copies 3D image 'imIn' into 'imOut'. 'firstPlaneIn' indicates the starting
     plane inside 'imIn' and 'firstPlaneOut' the starting plane inside 'imOut'.
     """
-    nbPlanes = min(imOut.getLength()-firstPlaneOut, imIn.getLength()-firstPlaneIn)
+    nbPlanes = min(len(imOut)-firstPlaneOut, len(imIn)-firstPlaneIn)
     for i in range(nbPlanes):
         mamba.copy(imIn[i+firstPlaneIn], imOut[i+firstPlaneOut])
 
@@ -29,8 +29,8 @@ def copyBitPlane3D(imIn, plane, imOut):
     
     Plane values are 0 (LSB) to 7 (MSB).
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     
@@ -47,8 +47,8 @@ def copyBytePlane3D(imIn, plane, imOut):
     
     Plane values are 0 (LSByte) to 3 (MSByte).
     """
-    outl = imOut.getLength()
-    inl = imIn.getLength()
+    outl = len(imOut)
+    inl = len(imIn)
     if inl!=outl:
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     

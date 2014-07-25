@@ -322,8 +322,7 @@ class Display3D_Proj(tk.Frame):
     def connect(self, im_ref):
         # Connection of the 3D image to the display
         self.im_ref = im_ref
-        self.W, self.H = self.im_ref().getSize()
-        self.L = self.im_ref().getLength()
+        self.W, self.H, self.L = self.im_ref().getSize()
         imsize = [self.W, self.H, self.L]
         zoom = 1.0
         while imsize[0]<constants._MIN or imsize[1]<constants._MIN or imsize[2]<constants._MIN:

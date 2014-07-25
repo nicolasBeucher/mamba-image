@@ -92,16 +92,14 @@ def hitOrMiss3D(imIn, imOut, dse, edge=mamba.EMPTY):
     WARNING! 'imIn' and 'imOut' must be different images.
     """
     
-    (width,height) = imIn.getSize()
+    (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
-    inl = imIn.getLength()
-    outl = imOut.getLength()
     if depth!=1:
         mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
-    if inl!=outl:
+    if length!=len(imOut):
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     zext = dse.grid.getZExtension()
-    imWrk = m3D.image3DMb(width, height, outl+zext*2, depth)
+    imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     
     # Border handling
     imWrk.reset()
@@ -110,7 +108,7 @@ def hitOrMiss3D(imIn, imOut, dse, edge=mamba.EMPTY):
         m3D.negate3D(imWrk, imWrk)
         for i in range(zext):
             imWrk[i].reset()
-            imWrk[outl+zext*2-1-i].reset()
+            imWrk[length+zext*2-1-i].reset()
         dse = dse.flip()
 
     # Central point
@@ -118,7 +116,7 @@ def hitOrMiss3D(imIn, imOut, dse, edge=mamba.EMPTY):
         m3D.copy3D(imWrk, imOut, firstPlaneIn=1)
     else:
         if dse.se0.hasZero():
-            for i in range(outl):
+            for i in range(length):
                 mamba.negate(imWrk[i+1], imOut[i])
         else:
             imOut.fill(1)
@@ -130,11 +128,11 @@ def hitOrMiss3D(imIn, imOut, dse, edge=mamba.EMPTY):
     grid2D = dse.getGrid().get2DGrid()
     for d in dirs:
         if d in dirs1:
-            for i in range(outl):
+            for i in range(length):
                 (planeOffset, dc) = dse.getGrid().convertFromDir(d,i)
                 mamba.infNeighbor(imWrk[i+1+planeOffset], imOut[i], 1<<dc, grid=grid2D, edge=edge)
         elif d in dirs0:
-            for i in range(outl):
+            for i in range(length):
                 (planeOffset, dc) = dse.getGrid().convertFromDir(d,i)
                 mamba.diffNeighbor(imWrk[i+1+planeOffset], imOut[i], 1<<dc, grid=grid2D, edge=edge)
     
