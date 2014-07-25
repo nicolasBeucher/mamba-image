@@ -66,9 +66,6 @@ begin = r"""
 
 \def\mambaVersion{%s}
 
-\usetikzlibrary{calc}
-\tikzstyle{module}=[minimum width=\textwidth, text width=\nodewidth, rectangle, fill=white, rounded corners]
-
 \definecolor{mambaLightBg}{HTML}{6FADE9}
 \definecolor{mambaBg}{HTML}{408AD2}
 \definecolor{mambaTextFg}{HTML}{FFC640}
@@ -77,6 +74,11 @@ begin = r"""
 \definecolor{classfg}{HTML}{E78F05}
 \definecolor{deffg}{HTML}{8D1405}
 \definecolor{lightb}{HTML}{A0A0FF}
+\definecolor{purple}{HTML}{802080}
+
+\usetikzlibrary{calc}
+\tikzstyle{module}=[minimum width=\textwidth, text width=\nodewidth, rectangle, fill=white, rounded corners]
+\tikzstyle{modulespe}=[minimum width=\textwidth, text width=\nodewidth, rectangle, fill=purple, rounded corners]
 
 \fancypagestyle{mambaQuickPageStyle}{
     \fancyhf{}
@@ -153,7 +155,6 @@ end = r"""
 
 \textcolor{modfg}{\rule{1ex}{1ex}\hspace{1ex}\textsc{General}}\vspace{0.2cm}
 
-\begin{minipage}{\columnwidth}
 \small\textcolor{parts}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Grid and Edge:}}
 
 \scriptsize
@@ -172,9 +173,7 @@ specified. Its value, FACE\_CENTER\_CUBIC at start, can be changed with the
 appropriate function.
 
 Two edge behaviors are defined : \textbf{EMPTY} and \textbf{FILLED}.
-\end{minipage}
 
-\begin{minipage}{\columnwidth}
 \small\textcolor{parts}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Directions/Neighbors:}}
 
 \scriptsize
@@ -188,9 +187,6 @@ hexagonal grid & square grid \\
 \end{center}
 \normalsize
 
-\end{minipage}
-
-\begin{minipage}{\columnwidth}
 \small\textcolor{parts}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Structuring elements:}}
 
 \scriptsize
@@ -209,13 +205,67 @@ CENTER\_CUBIC grid.
 
 \vspace{1cm}
 
+\end{flushleft}
+\end{multicols}
 \end{minipage}
+};
+\end{tikzpicture}
+
+
+\begin{tikzpicture}
+\node[modulespe] {
+\begin{minipage}{\nodewidth}
+\begin{multicols}{2}
+\begin{flushleft}
+
+\color{white}
+
+\rule{1ex}{1ex}\hspace{1ex}\textsc{Displays shortcuts}\vspace{0.2cm}
+
+\small\rule{1ex}{1ex}\hspace{1ex}\textsc{Keyboard:}
+
+\scriptsize
+
+\begin{itemize}
+\item \textbf{P}: will dynamically (de)activate the color palette provided you
+attach one to your image using the setPalette() method.
+\item \textbf{B} and \textbf{N}: With 32-bit images, these key will allow you
+to move through byte planes or to show the complete image downscaled.
+\item \textbf{Control-F}: will freeze/unfreeze the display. See the freeze() 
+method.
+\item \textbf{Control-R}: will reset the display to its original size and
+zoom value.
+\item \textbf{Control-V}: will copy any image stored inside the clipboard 
+in your image (only works on 2D images on Windows platforms).
+\item \textbf{F1}: on a 3D image display, will switch to mode PROJECTION.
+\item \textbf{F2}: on a 3D image display, will switch to mode VOLUME
+RENDERING if you have VTK python bindings available on your computer.
+\item \textbf{F3}: on a 3D image display, will switch to mode PLAYER.
+\item \textbf{Space} : will start/stop the player in the 3D image display
+PLAYER mode.
+\item \textbf{Page-Up} : will display the next image in the sequence in the
+3D image display PLAYER mode.
+\item \textbf{Page-Down} : will display the previous image in the sequence
+in the 3D image display PLAYER mode.
+\end{itemize}
+
+\small\rule{1ex}{1ex}\hspace{1ex}\textsc{Mouse:}
+
+\scriptsize
+
+\begin{itemize}
+\item \textbf{scrolling} : will zoom in/out in 2D displays (basic, 
+projection, player ...)
+\item \textbf{motion+Control} : will allow to move through the image
+in the 3D image display PROJECTION mode.
+\end{itemize}
 
 \end{flushleft}
 \end{multicols}
 \end{minipage}
 };
 \end{tikzpicture}
+
 
 \end{center}
 \end{document}
@@ -296,14 +346,14 @@ def extractModule(path):
                     names = l[4:].split(' - ')
                     sections[in_section] = names[0]
                     if len(names)>1:
-                        sections["SHORT_DESCRIPTION"] = names[1]
+                        sections["SHORT_DESCRIPTION"] = names[1].replace('_','\\_')
                 elif in_section=="FILE":
                     # section FILE contains only one information
                     sections[in_section] = l[4:]
                 elif in_section=="DESCRIPTION":
                     # The DESCRIPTION can be spreaded along multiple lines
                     # here we concatened all of them
-                    sections[in_section] += ' '+l[4:]
+                    sections[in_section] += ' '+l[4:].replace('_','\\_')
                 elif in_section=="CLASSES":
                     # The CLASSES section lists all the classes and their methods
                     sl = l[4:].split(' ')
