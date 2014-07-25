@@ -99,7 +99,7 @@ class structuringElement:
         """
         Returns the directions used by the structuring element encoded in
         a format directly usable with Neighbor functions.
-        if 'withoutZero' is set to True the returned encoded direction will
+        If 'withoutZero' is set to True the returned encoded direction will
         not include direction 0 (useful for some operators, such as erode
         or dilate, where direction 0 modifies the initial conditions).
         """
@@ -149,7 +149,7 @@ class structuringElement:
 
     def setAs(self, se):
         """
-        Copies the attributes (directions, grid) of 'structuringElement' into
+        Copies the attributes (directions, grid) of the structuringElement 'se' into
         the structuring element which this method is applied to. This method is
         mainly used to modify the default structuring element.
         
@@ -196,7 +196,8 @@ def diffNeighbor(imIn, imInout, nb, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
     """
     Performs a set difference operation between the 'imInout' image pixels and 
     their neighbors according to 'grid' in image 'imIn'. Neighbors are encoded
-    in 'nb'.
+    in 'nb'. If any considered neighbor point has a value greater than or equal 
+	to the center point, this center point point is set to 0.
     The result is put in 'imOut'. 
    
     'grid' value can be HEXAGONAL or SQUARE. 'edge' value can be EMPTY or FILLED.

@@ -192,7 +192,7 @@ def mix(imInR, imInG, imInB):
     """
     Mixes mamba images 'imInR' (red channel), 'imInG' (green channel) and 
     'imInB' (blue channel) into a color image.
-    The function returns a PIL image.
+    The function returns a PIL/PILLOW image.
     """
     if imInR.getDepth()!=8 or imInG.getDepth()!=8 or imInB.getDepth()!=8:
         mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
@@ -259,16 +259,16 @@ def split(pilimIn, imOutR, imOutG, imOutB):
 
 def Mamba2PIL(imIn):
     """
-    Creates and returns a PIL image using the Mamba image 'imIn'.
+    Creates and returns a PIL/PILLOW image using the Mamba image 'imIn'.
     
-    If the mamba image uses a palette, it will be integrated inside the PIL
+    If the mamba image uses a palette, it will be integrated inside the PIL/PILLOW
     image.
     """
     return utils.convertToPILFormat(imIn.mbIm, imIn.palette)
 
 def PIL2Mamba(pilim, imOut):
     """
-    The PIL image 'pilim' is used to load the Mamba image 'imOut'.
+    The PIL/PILLOW image 'pilim' is used to load the Mamba image 'imOut'.
     """
     depth = imOut.getDepth()
     (width, height) = imOut.getSize()

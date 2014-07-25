@@ -41,7 +41,7 @@ def fullAlternateFilter(imIn, imOut, n, openFirst, se=mamba.DEFAULT_SE):
 def linearAlternateFilter(imIn, imOut, n, openFirst, grid=mamba.DEFAULT_GRID):
     """
     Performs an alternate filter operation on image 'imIn' with openings and
-    closings by segments of size 'n' (supremeum of openings and infimum of
+    closings by segments of size 'n' (supremum of openings and infimum of
     closings) and puts the result in 'imOut'. If 'openFirst' is True, the filter
     begins with an opening, a closing otherwise.
     """

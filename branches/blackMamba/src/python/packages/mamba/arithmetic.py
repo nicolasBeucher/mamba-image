@@ -38,15 +38,15 @@ def add(imIn1, imIn2, imOut):
 
 def sub(imIn1, imIn2, imOut):
     """
-    Subtracts 'imIn2' pixel values to 'imIn1' pixel values and put the result 
+    Subtracts 'imIn2' pixel values to 'imIn1' pixel values and puts the result 
     in 'imOut'. The operation can be sum up in the following formula :
     
     imOut = imIn1 - imIn2
 
-    You can mix formats in the substraction operation (a binary image can be
-    substracted to a greyscale image, etc...). 
+    You can mix formats in the subtraction operation (a binary image can be
+    subtracted to a greyscale image, etc...). 
     However you must ensure that the output image is as deep as the deepest of 
-    the two substracted images.
+    the two subtracted images.
     
     The operation is also saturated for grey-scale images (e.g. on a grey scale 
     image 0-1=0) but not for 32-bit images.
@@ -81,8 +81,11 @@ def div(imIn1, imIn2, imOut):
     
     imOut = imIn1 / imIn2
 
-    You can mix formats in the multiply operation.
+    Greyscale or 32-bit images can be used. You can mix formats in the multiply operation.
     However you must ensure that the output image is as deep as 'imIn1'.
+	
+	In order to avoid errors due to divisions by zero, each time a pixel in 'imIn2' is equal
+	to zero, the result is set to the maximum value corresponding to the depth of the image. 
     """
     err = core.MB_Div(imIn1.mbIm, imIn2.mbIm,imOut.mbIm)
     mamba.raiseExceptionOnError(err)
@@ -109,7 +112,7 @@ def logic(imIn1, imIn2 , imOut, log):
     Performs a logic operation between the pixels of images 'imIn1' and 'imIn2'
     and put the result in 'imOut'.
     The logic operation to be performed is indicated through argument 'log'.
-    The allowed logical operations in 'log' are : 
+    The allowed logical operations in 'log' are: 
     
     "and", "or", "xor", ""inf" or "sup". 
     
@@ -251,7 +254,7 @@ def floorSubConst(imIn, v, imOut):
    
 def floorSub(imIn1, imIn2, imOut):
     """
-    subtracts image 'imIn2' from image 'imIn1' and puts the result in 'imOut'.
+    Subtracts image 'imIn2' from image 'imIn1' and puts the result in 'imOut'.
     If imIn1 - imIn2 is negative, the result is truncated and limited to 0.
     
     Altough it is possible to use a 8-bit image for imIn2, it is recommended to

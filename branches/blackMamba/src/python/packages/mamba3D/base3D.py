@@ -1,6 +1,6 @@
 """
 This modules defines the basic 3D image class (the 3D image can be considered
-a stack or sequence of 2D images).
+as a stack or sequence of 2D images).
 """
 
 # Contributors : Nicolas BEUCHER
@@ -226,7 +226,7 @@ class image3DMb:
         
     def load(self, path, rgbfilter=None):
         """
-        Loads a 3D image stack (sequence) of image as found in directory 'path'.
+        Loads a 3D stack (sequence) of images found in directory 'path'.
 
         To be valid a sequence of images must be composed of at least 'length'
         images to be able to fill the sequence. Their file names must be of

@@ -61,7 +61,7 @@ def basinSegment(imIn, imMarker, grid=mamba.DEFAULT_GRID, max_level=0):
     
     The result is put inside 'imMarker'. The three first byte planes contain
     the actual segmentation (each segment has a specific label according to the
-    original marker). This function only return catchment basins (no watershed 
+    original marker). This function only returns catchment basins (no watershed 
     line) and is faster than watershedSegment if you are not interested in the 
     watershed line.
     """

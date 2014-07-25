@@ -18,7 +18,7 @@ class doubleStructuringElement:
     This class allows to define a doublet of structuring elements used in a coded 
     format by Hit-or-Miss, thin and thick operations and their corresponding methods.
     The coding corresponds to the output of the 'hitormissPatternSelector' tool 
-    available in mambaExtra module.
+    available in the extra module (mambaDisplay package).
     """
     
     def __init__(self, *args):

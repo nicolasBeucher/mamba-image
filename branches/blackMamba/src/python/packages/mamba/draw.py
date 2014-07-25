@@ -1,5 +1,5 @@
 """
-This module defines functions to draw inside mamba images.
+This module defines functions to draw inside Mamba images.
 Drawing functions include lines, squares, ... The module
 also provides functions to extract pixel information.
 """

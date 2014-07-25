@@ -187,14 +187,13 @@ def dualBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
 def hierarBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
     """
     Builds image 'imInout' using 'imMask' as a mask. This function only
-    works with greyscale images and uses a hierarchical list algorithm to
+    works with greyscale images and uses a hierarchical queue algorithm to
     compute the result.
     
     'grid' will set the number of neighbors considered by the algorithm 
     (HEXAGONAL is 6-Neighbors and SQUARE is 8-Neighbors).
     
-    This function is identical to build but it is faster. However, it works 
-    only with greyscale images.
+    This function is identical to build but it is faster.
     """
     
     err = core.MB_HierarBld(imMask.mbIm, imInout.mbIm, grid.id)
@@ -204,14 +203,13 @@ def hierarBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
 def hierarDualBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
     """
     Builds (dual build) image 'imInout' using 'imMask' as a mask. This function 
-    works with greyscale and 32-bit images and uses a hierarchical list 
+    works with greyscale and 32-bit images and uses a hierarchical queue 
     algorithm to compute the result.
     
     'grid' will set the number of neighbors considered by the algorithm 
     (HEXAGONAL is 6-Neighbors and SQUARE is 8-Neighbors).
     
-    This function is identical to build but it is faster. However, it works 
-    only with greyscale images.
+    This function is identical to build but it is faster.
     """
     
     err = core.MB_HierarDualBld(imMask.mbIm, imInout.mbIm, grid.id)

@@ -1,6 +1,6 @@
 """
 This is the base module of the Mamba Image library. It defines the imageMb class
-used to contains image. It also contains image display configuration functions.
+used to contain images. It also contains image display configuration functions.
 """
 
 import mamba.core as core
@@ -57,7 +57,7 @@ def getImageCounter():
 class imageMb:
     """
     Defines the imageMb class and its methods.
-    All mamba images are represented by this class.
+    All Mamba images are represented by this class.
     """
 
     def __init__(self, *args, **kwargs):
@@ -67,10 +67,10 @@ class imageMb:
         This constructor allows a wide range of possibilities for defining an image:
             * imageMb(): without arguments will create an empty greyscale image.
             * imageMb(im): will create an image using the same size and depth
-              than 'im'.
+              as 'im'.
             * imageMb(depth): will create an image with the desired 'depth' (1, 8 or 32).
             * imageMb(path): will load the image located in 'path'.
-            * imageMb(im, depth): will create an image using the same size than 'im' 
+            * imageMb(im, depth): will create an image using the same size as 'im' 
             and the specified 'depth'.
             * imageMb(path, depth): will load the image located in 'path' and 
             convert it to the specified 'depth'.
@@ -82,7 +82,7 @@ class imageMb:
         256x256. The default depth is 8 (greyscale).
         
         When loading an image from a file, please note that Mamba accepts all 
-        kinds of images (actually all the PIL supported formats). You can specify
+        kinds of images (actually all the PIL or PILLOW supported formats). You can specify
         the RGB filter that will be used to convert a color image into a greyscale 
         image by adding the rgbfilter=<your_filter> to the argument of the
         constructor.
@@ -224,7 +224,7 @@ class imageMb:
         indicating the amount of red, green and blue to take from the image to
         obtain the grey value.
         By default, the color conversion uses the ITU-R 601-2 luma transform (see
-        PIL documentation for details).
+        PIL/PILLOW documentation for details).
         """
         next_mbIm = utils.load(path, size=(self.mbIm.width,self.mbIm.height), rgb2l=rgbfilter)
         if self.mbIm.depth==1:
@@ -242,8 +242,8 @@ class imageMb:
         
     def save(self, path):
         """
-        Saves the image at the corresponding 'path' using PIL library.
-        The format is automatically deduced by PIL from the image name extension.
+        Saves the image at the corresponding 'path' using PIL/PILLOW library.
+        The format is automatically deduced by PIL/PILLOW from the image name extension.
         Note that, if the image comes with a palette, the image is saved with
         this palette.        
         """
@@ -311,8 +311,8 @@ class imageMb:
             
     def freeze(self):
         """
-        Called to freeze the display of the image. Thus the image may evolve but
-        the display will not show these evolutions until the method unfreezeDisplay
+        Called to freeze the display of the image. Thus the image may change but
+        the display will not show these modifications until the method unfreeze
         is called.
         """
         if self.displayId != '':
@@ -342,7 +342,7 @@ class imageMb:
     def hide(self):
         """
         Called to hide the display associated to the image.
-        If the display is hidden, the computations go faster.
+        If the display is hidden, the computations go much faster.
         """
         if self.displayId != '':
             self.gd.hideWindow(self.displayId)

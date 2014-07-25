@@ -1,5 +1,5 @@
 """
-This module regroups various arithmetic operators such as addition, substraction
+This module regroups various arithmetic operators on 3D images such as addition, substraction
 and so on ...
 """
 
@@ -25,8 +25,6 @@ def add3D(imIn1, imIn2, imOut):
     
     The operation is also saturated for greyscale images (e.g. on a 8-bit
     greyscale image, 255+1=255). With 32-bit images, the addition is not saturated.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -44,15 +42,13 @@ def sub3D(imIn1, imIn2, imOut):
     
     imOut = imIn1 - imIn2
 
-    You can mix formats in the substraction operation (a binary image can be
-    substracted to a greyscale image, etc...). 
+    You can mix formats in the subtraction operation (a binary image can be
+    subtracted to a greyscale image, etc...). 
     However you must ensure that the output image is as deep as the deepest of 
-    the two substracted images.
+    the two subtracted images.
     
     The operation is also saturated for grey-scale images (e.g. on a grey scale 
     image 0-1=0) but not for 32-bit images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -77,8 +73,6 @@ def mul3D(imIn1, imIn2, imOut):
     
     The operation is also saturated for greyscale images (e.g. on a greyscale 
     image 255*255=255).
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -99,7 +93,9 @@ def div3D(imIn1, imIn2, imOut):
     You can mix formats in the multiply operation.
     However you must ensure that the output image is as deep as 'imIn1'.
     
-    This function works with 3D images.
+	In order to avoid divisions by zero, the result of the operation is set to
+	the maximal pixel value whenever the corresponding pixel in 'imIn2' is
+	equal to zero.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -121,8 +117,6 @@ def addConst3D(imIn, v, imOut):
     size and depth.
     
     The operation is saturated (limited to 255) for greyscale images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     inl = len(imIn)
@@ -143,8 +137,6 @@ def subConst3D(imIn, v, imOut):
     size and depth.
     
     The operation is saturated (lower limit is 0) for greyscale images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     inl = len(imIn)
@@ -165,8 +157,6 @@ def divConst3D(imIn, v, imOut):
     A zero value in 'v' will return an error.
     For a 8-bit image, v will be restricted between 1 and 255.
     You cannot use it with binary images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     inl = len(imIn)
@@ -185,8 +175,6 @@ def mulConst3D(imIn, v, imOut):
 
     The operation is saturated for greyscale images. You cannot use it with 
     binary images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     inl = len(imIn)
@@ -225,8 +213,6 @@ def logic3D(imIn1, imIn2 , imOut, log):
 
     'imIn1', imIn2' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same
     size and depth.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -248,8 +234,6 @@ def diff3D(imIn1, imIn2, imOut):
     
     'imIn1', imIn2' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same
     size and depth.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -270,8 +254,6 @@ def ceilingAddConst3D(imIn, v, imOut):
     
     Note that this operator is mainly useful for 32-bit images, as the result
     of the addition is always truncated for 8-bit images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     inl = len(imIn)
@@ -292,8 +274,6 @@ def ceilingAdd3D(imIn1, imIn2, imOut):
     
     Note that this operator is mainly useful for 32-bit images, as the result
     of the addition is always truncated for 8-bit images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
@@ -311,8 +291,6 @@ def floorSubConst3D(imIn, v, imOut):
     
     Note that this operator is mainly useful for 32-bit images, as the result
     of the subtraction is always truncated for 8-bit images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     inl = len(imIn)
@@ -332,8 +310,6 @@ def floorSub3D(imIn1, imIn2, imOut):
     
     Note that this operator is mainly useful for 32-bit images, as the result
     of the subtractiontion is always truncated for 8-bit images.
-    
-    This function works with 3D images.
     """
     outl = len(imOut)
     in1l = len(imIn1)
