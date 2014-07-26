@@ -145,7 +145,7 @@ texOutput = """
 \\usepackage{mamba}
 
 \\title{Mamba Image Examples}
-\\author{Automatically generated}
+\\author{Nicolas BEUCHER \\and Serge BEUCHER}
 \\date{\\today}
 
 \\begin{document}
