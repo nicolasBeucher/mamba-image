@@ -11,7 +11,7 @@ import mamba3D as m3D
 import mamba
 import mamba.core as core
 
-def label3D(imIn, imOut, lblow=1, lbhigh=256, grid=m3D.DEFAULT_GRID3D):
+def label3D(imIn, imOut, lblow=0, lbhigh=256, grid=m3D.DEFAULT_GRID3D):
     """
     Labels the 3D image 'imIn' and puts the result in 32-bit 3D image
     'imOut'. Returns the number of connected components found by the

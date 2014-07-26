@@ -75,17 +75,24 @@ class TestLabel(unittest.TestCase):
         (w,h) = self.im1_1.getSize()
         
         self.im1_1.reset()
+        self.im32_2.reset()
         
         for x in range(1,w-3,4):
             for hi in range(1,h-1):
                 self.im1_1.setPixel(1, (x, hi))
+                self.im32_2.setPixel(1, (x, hi))
             self.im1_1.setPixel(1, (x+1, hi))
+            self.im32_2.setPixel(1, (x+1, hi))
             for hi in range(h-2,0,-1):
                 self.im1_1.setPixel(1, (x+2, hi))
+                self.im32_2.setPixel(1, (x+2, hi))
             self.im1_1.setPixel(1, (x+3, 1))
+            self.im32_2.setPixel(1, (x+3, hi))
         
         n = label(self.im1_1, self.im32_1, grid=SQUARE)
         self.assertEqual(n, 1)
+        (x,y) = compare(self.im32_1, self.im32_2, self.im32_3)
+        self.assertLess(x, 0)
         
         n = label(self.im1_1, self.im32_1, grid=HEXAGONAL)
         self.assertEqual(n, 1)
@@ -133,7 +140,7 @@ class TestLabel(unittest.TestCase):
         self.assertEqual(n, 1)
 
     def testComputationMultipleLabel1(self):
-        """Labelling numerous simple objects"""
+        """Labelling numerous simple binary objects"""
         (w,h) = self.im1_1.getSize()
         
         self.im1_1.reset()
@@ -143,8 +150,8 @@ class TestLabel(unittest.TestCase):
         for wi in range(0,w-2,2):
             for hi in range(0,h-2,2):
                 self.im1_1.setPixel(1, (wi,hi))
-                n_exp=n_exp+1
-                vol_exp = vol_exp+n_exp+(n_exp-1)//255
+                n_exp += 1
+                vol_exp += n_exp
         
         n = label(self.im1_1, self.im32_1, grid=SQUARE)
         self.assertEqual(n, n_exp)
@@ -157,7 +164,7 @@ class TestLabel(unittest.TestCase):
         self.assertEqual(vol, vol_exp)
 
     def testComputationMultipleLabel8(self):
-        """Labelling numerous simple objects"""
+        """Labelling numerous simple greyscale objects"""
         (w,h) = self.im8_1.getSize()
         
         self.im8_1.reset()
@@ -168,8 +175,8 @@ class TestLabel(unittest.TestCase):
         for wi in range(0,w-2,2):
             for hi in range(0,h-2,2):
                 self.im8_1.setPixel(vi, (wi,hi))
-                n_exp=n_exp+1
-                vol_exp += n_exp+(n_exp-1)//255
+                n_exp += 1
+                vol_exp += n_exp
         
         n = label(self.im8_1, self.im32_1, grid=SQUARE)
         self.assertEqual(n, n_exp)
@@ -189,8 +196,8 @@ class TestLabel(unittest.TestCase):
         for wi in range(1,w-2,2):
             for hi in range(1,h-2,2):
                 self.im8_1.setPixel(vi, (wi,hi))
-                n_exp=n_exp+1
-                vol_exp += (n_exp+(n_exp-1)//255) - 1
+                n_exp += 1
+                vol_exp += (n_exp-1)
         
         n = label(self.im8_1, self.im32_1, grid=SQUARE)
         self.assertEqual(n, n_exp)
@@ -203,7 +210,7 @@ class TestLabel(unittest.TestCase):
         self.assertEqual(vol, vol_exp)
 
     def testComputationMultipleLabel32(self):
-        """Labelling numerous simple objects"""
+        """Labelling numerous simple 32-bit objects"""
         (w,h) = self.im32_1.getSize()
         
         self.im32_1.reset()
@@ -214,8 +221,8 @@ class TestLabel(unittest.TestCase):
         for wi in range(0,w-2,2):
             for hi in range(0,h-2,2):
                 self.im32_1.setPixel(vi, (wi,hi))
-                n_exp=n_exp+1
-                vol_exp += n_exp+(n_exp-1)//255
+                n_exp += 1
+                vol_exp += n_exp
         
         n = label(self.im32_1, self.im32_2, grid=SQUARE)
         self.assertEqual(n, n_exp)
@@ -235,8 +242,8 @@ class TestLabel(unittest.TestCase):
         for wi in range(1,w-2,2):
             for hi in range(1,h-2,2):
                 self.im32_1.setPixel(vi, (wi,hi))
-                n_exp=n_exp+1
-                vol_exp += (n_exp+(n_exp-1)//255) - 1
+                n_exp += 1
+                vol_exp += n_exp-1
         
         n = label(self.im32_1, self.im32_2, grid=SQUARE)
         self.assertEqual(n, n_exp)

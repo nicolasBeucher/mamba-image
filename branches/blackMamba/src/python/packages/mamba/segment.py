@@ -8,7 +8,7 @@ operations (such as watershed=.
 import mamba
 import mamba.core as core
 
-def label(imIn, imOut, lblow=1, lbhigh=256, grid=mamba.DEFAULT_GRID):
+def label(imIn, imOut, lblow=0, lbhigh=256, grid=mamba.DEFAULT_GRID):
     """
     Labels the image 'imIn' and puts the result in 32-bit image 'imOut'.
     Returns the number of connected components found by the labeling algorithm.

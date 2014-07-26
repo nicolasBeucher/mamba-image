@@ -35,13 +35,21 @@ extern MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32
 /* The corrected label have values that follow each other */
 /* along a specific rule to allow lblow and lbhml values */
 /* to exclude some value in the first byte */
-PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow, PIX32 lbhml)
+PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow, PIX32 lbhigh)
 {
+    PIX32 lbvalue;
     inlabel = MB_find_above_label(labels, inlabel);
 
     if (labels->CEQ[inlabel]==0) {
-        labels->CEQ[inlabel] = lblow + (labels->ccurrent%lbhml) + 256*(labels->ccurrent/lbhml);
+        lbvalue = labels->ccurrent & 0xff;
+        if (lbvalue<lblow) {
+            labels->ccurrent += (lblow-lbvalue);
+        } else if (lbvalue>=lbhigh) {
+            labels->ccurrent += (0x100+lblow-lbvalue);
+        }
+        labels->CEQ[inlabel] = labels->ccurrent;
         labels->ccurrent++;
+        labels->nbObjs++;
     }
     
     return labels->CEQ[inlabel];
@@ -85,7 +93,7 @@ void MB_TidyLabel(PLINE *plines_out,
         p1 = (PIX32 *) (*plines_out);
         for(v=0; v<bytes; v+=4, p1++) {
             if (*p1!=0) {
-                *p1 = MB_find_correct_label(labels, *p1, lblow, lbhigh-lblow);
+                *p1 = MB_find_correct_label(labels, *p1, lblow, lbhigh);
             }
         }            
     }
