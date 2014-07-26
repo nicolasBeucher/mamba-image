@@ -134,10 +134,12 @@ typedef struct {
     PIX32 current;
     /* Current corrected label index (value given to the next label) */
     PIX32 ccurrent;
+    /* Number of objects found */
+    PIX32 nbObjs;
 } MB_Label_struct;
 
 /* label handling */
-PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow, PIX32 lbhml);
+PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow, PIX32 lbhigh);
 PIX32 MB_find_above_label(MB_Label_struct *labels, PIX32 inlabel);
 void MB_TidyLabel(PLINE *plines_out,
                   Uint32 bytes, Uint32 nb_lines,

@@ -258,7 +258,8 @@ MB_errcode MB3D_Label8(MB3D_Image *src, MB3D_Image *dest,
     
     /* Initializing the algorithm parameters */
     labels.current = 1;
-    labels.ccurrent = 0;
+    labels.ccurrent = 1;
+    labels.nbObjs = 0;
     labels.maxEQ = (src->seq[0]->width * src->seq[0]->height * src->length);
     labels.EQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
@@ -296,7 +297,7 @@ MB_errcode MB3D_Label8(MB3D_Image *src, MB3D_Image *dest,
     }
     MB3D_TidyLabel(dest, (PIX32) lblow, (PIX32) lbhigh, &labels);
     
-    *pNbobj = (Uint32) (labels.ccurrent);
+    *pNbobj = (Uint32) (labels.nbObjs);
     
     /* freeing the labels arrays */
     MB_free(labels.EQ);

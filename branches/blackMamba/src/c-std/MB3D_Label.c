@@ -79,7 +79,7 @@ void MB3D_TidyLabel(MB3D_Image *dest,
             pout = (PIX32 *) (im->plines[y]);
             for(x=0; x<im->width; x++, pout++) {
                 if (*pout!=0) {
-                    *pout = MB_find_correct_label(labels, *pout, lblow, lbhigh-lblow);
+                    *pout = MB_find_correct_label(labels, *pout, lblow, lbhigh);
                 }
             }
         }

@@ -359,7 +359,8 @@ MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh
     
     /* Initializing the algorithm parameters */
     labels.current = 1;
-    labels.ccurrent = 0;
+    labels.ccurrent = 1;
+    labels.nbObjs = 0;
     labels.maxEQ = (src->width*src->height);
     labels.EQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if(labels.EQ==NULL){
@@ -390,7 +391,7 @@ MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh
 
     MB_TidyLabel(plines_out, bytes_out, src->height, (PIX32) lblow, (PIX32) lbhigh, &labels);
     
-    *pNbobj = (Uint32) (labels.ccurrent);
+    *pNbobj = (Uint32) (labels.nbObjs);
     
     /* freeing the labels arrays */
     MB_free(labels.EQ);
