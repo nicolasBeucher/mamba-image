@@ -14,7 +14,6 @@ Python functions:
     compare3D
     shift3D
     drawEdge3D
-    downscale3D
 """
 
 from mamba import *
