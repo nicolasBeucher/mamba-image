@@ -467,3 +467,16 @@ def octogonalDilate(imIn, imOut, size, edge=mamba.EMPTY):
     dilate(imIn, imOut, n1, se=SQUARE3X3, edge=edge)
     dilate(imOut, imOut, n2, se=DIAMOND, edge=edge)
 
+def computeDistance(imIn, imOut, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
+    """
+    Computes for each white pixel of binary 'imIn' the minimum distance to
+    reach a connected component boundary while constantly staying in the set. 
+    The result is put in 32-bit 'imOut'.
+    
+    The distance computation will be performed according to the 'grid' (HEXAGONAL
+    is 6-Neighbors and SQUARE is 8-Neighbors). 'edge' can be FILLED or EMPTY.
+    """
+
+    err = core.MB_Distanceb(imIn.mbIm,imOut.mbIm, grid.id, edge.id)
+    mamba.raiseExceptionOnError(err)
+    imOut.update()
