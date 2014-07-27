@@ -18,7 +18,8 @@ def convert(imIn, imOut):
     values are transformed to 0. The reverse convention applies.
 
     This function can also be used to downscale 32-bit images into greyscale
-    images.
+    images. Conversion from 8-bit to 32-bit is equivalent to copyBytePlane
+    for plane 0.
 
     Other conversion are not supported.
     """

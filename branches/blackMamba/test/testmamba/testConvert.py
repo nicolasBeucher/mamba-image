@@ -9,6 +9,7 @@ Here is the list of legal operations:
      8 -> 1
      1 -> 8
     32 -> 8
+     8 -> 32
      and copy :
      1 -> 1
      8 -> 8
@@ -17,7 +18,8 @@ Here is the list of legal operations:
 When converting from 8-bit to binary, only the pixels that have a value 255 are
 set to true(1) in the binary image. All the others are set to False(0). In the 
 other way, binary to 8-bit, the True pixels are set to 255 and 0 for the False ones.
-The 32bit to 8bit conversion is a downscaling.
+The 32bit to 8bit conversion is a downscaling and the 8-bit to 32-bit is
+equivalent to copyBytePlane for plane 0.
 
 Python function:
     convert
@@ -67,7 +69,7 @@ class TestConvert(unittest.TestCase):
         self.assertRaises(MambaError, convert, self.im1_1, self.im32_2)
         #self.assertRaises(MambaError, convert, self.im8_1, self.im1_2)
         #self.assertRaises(MambaError, convert, self.im8_1, self.im8_2)
-        self.assertRaises(MambaError, convert, self.im8_1, self.im32_2)
+        #self.assertRaises(MambaError, convert, self.im8_1, self.im32_2)
         self.assertRaises(MambaError, convert, self.im32_1, self.im1_2)
         #self.assertRaises(MambaError, convert, self.im32_1, self.im8_2)
         #self.assertRaises(MambaError, convert, self.im32_1, self.im32_2)
@@ -140,6 +142,20 @@ class TestConvert(unittest.TestCase):
         convert(self.im32_1, self.im8_1)
         (x,y) = compare(self.im8_1, self.im8_2, self.im8_3)
         self.assertLess(x, 0)
+
+    def testConversion_8_32(self):
+        """Verifies that converting an 8-bit image into a 32-bit image works fine"""
+        (w,h) = self.im8_1.getSize()
+        self.im32_2.reset()
+        drawSquare(self.im32_2, (w//3,0,(2*w)//3-1,h-1), 127)
+        drawSquare(self.im32_2, ((w*2)//3,0,w-1,h-1), 255)
+        self.im8_1.reset()
+        drawSquare(self.im8_1, (w//3,0,(2*w)//3-1,h-1), 127)
+        drawSquare(self.im8_1, ((w*2)//3,0,w-1,h-1), 255)
+        convert(self.im8_1, self.im32_1)
+        (x,y) = compare(self.im32_1, self.im32_2, self.im32_3)
+        self.assertLess(x, 0)
+
 
     def testComputation_1_1(self):
         """Verifies that converting a binary image into a binary image amounts to copy it"""
