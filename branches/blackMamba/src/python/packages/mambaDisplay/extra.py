@@ -22,21 +22,11 @@ except ImportError:
 try:
     from PIL import ImageTk
     from PIL import Image
-    from PIL import ImageDraw
 except ImportError:
     print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
     raise
     
-
-###############################################################################
-#  Definitions
-_icon_size = (64, 64)
-_resize_process = Image.NEAREST
-
-_MAXH = 400
-_MAXW = 400
-_MINH = 200
-_MINW = 200
+import constants
 
 ################################################################################
 # Dynamic threshold
@@ -74,11 +64,11 @@ class _imageThreshold(tk.Toplevel):
         self.osize = [self.mbIm.width,self.mbIm.height]
         imsize = self.osize[:]
         self.zoom = 1.0
-        while  imsize < [_MINW, _MINH]:
+        while imsize < [constants._MIN, constants._MIN]:
             imsize[0] = imsize[0]*2
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
-        while imsize > [_MAXW, _MAXH]:
+        while imsize > [constants._MAX, constants._MAX]:
             imsize[0] = imsize[0]/2
             imsize[1] = imsize[1]/2
             self.zoom = self.zoom/2
@@ -297,7 +287,9 @@ class _imageThreshold(tk.Toplevel):
         
         err = core.MB_Thresh(self.mbIm, self.mbImThresh, self.low, self.high)
         self.pilImage = utils.convertToPILFormat(self.mbImThresh)
-        self.icon = ImageTk.PhotoImage(self.pilImage.resize(_icon_size, _resize_process))
+        m = max(self.osize)
+        icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
+        self.icon = ImageTk.PhotoImage(self.pilImage.resize(icon_size, Image.NEAREST))
         self.tk.call('wm','iconphoto', self._w, self.icon)
         self.drawImage()
         
@@ -387,11 +379,11 @@ class _imageSegment(tk.Toplevel):
         self.osize = list(self.imIn.getSize())
         imsize = self.osize[:]
         self.zoom = 1.0
-        while  imsize < [_MINW, _MINH]:
+        while imsize < [constants._MIN, constants._MIN]:
             imsize[0] = imsize[0]*2
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
-        while imsize > [_MAXW, _MAXH]:
+        while imsize > [constants._MAX, constants._MAX]:
             imsize[0] = imsize[0]/2
             imsize[1] = imsize[1]/2
             self.zoom = self.zoom/2
@@ -630,7 +622,9 @@ class _imageSegment(tk.Toplevel):
         else:
             mamba.copy(self.imIn, self.imWrk)
             self.pilImage = utils.convertToPILFormat(self.imWrk.mbIm)
-        self.icon = ImageTk.PhotoImage(self.pilImage.resize(_icon_size, _resize_process))
+        m = max(self.osize)
+        icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
+        self.icon = ImageTk.PhotoImage(self.pilImage.resize(icon_size, Image.NEAREST))
         self.tk.call('wm','iconphoto', self._w, self.icon)
         self.drawImage()
         
@@ -717,11 +711,11 @@ class _imageSuperpose(tk.Toplevel):
         self.osize = [self.mbIm1.width,self.mbIm1.height]
         imsize = self.osize[:]
         self.zoom = 1.0
-        while  imsize < [_MINW, _MINH]:
+        while imsize < [constants._MIN, constants._MIN]:
             imsize[0] = imsize[0]*2
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
-        while imsize > [_MAXW, _MAXH]:
+        while imsize > [constants._MAX, constants._MAX]:
             imsize[0] = imsize[0]/2
             imsize[1] = imsize[1]/2
             self.zoom = self.zoom/2
@@ -907,7 +901,9 @@ class _imageSuperpose(tk.Toplevel):
             return
         
         self.pilImage = utils.convertToPILFormat(self.mbImOut, palette)
-        self.icon = ImageTk.PhotoImage(self.pilImage.resize(_icon_size, _resize_process))
+        m = max(self.osize)
+        icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
+        self.icon = ImageTk.PhotoImage(self.pilImage.resize(icon_size, Image.NEAREST))
         self.tk.call('wm','iconphoto', self._w, self.icon)
         self.drawImage()
         
@@ -995,7 +991,9 @@ class _imageSuperpose(tk.Toplevel):
                 else:
                     pix[i%w, i/w] = (0, v1[0], 0)
         
-        self.icon = ImageTk.PhotoImage(self.pilImage.resize(_icon_size, _resize_process))
+        m = max(self.osize)
+        icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
+        self.icon = ImageTk.PhotoImage(self.pilImage.resize(icon_size, Image.NEAREST))
         self.tk.call('wm','iconphoto', self._w, self.icon)
         self.drawImage()
         
