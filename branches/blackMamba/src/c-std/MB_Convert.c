@@ -173,8 +173,10 @@ MB_errcode MB_Convert(MB_Image *src, MB_Image *dest)
     case MB_PAIR_32_8:
         return MB_Convert32to8(src,dest);
         break;
-    case MB_PAIR_1_32:
     case MB_PAIR_8_32:
+        return MB_CopyBytePlane(src,dest,0);
+        break;
+    case MB_PAIR_1_32:
     case MB_PAIR_32_1:
     default:
         break;
