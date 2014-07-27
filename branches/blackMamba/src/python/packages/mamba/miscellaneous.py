@@ -10,6 +10,12 @@ import mamba
 import mamba.core as core
 import mamba.utils as utils
 
+try:
+    from PIL import Image
+except ImportError:
+    print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
+    raise
+
 # Properties operators #########################################################
 
 def compare(imIn1, imIn2, imOut):
@@ -115,20 +121,6 @@ def isotropicDistance(imIn, imOut, edge=mamba.FILLED):
         else:
             mamba.conjugateHexagonalErode(imWrk2, imWrk1, 1, edge=edge)
         oldn = n
-    
-def computeDistance(imIn, imOut, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
-    """
-    Computes for each white pixel of binary 'imIn' the minimum distance to
-    reach a connected component boundary while constantly staying in the set. 
-    The result is put in 32-bit 'imOut'.
-    
-    The distance computation will be performed according to the 'grid' (HEXAGONAL
-    is 6-Neighbors and SQUARE is 8-Neighbors). 'edge' can be FILLED or EMPTY.
-    """
-
-    err = core.MB_Distanceb(imIn.mbIm,imOut.mbIm, grid.id, edge.id)
-    mamba.raiseExceptionOnError(err)
-    imOut.update()
 
 # Utility operators ############################################################
 

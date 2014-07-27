@@ -238,3 +238,16 @@ def dilateByCylinder3D(imInOut, height, section):
             mamba.logic(provIm3D[i], imInOut[j], provIm3D[i], "sup")
     m3D.copy3D(provIm3D, imInOut)
 
+def computeDistance3D(imIn, imOut, grid=m3D.DEFAULT_GRID3D, edge=mamba.EMPTY):
+    """
+    Computes for each white pixel of binary 3D 'imIn' the minimum distance to
+    reach a connected component boundary while constantly staying in the set. 
+    The result is put in 32-bit 'imOut'.
+    
+    The distance computation will be performed according to the 'grid' (CUBIC
+    is 26-Neighbors and FACE_CENTER_CUBIC is 12-Neighbors, CENTER_CUBIC is
+    unsupported by this operator). 'edge' can be FILLED or EMPTY.
+    """
+    err = core.MB3D_Distanceb(imIn.mb3DIm, imOut.mb3DIm, grid.getCValue(), edge.id)
+    mamba.raiseExceptionOnError(err)
+
