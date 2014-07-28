@@ -4,6 +4,7 @@ mambaDisplay contains all the elements allowing to display mamba images
 """
 
 import constants
+from .palette import *
 
 ################################################################################
 # Displayer interface

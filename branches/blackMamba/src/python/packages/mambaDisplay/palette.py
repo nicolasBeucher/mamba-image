@@ -1,46 +1,45 @@
 """
 This module provides palette definitions and functions to build specific 
 palettes.
-The following palettes are pre-defined: rainbow, inverted_rainbow, patchwork
-and heatview.
 """
 
 ###############################################################################
 # Predefined color palettes
 
-rainbow = (0,0,0)
+_rainbow = (0,0,0)
 for _i in range(51): #red to yellow
-    rainbow = rainbow + (255,_i*5,0)
+    _rainbow = _rainbow + (255,_i*5,0)
 for _i in range(51): #yellow to green
-    rainbow = rainbow + (255-_i*5,255,0)
+    _rainbow = _rainbow + (255-_i*5,255,0)
 for _i in range(51): #green to indigo
-    rainbow = rainbow + (0,255,_i*5)
+    _rainbow = _rainbow + (0,255,_i*5)
 for _i in range(51): #indigo to blue
-    rainbow = rainbow + (0,255-_i*5,255)
+    _rainbow = _rainbow + (0,255-_i*5,255)
 for _i in range(51): #blue to purple
-    rainbow = rainbow + (_i*5,0,255)
+    _rainbow = _rainbow + (_i*5,0,255)
     
-inverted_rainbow = (0,0,0)
+_irainbow = (0,0,0)
 for _i in range(51): #purple to blue
-    inverted_rainbow = inverted_rainbow + (255-_i*5,0,255)
+    _irainbow = _irainbow + (255-_i*5,0,255)
 for _i in range(51): #blue to indigo
-    inverted_rainbow = inverted_rainbow + (0,_i*5,255)
+    _irainbow = _irainbow + (0,_i*5,255)
 for _i in range(51): #indigo to green
-    inverted_rainbow = inverted_rainbow + (0,255,255-_i*5)
+    _irainbow = _irainbow + (0,255,255-_i*5)
 for _i in range(51): #green to yellow
-    inverted_rainbow = inverted_rainbow + (_i*5,255,0)
+    _irainbow = _irainbow + (_i*5,255,0)
 for _i in range(51): #yellow to red
-    inverted_rainbow = inverted_rainbow + (255,255-_i*5,0)
+    _irainbow = _irainbow + (255,255-_i*5,0)
 
-patchwork = ()
+_patchwork = ()
 _blue_val = (0, 146, 36, 219, 109, 182, 73, 255)
 _green_val = (0, 85, 170, 255)
 _red_val = (0, 73, 182, 109, 219, 36, 146, 255)
 for _i in range (8):
     for _j in range(4):
         for _k in range(8):
-            patchwork = patchwork + (_red_val[_k], _green_val[_j], _blue_val[_i])
-heatview = (
+            _patchwork = _patchwork + (_red_val[_k], _green_val[_j], _blue_val[_i])
+
+_heatview = (
 0, 0, 131, 0, 0, 135, 0, 0, 139, 0, 0, 143, 0, 0, 147, 0, 0, 151, 0, 0, 155, 0, 0,
 159, 0, 0, 163, 0, 0, 167, 0, 0, 171, 0, 0, 175, 0, 0, 179, 0, 0, 183, 0, 0, 187,
 0, 0, 191, 0, 0, 195, 0, 0, 199, 0, 0, 203, 0, 0, 207, 0, 0, 211, 0, 0, 215, 0, 0,
@@ -82,6 +81,13 @@ heatview = (
 0, 151, 0, 0, 147, 0, 0, 143, 0, 0, 139, 0, 0, 135, 0, 0, 131, 0, 0
 )
 
+_dictPalettes = {
+    "rainbow": _rainbow,
+    "inverted rainbow": _irainbow,
+    "patchwork": _patchwork,
+    "heat view": _heatview,
+}
+
 ################################################################################
 # Palette functions
 ################################################################################
@@ -92,6 +98,7 @@ def tagOneColorPalette(value, color):
     'color', a tuple (red, green, blue), while the rest of the image stays in 
     greyscale.
     """
+    global _dictPalettes
     pal = ()
     if value<0 or value>255:
         raise ValueError("value must be inside range [0,255] : %d" % (value))
@@ -100,15 +107,21 @@ def tagOneColorPalette(value, color):
     pal = pal + tuple(color)
     for i in range(value+1,256):
         pal = pal + (i,i,i)
-    return pal
+    name = "tag %d %s" %(value, color)
+    _dictPalettes[name] = pal
+    return name
+
+def getPaletteNames():
+    """
+    Returns the list of all the defined palettes.
+    """
+    global _dictPalettes
+    return _dictPalettes.keys()
+
+def getPalette(name):
+    """
+    Returns the palette with 'name'.
+    """
+    global _dictPalettes
+    return _dictPalettes[name]
     
-def changeColorPalette(palette, value, color):
-    """
-    Modifies the given 'palette' so that the given 'value' is tagged using
-    the new color 'color',  a tuple (red, green, blue). The rest of the
-    palette is unmodified. Returns the created palette.
-    """
-    pal = list(palette)
-    for i in range(3):
-        pal[value*3+i] = color[i]
-    return tuple(pal)

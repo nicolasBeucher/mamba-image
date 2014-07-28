@@ -38,9 +38,8 @@ class TestCreate(unittest.TestCase):
                 self.assertRaises(MambaError, imageMb, i)
         im1 = imageMb(128,128,1)
         self.assertRaises(MambaError, im1.extractRaw)
-        self.assertRaises(MambaError, im1.loadRaw, b"")
+        self.assertRaises(MambaError, im1.loadRaw, 128*16*b"\x00")
         
-                
     def testSizeDepthParameters(self):
         """Verifies that the size and depth given are correctly handled"""
         for i in range(100):
@@ -173,8 +172,8 @@ class TestCreate(unittest.TestCase):
             os.remove("test1.jpg")
             im8.save("test8.jpg")
             os.remove("test8.jpg")
-            im32.save("test32.jpg")
-            os.remove("test32.jpg")
+            im32.save("test32.tif")
+            os.remove("test32.tif")
             
     def testLoadRaw(self):
         """Ensures that the load raw method works correctly"""

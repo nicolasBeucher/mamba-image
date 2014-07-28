@@ -12,6 +12,8 @@ except ImportError:
     import ttk
 
 import constants
+import popup
+import palette
 import display3D_proj
 import display3D_volren
 import display3D_player
@@ -24,16 +26,20 @@ class Display3D(tk.Toplevel):
         # Window creation
         tk.Toplevel.__init__(self, master)
         self.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+
+        self.popup = popup.Popup(self)
+        self.popup.grid(row=0, column=0, sticky=tk.E+tk.W)
+        self.popup.grid_remove()
         
         self.projFrame = display3D_proj.Display3D_Proj(self)
-        self.projFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+        self.projFrame.grid(row=1, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
         self.playFrame = display3D_player.Display3D_Player(self)
-        self.playFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+        self.playFrame.grid(row=1, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
         self.playFrame.grid_remove()
         try:
             self.volrenFrame = display3D_volren.Display3D_VolRen(self)
-            self.volrenFrame.grid(row=0, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
+            self.volrenFrame.grid(row=1, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
             self.volrenFrame.grid_remove()
         except ValueError as err:
             print err
@@ -41,7 +47,7 @@ class Display3D(tk.Toplevel):
         self.selectedFrame = self.projFrame
 
         self.std_geometry = ""
-        self.palactive = True
+        self.palname = ""
         self.bplane = 4
         self.frozen = False
         self.im_ref = None
@@ -63,7 +69,17 @@ class Display3D(tk.Toplevel):
         # Keyboard events handling
         if event.char == "p":
             # PALETTE ACTIVATION
-            self.palactive = not self.palactive
+            names = [""] + palette.getPaletteNames()
+            try:
+                i = names.index(self.palname)
+            except:
+                i = 0
+            i = (i+1)%len(names)
+            self.palname = names[i]
+            if self.palname:
+                self.popup.info("palette set to "+self.palname)
+            else:
+                self.popup.info("No palette set")
             self.updateim()
         elif event.char == "b":
             # BYTE PLANE MODIFICATION (next)

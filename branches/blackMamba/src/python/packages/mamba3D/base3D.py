@@ -68,9 +68,12 @@ class image3DMb:
         self.name = "Image3D "+str(_image3D_index)
         _image3D_index = _image3D_index + 1
         
+        self.displayId = ''
+        self.palette = None
+        self.gd = None
+        
         # List of all the parameters that must be retrieved from the arguments
         self.rgbfilter = None
-        
         # First we look into the dictionnary to see if they were specified
         # specifically by the user
         if "rgbfilter" in kwargs:
@@ -118,11 +121,6 @@ class image3DMb:
             # Last case: at least 4 arguments are given
             # -> image3DMb(width, height, length, depth)
             self._createSeq(args[0],args[1],args[3],args[2])
-        
-        self.displayId = ''
-        self.palette = None
-        self.opacity = None
-        self.gd = None
         
         self.mb3DIm = core.MB3D_Image()
         err = core.MB3D_Create(self.mb3DIm, len(self.seq))
@@ -175,41 +173,42 @@ class image3DMb:
             self.gd.destroyWindow(self.displayId)
         del self
     
-    def loadRaw(self, path, preprocfunc=None):
+    def loadRaw(self, dataOrPath, preprocfunc=None):
         """
-        Load a raw file representing a 3D image inside the image3DMb object.
-        The file must contains the expected length of data (i.e. 
-        width * height * length * (depth/8) ). The function works only
-        with 8 and 32-bit images. If needed you can preprocess the data
-        using the optional argument preprocfunc which will be called on the read
-        data before loading it into the sequence. The preprocfunc must have the
-        following prototype : outdata = preprocfunc(indata). The size 
-        verification is performed after the preprocessing (enabling you to
-        use zip archives and such).
+        Load raw data inside the 3D image. You can give a filename or 
+        data directly through 'dataOrPath'.
+        the data length must match the image size :
+            width * height * length * (depth/8)
+        If needed you can preprocess the data using the optional argument
+        'preprocfunc' which will be called on the data before loading it.
+        The preprocfunc must have the following prototype :
+            outdata = preprocfunc(indata).
+        The size verification is performed after the preprocessing (enabling
+        you to use zip archives and such).
+        This method only works on 8 and 32-bit images.
         """
-        # Only for 8 and 32 bit images
-        depth = self.getDepth()
-        if depth==1:
-            mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
-            
-        # Loading the file
-        f = open(path, 'rb')
-        data = f.read()
-        f.close()
+        
+        try:
+            # Loading the file
+            f = open(dataOrPath, 'rb')
+            data = f.read()
+            f.close()
+            self.name = dataOrPath
+        except:
+            data = dataOrPath
         
         # Preprocessing the data if a function was given
         if preprocfunc:
             data = preprocfunc(data)
         
         # Verification over data size
-        im_size = self.width*self.height*(depth//8)
+        im_size = (self.width*self.height*self.depth)//8
         assert(len(data)==im_size*self.length)
         
         # Loading the data
         for i,im in enumerate(self.seq):
             err = core.MB_Load(im.mbIm, data[i*im_size:(i+1)*im_size], im_size)
             mamba.raiseExceptionOnError(err)
-        self.name = path
         
     def extractRaw(self):
         """
@@ -268,7 +267,7 @@ class image3DMb:
             for i in range(l):
                 self.seq[i].load(files_dict[files_keys[i]], rgbfilter=rgbfilter)
                 
-    def save(self, path, extension=".png"):
+    def save(self, path, extension=".png", palette=None):
         """
         Saves the images of the 3D image stack (sequence) inside a directory
         located at 'path'.
@@ -283,7 +282,7 @@ class image3DMb:
             os.mkdir(path)
             
         for i,im in enumerate(self.seq):
-            im.save(os.path.join(path,"%d%s" % (i+1,extension)))
+            im.save(os.path.join(path,"%d%s" % (i+1,extension)), palette)
     
     def getDepth(self):
         """
@@ -387,16 +386,6 @@ class image3DMb:
         if self.displayId != '':
             self.gd.updateWindow(self.displayId)
             
-    def setPalette(self, pal):
-        """
-        Defines the palette used to convert the image in color for display.
-        'pal' may be mamba.rainbow, mamba.inverted_rainbow, mamba.patchwork or
-        any user-defined palette.
-        """
-        self.palette = pal
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
-            
     def freeze(self):
         """
         Called to freeze the display of the image. Thus the image may evolve but
@@ -413,15 +402,6 @@ class image3DMb:
         """
         if self.displayId != '':
             self.gd.controlWindow(self.displayId, "UNFREEZE")
-            
-    def resetPalette(self):
-        """
-        Undefines the palette used to convert the image in color for display.
-        The greyscale palette will be used then.
-        """
-        self.palette = None
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
 
     ### Pixel manipulations ####################################################
     def getPixel(self, position):

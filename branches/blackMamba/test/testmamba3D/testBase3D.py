@@ -28,8 +28,9 @@ class TestBase3D(unittest.TestCase):
 
     def testDepthAcceptation(self):
         """Tests that incorrect depth raises an exception"""
-        im1 = image3DMb(128,128,128,1)
-        self.assertRaises(MambaError,im1.loadRaw,(128*128*128/8)*b"\x00")
+        im1 = image3DMb(128,128,16,1)
+        rawData = (128*128*2)*b"\x00"
+        self.assertRaises(MambaError,im1.loadRaw,rawData)
         self.assertRaises(MambaError,im1.extractRaw)
         
     def testSizeCheck(self):

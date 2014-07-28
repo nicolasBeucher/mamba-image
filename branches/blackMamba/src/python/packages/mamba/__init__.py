@@ -9,7 +9,6 @@ VERSION = "2.0"
 from .error import *
 from .grids import *
 from .base import *
-from .palette import *
 from .copies import *
 from .arithmetic import *
 from .conversion import *
@@ -29,3 +28,4 @@ from .miscellaneous import *
 from .hierarchies import *
 from .partitions import *
 from .extrema import *
+

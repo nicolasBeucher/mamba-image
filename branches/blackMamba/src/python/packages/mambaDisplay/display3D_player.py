@@ -16,6 +16,7 @@ from PIL import Image
 from PIL import ImageTk
 
 import constants
+import palette
 import display3D_proj
 
 # Mamba imports
@@ -187,10 +188,12 @@ class Display3D_Player(tk.Frame):
             else:
                 mamba.copyBytePlane(self.im_ref()[self.z],self.master.bplane,immb)
                 self.planeLabel.config(text="Plane : %d" % (self.master.bplane))
-            im = utils.convertToPILFormat(immb.mbIm, self.master.palactive and self.im_ref().palette or None)
+            im = utils.convertToPILFormat(immb.mbIm)
         else:
             self.planeLabel.config(text="")
-            im = utils.convertToPILFormat(self.im_ref()[self.z].mbIm, self.master.palactive and self.im_ref().palette or None)
+            im = utils.convertToPILFormat(self.im_ref()[self.z].mbIm)
+        if self.master.palname:
+            im.putpalette(palette.getPalette(self.master.palname))
         self.planez.display(im)
         self.volLabel.config(text="Volume : %d" % (volume))
         value = self.im_ref().getPixel((self.x, self.y, self.z))

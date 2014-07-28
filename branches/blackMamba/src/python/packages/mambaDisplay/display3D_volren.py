@@ -24,6 +24,7 @@ except ImportError:
     _vtk_lib_present = False
 
 import constants
+import palette
 
 # Mamba imports
 import mamba3D as m3D
@@ -175,8 +176,8 @@ class Display3D_VolRen(tk.Frame):
     
     # Functions to draw the widget inside the control bar
     def drawColTF(self):
-        if self.im_ref().palette and self.master.palactive:
-            pal = self.im_ref().palette
+        if self.master.palname:
+            pal = palette.getPalette(self.master.palname)
             for i in range(256):
                 fill = "#%02x%02x%02x" % (pal[i*3], pal[i*3+1], pal[i*3+2])
                 self.colorCan.create_line(i,0,i,20,fill=fill)
@@ -315,8 +316,8 @@ class Display3D_VolRen(tk.Frame):
         self.opaTF.AddPoint(0, 0.0)
         self.opaTF.AddPoint(255, 1.0)
         self.colTF.RemoveAllPoints()
-        if self.im_ref().palette and self.master.palactive:
-            pal = self.im_ref().palette
+        if self.master.palname:
+            pal = palette.getPalette(self.master.palname)
             for i in range(256):
                 self.colTF.AddRGBPoint(i, pal[i*3]/255.0, pal[i*3+1]/255.0, pal[i*3+2]/255.0)
         else:
