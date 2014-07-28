@@ -1,5 +1,5 @@
 """
-This module defines various functions related to grid configuration and 
+This module defines various functions related to grid configurations and 
 computations.
 """
 

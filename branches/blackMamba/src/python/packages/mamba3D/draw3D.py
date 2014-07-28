@@ -93,11 +93,9 @@ def drawLine3D(imOut, line, value):
 
 def drawCube(imOut, cube, value):
     """
-    Draws a square in 'imOut' using the tuple 'square' containing 4 values 
+    Draws a cube in 'imOut' using the tuple 'cube' containing 4 values 
     (nearest upper left to farest down right corners (x1,y1,z1,x2,y2,z2))
     using 'value' to set the pixels.
-
-    This function works with image3DMb instances.
     """
     x1,y1,z1,x2,y2,z2 = cube
     if x1>x2:
@@ -123,7 +121,7 @@ def drawCube(imOut, cube, value):
 def getIntensityAlongLine3D(imOut, line):
     """
     Returns in a list the intensity profile along a line in 'imOut' using the
-    tuple 'line' containing 4 values (starting and ending points (x1,y1,x2,y2)).
+    tuple 'line' containing 6 values (starting and ending points (x1,y1,z1,x2,y2,z2)).
     
     This function uses the Bresenham algorithm. It works with image3DMb
     instances.

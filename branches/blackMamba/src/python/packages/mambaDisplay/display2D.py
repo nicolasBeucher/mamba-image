@@ -35,7 +35,7 @@ def _copyFromClipboard(size=None):
     Looks into the clipboard to see if an image is present and extract it if 
     this is the case.
     
-    This function works only on windows.
+    This function works only on Windows.
     
     Returns a mamba image or None if no image was found.
     """

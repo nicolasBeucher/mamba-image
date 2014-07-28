@@ -113,7 +113,7 @@ class Display3D_VolRen(tk.Frame):
         master.bind("<KeyPress-Tab>", self.displayControlEvent)
         
     def drawControlBar(self):
-        # Draw all the widgets inside the control bar
+        # Draws all the widgets inside the control bar
         lf = ttk.LabelFrame(self.controlbar,
                            text="Transfer controls",
                            labelanchor=tk.NW)
@@ -311,7 +311,7 @@ class Display3D_VolRen(tk.Frame):
         self.dimLabel.config(text="Dimensions = %dx%dx%d" % (W, H, L))
         
     def updateim(self):
-        # Update the display (perform a rendering)
+        # Updates the display (perform a rendering)
         self.infos[0].set("Updating ...")
         self.opaTF.AddPoint(0, 0.0)
         self.opaTF.AddPoint(255, 1.0)

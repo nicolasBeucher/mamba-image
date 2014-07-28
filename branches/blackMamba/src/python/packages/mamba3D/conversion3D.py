@@ -1,6 +1,6 @@
 """
 This module regroups various functions/operators to perform conversion
-based on image depth.
+based on image depth on 3D images.
 """
 
 # Contributors : Nicolas BEUCHER
@@ -16,14 +16,12 @@ def convert3D(imIn, imOut):
     Converts the contents of 'imIn' to the depth of 'imOut' and puts the result
     in 'imOut'.
     
-    Greyscale to binary and binary to greyscale conversion are supported.
-    Value 255 is in a greyscale image is considered as 1 in a binary one. All other
-    values are transformed to 0. The reverse convention applies.
+    Greyscale or 32-bit to binary and binary to greyscale or 32-bit conversions are supported.
+    Value 255 is in a greyscale image or 2^32-1 in a 32-bit image is considered as 1 in a
+	binary one. All other values are transformed to 0. The reverse convention applies.
 
     This function can also be used to downscale 32-bit images into greyscale
     images.
-
-    Other conversion are not supported.
     """
     err = core.MB3D_Convert(imIn.mb3DIm, imOut.mb3DIm)
     mamba.raiseExceptionOnError(err)
@@ -33,7 +31,7 @@ def convertByMask3D(imIn, imOut, mFalse, mTrue):
     Converts a binary image 'imIn' into a greyscale image (8-bit) or a 32-bit 
     image and puts the result in 'imOut'.
     
-    white pixels of 'imIn' are set to value 'mTrue' in the output image and the 
+    White pixels of 'imIn' are set to value 'mTrue' in the output image and the 
     black pixels set to value 'mFalse'.
     
     This function works with 3D images.

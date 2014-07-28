@@ -1,5 +1,5 @@
 """
-This module handles computation errors in mamba module.
+This module handles computation errors in Mamba modules.
 """
 
 import mamba.core as core
@@ -7,7 +7,7 @@ import mamba.core as core
 class MambaError(Exception):
     """
     Mamba basic exception.
-    Occurs when the mamba library returns an error (return value different of NO_ERR).
+    Occurs when the Mamba library returns an error (return value different of NO_ERR).
     """
     
     def __init__(self, errValue):

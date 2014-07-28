@@ -40,14 +40,14 @@ def create(width,height,depth):
 
 def loadFromPILFormat(pilim, size=None, rgb2l = None):
     """
-    Converts a PIL image into a C core image. All images are converted in grey 
-    scale format (i.e. "L" in PIL) before performing computations. The 
+    Converts a PIL/PILLOW image into a C core image. All images are converted in grey 
+    scale format (i.e. "L" in PIL/PILLOW) before performing computations. The 
     conversion uses the 3 items sequence 'rgb2l' if given :
         L = rgb2l[0]*R + rgb2l[1]*G + rgb2l[2]*B
     Otherwise, the conversion will be done following this formula :
         L = 0.299*R + 0.587*G + 0.114*B
     
-    'pilim' is the PIL format image.
+    'pilim' is the PIL/PILLOW format image.
     
     If the image is not fitting in the current size, the image is either padded
     or cropped.
@@ -97,7 +97,7 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
         depth = 8
         pilim = pilim.convert('RGB').convert("L", rgb2l)
         
-    # PIL image size or given size
+    # PIL/PILLOW image size or given size
     if size!=None:
         (w,h) = size
     else:
@@ -138,8 +138,8 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
 def load(filename, size=None, rgb2l = None):
     """
     Loads an image into a C core image object. You can give any image format
-    that is actually supported by PIL. All images are converted in grey scale
-    format (i.e. "L" in PIL) before performing computations. The conversion use
+    that is actually supported by PIL/PILLOW. All images are converted in grey scale
+    format (i.e. "L" in PIL/PILLOW) before performing computations. The conversion use
     the 3 items sequence 'rgb2l' if given :
         L = rgb2l[0]*R + rgb2l[1]*G + rgb2l[2]*B
     Otherwise, the conversion will be done following this formula :

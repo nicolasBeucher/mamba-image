@@ -106,12 +106,10 @@ def drawCircle(imOut, circle, value):
     ddF_y = -2*radius
     x = 0
     y = radius
-
     imOut.fastSetPixel(value, (x0, y0 + radius))
     imOut.fastSetPixel(value, (x0, y0 - radius))
     imOut.fastSetPixel(value, (x0 + radius, y0))
     imOut.fastSetPixel(value, (x0 - radius, y0))
-
     while x<y:
         if f>=0: 
             y -= 1
@@ -128,7 +126,6 @@ def drawCircle(imOut, circle, value):
         imOut.fastSetPixel(value, (x0 - y, y0 + x))
         imOut.fastSetPixel(value, (x0 + y, y0 - x))
         imOut.fastSetPixel(value, (x0 - y, y0 - x))
-    
     imOut.update()
     
 def drawFillCircle(imOut, circle, value):
@@ -144,10 +141,8 @@ def drawFillCircle(imOut, circle, value):
     ddF_y = -2*radius
     x = 0
     y = radius
-
     for i in range(-radius,radius+1):
         imOut.fastSetPixel(value, (x0+i, y0))
-
     while x<y:
         if f>=0: 
             y -= 1
@@ -155,8 +150,7 @@ def drawFillCircle(imOut, circle, value):
             f += ddF_y
         x += 1
         ddF_x += 2
-        f += ddF_x
-        
+        f += ddF_x        
         for i in range(-x,x+1):
             imOut.fastSetPixel(value, (x0+i, y0 + y))
         for i in range(-x,x+1):
@@ -164,10 +158,8 @@ def drawFillCircle(imOut, circle, value):
         for i in range(-y,y+1):
             imOut.fastSetPixel(value, (x0+i, y0 + x))
         for i in range(-y,y+1):
-            imOut.fastSetPixel(value, (x0+i, y0 - x))
-    
+            imOut.fastSetPixel(value, (x0+i, y0 - x))    
     imOut.update()
-
 
 ### EXTRACT PIXEL VALUES FUNCTIONS ###
 

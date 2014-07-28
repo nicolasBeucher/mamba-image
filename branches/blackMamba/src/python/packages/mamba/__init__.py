@@ -1,5 +1,5 @@
 """
-The mamba package contains all the mathematical morphology operator
+The mamba package contains all the mathematical morphology operators
 defined in mamba that apply to 2D images.
 """
 

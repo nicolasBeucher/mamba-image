@@ -1,8 +1,6 @@
 """
 This module provides a set of functions to perform erosions and dilations on 
 3D images using Mamba base functions.
-
-It works with image3DMb instances as defined in mamba3D.
 """
 
 # Contributors : Nicolas BEUCHER

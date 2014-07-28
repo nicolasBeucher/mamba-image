@@ -1,5 +1,5 @@
 """
-This module regroups various functions/operators that performs operations which
+This module regroups various functions/operators that perform operations which
 do not fall in the others categories (properties extraction ...).
 """
 
@@ -126,8 +126,6 @@ def drawEdge3D(imOut, thick=1):
     """
     Draws a frame around the edge of 'imOut' whose value equals the maximum
     range value and whose thickness is given by 'thick' (default 1).
-    
-    This function works with 3D images.
     """
     
     imOut.reset()

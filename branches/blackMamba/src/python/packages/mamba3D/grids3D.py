@@ -2,7 +2,7 @@
 This module defines the 3D grids (cubic and face-centered cubic) that can be
 used with the 3D operators.
 
-The modules also defines utility functions to handle 3D grids.
+The modules also define utility functions to handle 3D grids.
 """
 
 # Contributors : Nicolas BEUCHER
@@ -15,7 +15,7 @@ import mamba.core as core
 class _grid3D:
 
     def getEncodedDirs(self, directions, zindex):
-        # The direction in 3D correspond to
+        # The direction in 3D corresponds to
         # various elements : the plane offset (0 if the
         # direction does not change it, 1 to go to the
         # previous offset, ...), the 2D direction as defined
@@ -26,7 +26,7 @@ class _grid3D:
         return {-1:0,0:0,1:0}
         
     def convertFromDir(self, direction, zindex):
-        # The direction in 3D correspond to
+        # The direction in 3D corresponds to
         # various elements : the plane offset (0 if the
         # direction does not change it, 1 to go to the
         # previous offset, ...), the 2D direction as defined
@@ -64,7 +64,7 @@ class _grid3D:
         return core.MB3D_INVALID_GRID
         
     def __repr__(self):
-        # the name of the grid
+        # The name of the grid
         return "mamba3D.3D_GRID_NAME"
         
 
@@ -275,7 +275,7 @@ DEFAULT_GRID3D = _gridDefault3D()
 DEFAULT_GRID3D.setProxyGrid(FACE_CENTER_CUBIC)
 
 ###############################################################################
-# Public functions to deal with grid
+# Public functions to deal with grids
 
 def setDefaultGrid3D(grid):
     """
