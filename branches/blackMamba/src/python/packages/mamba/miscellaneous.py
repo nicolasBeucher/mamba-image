@@ -82,8 +82,9 @@ def computeRange(imIn):
     
 def extractFrame(imIn, threshold):
     """
-    Extracts the smallest frame inside the image 'imIn' that includes all the
-    pixels whose value is greater or equal to 'threshold'.
+    Extracts the smallest frame (tuple containing the coordinates of the upper
+	left point and the lower right point) inside the image 'imIn' that includes
+	all the pixels whose value is greater or equal to 'threshold'.
     
     'imIn' can be a 8-bit or 32-bit image.
     """
@@ -207,7 +208,7 @@ def mix(imInR, imInG, imInB):
 
 def split(pilimIn, imOutR, imOutG, imOutB):
     """
-    Splits a color PIL image 'pilimIn' into its three color channels (Red,
+    Splits a color PIL/PILLOW image 'pilimIn' into its three color channels (Red,
     Green and Blue) and puts the three resulting images into 'imOutR', 'imOutG'
     and 'imOutB' respectively.
     """
@@ -224,8 +225,7 @@ def split(pilimIn, imOutR, imOutG, imOutB):
         prov_im = Image.new("RGB", (wc,hc), 0)
         pilim_crop = pilim.crop((0,0,min(wc, w),min(hc, h)))
         prov_im.paste(pilim_crop, (0,0,min(wc, w),min(hc, h)))
-        pilim = prov_im
-        
+        pilim = prov_im        
     s = pilim.tostring("raw", "RGB;L", 0 ,1)
     sR = ""
     sG = ""
@@ -233,8 +233,7 @@ def split(pilimIn, imOutR, imOutG, imOutB):
     for i in range(0,hc):
         sR = sR + s[3*i*wc: (3*i+1)*wc]
         sG = sG + s[(3*i+1)*wc: (3*i+2)*wc]
-        sB = sB + s[(3*i+2)*wc: (3*i+3)*wc]
-    
+        sB = sB + s[(3*i+2)*wc: (3*i+3)*wc]    
     err = core.MB_Load(imOutR.mbIm,sR,len(sR))
     mamba.raiseExceptionOnError(err)
     imOutR.update()
@@ -246,7 +245,7 @@ def split(pilimIn, imOutR, imOutG, imOutB):
     imOutB.update()
 
 ################################################################################
-# PIL conversion functions
+# PIL/PILLOW conversion functions
 ################################################################################
 
 def Mamba2PIL(imIn):

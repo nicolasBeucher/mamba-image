@@ -2,7 +2,7 @@
 This module defines specific functions and classes which can be considered
 as extras for the Mamba image library. They provide optional display methods,
 interactive tools and bridges for exchanging images between the Mamba and
-PIL libraries. This module is NOT pre loaded with mamba.
+PIL/PILLOW libraries. This module is NOT pre-loaded with mamba.
 """
 
 import mamba.core as core
@@ -193,14 +193,14 @@ class _imageThreshold(tk.Toplevel):
             if event.num==1:
                 self.canvas.config(cursor="fleur")
             elif event.num==4:
-                # Mouse wheel scroll up under linux
+                # Mouse wheel scroll up under Linux
                 # ZOOM IN
                 if self.zoom<=0.25:
                     self.setZoom(self.zoom*2)
                 else:
                     self.setZoom(self.zoom+0.25)
             elif event.num==5:
-                # Mouse wheel scroll down under linux
+                # Mouse wheel scroll down under Linux
                 # ZOOM OUT
                 if self.zoom<=0.25:
                     zoom = self.zoom/2
@@ -215,7 +215,7 @@ class _imageThreshold(tk.Toplevel):
                 self.canvas.config(cursor="arrow")
             
         elif event.type=="38":
-            # Mouse wheel under windows
+            # Mouse wheel under Windows
             if event.delta>0:
                 # ZOOM IN
                 for i in range(abs(event.delta)/120):
@@ -305,7 +305,7 @@ class _imageThreshold(tk.Toplevel):
         self.update()
         
     def saveImage(self):
-        # Save the displayed image in a specified location
+        # Saves the displayed image in a specified location
         import tkFileDialog
         filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("all files","*")]
         f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
@@ -405,7 +405,7 @@ class _imageSegment(tk.Toplevel):
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         
-        # infos
+        # Infos
         l = ttk.Label(self, text="Press Ctrl-Z to erase last marker (e to erase all)")
         l.grid(row=0, column=0, columnspan=2)
         
@@ -464,7 +464,7 @@ class _imageSegment(tk.Toplevel):
     def keyboardEvent(self, event):
         # Handles keyboard events
         
-        #zoom
+        # Zoom
         if event.char == "z":
             # ZOOM IN
             if self.zoom<=0.25:
@@ -788,7 +788,7 @@ class _imageSuperpose(tk.Toplevel):
     def keyboardEvent(self, event):
         # Handles keyboard events.
         
-        #zoom
+        # Zoom
         if event.char == "z":
             # ZOOM IN
             if self.zoom<=0.25:
@@ -811,14 +811,14 @@ class _imageSuperpose(tk.Toplevel):
             if event.num==1:
                 self.canvas.config(cursor="fleur")
             elif event.num==4:
-                # Mouse wheel scroll up under linux
+                # Mouse wheel scroll up under Linux
                 # ZOOM IN
                 if self.zoom<=0.25:
                     self.setZoom(self.zoom*2)
                 else:
                     self.setZoom(self.zoom+0.25)
             elif event.num==5:
-                # Mouse wheel scroll down under linux
+                # Mouse wheel scroll down under Linux
                 # ZOOM OUT
                 if self.zoom<=0.25:
                     zoom = self.zoom/2
@@ -833,7 +833,7 @@ class _imageSuperpose(tk.Toplevel):
                 self.canvas.config(cursor="arrow")
             
         elif event.type=="38":
-            # Mouse wheel under windows
+            # Mouse wheel under Windows
             if event.delta>0:
                 # ZOOM IN
                 for i in range(abs(event.delta)/120):
@@ -1009,7 +1009,7 @@ class _imageSuperpose(tk.Toplevel):
         self.update()
         
     def saveImage(self):
-        # Save the displayed image in a specified location
+        # Saves the displayed image in a specified location
         import tkFileDialog
         filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("all files","*")]
         f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)

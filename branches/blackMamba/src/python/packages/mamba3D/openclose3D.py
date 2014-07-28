@@ -2,8 +2,6 @@
 This module provides a set of functions to perform opening and closing operations
 on 3D images using mamba.
 
-It works with image3DMb instances as defined in mamba3D.
-
 All the closing and opening operation defined in this module use erosion,
 dilation and build functions with user-defined edge settings. The functions
 define a default edge which can be changed (see the modules erodil3D 

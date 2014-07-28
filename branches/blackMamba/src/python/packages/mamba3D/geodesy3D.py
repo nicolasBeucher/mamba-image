@@ -3,8 +3,6 @@ This module provides a set of functions to perform geodesic computations on
 3D images using Mamba based functions.
 
 It includes build and dualbuild operations, computation of maxima and minima...
-
-it works with image3DMb instances as defined in mamba3D.
 """
 
 # Contributors: Nicolas BEUCHER

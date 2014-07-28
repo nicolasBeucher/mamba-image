@@ -1,5 +1,5 @@
 """
-This module provides a set of functions to perform hierarchical segmentations
+This module provides a set of functions to perform hierarchical segmentation
 operations. This module contains the waterfalls algorithm and various hierarchical
 operators (enhanced waterfalls, standard hierarchy and P algorithm).
 """

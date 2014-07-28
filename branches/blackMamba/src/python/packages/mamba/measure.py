@@ -125,7 +125,7 @@ def computeComponentsNumber(imIn, grid=mamba.DEFAULT_GRID):
 
 def computeFeretDiameters(imIn, scale=(1.0, 1.0)):
     """
-    computes the global Feret diameters (horizontal and vertical) of binary 
+    Computes the global Feret diameters (horizontal and vertical) of binary 
     image 'imIn' and returns the result in a tuple (hDf, vDf). These diameters 
     correspond to the horizontal and vertical dimensions of the smallest 
     bonding box containing all the particles of 'imIn'

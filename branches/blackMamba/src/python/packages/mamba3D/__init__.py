@@ -1,6 +1,6 @@
 """
-The mamba3D package defines a set of function and operators along with a
-specific display to manipulate 3D image using the mamba library.
+The mamba3D package defines a set of functions and operators along with a
+specific display to manipulate 3D images using the mamba library.
 """
 
 # importing all the modules

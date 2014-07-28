@@ -14,7 +14,7 @@ import mamba.core as core
 def add3D(imIn1, imIn2, imOut):
     """
     Adds 'imIn2' pixel values to 'imIn1' pixel values and puts the result in
-    'imOut'. The operation can be sum up in the following formula : 
+    'imOut'. The operation can be sum up in the following formula: 
     
     imOut = imIn1 + imIn2.
 
@@ -30,15 +30,15 @@ def add3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
-    
-    for i in range(outl):
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)    
+
+		for i in range(outl):
         mamba.add(imIn1[i], imIn2[i], imOut[i])
 
 def sub3D(imIn1, imIn2, imOut):
     """
     Subtracts 'imIn2' pixel values to 'imIn1' pixel values and put the result 
-    in 'imOut'. The operation can be sum up in the following formula :
+    in 'imOut'. The operation can be sum up in the following formula:
     
     imOut = imIn1 - imIn2
 
@@ -54,9 +54,9 @@ def sub3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
-    
-    for i in range(outl):
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)    
+
+	for i in range(outl):
         mamba.sub(imIn1[i], imIn2[i], imOut[i])
     
 def mul3D(imIn1, imIn2, imOut):
@@ -78,9 +78,9 @@ def mul3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
-    
-    for i in range(outl):
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)    
+
+	for i in range(outl):
         mamba.mul(imIn1[i], imIn2[i], imOut[i])
     
 def div3D(imIn1, imIn2, imOut):

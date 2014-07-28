@@ -175,13 +175,13 @@ class image3DMb:
     
     def loadRaw(self, dataOrPath, preprocfunc=None):
         """
-        Load raw data inside the 3D image. You can give a filename or 
+        Loads raw data inside the 3D image. You can give a filename or 
         data directly through 'dataOrPath'.
-        the data length must match the image size :
+        The data length must match the image size:
             width * height * length * (depth/8)
         If needed you can preprocess the data using the optional argument
         'preprocfunc' which will be called on the data before loading it.
-        The preprocfunc must have the following prototype :
+        The preprocfunc must have the following prototype:
             outdata = preprocfunc(indata).
         The size verification is performed after the preprocessing (enabling
         you to use zip archives and such).
@@ -227,7 +227,7 @@ class image3DMb:
         """
         Loads a 3D stack (sequence) of images found in directory 'path'.
 
-        To be valid a sequence of images must be composed of at least 'length'
+        To be valid, a sequence of images must be composed of at least 'length'
         images to be able to fill the sequence. Their file names must be of
         the form X.ext where X is a number and ext is an image file extension
         (like jpg or png). The sequence will be read in increasing order
@@ -380,7 +380,7 @@ class image3DMb:
         """
         Called when the display associated to the image must be updated 
         (Contrary to mamba.imageMb, display is not automatically updated after
-        any operation on your image due to performances).
+        any operation on your image due to performance).
         You can update the display by hitting key F5 in the display window.
         """
         if self.displayId != '':
@@ -388,8 +388,8 @@ class image3DMb:
             
     def freeze(self):
         """
-        Called to freeze the display of the image. Thus the image may evolve but
-        the display will not show these evolutions until the method unfreezeDisplay
+        Called to freeze the display of the image. Thus the image may change but
+        the display will not show these modfications until the method unfreeze
         is called.
         """
         if self.displayId != '':

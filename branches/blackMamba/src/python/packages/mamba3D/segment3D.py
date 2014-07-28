@@ -1,8 +1,6 @@
 """
 This module provides a set of functions to perform segmentation
 operations on 3D images using mamba.
-
-It works with image3DMb instance as defined in mamba3D.
 """
 
 # Contributors : Nicolas BEUCHER

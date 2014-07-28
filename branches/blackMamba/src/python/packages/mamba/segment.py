@@ -11,7 +11,7 @@ import mamba.core as core
 def label(imIn, imOut, lblow=0, lbhigh=256, grid=mamba.DEFAULT_GRID):
     """
     Labels the image 'imIn' and puts the result in 32-bit image 'imOut'.
-    Returns the number of connected components found by the labeling algorithm.
+    Returns the number of connected components found by the labelling algorithm.
     The labelling will be performed according to the 'grid' (HEXAGONAL is 
     6-Neighbors and SQUARE is 8-Neighbors).
     
