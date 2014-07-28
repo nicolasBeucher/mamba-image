@@ -16,7 +16,7 @@ def convert(imIn, imOut):
     Greyscale or 32-bit to binary and binary to greyscale or 32-bit conversions are supported.
     Value 255 in a greyscale image is converted to 1 in a binary one. All other values are
     transformed to 0. The reverse convention applies. The same rule is applied with
-	32-bit images but, in this case, the value 2^32-1 is converted to 1.
+	32-bit images but, in this case, the value 2**32-1 is converted to 1.
 
     This function can also be used to downscale 32-bit images into greyscale
     images. Conversion from 8-bit to 32-bit is equivalent to copyBytePlane
