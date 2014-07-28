@@ -1,23 +1,26 @@
 """
 Test cases for the image depth conversion function.
 
-The function works with 8-bit and binary images and converts them into binary or
-8-bit image respectively. The function also acts as a copy function when the
-two given images (input and output) have the same depth.
+The function works can perform all the possible conversion.
+The function also acts as a copy function when the two given images (input
+and output) have the same depth.
 
 Here is the list of legal operations:
      8 -> 1
      1 -> 8
-    32 -> 8
+    32 -> 1
+     1 -> 32
+    32 -> 8 (downscaling)
      8 -> 32
      and copy :
      1 -> 1
      8 -> 8
     32 ->32
     
-When converting from 8-bit to binary, only the pixels that have a value 255 are
-set to true(1) in the binary image. All the others are set to False(0). In the 
-other way, binary to 8-bit, the True pixels are set to 255 and 0 for the False ones.
+When converting from 8-bit/32-bit to binary, only the pixels that have a value
+of 255/0xffffffff are set to true(1) in the binary image.
+All the others are set to False(0). In the other way, binary to 8-bit/32-bit,
+the True pixels are set to 255/0xffffffff and 0 for the False ones.
 The 32bit to 8bit conversion is a downscaling and the 8-bit to 32-bit is
 equivalent to copyBytePlane for plane 0.
 
@@ -62,18 +65,6 @@ class TestConvert(unittest.TestCase):
         del(self.im8s2_1)
         del(self.im1s2_1)
 
-    def testDepthAcceptation(self):
-        """Tests that incorrect depth raises an exception"""
-        #self.assertRaises(MambaError, convert, self.im1_1, self.im1_2)
-        #self.assertRaises(MambaError, convert, self.im1_1, self.im8_2)
-        self.assertRaises(MambaError, convert, self.im1_1, self.im32_2)
-        #self.assertRaises(MambaError, convert, self.im8_1, self.im1_2)
-        #self.assertRaises(MambaError, convert, self.im8_1, self.im8_2)
-        #self.assertRaises(MambaError, convert, self.im8_1, self.im32_2)
-        self.assertRaises(MambaError, convert, self.im32_1, self.im1_2)
-        #self.assertRaises(MambaError, convert, self.im32_1, self.im8_2)
-        #self.assertRaises(MambaError, convert, self.im32_1, self.im32_2)
-
     def testSizeCheck(self):
         """Tests that different sizes raise an exception"""
         self.assertRaises(MambaError, convert, self.im8s2_1, self.im1_1)
@@ -95,7 +86,6 @@ class TestConvert(unittest.TestCase):
         (x,y) = compare(self.im8_2, self.im8_1, self.im8_3)
         self.assertLess(x, 0)
         
-        vi = random.randint(10,250)
         self.im1_1.reset()
         self.im8_2.reset()
         for wi in range(w):
@@ -112,6 +102,7 @@ class TestConvert(unittest.TestCase):
         self.im1_1.convert(8)
         (x,y) = compare(self.im8_2, self.im1_1, self.im8_3)
         self.assertLess(x, 0)
+        self.im1_1.convert(1)
 
     def testConversion_8_1(self):
         """Verifies that converting an 8-bit image into a binary image works fine"""
@@ -129,6 +120,78 @@ class TestConvert(unittest.TestCase):
             (x,y) = compare(self.im8_1, self.im1_2, self.im1_3)
             self.assertLess(x, 0)
             self.im8_1.convert(8)
+
+        (w,h) = self.im8_1.getSize()
+        self.im8_1.reset()
+        drawSquare(self.im8_1, (w//2-w//4, h//2-h//4, w//2+w//4, h//2+h//4), 255)
+        self.im1_2.reset()
+        drawSquare(self.im1_2, (w//2-w//4, h//2-h//4, w//2+w//4, h//2+h//4), 1)
+        
+        convert(self.im8_1, self.im1_1)
+        (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
+        self.assertLess(x, 0)
+
+    def testConversion_1_32(self):
+        """Verifies that converting a binary image into an 32-bit image works fine"""
+        (w,h) = self.im1_1.getSize()
+        
+        self.im1_1.fill(1)
+        self.im32_2.fill(0xffffffff)
+        convert(self.im1_1, self.im32_1)
+        (x,y) = compare(self.im32_2, self.im32_1, self.im32_3)
+        self.assertLess(x, 0)
+        
+        self.im1_1.reset()
+        self.im32_2.fill(0)
+        convert(self.im1_1, self.im32_1)
+        (x,y) = compare(self.im32_2, self.im32_1, self.im32_3)
+        self.assertLess(x, 0)
+        
+        self.im1_1.reset()
+        self.im32_2.reset()
+        for wi in range(w):
+            for hi in range(h):
+                if wi%2==0:
+                    self.im1_1.setPixel(1, (wi,hi))
+                    self.im32_2.setPixel(0xffffffff, (wi,hi))
+                else:
+                    self.im1_1.setPixel(0, (wi,hi))
+                    self.im32_2.setPixel(0, (wi,hi))
+        convert(self.im1_1, self.im32_1)
+        (x,y) = compare(self.im32_2, self.im32_1, self.im32_3)
+        self.assertLess(x, 0)
+        self.im1_1.convert(32)
+        (x,y) = compare(self.im32_2, self.im1_1, self.im32_3)
+        self.assertLess(x, 0)
+        self.im1_1.convert(1)
+
+    def testConversion_32_1(self):
+        """Verifies that converting an 32-bit image into a binary image works fine"""
+                
+        for i in [0, 0x1000, 0x80000000, 0xfffffffe, 0xffffffff]:
+            self.im32_1.fill(i)
+
+            if i==0xffffffff:
+                self.im1_2.fill(1)
+            else:
+                self.im1_2.reset()
+            convert(self.im32_1, self.im1_1)
+            (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
+            self.assertLess(x, 0)
+            self.im32_1.convert(1)
+            (x,y) = compare(self.im32_1, self.im1_2, self.im1_3)
+            self.assertLess(x, 0)
+            self.im32_1.convert(32)
+
+        (w,h) = self.im32_1.getSize()
+        self.im32_1.reset()
+        drawSquare(self.im32_1, (w//2-w//4, h//2-h//4, w//2+w//4, h//2+h//4), 0xffffffff)
+        self.im1_2.reset()
+        drawSquare(self.im1_2, (w//2-w//4, h//2-h//4, w//2+w//4, h//2+h//4), 1)
+        
+        convert(self.im32_1, self.im1_1)
+        (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
+        self.assertLess(x, 0)
 
     def testConversion_32_8(self):
         """Verifies that converting an 32-bit image into a greyscale image works fine"""
@@ -155,7 +218,6 @@ class TestConvert(unittest.TestCase):
         convert(self.im8_1, self.im32_1)
         (x,y) = compare(self.im32_1, self.im32_2, self.im32_3)
         self.assertLess(x, 0)
-
 
     def testComputation_1_1(self):
         """Verifies that converting a binary image into a binary image amounts to copy it"""

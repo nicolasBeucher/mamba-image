@@ -91,11 +91,14 @@ class imageMb:
         
         # List of all the parameters that must be retrieved from the arguments
         rgbfilter = None
-        
         # First we look into the dictionnary to see if they were specified
         # specifically by the user
         if "rgbfilter" in kwargs:
             rgbfilter = kwargs["rgbfilter"]
+        
+        # Properties
+        self.displayId = ''
+        self.gd = None
             
         # We analyze the arguments given to the constructor
         if len(args)==0:
@@ -129,20 +132,9 @@ class imageMb:
                 _image_index = _image_index + 1
             elif isinstance(args[0], str):
                 # -> imageMb(path, depth)
-                next_mbIm = utils.load(args[0], rgb2l=rgbfilter)
-                if args[1]==1:
-                    self.mbIm = utils.create(next_mbIm.width,next_mbIm.height,1)
-                    err = core.MB_Convert(next_mbIm, self.mbIm)
-                    raiseExceptionOnError(err)
-                elif args[1]==8:
-                    self.mbIm = next_mbIm
-                else:
-                    self.mbIm = utils.create(next_mbIm.width,next_mbIm.height,32)
-                    if next_mbIm.depth==8:
-                        err = core.MB_CopyBytePlane(next_mbIm, self.mbIm, 0)
-                        raiseExceptionOnError(err)
-                    else:
-                        self.mbIm = next_mbIm
+                self.mbIm = utils.load(args[0], rgb2l=rgbfilter)
+                if self.mbIm.depth != args[1]:
+                    self.convert(args[1])
                 self.name = os.path.split(args[0])[1]
             else:
                 # -> imageMb(width, height)
@@ -155,10 +147,7 @@ class imageMb:
             self.mbIm = utils.create(args[0], args[1], args[2])
             self.name = "Image "+str(_image_index)
             _image_index = _image_index + 1
-        
-        self.displayId = ''
-        self.palette = None
-        self.gd = None
+
         if getShowImages():
             self.show()
             
@@ -189,32 +178,13 @@ class imageMb:
         self.name = name
         if self.displayId != '':
             self.gd.updateWindow(self.displayId)
-            
+        
     def getName(self):
         """
         Returns the name of the image.
         """
         return self.name
-            
-    def setPalette(self, pal):
-        """
-        Defines the palette used to convert the image in color for display
-        and save. 'pal' may be rainbow, inverted_rainbow, patchwork or any
-        user-defined palette.
-        """
-        self.palette = pal
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
-            
-    def resetPalette(self):
-        """
-        Undefines the palette used to convert the image in color for display
-        and save. The greyscale palette will be used then.
-        """
-        self.palette = None
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
-            
+        
     def load(self, path, rgbfilter=None):
         """
         Loads the image in 'path' into the Mamba image.
@@ -227,35 +197,59 @@ class imageMb:
         PIL/PILLOW documentation for details).
         """
         next_mbIm = utils.load(path, size=(self.mbIm.width,self.mbIm.height), rgb2l=rgbfilter)
-        if self.mbIm.depth==1:
-            err = core.MB_Convert(next_mbIm, self.mbIm)
-            raiseExceptionOnError(err)
-        elif self.mbIm.depth==8:
-            err = core.MB_Copy(next_mbIm, self.mbIm)
-            raiseExceptionOnError(err)
-        else:
-            err = core.MB_CopyBytePlane(next_mbIm, self.mbIm, 0)
-            raiseExceptionOnError(err)
+        err = core.MB_Convert(next_mbIm, self.mbIm)
+        raiseExceptionOnError(err)
         self.setName(os.path.split(path)[1])
         if self.displayId != '':
             self.gd.reconnectWindow(self.displayId, self)
         
-    def save(self, path):
+    def save(self, path, palette=None):
         """
         Saves the image at the corresponding 'path' using PIL/PILLOW library.
-        The format is automatically deduced by PIL/PILLOW from the image name extension.
-        Note that, if the image comes with a palette, the image is saved with
-        this palette.        
+        The format is automatically deduced by PIL/PILLOW from the image name
+        extension. Make sure the format support the image depth (e.g 32-bit
+        image cannot be stored in JPEG) and use uncompressed format
+        if you wish to reload the image unaltered later.
+        You can add a 'palette' to the saved image (note that it may alter the
+        pixels value if you wish to reload the image later).
         """
-        utils.save(self.mbIm, path, self.palette)
+        pilim = utils.convertToPILFormat(self.mbIm)
+        if self.mbIm.depth!=32 and palette:
+            pilim.putpalette(palette)
+            pilim = pilim.convert("RGB")
+        pilim.save(path)
         
-    def loadRaw(self, data):
+    def loadRaw(self, dataOrPath, preprocfunc=None):
         """
-        Fills the image with the raw string 'data'. The length of data must
-        fit the image size and depth.
-        This method only works on 8 and 32-bit images.
+        Load raw data inside the 3D image. You can give a filename or 
+        data directly through 'dataOrPath'.
+        the data length must match the image size :
+            width * height * (depth/8)
+        If needed you can preprocess the data using the optional argument
+        'preprocfunc' which will be called on the data before loading it.
+        The preprocfunc must have the following prototype :
+            outdata = preprocfunc(indata)
+        The size verification is performed after the preprocessing (enabling
+        you to use zip archives and such).
         """
-        assert(len(data)==self.mbIm.width*self.mbIm.height*(self.mbIm.depth//8))
+        
+        try:
+            # Loading the file
+            f = open(dataOrPath, 'rb')
+            data = f.read()
+            f.close()
+            self.name = dataOrPath
+        except:
+            data = dataOrPath
+        
+        # Preprocessing the data if a function was given
+        if preprocfunc:
+            data = preprocfunc(data)
+        
+        # Verification over data size
+        assert(len(data)==(self.mbIm.width*self.mbIm.height*self.mbIm.depth)//8)
+        
+        # Loading the data
         err = core.MB_Load(self.mbIm,data,len(data))
         raiseExceptionOnError(err)
         self.update()

@@ -80,7 +80,7 @@ extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Extract(MB_Image *image, PIX8 **outdata, Uint32 *len);
 /**
  * Converts an image of a given depth into another depth
- * Supported conversion are: 1->8, 8->1 and 32->8 (downscaling)
+ * All possible conversion are supported.
  * \param src source image
  * \param dest destination image 
  * \return An error code (NO_ERR if successful)

@@ -60,18 +60,6 @@ class TestConversion3D(unittest.TestCase):
         self.assertRaises(MambaError,generateSupMask3D,self.im8_1,self.im8_5,self.im1_3,False)
         self.assertRaises(MambaError,generateSupMask3D,self.im8_1,self.im8_2,self.im1_5,False)
         self.assertRaises(MambaError,lookup3D,self.im8_1,self.im1_5,256*[0])
-
-    def testDepthAcceptation(self):
-        """Tests that incorrect depth raises an exception"""
-        #self.assertRaises(MambaError, convert3D, self.im1_1, self.im1_2)
-        #self.assertRaises(MambaError, convert3D, self.im1_1, self.im8_2)
-        self.assertRaises(MambaError, convert3D, self.im1_1, self.im32_2)
-        #self.assertRaises(MambaError, convert3D, self.im8_1, self.im1_2)
-        #self.assertRaises(MambaError, convert3D, self.im8_1, self.im8_2)
-        self.assertRaises(MambaError, convert3D, self.im8_1, self.im32_2)
-        self.assertRaises(MambaError, convert3D, self.im32_1, self.im1_2)
-        #self.assertRaises(MambaError, convert, self.im32_1, self.im8_2)
-        #self.assertRaises(MambaError, convert, self.im32_1, self.im32_2)
         
     def testConvert3D_8_1(self):
         """Tests the 3D image greyscale/binary conversion function"""
@@ -92,6 +80,27 @@ class TestConversion3D(unittest.TestCase):
         
         convert3D(self.im1_1, self.im8_1)
         (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_3)
+        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        
+    def testConvert3D_32_1(self):
+        """Tests the 3D image 32-bit/binary conversion function"""
+        (w,h,l) = self.im8_1.getSize()
+        
+        self.im32_1.reset()
+        self.im32_1[l-1].fill(0xffffffff)
+        self.im32_1[l-2].fill(0x8f8f8f8f)
+        
+        self.im1_2.reset()
+        self.im1_2[l-1].fill(1)
+        self.im32_2.reset()
+        self.im32_2[l-1].fill(0xffffffff)
+        
+        convert3D(self.im32_1, self.im1_1)
+        (x,y,z) = compare3D(self.im1_1, self.im1_2, self.im1_3)
+        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        
+        convert3D(self.im1_1, self.im32_1)
+        (x,y,z) = compare3D(self.im32_1, self.im32_2, self.im32_3)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
     def testConvert3D_32_8(self):

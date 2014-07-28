@@ -256,7 +256,7 @@ def Mamba2PIL(imIn):
     If the mamba image uses a palette, it will be integrated inside the PIL/PILLOW
     image.
     """
-    return utils.convertToPILFormat(imIn.mbIm, imIn.palette)
+    return utils.convertToPILFormat(imIn.mbIm)
 
 def PIL2Mamba(pilim, imOut):
     """

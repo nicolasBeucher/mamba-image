@@ -3,6 +3,7 @@ This module defines a 2D data displayer for mamba.
 """
 
 import constants
+import palette
 import mamba
 import mamba.utils as utils
 from mamba.error import *
@@ -23,6 +24,8 @@ try:
 except ImportError:
     print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
     raise
+
+import popup
 
 ###############################################################################
 #  Utilities functions
@@ -69,18 +72,21 @@ class Display2D(tk.Toplevel):
         tk.Toplevel.__init__(self,master)
         self.protocol("WM_DELETE_WINDOW", self.withdraw)
         self.columnconfigure(0, weight=1)
-        self.rowconfigure(0, weight=1)
+        self.rowconfigure(1, weight=1)
+        self.popup = popup.Popup(self)
+        self.popup.grid(row=0, column=0, columnspan=2, sticky=tk.E+tk.W)
+        self.popup.grid_remove()
         self.canvas_vb = ttk.Scrollbar(self, orient=tk.VERTICAL)
-        self.canvas_vb.grid(row=0, column=1, sticky=tk.N+tk.S)
+        self.canvas_vb.grid(row=1, column=1, sticky=tk.N+tk.S)
         self.canvas_hb = ttk.Scrollbar(self, orient=tk.HORIZONTAL)
-        self.canvas_hb.grid(row=1, column=0, sticky=tk.E+tk.W)
+        self.canvas_hb.grid(row=2, column=0, sticky=tk.E+tk.W)
         self.canvas = tk.Canvas(self,
                                 bd=0,
                                 xscrollcommand=self.canvas_hb.set,
                                 yscrollcommand=self.canvas_vb.set)
         self.canvas_hb.config(command=self.canvas.xview)
         self.canvas_vb.config(command=self.canvas.yview)
-        self.canvas.grid(row=0, column=0, sticky=tk.E+tk.W+tk.S+tk.N)
+        self.canvas.grid(row=1, column=0, sticky=tk.E+tk.W+tk.S+tk.N)
         self.createInfoBar()
         self.canvas_hb.grid_remove()
         self.canvas_vb.grid_remove()
@@ -93,7 +99,7 @@ class Display2D(tk.Toplevel):
         self.mouse_x = 0
         self.mouse_y = 0
         self.std_geometry = ""
-        self.palactive = True
+        self.palname = ""
         
         # Context menu
         self.createContextMenu()
@@ -249,9 +255,19 @@ class Display2D(tk.Toplevel):
             self.updateim()
         elif event.char == "p":
             # PALETTE ACTIVATION
-            self.palactive = not self.palactive
+            names = [""] + palette.getPaletteNames()
+            try:
+                i = names.index(self.palname)
+            except:
+                i = 0
+            i = (i+1)%len(names)
+            self.palname = names[i]
+            if self.palname:
+                self.popup.info("palette set to "+self.palname)
+            else:
+                self.popup.info("No palette set")
             self.updateim()
-    
+
     def freezeEvent(self, event):
         # Freeze/Unfreeze event
         if self.frozen:
@@ -319,7 +335,7 @@ class Display2D(tk.Toplevel):
     def saveImage(self):
         # Saves the image into the selected file.
         import tkFileDialog
-        filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("BMP", "*.bmp"),("all files","*")]
+        filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("TIFF", "*.tif"),("BMP", "*.bmp"),("all files","*")]
         f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
         if f_name:
             self.im_ref().save(f_name)
@@ -392,10 +408,12 @@ class Display2D(tk.Toplevel):
                 else:
                     mamba.copyBytePlane(self.im_ref(),self.bplane,im)
                     self.infos[1].set("plane : %d" % (self.bplane))
-                self.pilImage = utils.convertToPILFormat(im.mbIm, self.palactive and self.im_ref().palette or None)
+                self.pilImage = utils.convertToPILFormat(im.mbIm)
             else:
                 self.infos[1].set("")
-                self.pilImage = utils.convertToPILFormat(self.im_ref().mbIm, self.palactive and self.im_ref().palette or None)
+                self.pilImage = utils.convertToPILFormat(self.im_ref().mbIm)
+            if self.palname:
+                self.pilImage.putpalette(palette.getPalette(self.palname))
             volume = mamba.computeVolume(self.im_ref())
             self.infos[0].set("volume : "+str(volume))
             self.icon = ImageTk.PhotoImage(self.pilImage.resize(self.icon_size, Image.NEAREST))

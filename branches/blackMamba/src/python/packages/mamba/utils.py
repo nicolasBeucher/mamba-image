@@ -63,34 +63,38 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
         
     # Mode management
     # By default, the image depth is 8bit
+    # 32 bit images are extracted from I and F modes
     depth = 8
-    if pilim.mode == 'RGB':
+    if pilim.mode == 'RGB' or pilim.mode == 'RGBA':
         pilim = pilim.convert("L", rgb2l)
+        depth = 8
     elif pilim.mode == '1':
         pilim = pilim.convert("L")
+        depth = 8
     elif pilim.mode == 'P':
         pilim = pilim.convert("L")
+        depth = 8
     elif pilim.mode == 'L':
-        pass
-    # 32 bit image are extracted from I formats
-    elif pilim.mode=="I;16":
+        depth = 8
+    elif pilim.mode=='I;16':
         depth = 32
         fmt = "H"
         end = ""
-    elif pilim.mode=="I;16B":
+    elif pilim.mode=='I;16B':
         depth = 32
         fmt = "H"
         end = ">"
-    elif pilim.mode=="I;32":
+    elif pilim.mode=='I;32' or pilim.mode=='I':
         depth = 32
         fmt = "I"
         end = ""
-    elif pilim.mode=="F;32":
+    elif pilim.mode=='F;32' or pilim.mode=='F':
         depth = 32
         fmt = "f"
         end = ""
     else:
         # Ugly ...
+        depth = 8
         pilim = pilim.convert('RGB').convert("L", rgb2l)
         
     # PIL image size or given size
@@ -111,12 +115,12 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
     # Because the created image can have a different size, it means that we must
     # force the size of the loaded image to fit.
     if (wc!=w) or (hc!=h):
-        # Here we crop and paste the image to be loaded in order to make it fit in 
-        # the contextual size.
+        # Here we crop and paste the image to be loaded in order to make
+        # it fit in the contextual size.
         prov_im = Image.new(pilim.mode, (wc,hc), 0)
         pilim_crop = pilim.crop((0,0,min(wc, w),min(hc, h)))
         prov_im.paste(pilim_crop, (0,0,min(wc, w),min(hc, h)))
-        pilim = prov_im   
+        pilim = prov_im
     s = pilim.tobytes()
     if depth==32:
         # For 32-bit image, the pil image format may not be exacty the
@@ -155,7 +159,7 @@ def load(filename, size=None, rgb2l = None):
     
     return im_out
 
-def convertToPILFormat(im_in, palette=None):
+def convertToPILFormat(im_in):
     """
     Converts a mamba C core image 'im_in' structure into a PIL image.
     'palette' is used to colorize the image if wanted.
@@ -193,20 +197,5 @@ def convertToPILFormat(im_in, palette=None):
         # Creating the PIL image 
         pilim = Image.frombytes("L",(w,h),s)
     
-    if palette:
-        pilim.putpalette(palette)
-    pilim = pilim.convert("RGB")
     return pilim
-
-def save(im_in, outname, palette=None):
-    """
-    Saves a mamba C core image 'im_in' at the location path given in 'outname'.
-    You can store it in any image format that is actually supported by PIL.
-    'palette' is given to the convertImageToPILFormat function.
-    """
-    
-    # Creating a PIL image with size and data
-    # and saving it using the PIL save function.
-    pilim = convertToPILFormat(im_in, palette)
-    pilim.save(outname)
 

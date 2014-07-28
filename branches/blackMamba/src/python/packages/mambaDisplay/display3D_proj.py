@@ -16,6 +16,7 @@ from PIL import Image
 from PIL import ImageTk
 
 import constants
+import palette
 
 # Mamba imports
 import mamba3D as m3D
@@ -290,8 +291,8 @@ class Display3D_Proj(tk.Frame):
         start = self.z*self.W*self.H
         stop = (self.z+1)*self.W*self.H
         im = Image.frombytes("L", (self.W,self.H), self.raw[start:stop])
-        if self.master.palactive and self.im_ref().palette:
-            im.putpalette(self.im_ref().palette)
+        if self.master.palname:
+            im.putpalette(palette.getPalette(self.master.palname))
         self.planez.display(im)
         self.planez.drawTarget(self.x, self.y)
         
@@ -302,8 +303,8 @@ class Display3D_Proj(tk.Frame):
             start = self.W*(self.y+self.H*i)
             data += self.raw[start:start+self.W]
         im = Image.frombytes("L", (self.W,self.L), data)
-        if self.master.palactive and self.im_ref().palette:
-            im.putpalette(self.im_ref().palette)
+        if self.master.palname:
+            im.putpalette(palette.getPalette(self.master.palname))
         self.planey.display(im)
         self.planey.drawTarget(self.x, self.z)
         
@@ -312,8 +313,8 @@ class Display3D_Proj(tk.Frame):
         im = Image.frombytes("L", (self.H,self.L), self.raw[self.x::self.W])
         im = im.transpose(Image.FLIP_TOP_BOTTOM)
         im = im.transpose(Image.ROTATE_270)
-        if self.master.palactive and self.im_ref().palette:
-            im.putpalette(self.im_ref().palette)
+        if self.master.palname:
+            im.putpalette(palette.getPalette(self.master.palname))
         self.planex.display(im)
         self.planex.drawTarget(self.z, self.y)
     
