@@ -69,7 +69,7 @@ class Display3D(tk.Toplevel):
         # Keyboard events handling
         if event.char == "p":
             # PALETTE ACTIVATION
-            names = [""] + palette.getPaletteNames()
+            names = [""] + palette.listPalettes()
             try:
                 i = names.index(self.palname)
             except:

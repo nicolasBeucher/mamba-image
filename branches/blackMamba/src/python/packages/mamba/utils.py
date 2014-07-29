@@ -65,8 +65,11 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
     # By default, the image depth is 8bit
     # 32 bit images are extracted from I and F modes
     depth = 8
-    if pilim.mode == 'RGB' or pilim.mode == 'RGBA':
+    if pilim.mode == 'RGB':
         pilim = pilim.convert("L", rgb2l)
+        depth = 8
+    elif pilim.mode == 'RGBA':
+        pilim = pilim.convert("RGB").convert("L", rgb2l)
         depth = 8
     elif pilim.mode == '1':
         pilim = pilim.convert("L")

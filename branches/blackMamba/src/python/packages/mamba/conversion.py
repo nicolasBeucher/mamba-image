@@ -12,17 +12,15 @@ def convert(imIn, imOut):
     """
     Converts the contents of 'imIn' to the depth of 'imOut' and puts the result
     in 'imOut'.
-    
-    Greyscale or 32-bit to binary and binary to greyscale or 32-bit conversions are supported.
-    Value 255 in a greyscale image is converted to 1 in a binary one. All other values are
-    transformed to 0. The reverse convention applies. The same rule is applied with
-	32-bit images but, in this case, the value 2**32-1 is converted to 1.
 
-    This function can also be used to downscale 32-bit images into greyscale
-    images. Conversion from 8-bit to 32-bit is equivalent to copyBytePlane
-    for plane 0.
+    For greyscale/32-bit to binary conversion, value 255/0xffffffff in 'imIn'
+    is converted to 1 in 'imOut'. All other values are transformed to 0.
+    The reverse convention applies to binary to greyscale/32-bit conversion.
 
-    Other conversions are not supported.
+    32-bit images are downscaled into greyscale images. Conversion from 8-bit
+    to 32-bit is equivalent to copyBytePlane for plane 0.
+
+    When both images have the same depth this function is a simple copy.
     """
     err = core.MB_Convert(imIn.mbIm, imOut.mbIm)
     mamba.raiseExceptionOnError(err)

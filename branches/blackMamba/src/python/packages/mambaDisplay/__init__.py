@@ -1,6 +1,7 @@
 """
 mambaDisplay contains all the elements allowing to display mamba images
-(2D and 3D).
+(2D and 3D). The documentation for this package is intended for advanced
+user who wishes to defines their own display.
 """
 
 import constants
@@ -80,17 +81,6 @@ class Displayer:
         
         The function can be called even if the window is already hidden, 
         iconified or withdrawn.
-        """
-        pass
-       
-    def reconnectWindow(self, wKey, im):
-        """
-        Reconnects the window identified by 'wKey' with image 'im'.
-        
-        This event may happen if the internal reference of the image given
-        to addWindow upon creation of window 'wKey' changed, making the stored
-        one in the displayer obsolete. This is the case when the image is 
-        converted or when a load occurred.
         """
         pass
 

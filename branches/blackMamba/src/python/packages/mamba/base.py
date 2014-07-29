@@ -201,7 +201,7 @@ class imageMb:
         raiseExceptionOnError(err)
         self.setName(os.path.split(path)[1])
         if self.displayId != '':
-            self.gd.reconnectWindow(self.displayId, self)
+            self.gd.updateWindow(self.displayId)
         
     def save(self, path, palette=None):
         """
@@ -292,7 +292,7 @@ class imageMb:
         del self.mbIm
         self.mbIm = next_mbIm
         if self.displayId != '':
-            self.gd.reconnectWindow(self.displayId, self)
+            self.gd.updateWindow(self.displayId)
         
     ### Display methods ########################################################
     def update(self):

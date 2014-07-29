@@ -307,7 +307,6 @@ class Display3D_VolRen(tk.Frame):
         # Connection of the 3D image to the display
         self.im_ref = im_ref
         W, H, L = self.im_ref().getSize()
-        depth = self.im_ref().getDepth()
         self.dimLabel.config(text="Dimensions = %dx%dx%d" % (W, H, L))
         
     def updateim(self):
