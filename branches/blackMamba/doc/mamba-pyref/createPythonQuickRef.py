@@ -70,7 +70,9 @@ begin = r"""
 \definecolor{mambaBg}{HTML}{408AD2}
 \definecolor{mambaTextFg}{HTML}{FFC640}
 \definecolor{modfg}{HTML}{408AD2}
+\definecolor{modfgspe}{HTML}{802080}
 \definecolor{parts}{HTML}{0040A0}
+\definecolor{partsspe}{HTML}{701070}
 \definecolor{classfg}{HTML}{E78F05}
 \definecolor{deffg}{HTML}{8D1405}
 \definecolor{lightb}{HTML}{A0A0FF}
@@ -116,6 +118,27 @@ begin = r"""
     \vspace{0.2cm}
 }
 
+\newcommand{\modNameSpe}[1]{
+    \textcolor{modfgspe}{
+        \rule{1ex}{1ex}\hspace{1ex}\textsc{Module : }\textbf{#1}
+    }
+    \vspace{0.2cm}
+}
+
+\newcommand{\pkgName}[1]{
+    \textcolor{modfg}{
+        \rule{1ex}{1ex}\hspace{1ex}\textsc{Package : }\textbf{#1}
+    }
+    \vspace{0.2cm}
+}
+
+\newcommand{\pkgNameSpe}[1]{
+    \textcolor{modfgspe}{
+        \rule{1ex}{1ex}\hspace{1ex}\textsc{Package : }\textbf{#1}
+    }
+    \vspace{0.2cm}
+}
+
 \newcommand{\className}[1]{
     \textcolor{classfg}{
         \footnotesize{\textbf{#1}}
@@ -132,6 +155,10 @@ begin = r"""
 {\small\textcolor{parts}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Class :}}\\\vspace{0.1cm}\scriptsize\begin{spacing}{0}}
 {\end{spacing}\normalsize\vspace{0.2cm}}
 
+\newenvironment{classSecSpe}
+{\small\textcolor{partsspe}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Class :}}\\\vspace{0.1cm}\scriptsize\begin{spacing}{0}}
+{\end{spacing}\normalsize\vspace{0.2cm}}
+
 \newenvironment{methodList}
 {\tiny\begin{spacing}{0}}
 {\end{spacing}\normalsize\vspace{0.1cm}}
@@ -140,12 +167,16 @@ begin = r"""
 {\small\textcolor{parts}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Functions :}}\\\vspace{0.1cm}\scriptsize\begin{spacing}{0}}
 {\end{spacing}\normalsize\vspace{0.2cm}}
 
+\newenvironment{funcSecSpe}
+{\small\textcolor{partsspe}{\rule{1ex}{1ex}\hspace{1ex}\textsc{Functions :}}\\\vspace{0.1cm}\scriptsize\begin{spacing}{0}}
+{\end{spacing}\normalsize\vspace{0.2cm}}
+
 \begin{document}
 \begin{center}
 
 """
 
-end = r"""
+general_infos = r"""
 
 \begin{tikzpicture}
 \node[module] {
@@ -212,6 +243,10 @@ CENTER\_CUBIC grid.
 \end{tikzpicture}
 
 
+"""
+
+end = r"""
+
 \begin{tikzpicture}
 \node[modulespe] {
 \begin{minipage}{\nodewidth}
@@ -227,8 +262,7 @@ CENTER\_CUBIC grid.
 \scriptsize
 
 \begin{itemize}
-\item \textbf{P}: will dynamically (de)activate the color palette provided you
-attach one to your image using the setPalette() method.
+\item \textbf{P}: will circle through all the available palettes.
 \item \textbf{B} and \textbf{N}: With 32-bit images, these key will allow you
 to move through byte planes or to show the complete image downscaled.
 \item \textbf{Control-F}: will freeze/unfreeze the display. See the freeze() 
@@ -241,6 +275,8 @@ in your image (only works on 2D images on Windows platforms).
 \item \textbf{F2}: on a 3D image display, will switch to mode VOLUME
 RENDERING if you have VTK python bindings available on your computer.
 \item \textbf{F3}: on a 3D image display, will switch to mode PLAYER.
+\item \textbf{F5}: on a 3D image display, will update the display with
+the image content. Similar to the method update.
 \item \textbf{Space} : will start/stop the player in the 3D image display
 PLAYER mode.
 \item \textbf{Page-Up} : will display the next image in the sequence in the
@@ -316,12 +352,13 @@ class func:
 # The function parses the pydoc output and produces a tex format of it.
 # In the case of the quick reference, this format is particular (only the
 # function names and signature are used)
-def extractModule(path):
+def extractModule(path, special=False):
     f = open(path)
     lines = f.readlines()
     f.close()
 
     sections = {
+                "TYPE" : '',
                 "NAME" : '',
                 "FILE" : '',
                 "SHORT_DESCRIPTION" : '',
@@ -340,8 +377,10 @@ def extractModule(path):
         if l!='':
             if i>0 and l[0]!=' ':
                 in_section = l
+            elif not sections["TYPE"] and l.find("Help on ")>=0:
+                sections["TYPE"] = l.split(" ")[2]
             else:
-                if in_section=="NAME":
+                if in_section=="NAME" and not sections["NAME"]:
                     # sections NAME can contain name and short description
                     names = l[4:].split(' - ')
                     sections[in_section] = names[0]
@@ -402,7 +441,14 @@ def extractModule(path):
     s = "\\begin{flushleft}\n\n"
     linesout.append(s)
     
-    s = "\\modName{"+sections["NAME"]+"}\n\n"
+    if sections["TYPE"]=="package" and special:
+        s = "\\pkgNameSpe{"+sections["NAME"]+"}\n\n"
+    elif sections["TYPE"]=="package":
+        s = "\\pkgName{"+sections["NAME"]+"}\n\n"
+    elif special:
+        s = "\\modNameSpe{"+sections["NAME"]+"}\n\n"
+    else:
+        s = "\\modName{"+sections["NAME"]+"}\n\n"
     linesout.append(s)
     
     s = "\\begin{modDesc}\n"
@@ -417,7 +463,10 @@ def extractModule(path):
     # Classes
     if sections["CLASSES"]!=[]:
 
-        s = "\\begin{classSec}\n\n"
+        if special:
+            s = "\\begin{classSecSpe}\n\n"
+        else:
+            s = "\\begin{classSec}\n\n"
         linesout.append(s)
         for k in sections["CLASSES"]:
             s = "\\className{"+k.name+"}\n"
@@ -431,18 +480,27 @@ def extractModule(path):
                 linesout.append(s)
             s = "\\end{methodList}\n\n"
             linesout.append(s)
-        s = "\\end{classSec}\n\n"
+        if special:
+            s = "\\end{classSecSpe}\n\n"
+        else:
+            s = "\\end{classSec}\n\n"
         linesout.append(s)
 
     # Functions
     if sections["FUNCTIONS"]!=[]:
 
-        s = "\\begin{funcSec}\n"
+        if special:
+            s = "\\begin{funcSecSpe}\n"
+        else:
+            s = "\\begin{funcSec}\n"
         linesout.append(s)
         for fn in sections["FUNCTIONS"]:
             s = "\defp "+fn.name+":\\newline\n"
             linesout.append(s)
-        s = "\\end{funcSec}\n\n"
+        if special:
+            s = "\\end{funcSecSpe}\n\n"
+        else:
+            s = "\\end{funcSec}\n\n"
         linesout.append(s)
     
     s = "\\end{flushleft}\n"
@@ -482,6 +540,10 @@ lines = [begin % (VERSION)]
 for f in pyfile_list:
     os.system(sys.executable+' '+pydoc.__file__+' '+f.split('.')[0].replace('/','.').replace('\\','.')+' > '+PROVDOC)
     lines = lines+extractModule(PROVDOC)
+lines.append(general_infos)
+os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay > '+PROVDOC)
+os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay.palette >> '+PROVDOC)
+lines = lines+extractModule(PROVDOC, special=True)
 lines.append(end)
 # Removing byproducts
 os.remove(PROVDOC)
