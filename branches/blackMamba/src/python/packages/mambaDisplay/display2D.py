@@ -11,10 +11,12 @@ from mamba.error import *
 try:
     import tkinter as tk
     import tkinter.ttk as ttk
+    import tkinter.filedialog as filedialog
 except ImportError:
     try:
         import Tkinter as tk
         import ttk
+        import tkFileDialog as filedialog
     except ImportError:
         print("Missing Tkinter library")
         raise
@@ -136,6 +138,7 @@ class Display2D(tk.Toplevel):
         self.context_menu.add_command(label="100%", command=self.resetZoom)
         self.context_menu.add_command(label="200%", command=self.doubleZoom)
         self.context_menu.add_separator()
+        self.context_menu.add_command(label="")
         
     def createInfoBar(self):
         # Creates the info status bar.
@@ -216,6 +219,8 @@ class Display2D(tk.Toplevel):
                     zoom = self.zoom/2
                     if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
                         self.setZoom(zoom)
+                    else:
+                        self.popup.warn("Cannot zoom out limit reached")
                 else:
                     self.setZoom(self.zoom-0.25)
             
@@ -255,7 +260,7 @@ class Display2D(tk.Toplevel):
             self.updateim()
         elif event.char == "p":
             # PALETTE ACTIVATION
-            names = [""] + palette.getPaletteNames()
+            names = [""] + palette.listPalettes()
             try:
                 i = names.index(self.palname)
             except:
@@ -302,7 +307,7 @@ class Display2D(tk.Toplevel):
         # Handles copy shortcut event.
         # If an image is present into the clipboard we get it. 
         self._im_to_paste = _copyFromClipboard(size=self.osize)
-        if self._im_to_paste and self.im_ref().getDepth()==8:
+        if self._im_to_paste:
             self.pasteFromClipBoard()
     
     def contextMenuEvent(self, event):
@@ -311,9 +316,8 @@ class Display2D(tk.Toplevel):
         # we get it. 
         self._im_to_paste = _copyFromClipboard(size=self.osize)
         
-        # If an image was retrieved from the clipboard and the image is not a
-        # 8-bit image, the paste menu is enabled.
-        if self._im_to_paste and self.im_ref().getDepth()==8:
+        # If an image was retrieved from the clipboard, the paste menu is enabled.
+        if self._im_to_paste:
             self.context_menu.entryconfigure(2, state=tk.ACTIVE)
         else:
             self.context_menu.entryconfigure (2, state=tk.DISABLED)
@@ -328,20 +332,21 @@ class Display2D(tk.Toplevel):
     def loadImage(self):
         # Loads the image from the selected file.
         # The name associated with the image will not be changed.
-        import tkFileDialog
-        f_name = tkFileDialog.askopenfilename()
-        if f_name:
-            self.im_ref().load(f_name)
+        try:
+            f_name = filedialog.askopenfilename()
+            if f_name:
+                self.im_ref().load(f_name)
+        except Exception as err:
+            self.popup.err("Error while opening file : %s" % (str(err)))
     def saveImage(self):
         # Saves the image into the selected file.
-        import tkFileDialog
         filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("TIFF", "*.tif"),("BMP", "*.bmp"),("all files","*")]
-        f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
+        f_name = filedialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
         if f_name:
             self.im_ref().save(f_name)
     def pasteFromClipBoard(self):
         # Pastes the image obtained in the clipboard.
-        err = core.MB_Copy(self._im_to_paste, self.im_ref().mbIm)
+        err = core.MB_Convert(self._im_to_paste, self.im_ref().mbIm)
         raiseExceptionOnError(err)
         self.updateim()
         del(self._im_to_paste)
@@ -447,7 +452,7 @@ class Display2D(tk.Toplevel):
         
         # Adding size info to menu.
         size_info = str(self.osize[0]) + " x " + str(self.osize[1])
-        self.context_menu.add_command(label=size_info)
+        self.context_menu.entryconfigure(8, label=size_info)
         
         self.updateim()
     

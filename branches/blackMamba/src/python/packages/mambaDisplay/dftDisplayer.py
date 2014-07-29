@@ -94,17 +94,6 @@ class DftDisplayer(mambaDisplay.Displayer):
         # Hides the window identified by 'wkey'.
         self.windows[wKey].hide()
         self.root.update()
-       
-    def reconnectWindow(self, wKey, im):
-        # Reconnects the window identified by 'wkey' with image 'im' using
-        # palette 'pal' if specified.
-        if isinstance(im, mamba.imageMb):
-            im_ref = weakref.ref(im)
-            self.windows[wKey].connect(im_ref)
-        else: #isinstance(im, mamba3D.image3DMb):
-            im_ref = weakref.ref(im)
-            self.windows[wKey].connect(im_ref)
-        self.root.update()
 
     def destroyWindow(self, wKey):
         # Destroys the window identified by 'wkey'.

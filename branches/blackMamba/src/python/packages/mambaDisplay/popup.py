@@ -46,7 +46,7 @@ class Popup(ttk.Label):
         self.after(1000, self.endPopupEvent)
 
     def err(self, error):
-        self.config(text=err, style="popupErr.TLabel")
+        self.config(text=error, style="popupErr.TLabel")
         self.timeout = int(time.time())+5
         self.grid()
         self.after(1000, self.endPopupEvent)

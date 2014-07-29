@@ -106,6 +106,7 @@ class Display3D_Player(tk.Frame):
         self.y = 0
         self.z = 0
         self.im_ref = None
+        self.delay = tk.IntVar()
         
         # Event binding
         master.bind("<KeyRelease>", self.keyboardEvent)
@@ -164,18 +165,21 @@ class Display3D_Player(tk.Frame):
         self.stopbm = tk.BitmapImage(data=STOPXBM, foreground="red")
         self.nextbm = tk.BitmapImage(data=NEXTXBM)
         self.prevbm = tk.BitmapImage(data=PREVXBM)
-        self.bprev = ttk.Button(lb, image=self.prevbm, command=self.setPrevImage)
+        self.bprev = ttk.Button(lb, image=self.prevbm, command=self.setPrevImage, takefocus=0)
         self.bprev.grid(row=0,column=0,sticky=tk.W)
-        self.bplay = ttk.Button(lb, image=self.playbm, command=self.play)
+        self.bplay = ttk.Button(lb, image=self.playbm, command=self.play, takefocus=0)
         self.bplay.grid(row=0,column=1,sticky=tk.W+tk.E)
-        self.bnext = ttk.Button(lb, image=self.nextbm, command=self.setNextImage)
+        self.bnext = ttk.Button(lb, image=self.nextbm, command=self.setNextImage, takefocus=0)
         self.bnext.grid(row=0,column=2,sticky=tk.E)
+        ttk.Label(lb, text="speed : ").grid(row=1, column=0, sticky=tk.W)
+        scale = ttk.Scale(lb, from_=1000, to=50, orient=tk.HORIZONTAL, variable=self.delay)
+        scale.grid(row=1, column=1, columnspan=2, sticky=tk.W+tk.E)
         self.volLabel = ttk.Label(lb, text="Volume : 0")
-        self.volLabel.grid(row=1, column=0, columnspan=3, sticky=tk.W)
+        self.volLabel.grid(row=2, column=0, columnspan=3, sticky=tk.W)
         self.posLabel = ttk.Label(lb, text="At (0,0,0) = 0")
-        self.posLabel.grid(row=2, column=0, columnspan=3, sticky=tk.W)
+        self.posLabel.grid(row=3, column=0, columnspan=3, sticky=tk.W)
         self.planeLabel = ttk.Label(lb, text="")
-        self.planeLabel.grid(row=3, column=0, columnspan=3, sticky=tk.W)
+        self.planeLabel.grid(row=4, column=0, columnspan=3, sticky=tk.W)
         
     def updateim(self):
         # Update the display (perform a rendering)
@@ -229,12 +233,12 @@ class Display3D_Player(tk.Frame):
         self.updateim()
     def play(self):
         self.playing = True
-        self.after(50, self._playerCb)
+        self.after(self.delay.get(), self._playerCb)
         self.bplay.config(image=self.stopbm, command=self.stop)
     def _playerCb(self):
         if self.playing:
             self.setNextImage()
-            self.after(50, self._playerCb)
+            self.after(self.delay.get(), self._playerCb)
         else:
             self.bplay.config(image=self.playbm, command=self.play)
     def stop(self):

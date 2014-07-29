@@ -1,6 +1,6 @@
 """
-This module provides palette definitions and functions to build specific 
-palettes.
+Basic users can use it to list and use existing palettes and build new ones
+through the provided functions.
 """
 
 ###############################################################################
@@ -111,7 +111,7 @@ def tagOneColorPalette(value, color):
     _dictPalettes[name] = pal
     return name
 
-def getPaletteNames():
+def listPalettes():
     """
     Returns the list of all the defined palettes.
     """
@@ -124,4 +124,12 @@ def getPalette(name):
     """
     global _dictPalettes
     return _dictPalettes[name]
-    
+
+def addPalette(name, palette):
+    """
+    Adds a 'palette' with its 'name' to the existing palettes. A palette is
+    a tuple containing 256*3 value (r0,g0,b0,r1,g1,b1 ...).
+    """
+    global _dictPalettes
+    _dictPalettes[name] = palette
+

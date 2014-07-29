@@ -222,7 +222,6 @@ class image3DMb:
             data += s
         return data
         
-        
     def load(self, path, rgbfilter=None):
         """
         Loads a 3D stack (sequence) of images found in directory 'path'.
@@ -266,7 +265,7 @@ class image3DMb:
             # the sequence is overloaded 
             for i in range(l):
                 self.seq[i].load(files_dict[files_keys[i]], rgbfilter=rgbfilter)
-                
+     
     def save(self, path, extension=".png", palette=None):
         """
         Saves the images of the 3D image stack (sequence) inside a directory
@@ -352,9 +351,6 @@ class image3DMb:
         self.mb3DIm = mb3DIm
         self.seq = seq
         self.depth = depth
-        
-        if self.displayId != '':
-            self.gd.reconnectWindow(self.displayId, self)
         
     ### Display methods ########################################################
     def show(self):
