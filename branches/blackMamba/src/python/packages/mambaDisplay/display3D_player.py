@@ -107,6 +107,7 @@ class Display3D_Player(tk.Frame):
         self.z = 0
         self.im_ref = None
         self.delay = tk.IntVar()
+        self.delay.set(50)
         
         # Event binding
         master.bind("<KeyRelease>", self.keyboardEvent)
