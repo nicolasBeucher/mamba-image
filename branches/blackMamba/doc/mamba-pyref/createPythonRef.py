@@ -186,7 +186,7 @@ def extractModule(path):
             if i>0 and l[0]!=' ':
                 in_section = l
             else:
-                if in_section=="NAME":
+                if in_section=="NAME" and not sections["NAME"]:
                     # sections NAME can contain name and short description
                     names = l[4:].split(' - ')
                     sections[in_section] = names[0]
@@ -300,7 +300,11 @@ lines = [begin % (VERSION)]
 for f in pyfile_list:
     os.system(sys.executable+' '+pydoc.__file__+' '+f.split('.')[0].replace('/','.').replace('\\','.')+' > '+PROVDOC)
     lines = lines+extractModule(PROVDOC)
+os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay > '+PROVDOC)
+os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay.palette >> '+PROVDOC)
+lines = lines+extractModule(PROVDOC)
 lines.append(end)
+print cwd
 # Removing byproducts
 os.remove(PROVDOC)
 # writing the final tex file
