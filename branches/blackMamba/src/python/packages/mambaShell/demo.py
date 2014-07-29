@@ -11,8 +11,6 @@ The next lines will ensure this :
 >>>im2.show()
 >>>im1.unfreeze()
 >>>im2.unfreeze()
->>>im1.resetPalette()
->>>im2.resetPalette()
 
 Ok, now first we will load an image into im1:
 >>>im1.load("%s")
@@ -21,11 +19,8 @@ You can always get information on images, such as their size or depth:
 >>>im1.getSize()
 >>>im1.getDepth()
 
-Mamba comes with a preintegrated color palette that you can apply to your image:
->>>im1.setPalette(rainbow)
-
-Of course you can always go back to the greyscale display:
->>>im1.resetPalette()
+Mamba comes with a preintegrated color palette that you can apply to your
+display by pressing the letter P in the window.
 
 Performing any operation is done by calling the appropriate function.
 For example, to perform an erosion of im1:
