@@ -1,6 +1,8 @@
 """
-This module provides a set of functions to compute statistical values inside
-a 3D image.
+Statistical 3D operators.
+
+This module provides a set of functions to compute statistical values such
+as mean and median inside a 3D image.
 """
 
 # Contributors : Nicolas BEUCHER

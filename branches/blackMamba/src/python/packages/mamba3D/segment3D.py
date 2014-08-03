@@ -1,6 +1,9 @@
 """
-This module provides a set of functions to perform segmentation
-operations on 3D images using mamba.
+Segmentation 3D operators.
+
+This module provides a set of functions to perform 3D segmentation
+operations (such as watershed and basin). The module also contains the
+labelling operator.
 """
 
 # Contributors : Nicolas BEUCHER

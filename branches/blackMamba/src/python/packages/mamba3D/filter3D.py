@@ -1,6 +1,8 @@
 """
+Filtering operators.
+
 This module provides a set of functions to perform morphological filtering 
-operations on 3D images using mamba.
+operations such as alternate filter.
 """
 
 # Contributors : Nicolas BEUCHER

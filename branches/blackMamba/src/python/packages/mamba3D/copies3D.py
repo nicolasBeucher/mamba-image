@@ -1,5 +1,7 @@
 """
-This module regroups copy functions/operators on 3D images.
+Copy 3D operators.
+
+This module regroups various complete or partial copy operators fro 3D images.
 """
 
 # Contributors : Nicolas BEUCHER

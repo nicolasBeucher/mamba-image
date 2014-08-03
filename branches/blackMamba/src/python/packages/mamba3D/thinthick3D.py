@@ -1,7 +1,9 @@
 """
-This module contains morphological Hit-or-Miss, thinning and thickening
-operators of the Mamba3D library, They use image3DMb instances as defined
-in the mamba3D package.
+Thinning and thickening 3D operators.
+
+This module contains morphological thinning and thickening operators based on
+the Hit-or-Miss transformation. The module also defines the double 3D
+structuring element class which serve as a base for these operators.
 """
 
 # Contributor: Nicolas BEUCHER

@@ -13,6 +13,7 @@ from .filter3D import *
 from .geodesy3D import *
 from .arithmetic3D import *
 from .conversion3D import *
+from .measure3D import *
 from .miscellaneous3D import *
 from .openclose3D import *
 from .segment3D import *

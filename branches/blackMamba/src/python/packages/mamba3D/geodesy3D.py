@@ -1,8 +1,8 @@
 """
-This module provides a set of functions to perform geodesic computations on
-3D images using Mamba based functions.
+Geodesic 3D operators.
 
-It includes build and dualbuild operations, computation of maxima and minima...
+This module provides a set of functions to perform geodesic computations.
+It includes build and dualbuild operations, geodesic erosion and dilation ...
 """
 
 # Contributors: Nicolas BEUCHER
