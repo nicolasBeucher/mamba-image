@@ -73,6 +73,7 @@ class planeFrame(ttk.LabelFrame):
         self.canvas.bind("<MouseWheel>", self.mouseEvent)
         self.canvas.bind("<Button-1>", self.mouseEvent)
         self.canvas.bind("<ButtonRelease-1>", self.mouseEvent)
+        self.canvas.bind("<KeyPress>", self.keypressEvent)
 
     # Events handling functions ################################################
         
@@ -116,6 +117,22 @@ class planeFrame(ttk.LabelFrame):
         self.mouse_y = event.y
         self.root.movingEvent(x,y,self.name,event.state)
 
+    def keypressEvent(self, event):
+        if event.char=="z":
+            # ZOOM IN
+            if self.zoom<=0.25:
+                self.setZoom(self.zoom*2)
+            else:
+                self.setZoom(self.zoom+0.25)
+        elif event.char=="a":
+            # ZOOM OUT
+            if self.zoom<=0.25:
+                zoom = self.zoom/2
+                if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
+                    self.setZoom(zoom)
+            else:
+                self.setZoom(self.zoom-0.25)
+        
     def mouseEvent(self, event):
         # Handles mouse events (except menu pop up)
         # Mainly zoom in or out using the mouse wheel, and moving the image
