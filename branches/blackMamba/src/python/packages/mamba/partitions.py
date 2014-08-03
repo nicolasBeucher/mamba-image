@@ -1,4 +1,6 @@
 """
+Partitioning operators.
+
 This module contains operators acting on partitions. Two types of operators are
 defined: operators acting on each cell of the partition independently, or
 operators considering each cell of the partition as a node of a weighted graph.

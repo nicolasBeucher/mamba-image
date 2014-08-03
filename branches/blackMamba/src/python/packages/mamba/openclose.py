@@ -1,10 +1,11 @@
 """
-This module provides a set of functions to perform opening and closing 
-operations. 
+Opening and closing operators.
 
-All the closing and opening operation defined in this module use erosion, dilation
-and build functions with user-defined edge settings. The functions define
-a default edge which can be changed (see the modules erodil and geodesy).
+This module provides a set of functions to perform opening and closing 
+operations. All the closing and opening operation defined in this module
+use erosion, dilation and build functions with user-defined edge settings.
+The functions define a default edge which can be changed (see the modules
+erodil and geodesy).
 """
 
 # Contributors: Serge BEUCHER, Nicolas, BEUCHER, Michel BILODEAU

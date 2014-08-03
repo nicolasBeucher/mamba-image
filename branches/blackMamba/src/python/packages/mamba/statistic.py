@@ -1,6 +1,8 @@
 """
-This module provides a set of functions to compute statistical values inside
-an image.
+Statistical operators.
+
+This module provides a set of functions to compute statistical values such
+as mean and median inside an image.
 """
 
 # contributor: Nicolas BEUCHER

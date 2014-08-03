@@ -1,6 +1,8 @@
 """
-This module provides a set of functions to perform morphological contrast operators
-(gradient, top-hat transform,...).
+Contrast operators.
+
+This module provides a set of functions to perform morphological contrast
+operators such as gradient, top-hat transform, ....
 """
 
 import mamba

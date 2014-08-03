@@ -1,4 +1,6 @@
 """
+Geodesic operators.
+
 This module provides a set of functions to perform geodesic computations.
 It includes build and dualbuild operations, geodesic erosion and dilation ...
 """

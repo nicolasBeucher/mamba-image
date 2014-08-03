@@ -1,6 +1,8 @@
 """
+Depth conversion operators.
+
 This module regroups various functions/operators to perform conversions
-based on image depth.
+based on image depth. It allows to transfer data from an image depth to another.
 """
 
 import mamba

@@ -1,4 +1,6 @@
 """
+Grids handling and setting functions.
+
 This module defines various functions related to grid configurations and 
 computations.
 """

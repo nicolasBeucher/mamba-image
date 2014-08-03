@@ -1,6 +1,9 @@
 """
+Segmentation operators.
+
 This module provides a set of functions to perform segmentation
-operations (such as watershed=.
+operations (such as watershed and basin). The module also contains the
+labelling operator.
 """
 
 # Contributors: Nicolas BEUCHER, Serge BEUCHER

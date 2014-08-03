@@ -1,6 +1,8 @@
 """
+Extrema (min/max) operators.
+
 This module provides a set of operators dealing with maxima and minima of a
-function. New operators linked to the notion of dynamics are provided.
+function. New operators linked to the notion of dynamics are also provided.
 """
 
 # Contributor: Serge BEUCHER

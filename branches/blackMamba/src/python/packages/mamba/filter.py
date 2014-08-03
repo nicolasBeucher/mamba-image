@@ -1,6 +1,8 @@
 """
+Filtering operators.
+
 This module provides a set of functions to perform morphological filtering 
-operations.
+operations such as alternate filter.
 """
 
 import mamba
@@ -233,5 +235,4 @@ def largeOctogonalAlternateFilter(imIn, imOut, start, end, step, openFirst):
             mamba.largeOctogonalErode(imOut, imOut, t2)
             prev = i
         mamba.largeOctogonalDilate(imOut, imOut, prev)
-
 
