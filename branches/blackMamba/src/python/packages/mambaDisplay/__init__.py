@@ -1,4 +1,6 @@
 """
+Display and palette functions.
+
 mambaDisplay contains all the elements allowing to display mamba images
 (2D and 3D). The documentation for this package is intended for advanced
 user who wishes to defines their own display.
