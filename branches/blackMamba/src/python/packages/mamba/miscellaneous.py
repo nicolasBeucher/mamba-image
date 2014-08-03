@@ -1,4 +1,6 @@
 """
+Various unclassed operators.
+
 This module regroups functions/operators that could not be regrouped with other
 operators because of their unique nature or other peculiarity. As such, it
 regroups some utility functions.
@@ -39,17 +41,6 @@ def compare(imIn1, imIn2, imOut):
     imOut.update()
     return (x,y)
     
-def computeVolume(imIn):
-    """
-    Computes the volume of the image 'imIn', i.e. the sum of its pixel values.
-    The computed integer value is returned by the function.
-    
-    'imIn' can be a 1-bit, 8-bit or 32-bit image.
-    """
-    err, volume = core.MB_Volume(imIn.mbIm)
-    mamba.raiseExceptionOnError(err)
-    return volume
-    
 def checkEmptiness(imIn):
     """
     Checks if image 'imIn' is empty (i.e. completely black).
@@ -60,68 +51,18 @@ def checkEmptiness(imIn):
     err, isEmpty = core.MB_Check(imIn.mbIm)
     mamba.raiseExceptionOnError(err)
     return bool(isEmpty)
-    
-def computeMaxRange(imIn):
-    """
-    Returns a tuple with the minimum and maximum possible pixel values given the
-    depth of image 'imIn'. The values are returned in a tuple holding the 
-    minimum and the maximum.
-    """
-    err, min, max = core.MB_depthRange(imIn.mbIm)
-    mamba.raiseExceptionOnError(err)
-    return (min, max)
 
-def computeRange(imIn):
-    """
-    Computes the range, i.e. the minimum and maximum values, of image 'imIn'.
-    The values are returned in a tuple holding the minimum and the maximum.
-    """
-    err, min, max = core.MB_Range(imIn.mbIm)
-    mamba.raiseExceptionOnError(err)
-    return (min, max)
-    
 def extractFrame(imIn, threshold):
     """
     Extracts the smallest frame (tuple containing the coordinates of the upper
-	left point and the lower right point) inside the image 'imIn' that includes
-	all the pixels whose value is greater or equal to 'threshold'.
+    left point and the lower right point) inside the image 'imIn' that includes
+    all the pixels whose value is greater or equal to 'threshold'.
     
     'imIn' can be a 8-bit or 32-bit image.
     """
     err, x1, y1, x2, y2 = core.MB_Frame(imIn.mbIm, threshold)
     mamba.raiseExceptionOnError(err)
     return (x1, y1, x2, y2)
-
-# Specific operators ###########################################################
-  
-def isotropicDistance(imIn, imOut, edge=mamba.FILLED):
-    """
-    Computes the distance function of a set in 'imIn'. This distance function
-    uses dodecagonal erosions and the grid is assumed to be hexagonal.
-    The procedure is quite slow but the result is more aesthetic.
-    This operator also illustrates how to perform successive dodecagonal
-    operations of increasing sizes.
-    """
-    
-    if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
-    imOut.reset()
-    oldn = 0
-    size = 0
-    imWrk1 = mamba.imageMb(imIn)
-    imWrk2 = mamba.imageMb(imIn)
-    mamba.copy(imIn, imWrk1)
-    while mamba.computeVolume(imWrk1) != 0:
-        mamba.add(imOut, imWrk1, imOut)
-        size += 1
-        n = int(0.4641*size)
-        n += abs(n % 2 - size % 2)
-        if (n - oldn) == 1:
-            mamba.copy(imWrk1, imWrk2)
-            mamba.erode(imWrk1, imWrk1, 1, se=mamba.HEXAGON, edge=edge)
-        else:
-            mamba.conjugateHexagonalErode(imWrk2, imWrk1, 1, edge=edge)
-        oldn = n
 
 # Utility operators ############################################################
 
@@ -175,9 +116,7 @@ def multiSuperpose(imInout, *imIns):
         mamba.convertByMask(im, imWrk, 0, 256-len(imIns)+i)
         mamba.logic(imInout, imWrk, imInout, "sup")
 
-################################################################################
-# Mix/Split color image 
-################################################################################
+# Mix/Split color image ########################################################
 # Mixes three greyscale images to create a color image (RGB) or split a
 # color image (RGB) into its three color channels.
 
@@ -244,9 +183,7 @@ def split(pilimIn, imOutR, imOutG, imOutB):
     mamba.raiseExceptionOnError(err)
     imOutB.update()
 
-################################################################################
-# PIL/PILLOW conversion functions
-################################################################################
+# PIL/PILLOW conversion functions ##############################################
 
 def Mamba2PIL(imIn):
     """
@@ -264,15 +201,6 @@ def PIL2Mamba(pilim, imOut):
     depth = imOut.getDepth()
     (width, height) = imOut.getSize()
     next_mbIm = utils.loadFromPILFormat(pilim, size=(width,height))
-    if depth==1:
-        err = core.MB_Convert(next_mbIm, imOut.mbIm)
-        mamba.raiseExceptionOnError(err)
-    elif depth==8:
-        err = core.MB_Copy(next_mbIm, imOut.mbIm)
-        mamba.raiseExceptionOnError(err)
-    else:
-        err = core.MB_CopyBytePlane(next_mbIm, imOut.mbIm, 0)
-        mamba.raiseExceptionOnError(err)
-
-    if imOut.displayId != '':
-        imOut.gd.reconnectWindow(imOut.displayId, imOut)
+    err = core.MB_Convert(next_mbIm, imOut.mbIm)
+    mamba.raiseExceptionOnError(err)
+    imOut.update()

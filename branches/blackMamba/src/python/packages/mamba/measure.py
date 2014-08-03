@@ -1,13 +1,46 @@
 """
+Measure operators.
+
 This module provides a set of functions which perform measure
-operations.
+operations on an image. Measures include volume, range, area ...
 """
 
 # Contributors: Serge BEUCHER, Nicolas BEUCHER
 
-from .core import ERR_BAD_DEPTH
 import mamba
+import mamba.core as core
+
 import math
+
+def computeVolume(imIn):
+    """
+    Computes the volume of the image 'imIn', i.e. the sum of its pixel values.
+    The computed integer value is returned by the function.
+    
+    'imIn' can be a 1-bit, 8-bit or 32-bit image.
+    """
+    err, volume = core.MB_Volume(imIn.mbIm)
+    mamba.raiseExceptionOnError(err)
+    return volume
+
+def computeMaxRange(imIn):
+    """
+    Returns a tuple with the minimum and maximum possible pixel values given the
+    depth of image 'imIn'. The values are returned in a tuple holding the 
+    minimum and the maximum.
+    """
+    err, min, max = core.MB_depthRange(imIn.mbIm)
+    mamba.raiseExceptionOnError(err)
+    return (min, max)
+
+def computeRange(imIn):
+    """
+    Computes the range, i.e. the minimum and maximum values, of image 'imIn'.
+    The values are returned in a tuple holding the minimum and the maximum.
+    """
+    err, min, max = core.MB_Range(imIn.mbIm)
+    mamba.raiseExceptionOnError(err)
+    return (min, max)
 
 def computeArea(imIn, scale=(1.0, 1.0)):
     """
@@ -26,7 +59,7 @@ def computeArea(imIn, scale=(1.0, 1.0)):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     a = scale[0]*scale[1]*mamba.computeVolume(imIn)
     return a
 
@@ -41,7 +74,7 @@ def computeDiameter(imIn, dir, scale=(1.0, 1.0), grid=mamba.DEFAULT_GRID):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     if dir == 0:
         return 0.0
     dir = ((dir - 1)%(mamba.gridNeighbors(grid)//2)) +1
@@ -75,7 +108,7 @@ def computePerimeter(imIn, scale=(1.0, 1.0), grid=mamba.DEFAULT_GRID):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     p = 0.
     for i in range(1, mamba.gridNeighbors(grid)//2 + 1):
         p += computeDiameter(imIn, i, scale=scale, grid=grid)
@@ -92,7 +125,7 @@ def computeConnectivityNumber(imIn, grid=mamba.DEFAULT_GRID):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     imWrk  = mamba.imageMb(imIn)
     if grid == mamba.HEXAGONAL:
         dse = mamba.doubleStructuringElement([1,6],[0],mamba.HEXAGONAL)

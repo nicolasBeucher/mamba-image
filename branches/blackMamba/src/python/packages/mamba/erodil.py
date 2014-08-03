@@ -1,7 +1,11 @@
 """
+Erosion and dilation operators.
+
 This module provides a set of functions and class to perform erosions and
 dilations. The module contains basic and complex operators that are based
-on neighbor comparisons.
+on neighbor comparisons. In particular it defines the structuring element
+class which serve as the base for these operators. The module also contains
+distance functions based on erosion.
 """
 
 import mamba
@@ -480,3 +484,33 @@ def computeDistance(imIn, imOut, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
     err = core.MB_Distanceb(imIn.mbIm,imOut.mbIm, grid.id, edge.id)
     mamba.raiseExceptionOnError(err)
     imOut.update()
+  
+def isotropicDistance(imIn, imOut, edge=mamba.FILLED):
+    """
+    Computes the distance function of a set in 'imIn'. This distance function
+    uses dodecagonal erosions and the grid is assumed to be hexagonal.
+    The procedure is quite slow but the result is more aesthetic.
+    This operator also illustrates how to perform successive dodecagonal
+    operations of increasing sizes.
+    """
+    
+    if imIn.getDepth() != 1:
+        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+    imOut.reset()
+    oldn = 0
+    size = 0
+    imWrk1 = mamba.imageMb(imIn)
+    imWrk2 = mamba.imageMb(imIn)
+    mamba.copy(imIn, imWrk1)
+    while mamba.computeVolume(imWrk1) != 0:
+        mamba.add(imOut, imWrk1, imOut)
+        size += 1
+        n = int(0.4641*size)
+        n += abs(n % 2 - size % 2)
+        if (n - oldn) == 1:
+            mamba.copy(imWrk1, imWrk2)
+            mamba.erode(imWrk1, imWrk1, 1, se=mamba.HEXAGON, edge=edge)
+        else:
+            mamba.conjugateHexagonalErode(imWrk2, imWrk1, 1, edge=edge)
+        oldn = n
+
