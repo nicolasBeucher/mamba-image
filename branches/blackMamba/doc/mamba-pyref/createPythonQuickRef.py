@@ -263,7 +263,9 @@ end = r"""
 
 \begin{itemize}
 \item \textbf{P}: will circle through all the available palettes.
-\item \textbf{B} and \textbf{N}: With 32-bit images, these key will allow you
+\item \textbf{Z} and \textbf{A}: will zoom in/out in 2D displays (basic, 
+projection, player ...)
+\item \textbf{B} and \textbf{N}: With 32-bit images, these keys will allow you
 to move through byte planes or to show the complete image downscaled.
 \item \textbf{Control-F}: will freeze/unfreeze the display. See the freeze() 
 method.
@@ -543,6 +545,8 @@ for f in pyfile_list:
 lines.append(general_infos)
 os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay > '+PROVDOC)
 os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay.palette >> '+PROVDOC)
+lines = lines+extractModule(PROVDOC, special=True)
+os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay.extra > '+PROVDOC)
 lines = lines+extractModule(PROVDOC, special=True)
 lines.append(end)
 # Removing byproducts

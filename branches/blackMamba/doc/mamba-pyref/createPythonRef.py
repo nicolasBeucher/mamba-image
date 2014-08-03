@@ -303,6 +303,8 @@ for f in pyfile_list:
 os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay > '+PROVDOC)
 os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay.palette >> '+PROVDOC)
 lines = lines+extractModule(PROVDOC)
+os.system(sys.executable+' '+pydoc.__file__+' mambaDisplay.extra > '+PROVDOC)
+lines = lines+extractModule(PROVDOC)
 lines.append(end)
 print cwd
 # Removing byproducts
