@@ -1,4 +1,6 @@
 """
+Large erosion and dilation operators.
+
 This module provides a set of functions performing erosions and
 dilations with large structuring elements. These operators are to be prefered
 to the standard ones when working with large structuring elements.

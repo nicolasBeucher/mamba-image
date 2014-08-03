@@ -1,7 +1,10 @@
 """
-This module contains morphological Hit-or-Miss, thinning and thickening 
-operators, together with various homotopic and geodesic functions derived
-from these operators.
+Thinning and thickening operators.
+
+This module contains morphological thinning and thickening operators based on
+the Hit-or-Miss transformation, together with various homotopic and geodesic
+functions derived from these operators. The module also defines the double
+structuring element class which serve as a base for these operators.
 """
 
 import mamba

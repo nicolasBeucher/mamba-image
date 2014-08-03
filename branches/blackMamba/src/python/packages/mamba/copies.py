@@ -1,5 +1,7 @@
 """
-This module regroups various copy operators.
+Copy operators.
+
+This module regroups various complete or partial copy operators.
 """
 
 # Contributors: Serge BEUCHER, Nicolas BEUCHER
@@ -43,8 +45,8 @@ def cropCopy(imIn, posIn, imOut, posOut, size):
     binary images are accepted (8-bit or 32-bit).
     """
     err = core.MB_CropCopy(imIn.mbIm, posIn[0], posIn[1],
-                                imOut.mbIm, posOut[0], posOut[1],
-                                size[0], size[1])
+                           imOut.mbIm, posOut[0], posOut[1],
+                           size[0], size[1])
     mamba.raiseExceptionOnError(err)
     imOut.update()
     

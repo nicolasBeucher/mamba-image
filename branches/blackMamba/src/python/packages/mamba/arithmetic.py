@@ -1,6 +1,9 @@
 """
-This module provides arithmetic and logical operators such as addition,
-substraction, and so on ...
+Arithmetic and logical operators.
+
+This module provides arithmetic operators such as addition, substraction,
+multiplication and division between images and logical operators
+(and, or, not, xor ...).
 """
 
 import mamba
@@ -83,9 +86,9 @@ def div(imIn1, imIn2, imOut):
 
     Greyscale or 32-bit images can be used. You can mix formats in the multiply operation.
     However you must ensure that the output image is as deep as 'imIn1'.
-	
-	In order to avoid errors due to divisions by zero, each time a pixel in 'imIn2' is equal
-	to zero, the result is set to the maximum value corresponding to the depth of the image. 
+    
+    In order to avoid errors due to divisions by zero, each time a pixel in 'imIn2' is equal
+    to zero, the result is set to the maximum value corresponding to the depth of the image. 
     """
     err = core.MB_Div(imIn1.mbIm, imIn2.mbIm,imOut.mbIm)
     mamba.raiseExceptionOnError(err)
@@ -277,12 +280,12 @@ def mulRealConst(imIn, v, imOut, nearest=False, precision=2):
     result in image 'imOut'. 'imIn' and 'imOut' can be 8-bit or 32-bit images.
     If 'imOut' is greyscale (8-bit), the result is saturated (results
     of the multiplication greater than 255 are limited to this value).
-	'precision' indicates the number of decimal digits taken into account for
-	the constant 'v' (default is 2).
+    'precision' indicates the number of decimal digits taken into account for
+    the constant 'v' (default is 2).
     If 'nearest' is true, the result is rounded to the nearest integer value.
     If not (default), the result is simply truncated.
     """
-	
+    
     if imIn.getDepth()==1 or imOut.getDepth()==1:
         mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     imWrk1 = mamba.imageMb(imIn, 32)

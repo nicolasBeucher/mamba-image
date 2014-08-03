@@ -1,6 +1,8 @@
 """
-This is the base module of the Mamba Image library. It defines the imageMb class
-used to contain images. It also contains image display configuration functions.
+Image class definition.
+
+This is the base module of the Mamba Image library. It defines the imageMb
+class used to contain images.
 """
 
 import mamba.core as core
