@@ -145,7 +145,7 @@ class Display2D(tk.Toplevel):
         statusbar = ttk.Frame(self)
         statusbar.columnconfigure(0, weight=1)
         statusbar.columnconfigure(1, weight=1)
-        statusbar.grid(row=2, column=0, columnspan=2, sticky=tk.E+tk.W)
+        statusbar.grid(row=3, column=0, columnspan=2, sticky=tk.E+tk.W)
         self.infos = []
         for i in range(3):
             v = tk.StringVar(self)
@@ -207,22 +207,10 @@ class Display2D(tk.Toplevel):
                 self.canvas.config(cursor="fleur")
             elif event.num==4:
                 # Mouse wheel scroll up under linux
-                # ZOOM IN
-                if self.zoom<=0.25:
-                    self.setZoom(self.zoom*2)
-                else:
-                    self.setZoom(self.zoom+0.25)
+                self.increaseZoom()
             elif event.num==5:
                 # Mouse wheel scroll down under linux
-                # ZOOM OUT
-                if self.zoom<=0.25:
-                    zoom = self.zoom/2
-                    if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
-                        self.setZoom(zoom)
-                    else:
-                        self.popup.warn("Cannot zoom out limit reached")
-                else:
-                    self.setZoom(self.zoom-0.25)
+                self.decreaseZoom()
             
         elif event.type=="5":
             if event.num==1:
@@ -232,25 +220,22 @@ class Display2D(tk.Toplevel):
         elif event.type=="38":
             # Mouse wheel under windows
             if event.delta>0:
-                # ZOOM IN
                 for i in range(abs(event.delta)//120):
-                    if self.zoom<=0.25:
-                        self.setZoom(self.zoom*2)
-                    else:
-                        self.setZoom(self.zoom+0.25)
+                    self.increaseZoom()
             else:
-                # ZOOM OUT
                 for i in range(abs(event.delta)//120):
-                    if self.zoom<=0.25:
-                        zoom = self.zoom/2
-                        if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
-                            self.setZoom(zoom)
-                    else:
-                        self.setZoom(self.zoom-0.25)
+                    self.decreaseZoom()
 
     def keyboardEvent(self, event):
-        # Handles keyboard events,
-        if event.char == "b":
+        # Handles keyboard events
+        
+        if event.char == "z":
+            # ZOOM IN
+            self.increaseZoom()
+        elif event.char == "a":
+            # ZOOM OUT
+            self.decreaseZoom()
+        elif event.char == "b":
             # BYTE PLANE MODIFICATION (next)
             self.bplane = (self.bplane+1)%5
             self.updateim()
@@ -325,6 +310,22 @@ class Display2D(tk.Toplevel):
         self.context_menu.post(event.x_root, event.y_root)
         
     # Contextual Menu functions ################################################
+    def increaseZoom(self):
+        # ZOOM IN
+        if self.zoom<=0.25:
+            self.setZoom(self.zoom*2)
+        else:
+            self.setZoom(self.zoom+0.25)
+    def decreaseZoom(self):
+        # ZOOM OUT
+        if self.zoom<=0.25:
+            zoom = self.zoom/2
+            if not (int(self.zoom*self.osize[0])<10 or int(self.zoom*self.osize[0])<10):
+                self.setZoom(zoom)
+            else:
+                self.popup.warn("Cannot zoom out limit reached")
+        else:
+            self.setZoom(self.zoom-0.25)
     def resetZoom(self):
         self.setZoom(1.0)
     def doubleZoom(self):
