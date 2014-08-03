@@ -1,6 +1,11 @@
 """
-This module provides a set of functions to perform erosions and dilations on 
-3D images using Mamba base functions.
+Erosion and dilation 3D operators.
+
+This module provides a set of functions and class to perform erosions and
+dilations. The module contains basic and complex operators that are based
+on neighbor comparisons. In particular it defines the 3D structuring element
+class which serve as the base for these operators. The module also contains
+distance functions based on erosion.
 """
 
 # Contributors : Nicolas BEUCHER

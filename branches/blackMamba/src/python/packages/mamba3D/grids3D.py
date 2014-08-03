@@ -1,8 +1,9 @@
 """
-This module defines the 3D grids (cubic and face-centered cubic) that can be
-used with the 3D operators.
+3D Grids handling and setting functions.
 
-The modules also define utility functions to handle 3D grids.
+This module defines various functions related to grid configurations and 
+computations. It also defines the 3D grids (cubic, face-centered cubic ...)
+used with the 3D operators.
 """
 
 # Contributors : Nicolas BEUCHER

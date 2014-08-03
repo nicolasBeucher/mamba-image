@@ -1,9 +1,9 @@
 """
-This module defines functions to draw inside mamba3D images.
-Drawing functions include lines, cubes, ... The module
-also provides functions to extract pixel information.
+Drawing 3D operators.
 
-It works with image3DMb instances as defined in mamba3D.
+This module defines functions to draw inside Mamba 3D images. Drawing functions
+include lines, cubes, ... The module also provides functions to extract
+pixel information.
 """
 
 # Contributors : Nicolas BEUCHER

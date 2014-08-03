@@ -1,6 +1,8 @@
 """
+Contrast 3D operators.
+
 This module provides a set of functions to perform morphological contrast
-operators (gradient, top-hat transform,...) on 3D images using mamba and mamba3D.
+operators such as gradient, top-hat transform, ....
 """
 
 # Contributors : Nicolas BEUCHER

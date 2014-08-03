@@ -1,6 +1,10 @@
 """
-This modules defines the basic 3D image class (the 3D image can be considered
-as a stack or sequence of 2D images).
+3D Image class definition.
+
+This is the base module of the Mamba 3D Image library. It defines the image3DMb
+class used to contain images. A 3D image can be considered as a stack or
+sequence of 2D images. The module also defines an alias to image3DMb named
+sequenceMb.
 """
 
 # Contributors : Nicolas BEUCHER

@@ -1,11 +1,11 @@
 """
-This module provides a set of functions to perform opening and closing operations
-on 3D images using mamba.
+Opening and closing operators.
 
-All the closing and opening operation defined in this module use erosion,
-dilation and build functions with user-defined edge settings. The functions
-define a default edge which can be changed (see the modules erodil3D 
-and geodesy3D).
+This module provides a set of functions to perform opening and closing 
+operations. All the closing and opening operation defined in this module
+use erosion, dilation and build functions with user-defined edge settings.
+The functions define a default edge which can be changed (see the modules
+erodil3D and geodesy3D).
 """
 
 # Contributors : Nicolas BEUCHER

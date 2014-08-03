@@ -1,6 +1,9 @@
 """
-This module regroups various arithmetic operators on 3D images such as addition, substraction
-and so on ...
+Arithmetic and logical 3D operators.
+
+This module provides arithmetic operators such as addition, substraction,
+multiplication and division between images and logical operators
+(and, or, not, xor ...).
 """
 
 # Contributors : Nicolas BEUCHER

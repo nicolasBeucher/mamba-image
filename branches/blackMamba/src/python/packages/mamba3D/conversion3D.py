@@ -1,6 +1,9 @@
 """
-This module regroups various functions/operators to perform conversion
-based on image depth on 3D images.
+Depth conversion 3D operators.
+
+This module regroups various functions/operators to perform conversions
+based on image depth. It allows to transfer data from a 3D image depth to
+another.
 """
 
 # Contributors : Nicolas BEUCHER
