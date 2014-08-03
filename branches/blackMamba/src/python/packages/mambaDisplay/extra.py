@@ -1,8 +1,9 @@
 """
-This module defines specific functions and classes which can be considered
-as extras for the Mamba image library. They provide optional display methods,
-interactive tools and bridges for exchanging images between the Mamba and
-PIL/PILLOW libraries. This module is NOT pre-loaded with mamba.
+Extra displays.
+
+This module defines specific extra displays that are meant to be used
+interactively with the users. This module is not loaded by default with
+mambaDisplay.
 """
 
 import mamba.core as core
@@ -352,8 +353,8 @@ class _imageSegment(tk.Toplevel):
         tk.Toplevel.__init__(self, None)
         self.imIn = imIn
         self.imOut = imOut
-        self.imWrk = mamba.imageMb(imIn)
-        mamba.copy(imIn, self.imWrk)
+        self.imWrk = mamba.imageMb(imIn, 8)
+        mamba.convert(imIn, self.imWrk)
         self.markers = []
         self.body()
         self.grab_set()
@@ -370,7 +371,7 @@ class _imageSegment(tk.Toplevel):
         self.canvas.bind("<Button-1>", self.mouseEvent)
         self.canvas.bind("<ButtonRelease-1>", self.mouseEvent)
         self.bind("<KeyPress>", self.keyboardEvent)
-        self.bind("<Control-KeyPress-z>", self.undoEvent)
+        self.bind("<Control-z>", self.undoEvent)
         
         self.wait_window(self)
 
@@ -518,7 +519,7 @@ class _imageSegment(tk.Toplevel):
                     if x<self.dsize[0] and x>=0 and y<self.dsize[1] and y>=0:
                         x = int((float(x)/self.dsize[0])*self.osize[0])
                         y = int((float(y)/self.dsize[1])*self.osize[1])
-                        if event.state&0x0004==0x0004:
+                        if event.state&0x0004==0x0004 and self.markers:
                             # If the ctrl key is hold the point is added
                             # to the previous one to form a line
                             self.markers[-1] += (x,y)
@@ -599,6 +600,7 @@ class _imageSegment(tk.Toplevel):
         self.imOut.reset()
         if self.markers:
             im1 = mamba.imageMb(self.imIn)
+            im2 = mamba.imageMb(self.imIn, 8)
             # Putting the markers
             for i,pixel in enumerate(self.markers):
                 if len(pixel)==2:
@@ -610,17 +612,19 @@ class _imageSegment(tk.Toplevel):
             mamba.gradient(self.imIn, im1)
             mamba.watershedSegment(im1, self.imOut)
             mamba.copyBytePlane(self.imOut, 3, self.imWrk)
-            mamba.subConst(self.imIn, 2, im1)
+            mamba.convert(self.imIn, im2)
+            mamba.subConst(im2, 2, im2)
             for i,pixel in enumerate(self.markers):
                 if len(pixel)==2:
-                    im1.setPixel(254, pixel)
+                    im2.setPixel(254, pixel)
                 else:
                     for pi in range(0,len(pixel)-2,2):
-                        mamba.drawLine(im1, pixel[pi:pi+4], 254)
-            mamba.logic(im1, self.imWrk, self.imWrk, "sup")
-            self.pilImage = utils.convertToPILFormat(self.imWrk.mbIm, self.palette)
+                        mamba.drawLine(im2, pixel[pi:pi+4], 254)
+            mamba.logic(im2, self.imWrk, self.imWrk, "sup")
+            self.pilImage = utils.convertToPILFormat(self.imWrk.mbIm)
+            self.pilImage.putpalette(self.palette)
         else:
-            mamba.copy(self.imIn, self.imWrk)
+            mamba.convert(self.imIn, self.imWrk)
             self.pilImage = utils.convertToPILFormat(self.imWrk.mbIm)
         m = max(self.osize)
         icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
@@ -658,7 +662,7 @@ def interactiveSegment(imIn, imOut):
     Returns the list of markers selected by the user (list of tuple in 
     the (x,y) format).
     """
-    if imIn.getDepth()!=8 or imOut.getDepth()!=32:
+    if imIn.getDepth()==1:
         mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     mamba.getDisplayer() # To activate Tk root window and hide it
     im = _imageSegment(imIn, imOut)
@@ -900,7 +904,8 @@ class _imageSuperpose(tk.Toplevel):
         else:
             return
         
-        self.pilImage = utils.convertToPILFormat(self.mbImOut, palette)
+        self.pilImage = utils.convertToPILFormat(self.mbImOut)
+        self.pilImage.putpalette(palette)
         m = max(self.osize)
         icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
         self.icon = ImageTk.PhotoImage(self.pilImage.resize(icon_size, Image.NEAREST))
@@ -949,7 +954,8 @@ class _imageSuperpose(tk.Toplevel):
                 self.legendCols.append(c)
                 l=ttk.Label(self.legendF, text=texts[i], anchor=tk.NW)
                 l.grid(row=i, column=1, sticky=tk.W+tk.E)
-            self.pilImage = utils.convertToPILFormat(self.mbImOut, palette)
+            self.pilImage = utils.convertToPILFormat(self.mbImOut)
+            self.pilImage.putpalette(palette)
             
         elif self.mbIm1.depth==1 and self.mbIm2.depth==8:
             # image 1 is binary, 2 is greyscale
@@ -970,7 +976,8 @@ class _imageSuperpose(tk.Toplevel):
             self.legendCols.append(c)
             l=ttk.Label(self.legendF, text="binary image ("+self.name1+")", anchor=tk.NW)
             l.grid(row=1, column=1, sticky=tk.W+tk.E)
-            self.pilImage = utils.convertToPILFormat(self.mbImOut, palette)
+            self.pilImage = utils.convertToPILFormat(self.mbImOut)
+            self.pilImage.putpalette(palette)
             
         elif self.mbIm1.depth==8 and self.mbIm2.depth==8:
             # both images are greyscale
@@ -1230,11 +1237,10 @@ def hitormissPatternSelector(grid=mamba.DEFAULT_GRID):
     the function will use the grid currently in use.
     
     Example with the hitOrMiss function :
-        hitOrMiss(imIn, imOut, *hitormissPatternSelector())
+        hitOrMiss(imIn, imOut, hitormissPatternSelector())
     
     """
     mamba.getDisplayer() # To activate Tk root window and hide it
     ps = _hitormissPatternSelector(grid)
     return mamba.doubleStructuringElement(ps.es0, ps.es1, grid)
 
-    
