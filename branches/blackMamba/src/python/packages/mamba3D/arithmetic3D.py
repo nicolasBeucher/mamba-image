@@ -186,6 +186,25 @@ def mulConst3D(imIn, v, imOut):
     
     for i in range(outl):
         mamba.mulConst(imIn[i], v, imOut[i])
+        
+def mulRealConst3D(imIn, v, imOut, nearest=False, precision=2):
+    """
+    Multiplies image 'imIn' by a real positive constant value 'v' and puts the 
+    result in image 'imOut'. 'imIn' and 'imOut' can be 8-bit or 32-bit images.
+    If 'imOut' is greyscale (8-bit), the result is saturated (results
+    of the multiplication greater than 255 are limited to this value).
+    'precision' indicates the number of decimal digits taken into account for
+    the constant 'v' (default is 2).
+    If 'nearest' is true, the result is rounded to the nearest integer value.
+    If not (default), the result is simply truncated.
+    """
+    outl = len(imOut)
+    inl = len(imIn)
+    if inl!=outl:
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+    
+    for i in range(outl):
+        mamba.mulRealConst(imIn[i], v, imOut[i], nearest, precision)
 
 def negate3D(imIn, imOut):
     """
