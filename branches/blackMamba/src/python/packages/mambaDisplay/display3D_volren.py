@@ -268,7 +268,6 @@ class Display3D_VolRen(tk.Frame):
             # 8-bit 3D image
             self.planeLabel.config(text="")
             raw_data = self.im_ref().extractRaw()
-            volume = m3D.computeVolume3D(self.im_ref())
         elif depth==32:
             # 32-bit 3D image
             im3D_8 = m3D.image3DMb(self.im_ref(), 8)
@@ -279,7 +278,6 @@ class Display3D_VolRen(tk.Frame):
                 self.planeLabel.config(text="Plane : %d" % (self.master.bplane))
                 m3D.copyBytePlane3D(self.im_ref(), self.master.bplane, im3D_8)
             raw_data = im3D_8.extractRaw()
-            volume = m3D.computeVolume3D(self.im_ref())
         else:
             # binary 3D image
             self.planeLabel.config(text="")
@@ -288,7 +286,7 @@ class Display3D_VolRen(tk.Frame):
             for im2D in self.im_ref():
                 mamba.convert(im2D, im8)
                 raw_data += im8.extractRaw()
-                volume += mamba.computeVolume(im2D)
+        volume = m3D.computeVolume3D(self.im_ref())
         self.vtk_im.CopyImportVoidPointer(raw_data, len(raw_data))
             
         self.vtk_im.SetNumberOfScalarComponents(1)
