@@ -92,7 +92,6 @@ def geodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
     
     lowerGeodesicDilate3D(imIn, imMask, imOut, n, se=se)
     
-        
 def upperGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
     """
     Performs a upper geodesic erosion of 3D image 'imIn' above 'imMask'.
@@ -184,44 +183,6 @@ def dualBuild3D(imMask, imInout, grid=m3D.DEFAULT_GRID3D):
     else:
         err = core.MB3D_HierarDualBld(imMask.mb3DIm, imInout.mb3DIm, grid.getCValue())
         mamba.raiseExceptionOnError(err)
-
-def minima3D(imIn, imOut, h=1, grid=m3D.DEFAULT_GRID3D):
-    """
-    Computes the minima of 'imIn' using a dual build operation and puts the 
-    result in 'imOut'.
-    
-    'h' can be used to define the minima depth. Grid used by the dual build 
-    operation can be specified by 'grid'.
-    
-    Only works with greyscale images as input. 'imOut' must be binary.
-    """
-    if imIn.getDepth()!=8:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
-    
-    imWrk = m3D.image3DMb(imIn)
-    m3D.addConst3D(imIn, h, imWrk)
-    dualBuild3D(imIn, imWrk, grid=grid)
-    m3D.sub3D(imWrk, imIn, imWrk)
-    m3D.threshold3D(imWrk, imOut, 1, mamba.computeMaxRange(imIn[0])[1])
-
-def maxima3D(imIn, imOut, h=1, grid=m3D.DEFAULT_GRID3D):
-    """
-    Computes the maxima of 'imIn' using a build operation and puts the result in
-    'imOut'.
-    
-    'h' can be used to define the maxima height. Grid used by the build operation 
-    can be specified by 'grid'.
-    
-    Only works with greyscale images as input. 'imOut' must be binary.
-    """
-    if imIn.getDepth()!=8:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
-    
-    imWrk = m3D.image3DMb(imIn)
-    m3D.subConst3D(imIn, h, imWrk)
-    build3D(imIn, imWrk, grid=grid)
-    m3D.sub3D(imIn, imWrk, imWrk)
-    m3D.threshold3D(imWrk, imOut, 1, mamba.computeMaxRange(imIn[0])[1])
 
 def closeHoles3D(imIn, imOut, grid=m3D.DEFAULT_GRID3D):
     """

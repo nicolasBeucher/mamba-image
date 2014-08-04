@@ -42,7 +42,7 @@ def maxima(imIn, imOut, h=1, grid=mamba.DEFAULT_GRID):
     Only works with with 8-bit or 32-bit images as input. 'imOut' must be binary.
     """
     
-    imWrk = mamba.imageMb(imIn)   
+    imWrk = mamba.imageMb(imIn)
     if imIn.getDepth() == 8:
         mamba.subConst(imIn, h, imWrk)
         mamba.hierarBuild(imIn, imWrk, grid=grid)
@@ -84,7 +84,7 @@ def maxDynamics(imIn, imOut, h, grid=mamba.DEFAULT_GRID):
     Only works with 8-bit or 32-bit images as input. 'imOut' must be binary.
     """
     
-    imWrk = mamba.imageMb(imIn)   
+    imWrk = mamba.imageMb(imIn)
     if imIn.getDepth() == 8:
         mamba.subConst(imIn, h, imWrk)
         mamba.hierarBuild(imIn, imWrk, grid=grid)
@@ -97,7 +97,7 @@ def maxDynamics(imIn, imOut, h, grid=mamba.DEFAULT_GRID):
 
 def deepMinima(imIn, imOut, h, grid=mamba.DEFAULT_GRID):
     """
-    Computes the minima of the dual reconstruction of  image 'imIn' by 
+    Computes the minima of the dual reconstruction of image 'imIn' by 
     imIn + h and puts the result in 'imOut'.
     
     Grid used by the dual build operation can be specified by 'grid'.
@@ -112,11 +112,11 @@ def deepMinima(imIn, imOut, h, grid=mamba.DEFAULT_GRID):
     else:
         mamba.ceilingAddConst(imIn, h, imWrk)
         mamba.dualBuild(imIn, imWrk, grid=grid)
-    mamba.minima(imWrk, imOut, 1, grid=grid)
+    minima(imWrk, imOut, 1, grid=grid)
 
 def highMaxima(imIn, imOut, h, grid=mamba.DEFAULT_GRID):
     """
-    Computes the maxima of the reconstruction of  image 'imIn' by imIn - h
+    Computes the maxima of the reconstruction of image 'imIn' by imIn - h
     and puts the result in 'imOut'.
 
     Grid used by the build operation can be specified by 'grid'.
@@ -124,14 +124,14 @@ def highMaxima(imIn, imOut, h, grid=mamba.DEFAULT_GRID):
     Only works with 8-bit or 32-bit images as input. 'imOut' must be binary.
     """
     
-    imWrk = mamba.imageMb(imIn)   
+    imWrk = mamba.imageMb(imIn)
     if imIn.getDepth() == 8:
         mamba.subConst(imIn, h, imWrk)
         mamba.hierarBuild(imIn, imWrk, grid=grid)
     else:
         mamba.floorSubConst(imIn, h, imWrk)
         mamba.build(imIn, imWrk, grid=grid)
-    mamba.maxima(imWrk, imOut, 1, grid=grid)
+    maxima(imWrk, imOut, 1, grid=grid)
     
 def maxPartialBuild(imIn, imMask, imOut, grid=mamba.DEFAULT_GRID):
     """
@@ -142,7 +142,7 @@ def maxPartialBuild(imIn, imMask, imOut, grid=mamba.DEFAULT_GRID):
     """
     
     imWrk = mamba.imageMb(imIn, 1)
-    mamba.maxima(imIn, imWrk, 1, grid=grid)
+    maxima(imIn, imWrk, 1, grid=grid)
     mamba.logic(imMask, imWrk, imWrk, "inf")
     mamba.convertByMask(imWrk, imOut, 0, mamba.computeMaxRange(imIn)[1])
     mamba.logic(imIn, imOut, imOut, "inf")
@@ -157,7 +157,7 @@ def minPartialBuild(imIn, imMask, imOut, grid=mamba.DEFAULT_GRID):
     """
     
     imWrk = mamba.imageMb(imIn, 1)
-    mamba.minima(imIn, imWrk, 1, grid=grid)
+    minima(imIn, imWrk, 1, grid=grid)
     mamba.logic(imMask, imWrk, imWrk, "inf")
     mamba.convertByMask(imWrk, imOut, mamba.computeMaxRange(imIn)[1], 0)
     mamba.logic(imIn, imOut, imOut, "sup")
