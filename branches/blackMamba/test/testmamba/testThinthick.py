@@ -4,7 +4,6 @@ module of mamba package.
 
 Python functions and classes:
     doubleStructuringElement
-    binaryHMT
     thin
     thick
     rotatingThin

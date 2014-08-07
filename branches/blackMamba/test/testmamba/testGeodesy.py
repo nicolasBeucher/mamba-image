@@ -2,16 +2,18 @@
 Test cases for the functions implementing geodesic operators found in the 
 geodesy module of mamba package.
 
-Python functions and classes:
+Python functions:
     geodesicDilate
     geodesicErode
     build
     dualBuild
-    minima
-    maxima
     closeHoles
     removeEdgeParticles
     geodesicDistance
+    lowerGeodesicDilate
+    lowerGeodesicErode
+    upperGeodesicDilate
+    upperGeodesicErode
 """
 
 from mamba import *
@@ -250,61 +252,6 @@ class TestGeodesy(unittest.TestCase):
         lowerGeodesicErode(self.im8_1, self.im8_2, self.im8_3, 1, se=SQUARE3X3)
         (x,y) = compare(self.im8_4, self.im8_3, self.im8_3)
         self.assertLess(x, 0)
-        
-    def _drawRandomExtrema(self,imOut, imRes, lh=1, ext="min"):
-        imRes.reset()
-        mv = computeMaxRange(imOut)[1]
-        if ext=="min":
-            imOut.fill(mv)
-        else:
-            imOut.reset()
-            
-        (w,h) = imOut.getSize()
-        for xi in range(0,w-3,3):
-            vi = random.randint(1,mv)
-            hi = vi-random.randint(0,vi)
-            yi = random.randint(1,h-2)
-            if ext=="min":
-                imOut.setPixel(mv-vi+hi, (xi+1,yi))
-                imOut.setPixel(mv-vi, (xi,yi))
-            else:
-                imOut.setPixel(vi-hi, (xi+1,yi))
-                imOut.setPixel(vi, (xi,yi))
-            if hi<lh and vi-hi>0:
-                imRes.setPixel(1, (xi+1,yi))
-            imRes.setPixel(1, (xi,yi))
-        
-    def testMinima8(self):
-        """Verifies the minima extraction operator on greyscale image"""
-        for i in range(1, 10):
-            self._drawRandomExtrema(self.im8_1, self.im1_1, lh=i, ext="min")
-            minima(self.im8_1, self.im1_2, i)
-            (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
-            self.assertLess(x, 0, "%d : %d,%d" %(i,x,y))
-        
-    def testMinima32(self):
-        """Verifies the minima extraction operator on 32-bit image"""
-        for i in range(1, 10):
-            self._drawRandomExtrema(self.im32_1, self.im1_1, lh=i, ext="min")
-            minima(self.im32_1, self.im1_2, i)
-            (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
-            self.assertLess(x, 0, "%d : %d,%d" %(i,x,y))
-        
-    def testMaxima8(self):
-        """Verifies the maxima extraction operator on greyscale image"""
-        for i in range(1, 10):
-            self._drawRandomExtrema(self.im8_1, self.im1_1, lh=i, ext="max")
-            maxima(self.im8_1, self.im1_2, i)
-            (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
-            self.assertLess(x, 0, "%d" %(i))
-        
-    def testMaxima32(self):
-        """Verifies the maxima extraction operator on 32-bit image"""
-        for i in range(1, 10):
-            self._drawRandomExtrema(self.im32_1, self.im1_1, lh=i, ext="max")
-            maxima(self.im32_1, self.im1_2, i)
-            (x,y) = compare(self.im1_1, self.im1_2, self.im1_3)
-            self.assertLess(x, 0, "%d" %(i))
             
     def testCloseHoles(self):
         """Verifies the closing holes operator"""

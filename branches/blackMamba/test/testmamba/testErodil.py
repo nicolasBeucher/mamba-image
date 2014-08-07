@@ -11,6 +11,13 @@ Python functions and classes:
     conjugateHexagonalDilate
     doublePointErode
     doublePointDilate
+    isotropicDistance
+    dodecagonalDilate
+    dodecagonalErode
+    linearDilate
+    linearErode
+    octogonalDilate
+    octogonalErode
 """
 
 from mamba import *
@@ -363,4 +370,23 @@ class TestErodil(unittest.TestCase):
                 doublePointDilate(self.im1_1, self.im1_2, d, ampi, grid=SQUARE)
                 (x,y) = compare(self.im1_2, self.im1_3, self.im1_1)
                 self.assertLess(x, 0)
+        
+    def testIsotropicDistanceDepthAcceptance(self):
+        """Verifies that isotropicDistance refuses non binary input images"""
+        self.assertRaises(MambaError, isotropicDistance, self.im8_1, self.im8_2)
+        self.assertRaises(MambaError, isotropicDistance, self.im32_1, self.im8_2)
+        
+    def testIsotropicDistance(self):
+        """Tests the computation of an isotropic distance"""
+        (w,h) = self.im1_1.getSize()
+        
+        self.im1_1.reset()
+        drawSquare(self.im1_1, (w//2-1, h//2-1, w//2+1, h//2+1), 1)
+        
+        self.im8_3.reset()
+        drawSquare(self.im8_3, (w//2-1, h//2-1, w//2+1, h//2+1), 1)
+        self.im8_3.setPixel(2, (w//2, h//2))
+        isotropicDistance(self.im1_1, self.im8_1)
+        (x,y) = compare(self.im8_1, self.im8_3, self.im8_2)
+        self.assertLess(x, 0)
 

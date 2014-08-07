@@ -4,7 +4,7 @@ mamba3D package.
 
 Python classes and functions:
     doubleStructuringElement3D
-    binaryHMT3D
+    HitOrMiss3D
     thin3D
     thick3D
 """

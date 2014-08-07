@@ -1,7 +1,14 @@
 """
-Test cases for the utility functions found in mamba.
+Test cases for the grid functions found in mamba.
 
 These tests cover all the functions that are not performing any computations.
+    
+Python function:
+    getDirections
+    gridNeighbors
+    setDefaultGrid
+    rotateDirection
+    transposeDirection
 """
 
 from mamba import *
@@ -75,48 +82,3 @@ class TestVarious(unittest.TestCase):
         self.assertEqual(getDirections(), [])
         self.assertEqual(gridNeighbors(), 0)
         setDefaultGrid(HEXAGONAL)
-        
-    def testImageNaming(self):
-        """Verifies that image names methods are correctly working"""
-        nb = random.randint(-10000, -1000)
-        self.im8_1.setName("test %d" % (nb))
-        self.assertEqual(self.im8_1.getName(), "test %d" % (nb))
-        
-        setImageIndex(nb)
-        im = imageMb()
-        self.assertEqual(im.getName(), "Image %d" % (nb))
-        im = imageMb()
-        self.assertEqual(im.getName(), "Image %d" % (nb+1))
-        
-        self.assertNotEqual(str(im), "")
-        
-    def testRGBFilter(self):
-        """Verifies that the RGB filtering used when loading image works"""
-        imref = imageMb()
-        (w,h) = imref.getSize()
-        
-        for i in range(20):
-            ri = random.randint(0,255)
-            gi = random.randint(0,255)
-            bi = random.randint(0,255)
-            
-            # Creates an image and saving it
-            Image.new("RGB", (w,h), (ri,gi,bi)).save("test.bmp")
-            
-            im = imageMb("test.bmp", rgbfilter=(1.0,0.0,0.0))
-            vol = computeVolume(im)
-            self.assertTrue(vol==w*h*ri or vol==w*h*(ri-1) or vol==w*h*(ri+1),
-                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
-            
-            im = imageMb("test.bmp", rgbfilter=(0.0,1.0,0.0))
-            vol = computeVolume(im)
-            self.assertTrue(vol==w*h*gi or vol==w*h*(gi-1) or vol==w*h*(gi+1),
-                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
-            
-            im = imageMb("test.bmp", rgbfilter=(0.0,0.0,1.0))
-            vol = computeVolume(im)
-            self.assertTrue(vol==w*h*bi or vol==w*h*(bi-1) or vol==w*h*(bi+1),
-                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
-            
-            os.remove("test.bmp")
-

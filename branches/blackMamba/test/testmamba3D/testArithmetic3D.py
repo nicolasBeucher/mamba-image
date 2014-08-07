@@ -11,6 +11,7 @@ Python functions:
     subConst3D
     divConst3D
     mulConst3D
+    mulRealConst3D
     negate3D
     logic3D
     diff3D
@@ -70,6 +71,7 @@ class TestArithmetic3D(unittest.TestCase):
         self.assertRaises(MambaError,ceilingAdd3D,self.im32_4,self.im32_2,self.im32_3)
         self.assertRaises(MambaError,floorSubConst3D,self.im32_4,0,self.im32_3)
         self.assertRaises(MambaError,floorSub3D,self.im32_4,self.im32_2,self.im32_3)
+        self.assertRaises(MambaError,mulRealConst3D,self.im32_1, 1.0, self.im32_4)
     
     def testAdd3D(self):
         """Verifies the 3D addition operator"""
@@ -205,4 +207,40 @@ class TestArithmetic3D(unittest.TestCase):
         floorSub3D(self.im32_1, self.im32_2, self.im32_2)
         (x,y,z) = compare3D(self.im32_3, self.im32_2, self.im32_3)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        
+    def testMulRealConst(self):
+        """Tests the real value multiplication"""
+        self.im8_1.fill(1)
+        
+        self.im8_3.fill(1)
+        mulRealConst3D(self.im8_1, 1.6, self.im8_2, nearest=False)
+        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
+        
+        self.im8_3.fill(2)
+        mulRealConst3D(self.im8_1, 1.6, self.im8_2, nearest=True)
+        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
+        
+        self.im8_1.fill(10)
+        self.im8_3.fill(15)
+        mulRealConst3D(self.im8_1, 1.5, self.im8_2)
+        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
+        
+        self.im32_1.fill(1000)
+        self.im32_3.fill(1500)
+        mulRealConst3D(self.im32_1, 1.5, self.im32_2)
+        (x,y,z) = compare3D(self.im32_3, self.im32_2, self.im32_3)
+        self.assertLess(x, 0)
+        
+        self.im8_1.fill(200)
+        self.im8_3.fill(255)
+        self.im32_3.fill(260)
+        mulRealConst3D(self.im8_1, 1.3, self.im8_2)
+        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
+        self.assertLess(x, 0)
+        mulRealConst3D(self.im8_1, 1.3, self.im32_2)
+        (x,y,z) = compare3D(self.im32_3, self.im32_2, self.im32_3)
+        self.assertLess(x, 0)
 

@@ -1,6 +1,6 @@
 """
 Test cases for the depth conversion family of operators found in the
-openclose3D module of mamba3D package.
+conversion3D module of mamba3D package.
 
 Python functions:
     convert3D

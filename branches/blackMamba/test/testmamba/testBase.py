@@ -1,14 +1,18 @@
 """
-Test cases for the image creation
+Test cases for the image creation (base module).
     
 Python function:
     imageMb   class constructor
     imageMb.getSize
     imageMb.getDepth
+    imageMb.setName
+    imageMb.getName
     imageMb.load
     imageMb.save
     imageMb.loadRaw
     imageMb.extractRaw
+    setImageIndex
+    getImageCounter
     
 C function:
     MB_Create
@@ -202,4 +206,49 @@ class TestCreate(unittest.TestCase):
         rawdata = im32.extractRaw()
         self.assertEqual(len(rawdata), 128*128*4)
         self.assertEqual(rawdata, 128*128*b"\x44\x33\x22\x11")
+        
+    def testImageNaming(self):
+        """Verifies that image names methods are correctly working"""
+        im8 = imageMb(128,128,8)
+        nb = random.randint(-10000, -1000)
+        im8.setName("test %d" % (nb))
+        self.assertEqual(im8.getName(), "test %d" % (nb))
+        
+        setImageIndex(nb)
+        im = imageMb()
+        self.assertEqual(im.getName(), "Image %d" % (nb))
+        im = imageMb()
+        self.assertEqual(im.getName(), "Image %d" % (nb+1))
+        
+        self.assertNotEqual(str(im), "")
+        
+    def testRGBFilter(self):
+        """Verifies that the RGB filtering used when loading image works"""
+        imref = imageMb()
+        (w,h) = imref.getSize()
+        
+        for i in range(20):
+            ri = random.randint(0,255)
+            gi = random.randint(0,255)
+            bi = random.randint(0,255)
+            
+            # Creates an image and saving it
+            Image.new("RGB", (w,h), (ri,gi,bi)).save("test.bmp")
+            
+            im = imageMb("test.bmp", rgbfilter=(1.0,0.0,0.0))
+            vol = computeVolume(im)
+            self.assertTrue(vol==w*h*ri or vol==w*h*(ri-1) or vol==w*h*(ri+1),
+                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
+            
+            im = imageMb("test.bmp", rgbfilter=(0.0,1.0,0.0))
+            vol = computeVolume(im)
+            self.assertTrue(vol==w*h*gi or vol==w*h*(gi-1) or vol==w*h*(gi+1),
+                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
+            
+            im = imageMb("test.bmp", rgbfilter=(0.0,0.0,1.0))
+            vol = computeVolume(im)
+            self.assertTrue(vol==w*h*bi or vol==w*h*(bi-1) or vol==w*h*(bi+1),
+                         "%d %d %d %d %d" %(vol, ri, gi, bi, im.getPixel((0,0))) )
+            
+            os.remove("test.bmp")
 

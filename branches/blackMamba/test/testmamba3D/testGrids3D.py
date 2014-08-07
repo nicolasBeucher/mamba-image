@@ -1,13 +1,8 @@
 """
-Test cases for the grids facilities classes and functions found in the
+Test cases for the grids facilities functions found in the
 grids3D module of mamba3D package.
 
-Python functions and classes:
-    _grid3D
-    _gridFCCubic3D
-    _gridCCubic3D
-    _gridCubic3D
-    _gridDefault3D
+Python functions:
     setDefaultGrid3D
     getDirections3D
     gridNeighbors3D
