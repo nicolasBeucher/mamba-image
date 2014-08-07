@@ -11,11 +11,8 @@ Python functions:
     geodesicErode3D
     build3D
     dualBuild3D
-    minima3D
-    maxima3D
     closeHoles3D
     removeEdgeParticles3D
-    computeDistance3D
 """
 
 from mamba import *
@@ -73,22 +70,11 @@ class TestGeodesy3D(unittest.TestCase):
         self.assertRaises(MambaError, dualBuild3D, self.im8_1, self.im32_2)
         self.assertRaises(MambaError, dualBuild3D, self.im32_1, self.im1_2)
         self.assertRaises(MambaError, dualBuild3D, self.im32_1, self.im8_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im1_1, self.im1_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im1_1, self.im8_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im8_1, self.im1_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im8_1, self.im8_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im8_1, self.im32_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im32_1, self.im1_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im32_1, self.im8_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im32_1, self.im32_2)
-        self.assertRaises(MambaError, minima3D, self.im32_1, self.im1_2)
-        self.assertRaises(MambaError, maxima3D, self.im32_1, self.im1_2)
 
     def testGridAcceptation(self):
         """Tests that incorrect grid raises an exception"""
         self.assertRaises(MambaError, build3D, self.im8_1, self.im8_2, grid=CENTER_CUBIC)
         self.assertRaises(MambaError, dualBuild3D, self.im8_1, self.im8_2, grid=CENTER_CUBIC)
-        self.assertRaises(MambaError, computeDistance3D, self.im1_1, self.im32_2, grid=CENTER_CUBIC)
         
     def testSizeCheck(self):
         """Verifies that the functions check the size of the image"""
@@ -98,8 +84,6 @@ class TestGeodesy3D(unittest.TestCase):
         self.assertRaises(MambaError, dualBuild3D, self.im8_5, self.im8_2)
         self.assertRaises(MambaError, dualBuild3D, self.im1_5, self.im1_2)
         self.assertRaises(MambaError, dualBuild3D, self.im32_5, self.im32_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im1_5, self.im32_2)
-        self.assertRaises(MambaError, computeDistance3D, self.im1_1, self.im32_5)
         self.assertRaises(MambaError, upperGeodesicDilate3D, self.im8_5, self.im8_2, self.im8_3)
         self.assertRaises(MambaError, lowerGeodesicDilate3D, self.im8_5, self.im8_2, self.im8_3)
         self.assertRaises(MambaError, geodesicDilate3D, self.im8_5, self.im8_2, self.im8_3)
@@ -354,45 +338,6 @@ class TestGeodesy3D(unittest.TestCase):
         lowerGeodesicErode3D(self.im8_1, self.im8_2, self.im8_3, 1, se=CUBE3X3X3)
         (x,y,z) = compare3D(self.im8_4, self.im8_3, self.im8_3)
         self.assertLess(x, 0)
-        
-    def _drawRandomExtrema(self,imOut, imRes, lh=1, ext="min"):
-        imRes.reset()
-        if ext=="min":
-            imOut.fill(255)
-        else:
-            imOut.reset()
-            
-        (w,h,l) = imOut.getSize()
-        for xi in range(0,w-3,3):
-            vi = random.randint(1,255)
-            hi = vi-random.randint(0,vi)
-            yi = random.randint(1,h-2)
-            zi = random.randint(1,l-2)
-            if ext=="min":
-                imOut.setPixel(255-vi+hi, (xi+1,yi,zi))
-                imOut.setPixel(255-vi, (xi,yi,zi))
-            else:
-                imOut.setPixel(vi-hi, (xi+1,yi,zi))
-                imOut.setPixel(vi, (xi,yi,zi))
-            if hi<lh and vi-hi>0:
-                imRes.setPixel(1, (xi+1,yi,zi))
-            imRes.setPixel(1, (xi,yi,zi))
-        
-    def testMinima3D(self):
-        """Verifies the minima extraction 3D operator"""
-        for i in range(1, 2):
-            self._drawRandomExtrema(self.im8_1, self.im1_1, lh=i, ext="min")
-            minima3D(self.im8_1, self.im1_2, i)
-            (x,y,z) = compare3D(self.im1_1, self.im1_2, self.im1_3)
-            self.assertLess(x, 0, "%d : %d,%d,%d" %(i,x,y,z))
-        
-    def testMaxima3D(self):
-        """Verifies the maxima extraction 3D operator"""
-        for i in range(1, 2):
-            self._drawRandomExtrema(self.im8_1, self.im1_1, lh=i, ext="max")
-            maxima3D(self.im8_1, self.im1_2, i)
-            (x,y,z) = compare3D(self.im1_1, self.im1_2, self.im1_3)
-            self.assertLess(x, 0, "%d : %d,%d,%d" %(i,x,y,z))
             
     def testCloseHoles3D(self):
         """Verifies the closing holes 3D operator"""
@@ -427,50 +372,4 @@ class TestGeodesy3D(unittest.TestCase):
         removeEdgeParticles3D(self.im1_1, self.im1_3)
         (x,y,z) = compare3D(self.im1_3, self.im1_2, self.im1_3)
         self.assertLess(x, 0, "%d : %d,%d,%d" %(i,x,y,z))
-        
-    def testComputeDistance3D(self):
-        """Verifies the distance computation on a 3D binary set"""
-        (w,h,l) = self.im1_1.getSize()
-        
-        self.im1_1.reset()
-        self.im32_3.reset()
-        self.im1_1.setPixel(1, (w//2,h//2,l//2))
-        self.im32_3.setPixel(1, (w//2,h//2,l//2))
-        for i in range(4):
-            dilate3D(self.im1_1, self.im1_1)
-            add3D(self.im32_3, self.im1_1, self.im32_3)
-            
-        computeDistance3D(self.im1_1, self.im32_2)
-        (x,y,z) = compare3D(self.im32_3, self.im32_2, self.im32_3)
-        self.assertLess(x, 0, "%d,%d,%d" %(x,y,z))
-        
-    def testComputeDistance3DEdge(self):
-        """Verifies edge effect on the distance computation on a 3D binary set"""
-        (w,h,l) = self.im1_1.getSize()
-        
-        self.im1_1.reset()
-        drawCube(self.im1_1,(0,0,0,6,6,6), 1)
-        
-        self.im32_3.reset
-        drawCube(self.im32_3,(0,0,0,6,6,6), 1)
-        drawCube(self.im32_3,(1,1,1,5,5,5), 2)
-        drawCube(self.im32_3,(2,2,2,4,4,4), 3)
-        self.im32_3.setPixel(4, (3,3,3))
-            
-        computeDistance3D(self.im1_1, self.im32_2, CUBIC, mamba.EMPTY)
-        (x,y,z) = compare3D(self.im32_3, self.im32_2, self.im32_3)
-        self.assertLess(x, 0, "%d,%d,%d" %(x,y,z))
-        
-        self.im32_3.reset
-        drawCube(self.im32_3,(0,0,0,6,6,6), 1)
-        drawCube(self.im32_3,(0,0,0,5,5,5), 2)
-        drawCube(self.im32_3,(0,0,0,4,4,4), 3)
-        drawCube(self.im32_3,(0,0,0,3,3,3), 4)
-        drawCube(self.im32_3,(0,0,0,2,2,2), 5)
-        drawCube(self.im32_3,(0,0,0,1,1,1), 6)
-        self.im32_3.setPixel(7, (0,0,0))
-            
-        computeDistance3D(self.im1_1, self.im32_2, CUBIC, mamba.FILLED)
-        (x,y,z) = compare3D(self.im32_3, self.im32_2, self.im32_3)
-        self.assertLess(x, 0, "%d,%d,%d" %(x,y,z))
 

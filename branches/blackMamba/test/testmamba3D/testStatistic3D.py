@@ -3,6 +3,7 @@ Test cases for the statistic functions found in the statistic3D module of
 mamba3D package. 
 
 Python functions:
+    getHistogram3D
     getMean3D
     getMedian3D
     getVariance3D
@@ -48,6 +49,19 @@ class TestStatistic3D(unittest.TestCase):
         del(self.im32_3)
         del(self.im32_4)
         del(self.im32_5)
+        
+    def _drawValueByPlane(self, im):
+        im.reset()
+        for i,im2D in enumerate(im):
+            im2D.fill(i)
+        
+    def testGetHistogram3D(self):
+        """Verifies the computation of the histogram on 3D images"""
+        (w,h,l) = self.im8_1.getSize()
+        self._drawValueByPlane(self.im8_1)
+        histo = getHistogram3D(self.im8_1)
+        for i in range(64):
+            self.assertEqual(histo[i], w*h,"%d : %d!=%d" %(i,histo[i],w*h))
         
     def testGetMean3D(self):
         """Verifies the correct computation of pixel mean value in 3D images"""

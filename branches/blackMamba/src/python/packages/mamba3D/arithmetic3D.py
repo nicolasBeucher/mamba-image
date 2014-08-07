@@ -33,7 +33,7 @@ def add3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)    
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
 
     for i in range(outl):
         mamba.add(imIn1[i], imIn2[i], imOut[i])
@@ -57,7 +57,7 @@ def sub3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)    
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
 
     for i in range(outl):
         mamba.sub(imIn1[i], imIn2[i], imOut[i])
@@ -81,7 +81,7 @@ def mul3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)    
+        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
 
     for i in range(outl):
         mamba.mul(imIn1[i], imIn2[i], imOut[i])

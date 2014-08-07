@@ -10,12 +10,8 @@ Python functions and classes:
     largeHexagonalDilate
     largeSquareErode
     largeSquareDilate
-    dodecagonalErode
-    dodecagonalDilate
     largeDodecagonalErode
     largeDodecagonalDilate
-    octogonalErode
-    octogonalDilate
     largeOctogonalErode
     largeOctogonalDilate
 """

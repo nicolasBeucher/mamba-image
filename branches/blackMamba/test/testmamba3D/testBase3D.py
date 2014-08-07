@@ -1,8 +1,8 @@
 """
 Test cases for the base class and functions found in the base3D module of
-mamba3D package. 
+mamba3D package.
 
-Python classes and functions:
+Python classes:
     image3DMb
     sequenceMb
 """
@@ -286,10 +286,4 @@ class TestBase3D(unittest.TestCase):
         for im in im3D:
             vol = computeVolume(im)
             self.assertEqual(vol, 0)
-            
-    def testImage3DMbPalette(self):
-        """Verifies the palette methods of the image3DMb class"""
-        im3D = image3DMb(256,256,9,8)
-        im3D.setPalette(rainbow)
-        im3D.resetPalette()
 

@@ -3,13 +3,6 @@ Test cases for the various functions found in the miscellaneous3D
 module of mamba3D package.
 
 Python functions:
-    copy3D
-    copyBitPlane3D
-    copyBytePlane3D
-    getHistogram3D
-    computeVolume3D
-    computeRange3D
-    computeMaxRange3D
     checkEmptiness3D
     compare3D
     shift3D
@@ -51,91 +44,8 @@ class TestMiscellaneous3D(unittest.TestCase):
         
     def testSizeCheck(self):
         """Verifies that the functions check the size of the image"""
-        self.assertRaises(MambaError,copyBitPlane3D, self.im1_3, 0, self.im8_4)
-        self.assertRaises(MambaError,copyBytePlane3D, self.im8_4, 0, self.im32_3)
         self.assertRaises(MambaError,compare3D, self.im8_4, self.im8_2, self.im8_3)
         self.assertRaises(MambaError,shift3D, self.im8_4, self.im8_2, 1,1,1)
-        
-    def _drawValueByPlane(self, im):
-        im.reset()
-        for i,im2D in enumerate(im):
-            im2D.fill(i)
-        
-    def testCopy3D(self):
-        """Tests the copy of 3D images"""
-        l = len(self.im8_1)
-        self._drawValueByPlane(self.im8_1)
-        self.im8_3.reset()
-        self._drawValueByPlane(self.im8_2)
-        copy3D(self.im8_1, self.im8_3)
-        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_1)
-        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
-        self.im8_3.reset()
-        self.im8_2.reset()
-        for i in range(l//2):
-            self.im8_2[i].fill(i+l//2)
-        copy3D(self.im8_1, self.im8_3, l//2, 0)
-        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_1)
-        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
-
-    def testCopyBitPlane3D(self):
-        """Bit plane copy verification on 3D images"""
-        (w,h,l) = self.im8_1.getSize()
-        self.im1_1.fill(1)
-        self.im8_1.reset()
-        self.im8_2.fill(0x4)
-        copyBitPlane3D(self.im1_1, 2, self.im8_1)
-        (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_1)
-        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
-        
-    def testCopyBytePlane3D(self):
-        """Byte plane copy verification on 3D images"""
-        (w,h,l) = self.im8_1.getSize()
-        self.im8_1.fill(0x25)
-        self.im32_1.reset()
-        self.im32_2.fill(0x250000)
-        copyBytePlane3D(self.im8_1, 2, self.im32_1)
-        (x,y,z) = compare3D(self.im32_1, self.im32_2, self.im32_1)
-        self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
-        
-    def testGetHistogram3D(self):
-        """Verifies the computation of the histogram on 3D images"""
-        (w,h,l) = self.im8_1.getSize()
-        self._drawValueByPlane(self.im8_1)
-        histo = getHistogram3D(self.im8_1)
-        for i in range(256):
-            self.assertEqual(histo[i], w*h,"%d : %d!=%d" %(i,histo[i],w*h))
-        
-    def testComputeVolume3D(self):
-        """Verifies the computation of the volume on 3D images"""
-        (w,h,l) = self.im8_1.getSize()
-        self._drawValueByPlane(self.im8_1)
-        vol = computeVolume3D(self.im8_1)
-        exp_vol = 0
-        for i in range(256):
-            exp_vol += i*w*h
-        self.assertEqual(vol, exp_vol)
-        
-    def testComputeRange3D(self):
-        """Verifies the computation of the range on 3D images"""
-        self.im8_1.fill(128)
-        self.im8_1.setPixel(23, (128,128,0))
-        self.im8_1.setPixel(198, (128,128,255))
-        (mi,ma) = computeRange3D(self.im8_1)
-        self.assertEqual(mi, 23)
-        self.assertEqual(ma, 198)
-        
-    def testComputeMaxRange3D(self):
-        """Verifies the computation of the maximum range on 3D images"""
-        (mi,ma) = computeMaxRange3D(self.im1_1)
-        self.assertEqual(mi, 0)
-        self.assertEqual(ma, 1)
-        (mi,ma) = computeMaxRange3D(self.im8_1)
-        self.assertEqual(mi, 0)
-        self.assertEqual(ma, 255)
-        (mi,ma) = computeMaxRange3D(self.im32_1)
-        self.assertEqual(mi, 0)
-        self.assertEqual(ma, 0xffffffff)
         
     def testCheckEmptiness3D(self):
         """Tests the emptyness verification on 3D images"""
