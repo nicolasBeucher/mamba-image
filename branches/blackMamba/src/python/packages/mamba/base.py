@@ -202,8 +202,6 @@ class imageMb:
         err = core.MB_Convert(next_mbIm, self.mbIm)
         raiseExceptionOnError(err)
         self.setName(os.path.split(path)[1])
-        if self.displayId != '':
-            self.gd.updateWindow(self.displayId)
         
     def save(self, path, palette=None):
         """
@@ -254,7 +252,8 @@ class imageMb:
         # Loading the data
         err = core.MB_Load(self.mbIm,data,len(data))
         raiseExceptionOnError(err)
-        self.update()
+        if self.displayId != '':
+            self.gd.updateWindow(self.displayId)
         
     def extractRaw(self):
         """

@@ -61,6 +61,7 @@ class TestBase3D(unittest.TestCase):
         self.assertEqual(im.getSize(), (256,256,256))
         self.assertEqual(len(im), 256)
         self.assertNotEqual(im.getName(), '')
+        self.assertEqual(str(im), 'Mamba 3D image object : '+im.getName()+' - 8')
         self.assertIsInstance(next(im), imageMb)
         self.assertIsInstance(im.__next__(), imageMb)
         self.assertTrue(isinstance(im, image3DMb))
