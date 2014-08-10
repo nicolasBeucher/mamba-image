@@ -681,16 +681,12 @@ class _imageSuperpose(tk.Toplevel):
         tk.Toplevel.__init__(self, None)
         # im2 is the deepest
         if Im1.getDepth() > Im2.getDepth():
-            self.mbIm1 = Im2.mbIm
-            self.mbIm2 = Im1.mbIm
-            self.name1 = Im2.getName()
-            self.name2 = Im1.getName()
+            self.Im1 = Im2
+            self.Im2 = Im1
         else:
-            self.mbIm1 = Im1.mbIm
-            self.mbIm2 = Im2.mbIm
-            self.name1 = Im1.getName()
-            self.name2 = Im2.getName()
-        self.mbImOut = utils.create(self.mbIm1.width,self.mbIm1.height,8)
+            self.Im1 = Im1
+            self.Im2 = Im2
+        self.ImOut = mamba.imageMb(self.Im2, 8)
         self.body()
         self.grab_set()
         self.initial_focus = self
@@ -706,13 +702,13 @@ class _imageSuperpose(tk.Toplevel):
         self.canvas.bind("<Button-1>", self.mouseEvent)
         self.canvas.bind("<ButtonRelease-1>", self.mouseEvent)
         self.bind("<KeyPress>", self.keyboardEvent)
-        for c in self.legendCols:
+        for c,l in self.legendCols:
             c.bind("<Button-1>", self.colorChangeEvent)
         self.wait_window(self)
 
     def body(self):
         # Size of the image, canvas and display
-        self.osize = [self.mbIm1.width,self.mbIm1.height]
+        self.osize = list(self.Im1.getSize())
         imsize = self.osize[:]
         self.zoom = 1.0
         while imsize < [constants._MIN, constants._MIN]:
@@ -728,6 +724,7 @@ class _imageSuperpose(tk.Toplevel):
         self.imid = None
         self.mouse_x = 0
         self.mouse_y = 0
+        self.currentIm = 0
         
         self.title('superposer - %d%%' % (int(self.zoom*100)))
         
@@ -735,11 +732,17 @@ class _imageSuperpose(tk.Toplevel):
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
         
-        # Threshold infos
-        self.legendF = ttk.Frame(self)
-        self.legendF.grid(row=0, column=0, columnspan=2, sticky=tk.E+tk.W)
-        self.legendF.columnconfigure(1, weight=1)
+        # Superpose infos
+        legendF = ttk.Frame(self)
+        legendF.grid(row=0, column=0, columnspan=2, sticky=tk.E+tk.W)
+        legendF.columnconfigure(1, weight=1)
         self.legendCols = []
+        for i in range(3):
+            c=tk.Canvas(legendF, height=10, width=10, bd=2, relief=tk.RIDGE)
+            c.grid(row=i, column=0)
+            l=ttk.Label(legendF, anchor=tk.NW)
+            l.grid(row=i, column=1, sticky=tk.W+tk.E)
+            self.legendCols.append((c,l))
 
         # Image display
         self.canvas_vb = ttk.Scrollbar(self, orient=tk.VERTICAL)
@@ -793,7 +796,11 @@ class _imageSuperpose(tk.Toplevel):
         # Handles keyboard events.
         
         # Zoom
-        if event.char == "z":
+        if event.keycode==65:
+            # change of image
+            self.currentIm = 1 - self.currentIm
+            self.updateim()
+        elif event.char == "z":
             # ZOOM IN
             if self.zoom<=0.25:
                 self.setZoom(self.zoom*2)
@@ -864,8 +871,8 @@ class _imageSuperpose(tk.Toplevel):
         y = max(min(y,self.dsize[1]-1), 0)
         x = int((float(x)/self.dsize[0])*self.osize[0])
         y = int((float(y)/self.dsize[1])*self.osize[1])
-        err, v1 = core.MB_GetPixel(self.mbIm1, x, y)
-        err, v2 = core.MB_GetPixel(self.mbIm2, x, y)
+        v1 = self.Im1.getPixel((x, y))
+        v2 = self.Im2.getPixel((x, y))
         self.infos.set("At ("+str(x)+","+str(y)+") = ["+str(v1)+","+str(v2)+"]")
         
         if event.state&0x0100==0x0100 :
@@ -888,14 +895,14 @@ class _imageSuperpose(tk.Toplevel):
         if new_color[0]==None:
             return
 
-        if self.mbIm1.depth==1 and self.mbIm2.depth==1:
+        if self.Im1.getDepth()==1 and self.Im2.getDepth()==1:
             event.widget.config(bg=new_color[1])
             event.widget.color_tuple = new_color[0]
             palette = (0,0,0)
             for c in self.legendCols:
                 palette = palette + c.color_tuple
             palette = palette+252*(0,0,0)
-        elif self.mbIm1.depth==1 and self.mbIm2.depth==8:
+        elif self.Im1.getDepth()==1:
             palette = (0,0,0)
             for i in range(1,255):
                 palette = palette+(i,i,i)
@@ -904,7 +911,6 @@ class _imageSuperpose(tk.Toplevel):
         else:
             return
         
-        self.pilImage = utils.convertToPILFormat(self.mbImOut)
         self.pilImage.putpalette(palette)
         m = max(self.osize)
         icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
@@ -936,68 +942,59 @@ class _imageSuperpose(tk.Toplevel):
             
     def updateim(self):
         # Updates the display with the new contents of the mamba image.
-        if self.mbIm1.depth==1 and self.mbIm2.depth==1:
+        if self.Im1.getDepth()==1 and self.Im2.getDepth()==1:
             # both images are binary
-            err = core.MB_ConSet(self.mbImOut,0)
-            err = core.MB_Add(self.mbImOut,self.mbIm1,self.mbImOut)
-            err = core.MB_ConMul(self.mbImOut,2,self.mbImOut)
-            err = core.MB_Add(self.mbImOut,self.mbIm2,self.mbImOut)
+            self.ImOut.reset()
+            mamba.copyBitPlane(self.Im2, 0, self.ImOut)
+            mamba.copyBitPlane(self.Im1, 1, self.ImOut)
             palette = (0,0,0, 255,0,0, 0,255,0, 0,0,255)+252*(0,0,0)
             colors = ["#ff0000","#00ff00","#0000ff"]
-            texts = ["in image 2 only ("+self.name2+")",
-                     "in image 1 only ("+self.name1+")",
-                     "in both images ("+self.name1+" and "+self.name2+")"]
+            texts = ["in image 2 only ("+self.Im2.getName()+")",
+                     "in image 1 only ("+self.Im1.getName()+")",
+                     "in both images ("+self.Im1.getName()+" and "+self.Im2.getName()+")"]
             for i in range(3):
-                c=tk.Canvas(self.legendF, height=10, width=10, bg=colors[i], bd=2, relief=tk.RIDGE)
-                c.grid(row=i, column=0)
-                c.color_tuple = palette[i*3+3:i*3+6]
-                self.legendCols.append(c)
-                l=ttk.Label(self.legendF, text=texts[i], anchor=tk.NW)
-                l.grid(row=i, column=1, sticky=tk.W+tk.E)
-            self.pilImage = utils.convertToPILFormat(self.mbImOut)
-            self.pilImage.putpalette(palette)
-            
-        elif self.mbIm1.depth==1 and self.mbIm2.depth==8:
-            # image 1 is binary, 2 is greyscale
-            prov = utils.create(self.mbIm1.width,self.mbIm1.height,8)
-            err = core.MB_Convert(self.mbIm1,self.mbImOut)
-            err = core.MB_ConSub(self.mbIm2,1,prov)
-            err = core.MB_Sup(self.mbImOut,prov,self.mbImOut,)
+                self.legendCols[i][0].config(bg=colors[i])
+                self.legendCols[i][0].color_tuple = palette[i*3+3:i*3+6]
+                self.legendCols[i][1].config(text=texts[i])
+                
+        elif self.Im1.getDepth()==1:
+            # image 1 is binary, 2 is not
+            prov = mamba.imageMb(self.ImOut)
+            mamba.convert(self.Im1, self.ImOut)
+            mamba.convert(self.Im2, prov)
+            mamba.subConst(prov, 1, prov)
+            mamba.logic(self.ImOut, prov, self.ImOut, "sup")
             palette = (0,0,0)
             for i in range(1,255):
                 palette = palette+(i,i,i)
             palette = palette+(255,0,255)
-            c=tk.Canvas(self.legendF, height=10, width=10, bg="#808080", bd=2, relief=tk.RIDGE)
-            c.grid(row=0, column=0)
-            l=ttk.Label(self.legendF, text="greyscale image ("+self.name2+")", anchor=tk.NW)
-            l.grid(row=0, column=1, sticky=tk.W+tk.E)
-            c=tk.Canvas(self.legendF, height=10, width=10, bg="#ff00ff", bd=2, relief=tk.RIDGE)
-            c.grid(row=1, column=0)
-            self.legendCols.append(c)
-            l=ttk.Label(self.legendF, text="binary image ("+self.name1+")", anchor=tk.NW)
-            l.grid(row=1, column=1, sticky=tk.W+tk.E)
-            self.pilImage = utils.convertToPILFormat(self.mbImOut)
-            self.pilImage.putpalette(palette)
+            self.legendCols[0][0].config(bg="#808080")
+            self.legendCols[0][1].config(text="image ("+self.Im2.getName()+")")
+            self.legendCols[1][0].config(bg="#ff00ff")
+            self.legendCols[1][1].config(text="binary image ("+self.Im1.getName()+")")
+            self.legendCols[2][0].grid_remove()
+            self.legendCols[2][1].grid_remove()
             
-        elif self.mbIm1.depth==8 and self.mbIm2.depth==8:
-            # both images are greyscale
-            err = core.MB_Copy(self.mbIm1,self.mbImOut)
-            im1 = utils.convertToPILFormat(self.mbIm1)
-            im2 = utils.convertToPILFormat(self.mbIm2)
-            self.pilImage = Image.new("RGB", im1.size)
-            pix = self.pilImage.load()
-            d1 = list(im1.getdata())
-            d2 = list(im2.getdata())
-            w,h = im1.size
-            for i,v1 in enumerate(d1):
-                v2 = d2[i]
-                if v1[0]<v2[0]:
-                    pix[i%w, i/w] = (v1[0], 0, 0)
-                elif v1==v2:
-                    pix[i%w, i/w] = (0, 0, v1[0])
-                else:
-                    pix[i%w, i/w] = (0, v1[0], 0)
-        
+        else:
+            # Neither image are binary
+            if self.currentIm==0:
+                endimage = self.Im2
+                self.legendCols[0][1].config(text="displayed : "+self.Im2.getName())
+                self.legendCols[1][1].config(text="press space to display "+self.Im1.getName())
+            else:
+                endimage = self.Im1
+                self.legendCols[0][1].config(text="displayed : "+self.Im1.getName())
+                self.legendCols[1][1].config(text="press space to display "+self.Im2.getName())
+            mamba.convert(endimage, self.ImOut)
+            palette = None
+            self.legendCols[0][0].config(bg="#808080")
+            self.legendCols[1][0].config(bg="#808080")
+            self.legendCols[2][0].grid_remove()
+            self.legendCols[2][1].grid_remove()
+                    
+        self.pilImage = utils.convertToPILFormat(self.ImOut.mbIm)
+        if palette:
+            self.pilImage.putpalette(palette)
         m = max(self.osize)
         icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
         self.icon = ImageTk.PhotoImage(self.pilImage.resize(icon_size, Image.NEAREST))
@@ -1049,8 +1046,6 @@ def superpose(imIn1, imIn2):
     where a new color can be selected.
     
     """
-    if imIn1.getDepth()==32 or imIn2.getDepth()==32:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
     if imIn1.getSize()!=imIn2.getSize():
         mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
     mamba.getDisplayer() # To activate Tk root window and hide it
@@ -1083,11 +1078,6 @@ class _hitormissPatternSelector(tk.Toplevel):
         # Resize configuration
         self.columnconfigure(0, weight=1)
         self.rowconfigure(1, weight=1)
-        
-        # Threshold infos
-        self.legendF = ttk.Frame(self)
-        self.legendF.grid(row=0, column=0, columnspan=2, sticky=tk.E+tk.W)
-        self.legendF.columnconfigure(1, weight=1)
 
         # Image display
         self.canvas = tk.Canvas(self,bd=0)
