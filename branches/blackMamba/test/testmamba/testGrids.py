@@ -82,3 +82,49 @@ class TestVarious(unittest.TestCase):
         self.assertEqual(getDirections(), [])
         self.assertEqual(gridNeighbors(), 0)
         setDefaultGrid(HEXAGONAL)
+        
+    def testGridNeighbors(self):
+        """Verifies that the number of neighbor are correctly returned"""
+        nb = gridNeighbors(SQUARE)
+        self.assertEqual(nb, 8)
+        nb = gridNeighbors(HEXAGONAL)
+        self.assertEqual(nb, 6)
+        
+    def testRotateDirection(self):
+        """Verifies the direction rotation function"""
+        self.assertEqual(rotateDirection(0, grid=SQUARE), 0)
+        self.assertEqual(rotateDirection(1, grid=SQUARE), 2)
+        self.assertEqual(rotateDirection(2, grid=SQUARE), 3)
+        self.assertEqual(rotateDirection(3, grid=SQUARE), 4)
+        self.assertEqual(rotateDirection(4, grid=SQUARE), 5)
+        self.assertEqual(rotateDirection(5, grid=SQUARE), 6)
+        self.assertEqual(rotateDirection(6, grid=SQUARE), 7)
+        self.assertEqual(rotateDirection(7, grid=SQUARE), 8)
+        self.assertEqual(rotateDirection(8, grid=SQUARE), 1)
+        self.assertEqual(rotateDirection(0, grid=HEXAGONAL), 0)
+        self.assertEqual(rotateDirection(1, grid=HEXAGONAL), 2)
+        self.assertEqual(rotateDirection(2, grid=HEXAGONAL), 3)
+        self.assertEqual(rotateDirection(3, grid=HEXAGONAL), 4)
+        self.assertEqual(rotateDirection(4, grid=HEXAGONAL), 5)
+        self.assertEqual(rotateDirection(5, grid=HEXAGONAL), 6)
+        self.assertEqual(rotateDirection(6, grid=HEXAGONAL), 1)
+    
+    def testTransposeDirection(self):
+        """Verifies that the direction transposition"""
+        self.assertEqual(transposeDirection(0, grid=SQUARE), 0)
+        self.assertEqual(transposeDirection(1, grid=SQUARE), 5)
+        self.assertEqual(transposeDirection(2, grid=SQUARE), 6)
+        self.assertEqual(transposeDirection(3, grid=SQUARE), 7)
+        self.assertEqual(transposeDirection(4, grid=SQUARE), 8)
+        self.assertEqual(transposeDirection(5, grid=SQUARE), 1)
+        self.assertEqual(transposeDirection(6, grid=SQUARE), 2)
+        self.assertEqual(transposeDirection(7, grid=SQUARE), 3)
+        self.assertEqual(transposeDirection(8, grid=SQUARE), 4)
+        self.assertEqual(transposeDirection(0, grid=HEXAGONAL), 0)
+        self.assertEqual(transposeDirection(1, grid=HEXAGONAL), 4)
+        self.assertEqual(transposeDirection(2, grid=HEXAGONAL), 5)
+        self.assertEqual(transposeDirection(3, grid=HEXAGONAL), 6)
+        self.assertEqual(transposeDirection(4, grid=HEXAGONAL), 1)
+        self.assertEqual(transposeDirection(5, grid=HEXAGONAL), 2)
+        self.assertEqual(transposeDirection(6, grid=HEXAGONAL), 3)
+        
