@@ -10,11 +10,7 @@ from .error import *
 
 import struct
 
-try:
-    from PIL import Image
-except ImportError:
-    print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
-    raise
+from PIL import Image
 
 ###############################################################################
 #  Utilities functions

@@ -21,6 +21,7 @@ C function:
 """
 
 from mamba import *
+import mambaDisplay
 import mamba.core as core
 import unittest
 from PIL import Image
@@ -131,7 +132,7 @@ class TestCreate(unittest.TestCase):
 
     def testLoad(self):
         """Ensures that the load method works properly"""
-        for i in range(10):
+        for i in range(5):
             wi = random.randint(1,4000)
             hi = random.randint(1,4000)
             ci = random.randint(0,255)
@@ -164,7 +165,7 @@ class TestCreate(unittest.TestCase):
             
     def testSave(self):
         """Ensures that the save method works properly"""
-        for i in range(10):
+        for i in range(5):
             wi = random.randint(1,4000)
             hi = random.randint(1,4000)
             wc = ((wi+63)//64)*64
@@ -178,6 +179,8 @@ class TestCreate(unittest.TestCase):
             os.remove("test8.jpg")
             im32.save("test32.tif")
             os.remove("test32.tif")
+        im8.save("test8.jpg", palette=mambaDisplay.getPalette("rainbow"))
+        os.remove("test8.jpg")
             
     def testLoadRaw(self):
         """Ensures that the load raw method works correctly"""
@@ -193,6 +196,20 @@ class TestCreate(unittest.TestCase):
         im32.loadRaw(rawdata)
         vol = computeVolume(im32)
         self.assertEqual(vol, 128*128*0x11, "32: %d,%d" %(vol,128*128*0x11))
+            
+    def _preprocfunc(self, data):
+        return len(data)*b"\x22"
+        
+    def testLoadRawFile(self):
+        """Ensures that the load raw method works correctly"""
+        im8 = imageMb(64,64,8)
+        f = open("test.dat","wb")
+        f.write(64*64*b"\x12")
+        f.close()
+        im8.loadRaw("test.dat", preprocfunc=self._preprocfunc)
+        vol = computeVolume(im8)
+        self.assertEqual(vol, 64*64*0x22)
+        os.remove("test.dat")
         
     def testExtractRaw(self):
         """Ensures that the extract raw method works properly"""

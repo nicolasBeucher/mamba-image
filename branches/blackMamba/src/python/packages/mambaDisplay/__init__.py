@@ -108,13 +108,13 @@ _global_displayer = None
 
 def setDisplayer(displayer):
     """
-    Will set the displayer to use.
+    Will set the 'displayer' to use.
     Use this function to overrun the default display.
     This will have no effect if you have already displayed images.
     """
     global _global_displayer
     if not _global_displayer:
-        _global_displayer = displayer()
+        _global_displayer = displayer
 
 def getDisplayer():
     """

@@ -12,11 +12,7 @@ import mamba
 import mamba.core as core
 import mamba.utils as utils
 
-try:
-    from PIL import Image
-except ImportError:
-    print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
-    raise
+from PIL import Image
 
 # Properties operators #########################################################
 

@@ -69,7 +69,7 @@ _verbose = 0
 _fpath = ''
 _ftype = ''
 
-DEFAULT_TEST_DIRECTORIES = ['testmamba', 'testmamba3D']
+DEFAULT_TEST_DIRECTORIES = ['testmamba', 'testmamba3D', 'testmambaDisplay']
 TEST_DIRECTORIES = []
 
 ################################################################################

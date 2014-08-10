@@ -58,7 +58,7 @@ def minDynamics3D(imIn, imOut, h, grid=m3D.DEFAULT_GRID3D):
     if imIn.getDepth() == 8:
         m3D.addConst3D(imIn, h, imWrk)
         m3D.dualBuild3D(imIn, imWrk, grid=grid)
-        M3D.sub3D(imWrk, imIn, imWrk)
+        m3D.sub3D(imWrk, imIn, imWrk)
     else:
         m3D.ceilingAddConst3D(imIn, h, imWrk)
         m3D.dualBuild3D(imIn, imWrk, grid=grid)
@@ -120,7 +120,7 @@ def highMaxima3D(imIn, imOut, h, grid=m3D.DEFAULT_GRID3D):
     else:
         m3D.floorSubConst3D(imIn, h, imWrk)
     m3D.build3D(imIn, imWrk, grid=grid)
-    m3D.maxima(imWrk, imOut, 1, grid=grid)
+    m3D.maxima3D(imWrk, imOut, 1, grid=grid)
     
 def maxPartialBuild3D(imIn, imMask, imOut, grid=m3D.DEFAULT_GRID3D):
     """
