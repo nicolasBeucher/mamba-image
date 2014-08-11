@@ -3,17 +3,17 @@
 # OUT superpose_snap.png
 
 ## TITLE #######################################################################
-# mambaExtra superposer usage
+# mambaDisplay.extra superposer usage
 
 ## DESCRIPTION #################################################################
-# This is a small demonstration of the mambaExtra superposer
+# This is a small demonstration of the mambaDisplay.extra superposer
 # GUI. It allows you to display two images at the same time in a
 # superposed manner.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and of course the mambaExtra module
+# Importing mamba and mambaDisplay.extra
 from mamba import *
-import mamba.extra
+import mambaDisplay.extra
 
 # Opening an image
 im = imageMb('coffee_grains.jpg')
@@ -26,4 +26,4 @@ threshold(im, thresh, 0, 128)
 # You can change the color in the legend.
 # Of course the display can be zoom in or out and has most of the 
 # functionalities available in the standard mamba display.
-mamba.extra.superpose(im, thresh)
+mambaDisplay.extra.superpose(im, thresh)

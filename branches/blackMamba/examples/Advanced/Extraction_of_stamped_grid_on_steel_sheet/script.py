@@ -12,9 +12,8 @@
 # stamping and therefore the degree of stress exerted locally on the steel sheet.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package.
+# Importing mamba
 from mamba import *
-import mamba.extra as mE
 
 # The markers of the grid cells are extracted by successive filterings. 
 def extractMarkers(imIn, imOut):
@@ -84,9 +83,11 @@ crossings.save('grid_crossings.png')
 
 # Superposing the various results to the original image and saving the result.
 negate(imWrk1, imWrk1)
-mE.multiSuperpose(im1, imWrk1, crossings)
-pal = mE.tagOneColorPalette(255, (0,255,0))
-pal = mE.changeColorPalette(pal, 254, (255,0,0))
-im1.setPalette(pal)
-im1.save('grid_result.png')
+multiSuperpose(im1, imWrk1, crossings)
+pal = ()
+for i in range(254):
+    pal += (i,i,i)
+pal += (255,0,0)
+pal += (0,255,0)
+im1.save('grid_result.png', palette=pal)
 

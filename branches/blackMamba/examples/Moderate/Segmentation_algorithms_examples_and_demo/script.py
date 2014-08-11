@@ -17,7 +17,7 @@
 # information on these algorithms.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package
+# Importing mamba
 from mamba import *
 
 im = imageMb("tools.png")

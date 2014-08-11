@@ -19,9 +19,9 @@
 # obtained in example A21.
 
 ## SCRIPT ######################################################################
-# Importing the mamba, mambaExtra and mambaComposed modules.
+# Importing mamba
 from mamba import *
-from mamba.extra import *
+from mambaDisplay.extra import *
 
 # Defining the extended maxima extractor.
 def deepMaxima(imIn, imOut, d):
@@ -116,7 +116,7 @@ divConst(im1, 9, im3)
 # performed.
 adaptiveHorizontalOpen(imb2, im3, imb3)
 # A small closing allows to connect close connected components of markers.
-close(imb3, imb3)
+closing(imb3, imb3)
 # Each vehicle marker is reduced to a point and dilated to enhance its display.
 thinD(imb3, imb3)
 dilate(imb3, imb3, 5)

@@ -13,10 +13,10 @@
 # http://cmm.ensmp.fr/~beucher/publi/Ibpria_camera_ready.pdf.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package and the mambaExtra 
-# module
+# Importing mamba and mamba3D
+from mamba3D import *
 from mamba import *
-from mamba.extra import *
+import mambaDisplay
     
 def dirMEM(seqIn, imOut, d, n=1, grid=DEFAULT_GRID):
     """
@@ -54,13 +54,12 @@ def dirMEM(seqIn, imOut, d, n=1, grid=DEFAULT_GRID):
     
 seq = sequenceMb("tennis")
 im = imageMb(seq[0])
-im.setPalette(rainbow)
 
 # Testing it with various direction and size
 dirMEM(seq, im, d=1, n=1, grid=SQUARE)
-im.save("mcm_d1_n1.png")
+im.save("mcm_d1_n1.png", palette=mambaDisplay.getPalette("rainbow"))
 dirMEM(seq, im, d=1, n=10, grid=SQUARE)
-im.save("mcm_d1_n10.png")
+im.save("mcm_d1_n10.png", palette=mambaDisplay.getPalette("rainbow"))
 dirMEM(seq, im, d=3, n=1, grid=SQUARE)
-im.save("mcm_d3_n1.png")
+im.save("mcm_d3_n1.png", palette=mambaDisplay.getPalette("rainbow"))
 

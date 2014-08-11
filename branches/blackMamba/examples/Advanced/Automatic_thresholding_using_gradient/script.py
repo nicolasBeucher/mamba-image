@@ -10,8 +10,7 @@
 # the gradient, histogram and volume computations.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package
-# module
+# Importing mamba
 from mamba import *
 
 def autoThreshold(imIn, imOut):

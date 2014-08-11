@@ -9,7 +9,7 @@
 # Extraction of the first particle (in scanning order) of a binary image.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package
+# Importing mamba
 import mamba
 
 def firstParticle(imIn, imOut, grid=mamba.DEFAULT_GRID):

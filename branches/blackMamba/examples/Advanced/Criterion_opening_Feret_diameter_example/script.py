@@ -15,6 +15,7 @@
 ## SCRIPT ######################################################################
 # Importing the mamba module
 from mamba import *
+import mambaDisplay
 
 def feretDiameterOpening(imIn, imOut, direc):
     """
@@ -71,11 +72,9 @@ feretDiameterOpening(im1, im2, "horizontal")
 # Same operation with the vertical Feret diameter.
 feretDiameterOpening(im1, im3, "vertical")
 # Coloring the results for a better view.
-im2.setPalette(rainbow)
-im3.setPalette(rainbow)
 # Saving the results.
-im2.save('H_Feret_label.png')
-im3.save('V_Feret_label.png')
+im2.save('H_Feret_label.png', palette=mambaDisplay.getPalette("rainbow"))
+im3.save('V_Feret_label.png', palette=mambaDisplay.getPalette("rainbow"))
 # Example of extraction of the connected components included in a square box
 # of size 100.
 temp1 = imageMb(im1)

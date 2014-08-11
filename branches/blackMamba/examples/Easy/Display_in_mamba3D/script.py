@@ -15,10 +15,10 @@ from mamba3D import *
 
 # Creating an image and loading the data
 im3D = image3DMb()
-im3D.loadRaw("foot.raw.gz")
+im3D.loadRaw("foot.raw")
 
 # Activating the display. This will make a window appear
-im3D.show() # Same effect can be achieved with im3D.showDisplay("VTK")
+im3D.show() 
 
 # This line will activate a volume rendering display if you have VTK
 # installed on your computer. You can rotate (holding your mouse left
@@ -31,7 +31,6 @@ im3D.show() # Same effect can be achieved with im3D.showDisplay("VTK")
 
 # If you want to activate a more precise display or if you don't have
 # VTK installed you may want to use the plane projection display
-im3D.show("PROJECTION")
 
 # You can navigate through planes moving your mouse while holding <ctrl> down.
 # The mouse motion will allow you to change the plane following it (the

@@ -13,9 +13,9 @@
 # (http://en.wikipedia.org/wiki/Solvay_Conference)
 
 ## SCRIPT ######################################################################
-# Importing mamba, mambaComposed, mambaExtra ans mambaDraw.
+# Importing mamba
 from mamba import *
-from mamba.extra import *
+import mambaDisplay
 
 # Importing opencv.
 import cv
@@ -98,6 +98,5 @@ for f in faces:
     drawBox(imbin, map(lambda x : x-1, f), 1)
 copy(imIn, imOut)
 multiSuperpose(imOut, imbin)
-pal = tagOneColorPalette(255, (255,0,0))
-imOut.setPalette(pal)
-imOut.save("faces_of_physic.jpg")
+name = mambaDisplay.tagOneColorPalette(255, (255,0,0))
+imOut.save("faces_of_physic.jpg", palette=mambaDisplay.getPalette(name))

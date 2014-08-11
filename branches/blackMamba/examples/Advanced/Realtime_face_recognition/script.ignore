@@ -11,7 +11,7 @@
 # in the mambaRealtime process and applied on the video acquired by the webcam.
 
 ## SCRIPT ######################################################################
-# Importing mamba, mambaComposed, mambaDraw, mambaExtra and mambaRealtime.
+# Importing mamba and mambaRealtime
 from mambaRealtime import *
 from mamba import *
 from mamba.extra import *

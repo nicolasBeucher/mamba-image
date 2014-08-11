@@ -70,7 +70,7 @@ def checkEvenness(imIn, maxSize):
     imWrk = imageMb(imIn)
     ncList =[]
     for i in range(maxSize + 1):
-        close(imIn, imWrk, i)
+        closing(imIn, imWrk, i)
         nc = computeConnectivityNumber(imWrk)
         ncList.append(nc)
     return ncList

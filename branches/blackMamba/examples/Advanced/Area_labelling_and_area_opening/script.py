@@ -15,8 +15,9 @@
 # Initial image, courtesy of 0. Lordereau, Dept of Physics, Rennes University).
 
 ## SCRIPT ######################################################################
-# Importing mamba and mambaComposed.
+# Importing mamba.
 from mamba import *
+import mambaDisplay
 
 # The area labelling procedure is defined.
 def areaLabelling(imIn, imOut):
@@ -91,7 +92,6 @@ imD = imageMb(imA, 8)
 # So, a division by 9 is sufficient.
 divConst(imB, 9, imC)
 copyBytePlane(imC, 0, imD)
-imD.setPalette(rainbow)
 # Saving the result.
-imD.save('area_labelling.png')
+imD.save('area_labelling.png', palette=mambaDisplay.getPalette("rainbow"))
  

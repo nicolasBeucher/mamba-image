@@ -12,7 +12,7 @@
 # alternate filter.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package
+# Importing mamba
 import mamba
 
 def fullBuildAlternateFilter(imIn, imOut, n, openFirst, se=mamba.DEFAULT_SE):

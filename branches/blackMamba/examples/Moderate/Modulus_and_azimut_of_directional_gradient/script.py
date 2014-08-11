@@ -14,8 +14,9 @@
 # could be adapted to the square grid without any difficulty.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed module
+# Importing mamba
 import mamba
+import mambaDisplay
 
 # Operators defined in example M20 are duplicated here.
 def conjugateDirectionalErode(imIn, imOut, d, size, grid=mamba.DEFAULT_GRID, edge=mamba.FILLED):
@@ -109,7 +110,7 @@ def directionalDilate(imIn, imOut, d, size, grid=mamba.DEFAULT_GRID, edge=mamba.
     else:
         mamba.linearDilate(imIn, imOut, (d+1)/2, size*2, grid=grid, edge=edge) 
 
-# We define the vectorial gradient procedure.        
+# We define the vectorial gradient procedure.
 def vectorGradient(imIn, imModul, imAzim, size=1):
     """
     Computes modulus (result in 'imModul') and azimut (in 'imAzim') of image
@@ -141,27 +142,25 @@ def vectorGradient(imIn, imModul, imAzim, size=1):
         
 # Using this operator on a seismic section image.
 
-# A palette for displaying the 12 possible directions is defined.
-dirpal = (0, 0, 0, 255, 0, 0, 255, 128, 0, 255, 255, 0, 128, 255, 0, 0, 255, 0)
-dirpal += (0, 255, 128, 0, 255, 255, 0, 128, 255, 0, 0, 255)
-dirpal += (128, 0, 255, 255, 0, 255, 255, 0, 128)
-dirpal += 243 * (0, 0, 0)
-    
 # Reading the initial image and defining results images.
 imA = mamba.imageMb('seismic_section.png')
 imB = mamba.imageMb(imA)
 imC = mamba.imageMb(imA)
 
-# Applying the new palette to the azimut image (and the classical
-# rainbow palette to the modulus).
-imC.setPalette(dirpal)
-imB.setPalette(mamba.rainbow)
-
 # Calculating the vectorial gradient. 
 vectorGradient(imA, imB, imC)
 
-# Saving the results.
-imB.save('gradient_modulus.png')
-imC.save('gradient_azimut.png')
+# A palette for displaying the 12 possible directions is defined.
+dirpal = (0, 0, 0, 255, 0, 0, 255, 128, 0, 255, 255, 0, 128, 255, 0, 0, 255, 0)
+dirpal += (0, 255, 128, 0, 255, 255, 0, 128, 255, 0, 0, 255)
+dirpal += (128, 0, 255, 255, 0, 255, 255, 0, 128)
+dirpal += 243 * (0, 0, 0)
+mambaDisplay.addPalette("direction palette", dirpal)
 
- 
+# Saving the results.
+# Applying the new palette to the azimut image (and the classical
+# rainbow palette to the modulus).
+imB.save('gradient_modulus.png', palette=mambaDisplay.getPalette("rainbow"))
+imC.save('gradient_azimut.png', palette=mambaDisplay.getPalette("direction palette"))
+# The last line could have been
+# imC.save('gradient_azimut.png', palette=dirpal)

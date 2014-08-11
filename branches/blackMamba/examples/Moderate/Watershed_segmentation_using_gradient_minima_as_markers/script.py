@@ -14,7 +14,7 @@
 ## SCRIPT ######################################################################
 # Importing the mamba module
 from mamba import *
-import mamba.extra
+import mambaDisplay
 
 def watershedByGradMinima(imIn, imOut, grid=DEFAULT_GRID):
     """
@@ -43,6 +43,5 @@ subConst(im1, 1, im3)
 # The watershed line is set to 255 and the basins are empty in im2.
 logic(im3, im2, im3, "sup")
 # a special palette is created
-palws = mamba.extra.tagOneColorPalette(255, (255,0,0))
-im3.setPalette(palws)
-im3.save("snake_watmin.png")
+name = mambaDisplay.tagOneColorPalette(255, (255,0,0))
+im3.save("snake_watmin.png", palette=mambaDisplay.getPalette(name))

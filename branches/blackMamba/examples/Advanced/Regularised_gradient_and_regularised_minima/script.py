@@ -13,7 +13,7 @@
 # show the benefit of this operator compared to the use of a classical gradient.
 
 ## SCRIPT ######################################################################
-# Importing the mamba and mambaComposed modules.
+# Importing mamba
 from mamba import *
 
 # Defining a regularised minima extractor.

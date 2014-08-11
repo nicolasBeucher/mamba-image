@@ -12,6 +12,7 @@
 ## SCRIPT ######################################################################
 # Importing the mamba module
 from mamba import *
+import mambaDisplay
 
 # Loading an image
 im = imageMb('snake.png')
@@ -42,7 +43,7 @@ im.unfreeze() # <- the display will be updated (and returns to what the
 # Sometimes, you will have lots of images opened and displayed making it quite
 # messy on your desktop and thus very difficult to read and analyze. To make 
 # sure displays are properly organised you can call the following function
-tidyDisplays()
+mambaDisplay.tidyDisplays()
 # The function does not do miracles (like increasing your screen resolution) so
 # don't have too much expectations
 

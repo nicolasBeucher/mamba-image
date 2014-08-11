@@ -12,16 +12,11 @@
 ## SCRIPT ######################################################################
 # Importing the mamba module
 from mamba import *
+import mambaDisplay
 
 # Let's start with an image and an activated display
 im = imageMb('snake.png')
 im.show()
-
-# Setting up a rainbow palette for image im
-im.setPalette(rainbow)
-
-# You can disable it by calling the resetPalette method
-im.resetPalette()
 
 # You can create your own palette
 your_palette = (
@@ -66,14 +61,15 @@ your_palette = (
 0, 151, 0, 0, 147, 0, 0, 143, 0, 0, 139, 0, 0, 135, 0, 0, 131, 0, 0
 )
 
-# And then apply it to your image
-im.setPalette(your_palette)
+# And then add it to the palettes available for display
+mambaDisplay.addPalette("my palette", your_palette)
 
-# If you save at this point, the saved image will use the palette
-im.save('snake_palette.png')
+# If you save at this point, you can apply the palette through the appropriate
+# argument
+im.save('snake_palette.png', palette=your_palette)
 
 # Now you can play with the display shortcuts
-# Try pressing P, it disables the palette (only in display not in save)
+# Try pressing P, it rotates through all the palettes including yours
 # Try zooming in or out with A and Z or with your mouse wheel
 # Try Ctrl-R to reset the display
 # Try pressing the right button of your mouse to spawn the contextual menu

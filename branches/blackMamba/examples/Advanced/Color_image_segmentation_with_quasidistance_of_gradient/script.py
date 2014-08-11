@@ -15,18 +15,16 @@
 # URL: http://homepages.inf.ed.ac.uk/rbf/CAVIAR/.
 
 ## SCRIPT ######################################################################
-# Importing the Image PIL module, mamba module, the mambaComposed package and 
-# the mambaExtra module
+# Importing PIL Image module and mamba
 from PIL import Image
 from mamba import *
-import mamba.extra as mE
 
 # Opening the image (PIL format) and splitting it into three color channels
 pilim = Image.open('gallery.png')
 imRed = imageMb(pilim.size[0], pilim.size[1], 8)
 imGreen = imageMb(imRed)
 imBlue = imageMb(imRed)
-mE.split(pilim, imRed, imGreen, imBlue)
+split(pilim, imRed, imGreen, imBlue)
 
 # We will perform a thick gradient on each color channel (contours in original
 # picture are more or less fuzzy) and we add all these gradients
@@ -65,7 +63,7 @@ copyBytePlane(qDist, 3, imWts)
 logic(imRed, imWts, imRed, "sup")
 logic(imGreen, imWts, imGreen, "sup")
 logic(imBlue, imWts, imBlue, "sup")
-pilim = mE.mix(imRed, imGreen, imBlue)
+pilim = mix(imRed, imGreen, imBlue)
 pilim.save('segmented_gallery.png')
 negate(imWts, imWts)
 imWts.save('binary_segmentation.png')

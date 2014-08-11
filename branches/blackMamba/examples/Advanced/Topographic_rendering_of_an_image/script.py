@@ -72,14 +72,13 @@ def shadowing(imIn, imOut, dir, brightness, height=(3,1)):
     # imWrk3 contains the shadow region.
     sub(imWrk2, imIn, imWrk1)
     threshold(imWrk1, imWrk3, 1, 255)
-    close(imWrk3, imWrk3)
+    closing(imWrk3, imWrk3)
     # The topography is built by arrowing (on hexagonal grid).
     arrowEncoding(imIn, imWrk1, "sup")
     mulConst(imWrk1, 4, imWrk1)
     # A constant value is added to the pixels outside the shadow.
     convertByMask(imWrk3, imWrk2, brightness, 0)
     add(imWrk1, imWrk2, imOut)
-
 
 # Defining a new color palette, the sepia palette (old photographs colors).
 # This color palette will be used with the topographic rendering image.
@@ -95,10 +94,9 @@ for i in range(128):
 im1 = imageMb('topography.png')
 im2 = imageMb(im1)
 # Defining the new palette.
-im2.setPalette(sepia)
 # Performing the rendering process. The sun is supposed to shine from the
 # north east.
 shadowing(im1, im2, 4, 25)
 # Saving the result.
-im2.save('rendering.png')
+im2.save('rendering.png', palette=sepia)
 

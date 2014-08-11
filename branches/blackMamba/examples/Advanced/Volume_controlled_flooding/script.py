@@ -15,7 +15,7 @@
 ## SCRIPT ######################################################################
 # Importing mamba and associates
 from mamba import *
-from mamba.extra import *
+import mambaDisplay
 
 def downscale(imIn, imOut):
     # Reuse from previous example
@@ -106,5 +106,5 @@ imFlood_8 = imageMb(imDEM, 8)
 downscale(imDEM,imDEM_8)
 copyBytePlane(imFlood, 0, imFlood_8)
 logic(imDEM_8, imFlood_8, imDEM_8, "sup")
-imDEM_8.setPalette(tagOneColorPalette(255,(0,100,255)))
-imDEM_8.save("flood.png")
+name = mambaDisplay.tagOneColorPalette(255,(0,100,255))
+imDEM_8.save("flood.png", palette=mambaDisplay.getPalette(name))
