@@ -14,9 +14,8 @@
 # geometrical and topological approach.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed and mambaExtra packages.
+# Importing mamba
 from mamba import *
-import mamba.extra as mE
 
 # The main checking routine.
 def checkClutch(imIn, springBranches, sealZone):
@@ -61,8 +60,7 @@ def checkClutch(imIn, springBranches, sealZone):
     logic(imWrk5, imWrk6, imWrk5, "sup")
     # The center region and 7 spaces between the branches should appear
     # if the spring is correct.
-    if computeConnectivityNumber(imWrk5) == 8:
-        check[0] = 1
+    check[0] = (computeConnectivityNumber(imWrk5) == 8)
     # This part of the procedure is just here to generate a binary image
     # showing the junctions of the different branches of the spring (not
     # necessary for the checking). These junctions correspond to multiple
@@ -103,8 +101,7 @@ def checkClutch(imIn, springBranches, sealZone):
     # The missing seal location is emphasized for display.
     dilate(sealZone, sealZone)
     # If the seal is missing, the sealZone image is not empty.
-    if computeVolume(sealZone) == 0:
-        check[1] = 1
+    check[1] = (computeVolume(sealZone) == 0)
     return check
     
 # Reading the first image.
@@ -113,48 +110,62 @@ im1 = imageMb('motor1.png')
 # Defining result images
 spring = imageMb(im1, 1)
 seal = imageMb(im1, 1)
+
 # Checking the clutch.
 check = checkClutch(im1, spring, seal)
 # Printing the result and setting the color of the spring branches locations:
 # green, all the branches are here, red, some branches are missing.
 print("First image checking:")
-if check[0] == 1:
+if check[0]:
     print("Spring is OK.")
     pal1 = (0, 255, 0)
 else:
     print("Spring is defective.")
     pal1 = (255, 0, 0)
-if check[1] == 1:
+if check[1]:
     print("Seal is OK.")
+    pal2 = (0, 255, 0)
 else:
     print("Seal is missing.")
+    pal2 = (255, 0, 0)
 # Superposing the seal and spring locations to the original image and saving
 # the result.
-mE.multiSuperpose(im1, seal, spring)
-pal = mE.tagOneColorPalette(255, pal1)
-pal = mE.changeColorPalette(pal, 254, (255,0,0))
-im1.setPalette(pal)
-im1.save('motor1_check.png')
+multiSuperpose(im1, seal, spring)
+pal = ()
+for i in range(254):
+    pal += (i,i,i)
+pal += pal2
+pal += pal1
+im1.save('motor1_check.png', palette=pal)
 
 # Reading the next image.
 im1 = imageMb('motor2.png')
+
+# Resetting the result images
+spring.reset()
+seal.reset()
+
 # Checking it.
-check = checkClutch(im1, seal, spring)
+check = checkClutch(im1, spring, seal)
 print("Second image checking:")
-if check[0] == 1:
+if check[0]:
     print("Spring is OK.")
     pal1 = (0, 255, 0)
 else:
     print("Spring is defective.")
     pal1 = (255, 0, 0)
-if check[1] == 1:
+if check[1]:
     print("Seal is OK.")
+    pal2 = (0, 255, 0)
 else:
     print("Seal is missing.")
+    pal2 = (255, 0, 0)
 # Storing the resulting images.
-mE.multiSuperpose(im1, spring, seal)
-pal = mE.tagOneColorPalette(255, pal1)
-pal = mE.changeColorPalette(pal, 254, (255,0,0))
-im1.setPalette(pal)
-im1.save('motor2_check.png')
+multiSuperpose(im1, seal, spring)
+pal = ()
+for i in range(254):
+    pal += (i,i,i)
+pal += pal2
+pal += pal1
+im1.save('motor2_check.png', palette=pal)
 

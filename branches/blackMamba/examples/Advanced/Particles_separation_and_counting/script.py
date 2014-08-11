@@ -12,9 +12,9 @@
 # the quality of the final result.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package
-# module
+# Importing mamba
 from mamba import *
+import mambaDisplay
 
 def autoThreshold(imIn, imOut):
     # Informations regarding this function can be found in previous
@@ -125,7 +125,7 @@ imthresh = imageMb(im, 1)
 # threshold of our initial image
 autoThreshold(im, imthresh)
 # A bit of tidying
-open(imthresh, imthresh, 2)
+opening(imthresh, imthresh, 2)
 negate(imthresh, imthresh)
 
 # Computing the first segmentation of the coffee grains
@@ -145,9 +145,8 @@ imSeg2 = imageMb(im, 8)
 nb = segmentGrains2(imthresh, imSeg2)
 # We store this result
 # The palette can be changed before saving the result
-imSeg2.setPalette(patchwork)
-imSeg2.save("segmented_grains_2.png")
-print("number of grains :", nb)
+imSeg2.save("segmented_grains_2.png", palette=mambaDisplay.getPalette("patchwork"))
+print("number of grains : %d" % (nb))
 # The result should be 50, however due to the black band on the right
 # the function counts 51 coffee grains.
 

@@ -7,12 +7,13 @@
 
 ## DESCRIPTION #################################################################
 # This example is a small variation of the minima function found in the
-# mambaComposed geodesy module. It shows that there are various possibilities
+# mamba extrema module. It shows that there are various possibilities
 # to attain the same result in Mamba.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module
+# Importing mamba
 from mamba import *
+import mambaDisplay
 
 def valuedMinima(imIn, imOut, h=1, grid=DEFAULT_GRID):
     """
@@ -41,5 +42,4 @@ im2 = imageMb(im1)
 # Computing the valued minima
 valuedMinima(im1, im2)
 
-im2.setPalette(rainbow)
-im2.save("snake_valmin.png")
+im2.save("snake_valmin.png", palette=mambaDisplay.getPalette("rainbow"))

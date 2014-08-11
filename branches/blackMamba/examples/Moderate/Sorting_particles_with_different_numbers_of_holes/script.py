@@ -15,7 +15,7 @@
 ## SCRIPT ######################################################################
 # Importing the mamba modules
 from mamba import *
-from mamba.extra import *
+from mambaDisplay.extra import *
     
 # Reading the initial image 
 imIn = imageMb('gruyere.png')

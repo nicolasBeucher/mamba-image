@@ -14,7 +14,6 @@
 ## SCRIPT ######################################################################
 # Importing mamba and associates
 from mamba import *
-from mamba.extra import *
 
 def textFiltering(imIn, imOut, textSize=16, textDir="HORZ"):
     """
@@ -34,8 +33,8 @@ def textFiltering(imIn, imOut, textSize=16, textDir="HORZ"):
         
     ultimateOpening(imIn, imWrk1, imWrk32)
     whiteTopHat(imWrk32, imWrk32, textSize)
-    close(imWrk32, imWrk32, textSize*2, dir1)
-    open(imWrk32, imWrk32, textSize*10, dir1)
+    closing(imWrk32, imWrk32, textSize*2, dir1)
+    opening(imWrk32, imWrk32, textSize*10, dir1)
     closeHoles(imWrk32, imWrk32)
     threshold(imWrk32, imWrkb, 1, 0xffffffff)
     mul(imIn, imWrkb, imOut)

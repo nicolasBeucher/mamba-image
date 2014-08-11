@@ -15,7 +15,7 @@
 # binary image and on an hexagonal grid (6 directions are encoded).
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed module
+# Importing mamba
 import mamba
 
 # The basic operators of example M20 are used again.
@@ -176,10 +176,8 @@ directionalCoding(imbin1, im2)
 dirpal = (0, 0, 0, 255, 0, 0, 0, 255, 0, 0, 0, 255, 255, 255, 0, 0, 255, 255, 255, 0, 255)
 for i in range(249):
     dirpal = dirpal + (0, 0, 0)
-# The palette is applied to the result.  
-im2.setPalette(dirpal)
-# The result is saved.
-im2.save('coded_directions.png')
+# The result is saved with the palette.
+im2.save('coded_directions.png', palette=dirpal)
 
 
 

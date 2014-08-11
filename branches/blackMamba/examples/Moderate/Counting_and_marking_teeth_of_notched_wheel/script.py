@@ -11,9 +11,9 @@
 # associated to a preliminary selection of the zone where these teeth should be.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package
+# Importing mamba
 import mamba
-import mamba.extra
+import mambaDisplay
 
 im = mamba.imageMb("wheel.png", 1)
 im1 = mamba.imageMb(im, 1)
@@ -32,13 +32,12 @@ mamba.opening(im2, im2)
 # Counting and marking each tooth
 mamba.thinD(im2, im1)
 nb_teeth = mamba.computeVolume(im1)
-print("Number of teeth:", nb_teeth)
+print("Number of teeth: %d" % (nb_teeth))
 mamba.dilate(im1, im1, 3, mamba.SQUARE3X3)
 im1.convert(8)
 im8 = mamba.imageMb(im, 8)
 mamba.convert(im, im8)
 mamba.subConst(im8, 1, im8)
 mamba.logic(im8, im1, im8, "sup")
-pal = mamba.extra.tagOneColorPalette(255, (0,0,255))
-im8.setPalette(pal)
-im8.save("wheel_teeth.png")
+name = mambaDisplay.tagOneColorPalette(255, (0,0,255))
+im8.save('wheel_teeth.png', palette=mambaDisplay.getPalette(name))

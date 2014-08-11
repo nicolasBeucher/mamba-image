@@ -14,7 +14,6 @@
 ## SCRIPT ######################################################################
 # Importing mamba and associates
 from mamba import *
-from mamba.extra import *
 
 # Reusing functions from previous examples
 def firstParticle(imIn, imOut, grid=mamba.DEFAULT_GRID):
@@ -131,7 +130,7 @@ autoThreshold(im, imbin1)
 negate(imbin1, imbin1)
 removeEdgeParticles(imbin1, imbin1) # border artefact removal
 closeHoles(imbin1, imbin1) # Closes holes in nuclei
-open(imbin1, imbin1, 2) # Removes small artefacts
+opening(imbin1, imbin1, 2) # Removes small artefacts
 # Segmentations : returns the number of nuclei
 nb_nuclei = segmentGrains2(imbin1, im1)
 threshold(im1, imbin1, 1, 255)
@@ -162,9 +161,9 @@ delaunay.save("delaunay.jpg")
 
 # Reporting all the measurements
 ################################################################################
-print("number of nuclei", nb_nuclei)
-print("nuclei mean area", computeVolume(nuclei)/nb_nuclei)
-print("cytoplasmic mean area", computeVolume(voronoi)/nb_nuclei)
-print("nucleo-cytoplasmic ratio", computeVolume(voronoi)/computeVolume(nuclei))
-print("mean edge length", sum(edges)/len(edges))
+print("number of nuclei %d" % (nb_nuclei))
+print("nuclei mean area %d" % (computeVolume(nuclei)/nb_nuclei))
+print("cytoplasmic mean area %d" % (computeVolume(voronoi)/nb_nuclei))
+print("nucleo-cytoplasmic ratio %d" % (computeVolume(voronoi)/computeVolume(nuclei)))
+print("mean edge length %d" % (sum(edges)/len(edges)))
 

@@ -16,8 +16,9 @@
 # which are not visible at the first sight.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package
+# Importing mamba
 from mamba import *
+import mambaDisplay
 
 # The extremities extractor designed in exampleM14 will also be necessary.
 # It is duplicated below.
@@ -206,9 +207,8 @@ v = 256/nCells
 mulConst(imWrk11, v, imWrk11)
 convert(im1, imWrk12)
 logic(imWrk11, imWrk12, imWrk11, "inf")
-imWrk11.setPalette(rainbow)
 # The result image is saved (with different colors for the different cells).
 # Note that the lamella at the upper right is ambiguous. Therefore, it has
 # been given a different color.
-imWrk11.save('eutectic_cells.png')
+imWrk11.save('eutectic_cells.png', palette=mambaDisplay.getPalette("rainbow"))
 

@@ -61,7 +61,7 @@ imTemp = imageMb(im1, 1)
 imResult = imageMb(im1, 32)
 im1.convert(1)
 # A small filtering is performed to remove irregularities.
-open(im1, imTemp)
+opening(im1, imTemp)
 # Extraction of the extremities. In this case, the particles are considered
 # to be inside the window. So extremities are detected on the edge.
 extremities(imTemp, imResult, innerParticles=True)
@@ -77,7 +77,7 @@ im2 = imageMb('hand.png')
 imTemp = imageMb(im2, 1)
 imResult = imageMb(im2, 32)
 im2.convert(1)
-open(im2, imTemp)
+opening(im2, imTemp)
 extremities(imTemp, imResult)
 threshold(imResult, imTemp, 1, computeMaxRange(imResult)[1])
 dilate(imTemp, imTemp)

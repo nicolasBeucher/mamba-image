@@ -15,16 +15,15 @@
 # radius of each halo can be determined automatically.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package
+# Importing mamba
 from mamba import *
 from PIL import ImageDraw
 from PIL import ImageFont
-import mamba.extra as mE
 
 # The antibiotics are incorporated to the Petri dish using discs
 # which appear with a certain size on our images
 DISC_SIZE = 7
-    
+
 def drawingResults(imIn, results, path):
     """
     This function draws the result of the antibiograms measurement.
@@ -34,7 +33,7 @@ def drawingResults(imIn, results, path):
     for (x,y,value) in results:
         max_value = max(max_value, value)
     # Now drawing the result
-    pilim = mE.Mamba2PIL(imIn)
+    pilim = Mamba2PIL(imIn).convert("RGB")
     draw = ImageDraw.Draw(pilim)
     font = ImageFont.truetype("FreeMonoBold.ttf", 20)
     for (x,y,value) in results:

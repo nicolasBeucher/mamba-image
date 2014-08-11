@@ -15,12 +15,12 @@
 # perspective view.
 # Secondly, the lanes are segmented. This segmentation is performed by a 
 # watershed of a distance function generated from the ground markings extracted
-# from the mean image of the scene (moving objects have been removed).    
+# from the mean image of the scene (moving objects have been removed).
 
 ## SCRIPT ######################################################################
-# Importing the mamba, mambaExtra and mambaComposed modules.
+# Importing mamba
 from mamba import *
-from mamba.extra import *
+from mambaDisplay.extra import *
 
 # Special distance function generator.
 def geodesicGreyDistance(imIn, imMask, imOut):
@@ -71,7 +71,7 @@ buildOpen(im2, imWrk1, 3)
 thrval = computeRange(imWrk1)[1] / 2
 threshold(imWrk1, imWrk2, thrval, 255) 
 # The image is filtered and gives the lanes markers.
-close(imWrk2, im3)
+closing(imWrk2, im3)
 # The distance function of the complementary set is computed. Note that the
 # edge is set to 'filled'.
 negate(im3, imWrk2)

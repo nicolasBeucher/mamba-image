@@ -10,7 +10,7 @@
 # black top hat and white top hat operators.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package
+# Importing mamba
 import mamba
 
 def contrastEnhancer(imIn, imOut, n=1, se=mamba.DEFAULT_SE):

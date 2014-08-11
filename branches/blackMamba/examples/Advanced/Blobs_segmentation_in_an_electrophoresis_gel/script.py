@@ -12,9 +12,9 @@
 # This example illustrates the different steps of the blobs segmentation. 
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package
+# Importing mamba
 from mamba import *
-import mamba.extra as mE
+import mambaDisplay
 
 # Reading the initial image.
 imIn = imageMb('electrop.png')
@@ -51,7 +51,6 @@ markerControlledWatershed(imWrk1, finalMarkers, imWrk1)
 threshold(imWrk1, blobsContours, 1, 255)
 
 # Superposing the result to the original image and saving the result.
-mE.multiSuperpose(imIn, blobsContours)
-pal = mE.tagOneColorPalette(255, (255,0,0))
-imIn.setPalette(pal)
-imIn.save('blobsContours.png')
+multiSuperpose(imIn, blobsContours)
+name = mambaDisplay.tagOneColorPalette(255,(255,0,0))
+imIn.save('blobsContours.png', palette=mambaDisplay.getPalette(name))

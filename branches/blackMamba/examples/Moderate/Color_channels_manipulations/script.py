@@ -12,10 +12,8 @@
 # http://commons.wikimedia.org/wiki/File:Ebenthal_Schlosswirt_20052010_06.jpg.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module, the mambaComposed package and the mambaExtra 
-# module
+# Importing mamba
 from mamba import *
-import mamba.extra
 
 # Opening the image for each color channel (red, green and blue)
 imRed = imageMb('colorful.jpg', rgbfilter=(1.0, 0.0, 0.0))
@@ -29,7 +27,7 @@ halfGradient(imBlue, imBlue)
 
 # Then we recombine the three channel image into one using the 
 # mix function. This function actually returns a PIL image
-pilim = mamba.extra.mix(imRed, imGreen, imBlue)
+pilim = mix(imRed, imGreen, imBlue)
 
 # We save it
 pilim.save("colorful_grad.png")

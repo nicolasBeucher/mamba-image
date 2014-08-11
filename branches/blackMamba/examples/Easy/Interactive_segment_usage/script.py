@@ -3,19 +3,19 @@
 # OUT interseg_snap.png
 
 ## TITLE #######################################################################
-# mambaExtra interactive segment usage
+# mambaDisplay.extra interactive segment usage
 
 ## DESCRIPTION #################################################################
-# This is a small demonstration of the mambaExtra interactive segmentation
-# GUI. It allows you to segment an image using the watershed algorithm
-# (processing the gradient image) with user-defined markers. Its behavior
-# is very similar to the magic selection you can find in image processing
-# programs such as GIMP.
+# This is a small demonstration of the mambaDisplay.extra interactive
+# segmentation GUI. It allows you to segment an image using the watershed
+# algorithm (processing the gradient image) with user-defined markers. Its
+# behavior is very similar to the magic selection you can find in image
+# processing programs such as GIMP.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and of course the mambaExtra module
+# Importing mamba and mambaDisplay.extra
 from mamba import *
-import mamba.extra
+import mambaDisplay.extra
 
 # Opening an image
 im = imageMb('snake.png')
@@ -32,4 +32,4 @@ imSeg = imageMb(im, 32)
 #
 # Of course the display can be zoom in or out and has most of the 
 # functionalities available in the standard mamba display.
-print(mamba.extra.interactiveSegment(im, imSeg))
+print(mambaDisplay.extra.interactiveSegment(im, imSeg))

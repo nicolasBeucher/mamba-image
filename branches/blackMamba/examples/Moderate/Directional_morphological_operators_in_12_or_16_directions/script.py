@@ -17,9 +17,9 @@
 # increasing clockwise up to 12 or 16.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed module
+# Importing mamba
 import mamba
-import mamba.extra as mE
+import mambaDisplay.extra as mE
 
 # This operator is used by the general directional erosion.
 def conjugateDirectionalErode(imIn, imOut, d, size, grid=mamba.DEFAULT_GRID, edge=mamba.FILLED):

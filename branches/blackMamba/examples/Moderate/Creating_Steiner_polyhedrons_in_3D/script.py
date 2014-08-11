@@ -12,8 +12,7 @@
 ## SCRIPT ######################################################################
 # Importing mamba
 from mamba3D import *
-from mamba import *
-from mamba.extra import *
+import mambaDisplay
     
 def steiner3D(imOut, n, directions, grid=DEFAULT_GRID3D):
     """
@@ -28,7 +27,7 @@ def steiner3D(imOut, n, directions, grid=DEFAULT_GRID3D):
     imOut.reset()
     (w,h,l) = imOut.getSize()
     
-    v = computeMaxRange(imOut[0])[1]
+    v = computeMaxRange3D(imOut)[1]
     imOut.setPixel(v, (w/2,h/2,l/2))
     
     ses = []
@@ -42,12 +41,12 @@ def steiner3D(imOut, n, directions, grid=DEFAULT_GRID3D):
 
 im3D = image3DMb()
 im3D.show()
-# We will choose orange to display the polyhedron
+mambaDisplay.tagOneColorPalette(255, (255,150,0))
+# We will choose orange to display the polyhedron. hit p to select
+# the newly created palette.
 # At this point, it is worth signaling that the result will look
-# better using the isosurface process (Use <F1> on the display to
-# modify it).
-pal = tagOneColorPalette(255, (255,150,0))
-im3D.setPalette(pal)
+# better in volume rendering (F2) using the isosurface process
+# (Use <Tab> on the display to modify it).
 
 # Drawing a rhombododecahedron
 steiner3D(im3D, 30, [11,15,22,26], CUBIC)

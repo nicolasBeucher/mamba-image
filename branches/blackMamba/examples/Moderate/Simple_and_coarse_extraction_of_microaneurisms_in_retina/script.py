@@ -14,7 +14,7 @@
 ## SCRIPT ######################################################################
 # Importing the mamba modules
 from mamba import *
-import mamba.extra as mE
+import mambaDisplay
 
 # Top-hat operator built with linear openings and a geodesic reconstruction.
 def buildSupWhiteTopHat(imIn, imOut, size):
@@ -44,8 +44,7 @@ t = computeRange(imWrk)[1]/2
 threshold(imWrk, aneurisms, t, 255)
 
 # Superposing the result to the original image and saving the result.
-mE.multiSuperpose(imIn, aneurisms)
-pal = mE.tagOneColorPalette(255, (255,0,0))
-imIn.setPalette(pal)
-imIn.save('aneurisms.png')
+multiSuperpose(imIn, aneurisms)
+name = mambaDisplay.tagOneColorPalette(255, (255,0,0))
+imIn.save('aneurisms.png', palette=mambaDisplay.getPalette(name))
 

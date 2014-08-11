@@ -13,7 +13,7 @@
 # correspond to contours of salient objects) can be obtained by a SKIZ.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed module.
+# Importing mamba
 from mamba import *
 
 # The Laplacian will use the squeeze operator which has been introduced in 

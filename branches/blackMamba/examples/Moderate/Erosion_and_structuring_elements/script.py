@@ -10,7 +10,7 @@
 # with the erode function.
 
 ## SCRIPT ######################################################################
-# Importing the mamba module and the mambaComposed package
+# Importing mamba
 from mamba import *
 
 # Opening and creating images 
