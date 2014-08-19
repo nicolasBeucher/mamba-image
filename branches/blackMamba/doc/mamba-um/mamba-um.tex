@@ -36,17 +36,22 @@ mathematical morphology (online courses are available at
 \url{http://cmm.ensmp.fr/~serra/acours.htm} and \url{http://cmm.ensmp.fr/~beucher/publi.html}).
 
 This document addresses various points to help you understand how to use and
-enjoy Mamba, such as getting familiar with it, what it does and doesn't,
+enjoy Mamba, such as getting familiar with it, what it does and does not,
 understand how the library works, what you can do to optimize it for your
 needs. If you are new to it, read the next section, quick start, before going
 further.
+
+This is the user manual of version 2 of the library. If you were a Mamba 1 or
+1.1 user please read the section \ref{cha:change_mamba2}. Many changes
+were introduced in this version and this section will help you know what to
+expect.
 
 \pagebreak
 
 \section{A quick start}
 
 For all intent and purpose, we will now assume that you know what mathematical
-morphology is, at least theorically (and your interest in Mamba is to go 
+morphology is, at least theoretically (and your interest in Mamba is to go 
 practical), and that you have a minimum know-how in programming with Python.
 
 We are aware that fulfilling these two conditions may be quite difficult. It is 
@@ -65,15 +70,15 @@ possibilities offered by such a tool).
 To get started with Mamba, you need to install some software on your PC. The 
 most obvious one is Python. You can find Python at \url{http://www.Python.org}. 
 Download version 2.7 or 3.4 and install it. Once Python is installed, you will
-need to download the lastest version of the Python Imaging Library (we
-recommand you use the friendly fork pillow as we do use and test Mamba with it) at 
+need to download the lastest version of the Python Imaging Library fork, Pillow
+(standard Pillow may not work, we do test Mamba only with Pillow) at 
 \url{https://pypi.python.org/pypi/Pillow/}.
 You need to download the version corresponding to your version of Python (this
 should be indicated in the name of the file). Again install it. On Linux, you may
 have to install the Tkinter library if it was not provided with your Python
 distribution (Windows users don't need to worry as it is part of the standard 
 Python distribution they just installed). Finally download the Mamba library 
-from \url{http://www.mamba-image.org} (as for PIL select the version corresponding
+from \url{http://www.mamba-image.org} (as for Pillow select the version corresponding
 to your Python version) and install it.
 
 These instructions may not be interpreted in the same way depending on your 
@@ -91,9 +96,9 @@ To use Mamba, simply type in your Python console:
 from mamba import * 
 \end{lstlisting}
 
-This import only gives you direct access to all the functions needed to 
-perform basic and usual operations found in every mathematical
-morphology algorithm.
+This import gives you direct access to all the functions needed to 
+perform basic and advanced operations found in every mathematical
+morphology algorithm on 2D images.
 
 The 3D operators can be accessed through the following import:
 
@@ -138,7 +143,7 @@ performance sake, Mamba can only work with images that have a width multiple of 
 and a height multiple of 2. If not, the image is automatically padded. You can 
 also notice that your image was put into a greyscale image (the second command 
 returns 8 which means 8 bits per pixel, the image pixels can take 256 values, from 
-0 to 255). This is the default behavior for Mamba.
+0 to 255). Depth can be 1 bit per pixel, 8 bits per pixel or 32 bits per pixel.
 
 Well, this is all interesting but it does not give you access to the primary
 properties of an image i.e. how it looks like. To do so, Mamba gives you access to
@@ -186,7 +191,7 @@ you a small example using the created images above.
 # 1 - Computing the gradient of image im and putting the result in im1
 gradient(im, im1)
 # 2 - Computing a small opening of image im and putting the result in im2
-open(im, im1)
+opening(im, im1)
 # 3 - Computing the gradient of im2 and putting the result in im2
 gradient(im2, im2)
 # 4 - Converting im1 into binary and putting the result in im3
@@ -206,7 +211,7 @@ images, you may have found that the operations were quite slow (although in thes
 basic examples, they are not so slow...). Indeed the 
 display is automatically updated for each operation. Of course, when there is
 only one (such as for convert) this is quite transparent but many functions, 
-e.g. gradient and open, are a mix of other basic functions for which there is
+e.g. gradient and opening, are a mix of other basic functions for which there is
 a display udpate for every call. Let us assure you that the delay is only a
 consequence of display updates.
 
@@ -243,7 +248,7 @@ address your mathematical morphology problems while not waiting all night long
 for your result to come out or worse not come out because you made a mistake, 
 then Mamba is meant for you. However, if you are looking for a library to perform
 image processing tasks like convolutions, contrast enhancers or likewise, you 
-had better not using it (try PIL instead). And by the way, Mamba does not make 
+had better not using it (try Pillow instead). And by the way, Mamba does not make 
 coffee (sorry about that...).
 
 To do as intended, Mamba low level library is coded in C with performance through
@@ -304,7 +309,7 @@ THE SOFTWARE. }%
 
 \warnBox{
 Please note that this license does \textbf{\textsc{not}} cover documentation and
-images found in source packages.
+images found in source packages. Some restrictions also apply to addon packages.
 }
 
 \pagebreak
@@ -320,7 +325,7 @@ are not sure, install the version of Mamba without SSE2, please note this versio
 is very slow. See \url{http://en.wikipedia.org/wiki/SSE2#CPUs_supporting_SSE2}
 for a list of compatible CPUs.
 \item Python version 2.7 or later (python 3 is supported).
-\item Python Imaging library (pillow) for your current version of Python.
+\item Python Imaging library (Pillow) for your current version of Python.
 \item Tkinter (normally comes with Python on Windows systems but you may need to
 install it on Linux systems).
 \item VTK (optional, see \url{http://www.vtk.org/} for more info) with python
@@ -342,7 +347,7 @@ optimal experience with it (see section \ref{cha:perfo3D} for more information).
 
 If you are only interested in installing and don't want to go through the bother
 of compiling it, just pick up the installer on the website. Select the appropriate
-installer corresponding to you version of python (2 or 3, 32bit or 64bit), 
+installer corresponding to your version of python (2 or 3, 32bit or 64bit), 
 launch it and follow the instructions.
 
 If you actually are interested in compiling the installers, here is the tools
@@ -365,17 +370,20 @@ in your PATH environment variable. In particular, make sure that SWIG binary
 script.
 
 Get the source code of Mamba from the website. It comes in a zip that once
-extracted will create a directory \textbf{Mamba.X.X}.
+extracted will create a directory \textbf{Mamba.X.X}. Alternatively you can
+checkout the latest version for hte subversion repository in 
+\url{https://code.google.com/p/mamba-image/source/checkout}.
 
 Launch CMake.
 
-In \textit{"where is the source code"}, select \textbf{Mamba.X.X/src} with
+In \textit{"where is the source code"}, select \textbf{path/to/Mamba.X.X/src} with
 the browse source button. Select a directory \textit{"where to build the binaries"}.
 This is an out of source build so you must create and select a different
 directory than the source. For the sake of example we will use
 \textbf{mamba\_build} in the following instructions.
 
-Press the configure button in CMake. You should something like figure \ref{fig:cmake_win}.
+Press the configure button in CMake. You should see something like
+figure \ref{fig:cmake_win}.
 
 \begin{figure}
 \centering
@@ -427,13 +435,21 @@ your computer and running the tests (see section \ref{cha:testing_mamba}).
 
 \subsection{Linux}
 
-Here are the command to type to compile and install on linux:
+As for windows, you will haev to create a directory where you will proceed with
+the compilation and installation. Open a terminal and cd your way to this 
+directory. Once there, type the following commands to compile and install on linux:
 
-\texttt{cmake -C Mamba.X.X/src}\\
+\texttt{cmake -C path/to/Mamba.X.X/src}\\
 \texttt{cmake -D CMAKE\_BUILD\_TYPE:STRING=Release -D CMAKE\_INSTALL\_PREFIX:STRING=/usr .}\\
 \texttt{cmake -G "Unix Makefiles" .}\\
 \texttt{make}\\
 \texttt{su -c "make install python\_install"}
+
+Of course you can use the CMake GUI to perform the first three operations.
+
+In particular, if you want to compile Mamba for a different version of python
+the CMake GUI will give you access to the \textbf{SELECTED\_PYTHON\_EXECUTABLE}
+variable to select the appropriate python executable.
 
 \subsection{Other platforms}
 
@@ -460,10 +476,10 @@ like to give you details regarding the way it implicitly work. This section aims
 at presenting some aspects that will always be present in Mamba but likely not 
 explained nor talked about.
 
-When we talk about an 'EMPTY' image or edge, this always means that pixels 
+When we talk about an \textit{empty} image or edge, this always means that pixels 
 (inside or outside the image) take value 0. Thus an empty
 image is an image where all the pixels are set to 0. On the opposite, the term 
-'FILLED' is always associated with the maximum possible value of a pixel (which
+\textit{filled} is always associated with the maximum possible value of a pixel (which
 depends on the image depth).
 
 All image pixels are stored with unsigned integers. This is true for binary,
@@ -475,25 +491,18 @@ is a general rule and there may be some exceptions for particular functions).
 Most of the time, images arguments are imIn when the image is an input and imOut
 when it is the output of the function. When functions require arguments other than 
 image arguments (scalar values, edge or grid settings, etc.), they are placed after 
-the image arguments.
+the image arguments. Some images are both input and output and thus are named
+imInOut.
 
 When functions accept input and output images, you can safely use the same image
 for both and you will obtain the expected result. If the function cannot 
 guarantee this, it will return an error.
 
-Regarding the Mamba3D package, it was created to be able to apply the same
-algorithms developped for 2D images using Mamba to 3D images. To achieve
-this goal, several choices
-were made:
-
-\begin{itemize}
-\item Reuse as much as possible the basic C operators from Mamba to perform
-the 3D computations to avoid rewriting them (Apart from hierarchical and
-labelling operators this was actually possible).
-\item Make sure functions and classes keep the same "look and feel" as their
-counterpart in Mamba.
-\item Provide an adapted display as there is one in Mamba.
-\end{itemize}
+Regarding the mamba3D package, evrything was created to reuse as much as
+possible the basic C operators from Mamba to perform the 3D computations so
+as to avoid rewriting them (Apart from hierarchical and labelling operators
+this was actually possible). Functions and classes are created with the same
+"look and feel" as their counterpart in 2D.
 
 These choices had consequences on the design of the package and thus on its
 capacities. Overall we believe the possible downfall of that choices are
@@ -501,21 +510,64 @@ dimmed by the gains in terms of easiness of use, reuse of proven and robust
 code and work versus objective ratio.
 
 \subsection{A word for previous versions users}
+\label{cha:change_mamba2}
 
 Version 2 of Mamba introduced a lot of changes, made for performance and
 easiness improvement, that \emph{will} break your scripts written for previous
-versions (1.x). However we believe this should not present too much challenge
-to upgrade your scripts to the newest version.
+versions (1.x). However we believe this should not present too much of a
+challenge to upgrade your scripts to the newest version.
 
-The list of changes is too big to be put here but here are the most obvious:
+The list of changes is quite long and we tried our best to not forget
+anything important:
 \begin{itemize}
-\item mamba, mambaDraw, mambaExtra modules and the mambaComposed package have
-been merged inside a single unified mamba package.
-\item the former mamba3D addon is now part of the library.
-\item the display methods names have been shortened.
-\item some basic level functions have changed (in particular the neighboring
-functions).
-\item The C low level has been extensively reworked.
+\item All the python sources (modules mamba.py, mambaDraw.py mambaExtra.py,
+mambaDisplay.py and package mambaComposed) have been regrouped inside two packages
+mamba and mambaDisplay. Functions and operators have also been reorganized
+by families inside this package mainly for documentation purposes. This makes old
+imports of mamba incompatibles. The mamba3D package, previously available as an
+addon, has been merged in the main library (both C and python code). image3DMb 
+now longer inherits from sequenceMb (other way around in Mamba 2).
+\item The source reorganisation also impacts display with the creation of
+the package mambaDisplay to contain both 2D and 3D displays. New displays were
+added. Display methods in imageMb and image3DMb have been shortened (show,
+hide, update instead of showDisplay ...). Palette and opacity methods were
+removed from these classes. The 3D displays method were also strongly
+modified by these changes.
+\item Some operators were added (div), others were augmented or modified 
+(label now support 8-bit and 32-bits images and its default behavior regarding
+label values has been changed, convert can be used with all image depth, close
+and open operators were renamed closing and opening to avoid conflict with
+python standard functions, hitOrMiss now works directly with a
+doubleStructuringElement object making binaryHMT useless, loadRaw methods were
+homogeneised for image3DMb and imageMb, copyBitPlane now support 32-bit to
+binary and reverse copies). C functions regarding neighbors (sup, inf, diff ...)
+have been modified to gain performance. The corresponding python functions are
+also impacted. Support for hierarchical algorithms (watershed and build) on
+32-bit images was added in C with removal of the specific python functions
+(namely watershedSgement32, basinSegment32, hierarBuild32 and hierarDualBuild32).
+The operators are accessible through the standard functions (watershedSgement,
+basinSegment, hierarBuild and hierarDualBuild).
+\item Mamba is now compatible with python 3. This may have impact on the
+behavior of some function (getDirections, for example, is based upon range
+which does not have the same behavior in python 3).
+\item Mamba will no longer be supported on our part for python 2.6. Mamba 2
+needs ttk (themed Tk) for its display and the module is not natively available
+in python 2.6.
+\item Mamba use Pillow instead of PIL. You may have to update to Pillow if
+you were a PIL user. Both library are normally equivalent in functionality
+except for import mechanisms.
+\item The C code is now compiled in a specific library (.dll or .so) with
+its include files available separately making it possible to build applications
+with the core functions of Mamba more easily. This has an impact on the
+compilation process which now use CMake.
+\item Mamba has support of windows 64-bit thanks to available win64 packages
+of Pillow.
+\item Vectorisation in the C code was changed (see mambaApi\_vector.h).
+\item The documentation was modified : directory containing doc in source renamed,
+better use of doxygen to generate the C API doc, merge of the 2D and 3D doc,
+separation of user manual and examples, change in the mamba style.
+\item The new version also means reorganisation of the source directory, of the
+examples, of the tests.
 \end{itemize}
 
 The result of these changes is a faster and, we hope, more user-friendly
@@ -523,13 +575,15 @@ library.
 
 \subsection{Contents of the library}
 
-The Python Mamba library is composed of three packages:
+The Python Mamba library is composed of four packages:
 \begin{itemize}
 \item mamba : which is the main package of mamba and contains all the operators
 (from the most basic to quite advanced ones) to perform mathematical morphology
 computations on 2D images.
 \item mamba3D : which contains the same operators (save some of them without
 equivalent in a three dimensional context) working on 3D images.
+\item mambaDisplay : which contains all the code related to image displays for
+both 2D and 3D.
 \item mambaShell : which is a container for functions and modules that are
 needed to create and operate an appropriate shell for Mamba. In particular, it
 contains demo presentations.
@@ -542,51 +596,40 @@ To use Mamba, simply type in your Python console:
 \lstset{language=Python}
 \begin{lstlisting}
 import mamba
+import mamba3D
 \end{lstlisting}
 
-This is the recommanded Python import method because it separates each package
-or module you may use in its own name reference space. However this is quite painful
-to work with when you are using Mamba in a console mode as all the function 
-calls have to be preceded by
+Both import will give you access to the complete library (2D and 3D respectively).
+You do not need to import mamba to use mamba3D or vice versa.
 
-\lstset{language=Python}
-\begin{lstlisting}
-mamba.
-\end{lstlisting}
-
-So to avoid this, type:
+You can also use the following syntax:
 
 \lstset{language=Python}
 \begin{lstlisting}
 from mamba import *
-\end{lstlisting}
-
-The later will give you direct access to the module functions and variables.
-
-However, please note that some function names in mamba are more likely to
-interfere badly with other Python packages, e.g. open and close functions. To 
-avoid this, while not being forced to type "mamba." before each function 
-name, the best way would be to import it via an alias to shorten its name:
-
-\lstset{language=Python}
-\begin{lstlisting}
-import mamba as mb
-\end{lstlisting}
-
-If you want to use the 3D operators, the same recommendations apply for the
-mamba3D package.
-\lstset{language=Python}
-\begin{lstlisting}
-# You can pick up any import method you like
-import mamba3D
 from mamba3D import *
-import mamba3D as mb3D
 \end{lstlisting}
+
+There is no conflict between 2D and 3D functions (usually the later have the
+same name postfixed 3D).
+
+Other imports can be useful while working with mamba:
+
+\lstset{language=Python}
+\begin{lstlisting}
+import mambaDisplay
+import mambaDisplay.extra
+\end{lstlisting}
+
+They give you access to display management functions, palette functions and
+extra displays.
 
 \subsection{Grid and Edge}
 
 Grid and edge are important notions in mathematical morphology. Let us explain
 how they are handled in Mamba. 
+
+\paragraph{Edge}
 
 The edge defines the status of all the pixels which are not in the image. Let us 
 explain what this assertion means. Obviously, any image is made of a finite set 
@@ -595,61 +638,56 @@ operations, need that the status of the neighbour points of the pixels which are
 the edge of the image be defined, otherwise it would not be possible to define the 
 transformation. This is the purpose of the edge attribute. The edge defines the 
 virtual pixels which are outside the image. The edge (remember, it is the outside 
-edge) can be set to \textbf{empty} or 
-\textbf{filled}. The \textbf{empty} edge is assuming that external world surrounding 
+edge) can be set to \textbf{EMPTY} or \textbf{FILLED}. The \textbf{EMPTY} edge
+is assuming that external world surrounding 
 the image is made of virtual pixels at value 0 (the edge is set to 0) whereas 
-the \textbf{filled} edge assumes an external world completely filled 
+the \textbf{FILLED} edge assumes an external world completely filled 
 (the edge is set to the maximum possible value of a pixel according to the image 
-depth). 
+depth). This notion applies to both 2D and 3D operators.
+
+\paragraph{Grids 2D}
 
 The grid defines the neighbourhood of each pixel in an image.
 
-There are two possible grids in Mamba: \textbf{HEXAGONAL} or \textbf{SQUARE}. The 
-\textbf{HEXAGONAL} grid defines six neighbours for each pixel as can be seen in 
-figure \ref{fig:hxgrid}. The \textbf{SQUARE} grid defines the usual eight 
-neighbours for each pixel as in figure \ref{fig:sqgrid}.
+There are two possible grids in Mamba:
+
+\begin{itemize}
+\item \textbf{HEXAGONAL}: defines six neighbours for each pixel as can be seen in 
+figure \ref{fig:hxgriddir}.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{figures/hxGrid.png}
-\caption{Hexagonal grid}
-\label{fig:hxgrid}
+\includegraphics[scale=0.3]{figures/hxGriddir.png}
+\caption{Hexagonal grid :representation and directions}
+\label{fig:hxgriddir}
 \end{figure}
+
+\item \textbf{SQUARE}:. defines the usual eight neighbours for each pixel as
+in figure \ref{fig:sqgriddir}.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.4]{figures/sqGrid.png}
-\caption{Square grid}
-\label{fig:sqgrid}
+\includegraphics[scale=0.4]{figures/sqGriddir.png}
+\caption{Square grid: representation and directions}
+\label{fig:sqgriddir}
 \end{figure}
+
+\end{itemize}
 
 As you will see later in this document, some functions need a direction or a 
 neighbor as input. Figures \ref{fig:hxgriddir} and \ref{fig:sqgriddir} give you
 the direction/neighbor encoding depending on the grid in use. The directions
 are numbered from 0 to 6 or 8.
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{figures/hxGriddir.png}
-\caption{Directions on hexagonal grid}
-\label{fig:hxgriddir}
-\end{figure}
+\paragraph{Grids 3D}
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.4]{figures/sqGriddir.png}
-\caption{Directions on square grid}
-\label{fig:sqgriddir}
-\end{figure}
-
-There are three possible grids in Mamba3D. You will
-find they work the same as in Mamba except that they are a bit more
-difficult to represent. We will try to give you an overview
+There are three possible grids in 3D. They are a bit more
+difficult to represent thus we will try to give you an overview
 of what they look like. Also they have some limitations that we think you
 should be aware of.
 
-As a foreword, we would like to explain how 3D grids are built in Mamba3D.
-Instead of Mamba, where grids where defined for low-level C operators, Mamba3D
+As a foreword, we would like to explain how 3D grids are built.
+Instead of the 2D ones which are defined for low-level C operators, 3D
 grids are very high level complex structures. They are built using 2D grids and
 a mix of programmation magic. Some operators were rewritten in low-level C
 functions working on 3D images because their 2D counterpart could not be adapted
@@ -715,6 +753,8 @@ that the triangles drawn by below directions (blue) and above directions (red)
 do not point the same way. This is very important to be able to draw a 
 cuboctahedron instead of an anti-cuboctahedron.
 
+\paragraph{More on grids}
+
 Be aware that the grid is never an image attribute, but a structuring element 
 attribute. A structuring element is always defined on a given grid. Therefore, 
 when performing a transformation with a given structuring element, the corresponding 
@@ -731,7 +771,7 @@ configuration as a parameter is given DEFAULT\_GRID(3D) by default. When an
 edge status is needed, the default value is selected depending on the operator
 in use. The edge, as the grid, is not an image attribute.
 
-There are different ways to change the grid. Firstly, you can use the setDefaultGrid 
+There are different ways to change the grid. You can use the setDefaultGrid 
 (setDefaultGrid3D for Mamba3D) function:
 
 \lstset{language=Python}
@@ -744,9 +784,9 @@ setDefaultGrid(HEXAGONAL)
 setDefaultGrid(SQUARE)
 \end{lstlisting}
 
-Secondly, you can do nothing and let some functions do the job for you!
+or you can change the grid used when calling the operator.
 
-You can get a list of all the available directions given the grid that is in use
+You can get a list of all the available directions of a grid
 by calling the function getDirections (getDirections3D for Mamba3D).
 
 \lstset{language=Python}
@@ -807,12 +847,6 @@ Note however that, in practice, the real allowed maximum size is smaller as you 
 need a fairly huge amount of memory to handle these images in Mamba. So, be sure
 that your memory space is sufficient if you intend to use big images.
 
-When loading an image from a file, please note that Mamba accepts all 
-kinds of images (actually all the PIL supported formats). You can specify
-the RGB filter that will be used to convert color image into greyscale 
-image by adding the rgbfilter=<your\_filter> to the argument of the
-constructor (see PIL documentation for examples of filters).
-
 \tipBox{
 Mamba allows you to create images with different sizes but not to perform
 computations between them. If you want to do so, you will have to use the
@@ -820,6 +854,54 @@ cropCopy() function to extract the part of the images you want to match.
 }
 
 \paragraph{Saving and loading images}
+
+Upon creation of after you created an image you can load it with the data
+contained inside a file. Loading an image, either at construction or
+with the load method, make use of the Pillow library. Any image format supported
+by this library will then be supported by Mamba.
+
+You can proceed like this
+
+\lstset{language=Python}
+\begin{lstlisting}
+# Loading the content of test.png in image im1
+im1.load('test.png')
+# Creating an image with the content of test.png loaded at start
+im2 = imageMb('test.png')
+\end{lstlisting}
+
+Loading an image after the creation will not change the size of the original 
+image to adapt it to the loaded image. The loaded image is padded/cropped to fit
+the original size. Whereas shen the image is loaded in the constructor it size
+is used as an information for the imageMb size.
+
+Pillow images came with a mode property that depends on the type of image.
+Here are the rules applied when converting from Pillow to Mamba:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+  \hline
+  Pillow mode & Mamba depth \\
+  \hline
+  "1" & 8\\
+  "L" & 8\\
+  "P" & 8\\
+  "RGB" & 8 (using rgbfilter)\\
+  "RGBA" & 8 (using rgbfilter)\\
+  "CMYK" & 8 (using rgbfilter)\\
+  "I" & 32\\ 
+  "F" & 32\\
+  \hline
+\end{tabular}
+\end{center}
+
+For RGB, RGBA and CMKY formats, you can specify the RGB filter that will be
+used to convert color image into greyscale image by adding the
+rgbfilter=<your\_filter> to the argument of the constructor (see Pillow
+documentation for examples of filters).
+
+With the load method, when the loaded Mamba image depth is not the depth
+of the destination image it is converted to the correct depth.
 
 Once you have created an image and performed some operations on it, you may want 
 to save it into a file. The imageMb class provides the method save() to do so:
@@ -830,21 +912,34 @@ to save it into a file. The imageMb class provides the method save() to do so:
 im1.save('test.png')
 \end{lstlisting}
 
-The method uses PIL functions to save the image. Thus the format (bmp, gif, 
+The method uses Pillow functions to save the image. Thus the format (bmp, gif, 
 jpeg, ...) is automatically deduced from the extension used.
 
-If you want to load an image into your imageMb object (assuming you did not make
-it at the image creation) you can use the method load() to do so:
+As for the load method, the conversion from a Mamba image to a Pillow image
+applies the following rules:
 
-\lstset{language=Python}
-\begin{lstlisting}
-# Loading the content of test.png in image im1
-im1.load('test.png')
-\end{lstlisting}
+\begin{center}
+\begin{tabular}{|c|c|}
+  \hline
+  Mamba depth & Pillow mode \\
+  \hline
+  1 & "L"\\
+  8 & "L"\\
+  32 & "I"\\
+  \hline
+\end{tabular}
+\end{center}
 
-Loading an image after the creation will not change the size of the original 
-image to adapt it to the loaded image. The loaded image is padded/cropped to fit
-the original size.
+If you want to preserve the image unmodified to reuse it later, make sure to
+select a format that supports the mode of the Pillow image (such as TIFF for
+"I" mode) and that the format does not compress data (such as BMP).
+
+You can also save your image for display purpose, in that case you can use the
+additional parameter of the save function, palette.
+
+You can also use the loadRaw and extractRaw method to load data inside your
+image or extract it and save it. See the python reference of the library for
+more infos.
 
 \paragraph{Other imageMb methods}
 
@@ -852,13 +947,9 @@ Besides creating, loading or saving your image, a range of other functionalities
 are accessible using specific methods.
 
 If you need to convert an image into another format (another depth), use the 
-convert() method. Supported conversions are binary to greyscale (1->8) or 
-greyscale to binary (8->1). A binary image is converted to a greyscale image using
-0 for false and 255 for true. A greyscale image is converted to binary using the
-following method: every pixel that is equal to 255 is set to true, otherwise 
-false. convert() takes the required depth as argument. This method is here for 
-convenient purposes, there are more elaborated ways to convert an image provided
-inside Mamba.
+convert() method. All conversions are supported. convert() takes the required
+depth as argument. This method is here for convenient purposes, there are more
+elaborated ways to convert an image provided inside Mamba.
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -891,9 +982,11 @@ There are other methods that will be explained more thoroughly in the next secti
 
 \subsection{Creating and manipulating 3D images}
 
-The basic data model used in Mamba3D is the image3DMb image class.
+\paragraph{Creating images}
 
-This class is derived from the sequenceMb class in the mambaComposed package.
+The basic data model used in Mamba3D is the image3DMb image class. This is the
+complete equivalent to the imageMb class for 3D images.
+
 You should know that this class is actually a stack of standard Mamba images
 (imageMb object) with all the same size and depth. The dimension of a 3D image
 is thus given by the size of the mamba images inside the stack and by its
@@ -928,85 +1021,51 @@ greyscale 3D image with 'width', 'height' and 'length'.
 a 3D image with the given parameters.
 \end{itemize}
 
-Refer to the Python reference manual of Mamba to get more info about the 
-sequenceMb class. Specific 3D image methods information can be found in the
-Mamba3D Python reference. In particular, image3DMb class defines a method
-to load raw 3D data.
+Mamba3D also defines an alias named sequenceMb to this class for compatibility
+purposes.
+
+\paragraph{Other methods}
+
+The image3DMb class offers the same methods as its 2D counterpart imageMb. They
+are of course adapted to the 3D images but work basically in the same way.
 
 \subsection{Pixels manipulation}
 
-The imageMb class offers three methods to set or get pixels in the image.
+The imageMb and image3DMb classes offer methods to set or get pixels
+in the image.
 
 \lstset{language=Python}
 \begin{lstlisting}
 # Setting the pixel at x,y in im2 to value
 position = (x,y)
 im2.setPixel(value, position)
-# Same as previously but this method will not update the screen
+# Same as previously but this method will not update the screen (not available
+# in 3D)
 im2.fastSetPixel(value, position)
 # Getting the pixel value at position
 value = im2.getPixel(position)
 \end{lstlisting}
 
-\subsection{Color palette}
-
-Color palette defines the way a grey pixel will be converted to color. It 
-associates for each possible value (0-255) a tuple of values describing the red, 
-green and blue components (R, G, B) of the wanted color. The final palette is 
-built by concatenating all these tuples into a single one.
-
-Mamba comes with three predefined palettes:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# The rainbow colors (0 equals black)
-rainbow
-
-#The inverted rainbow colors (0 equals white)
-inverted_rainbow
-
-#The patchwork colors (0 equals black), used mainly to
-#better visualise mosaic images
-patchwork
-\end{lstlisting}
-
-You can see the results of using these palettes in figure \ref{fig:palette}.
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.3]{images/test_ramp.png}
-\includegraphics[scale=0.3]{images/test_ramp_r.png}
-\includegraphics[scale=0.3]{images/test_ramp_ir.png}
-\includegraphics[scale=0.3]{images/test_ramp_p.png}
-\caption{Effects of the rainbow, inverted rainbow and patchwork palettes on the first 
-image}
-\label{fig:palette}
-\end{figure}
-
-To apply or disable a palette to your image, use the following methods:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Indicates that im1 will use palette as a color conversion
-# table for display 
-im1.setPalette(palette)
-
-# Reset any palette conversion (the image will return to greyscale display)
-im1.resetPalette()
-\end{lstlisting}
-
-When you apply a palette to an image, it will affect its display and the image 
-stored by saving. The computations are not impacted. Be also aware that, if you 
-save your image in color, you may have different values when reopening it with 
-Mamba as the color to grey scale converter is not using your palette.
-
-\subsection{Displaying 2D images}
+\subsection{Displaying images}
 \label{cha:disp_im}
 
 When trying new algorithms, it can be very useful to be able to follow the 
 evolution of your images without having to save the image at each step. Mamba
-provides a graphical interface, see figure \ref{fig:win}, which can display 
-every required image into its own display window.
+provides a graphical interface which can display every required image into
+its own display window.
+
+\textbf{Important notice}: We saw previously that two grid definitions were 
+available in Mamba: hexagonal or square grids. However, any image will always be 
+displayed on a square grid, even if this image has been obtained with an operator 
+defined on the hexagonal grid! Remember: the grid is an operator attribute, not an 
+image attribute. This may lead to some strange phenomenons if you are displaying 
+small hexagons for instance. They seem to be distorted and in fact they are. However, 
+be sure that it's only a display artefact: the operator is really applied on an hexagonal 
+grid (as you may ascertain this by displaying larger hexagons).
+
+\subsubsection{Basic display methods}
+
+The methods describes in this section are found in imageMb and image3DMb.
 
 To activate a display, type:
 
@@ -1016,49 +1075,16 @@ To activate a display, type:
 im.show()
 \end{lstlisting}
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{images/mamba_win.png}
-\caption{Image displayer window}
-\label{fig:win}
-\end{figure}
+After this call, for 2D image (i.e. imageMb class) every modification on the
+image will be shown inside the opened window. This operation is known to be
+very demanding on performance. For 3D image the display is not updated
+automatically for this reason. You can update the display with the method:
 
-Every modification on this image will then be shown inside the opened window.
-This operation is known to be very demanding on performance. The display also
-gives information regarding the image volume, the position of the mouse inside
-the image (and the pixel value associated).
-
-There are numerous possibilities to control the display, here is the list of
-keys and controls available inside the display:
-
-\begin{itemize}
-\item \textbf{P}: will dynamically (de)activate the color palette (provided you
-attach one to your image using the setPalette() method).
-\item \textbf{<Control-V>}: will copy any image stored inside the clipboard 
-in your image (only works on Windows platforms).
-\item \textbf{<Control-F>}: will freeze/unfreeze the display. See freeze() 
-method below.
-\item \textbf{<Control-R>}: will reset the display to its original size and 
-zoom value.
-\item When zoom value allows it, you can grab the image using your mouse by
-holding the left button down and moving it.
-\end{itemize}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{images/mamba_menu.png}
-\caption{Contextual menu}
-\label{fig:menu}
-\end{figure}
-
-A contextual menu is also available by right-clicking in the display. It offers
-services like saving, opening, etc. Figure \ref{fig:menu} shows an example of 
-contextual menu. The first three choices are obvious. Then, you can choose a zoom
-value between 100\% or 200\%. Interpolation is the way image will be processed
-before being displayed when zoom value is different than 100\%. The choice
-may affect the speed of display (for more information regarding the interpolation
-methods, refer to PIL documentation). The last menu item indicates the size of
-the image.
+\lstset{language=Python}
+\begin{lstlisting}
+# Update the image display
+im.update()
+\end{lstlisting}
 
 If you want to disable the display you have two options, either close the window
 by clicking the appropriate button or type:
@@ -1087,6 +1113,243 @@ im.freeze()
 im.unfreeze()
 \end{lstlisting}
 
+Of course all the displays come with integrated controls, we describe them in
+\ref{cha:dis_shortcuts}.
+
+\subsubsection{2D display}
+
+The 2D display, see figure \ref{fig:dis2D}, is a standard window with the image
+in the center. It also gives information regarding the image volume, the position of
+the mouse inside the image (and the pixel value associated).
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/mamba_win.png}
+\caption{2D display}
+\label{fig:dis2D}
+\end{figure}
+
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/mamba_menu.png}
+\caption{Contextual menu}
+\label{fig:dis2D_menu}
+\end{figure}
+
+A contextual menu is also available by right-clicking in the display. It offers
+services like saving, opening, etc. Figure \ref{fig:dis2D_menu} shows an example of 
+contextual menu. The first three choices are obvious. Then, you can choose a zoom
+value between 100\% or 200\%. The last menu item indicates the size of
+the image.
+
+\subsubsection{3D display}
+
+The 3D display is composed of three different approch to display 3D images:
+Volume rendering, projection and player. When you activate the 3D display,
+you can dynamically switch between the three as you see fit.
+
+\tipBox{
+The foot data used for the display demo in this section can be found at
+\url{http://tc18.liris.cnrs.fr/code_data_set/3D_images.html}
+}
+
+\paragraph{Projection display}
+
+This display, see figure \ref{fig:dis3D_proj}, is basically an adaptation of
+the 2D display. It is a basic plane projection along the three axis.
+You can select this display by pressing key F1 on your keyboard.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/dis3D_proj.png}
+\caption{3D display: projection}
+\label{fig:dis3D_proj}
+\end{figure}
+
+You can navigate through planes moving your mouse while holding <ctrl> down.
+The mouse motion will allow you to change the plane following it (the displayer
+shows a red cross to indicate where you are in the image data).
+
+This is a more appropriate display if you need precision and careful
+analysis of a result. However it only shows a limited amount of the
+image at any given time.
+
+\paragraph{Volume rendering display}
+
+This display, see figure \ref{fig:dis3D_volren} is ensured through the VTK
+library and thus is only available if you have this library installed with
+the python bindings.
+You can select this display by pressing key F2 on your keyboard.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/dis3D_volren.png}
+\caption{3D display: volume rendering}
+\label{fig:dis3D_volren}
+\end{figure}
+
+The image is displayed inside its bounding cube and you can control its rotation
+and zoom with your mouse.
+
+This display comes with an integrated controller which allows you to change
+the various options of display available. As shown in figure \ref{fig:dis3D_volren_ctrl},
+you can change the opacity, the background color and the rendering methods.
+
+The transparency/opacity of a pixel depends on its value. By clicking on the 
+transparency bar, every pixel with value below will be transparent and above
+pixels will be opaque.
+
+To change the background, just click on the background bar. It will open a
+color chooser dialog box in which you can pick up any background color you
+might want.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/dis3D_volren_ctrl.png}
+\caption{3D display: volume rendering controls}
+\label{fig:dis3D_volren_ctrl}
+\end{figure}
+
+three distinctive methods to perform volume rendering can be selected :
+\begin{itemize}
+\item \textbf{Composite} : the result is a blend of all the pixels crossed by
+the ray of light accordingly to their color and transparency.
+\item \textbf{Isosurface} : the result shows only pixels with a given
+value. It also use shading to allow a better visualisation of the volume.
+\item \textbf{Maximum Intensity Pixel (MIP)} : the result is the color and
+transparency of the pixel with the highest value that the light ray hit.
+\end{itemize}
+You can see the results of the 3 different methods in figure 
+\ref{fig:dis3D_method}.
+
+\begin{figure}
+\centering
+\begin{tabular}{ccc}
+\includegraphics[width=0.25\textwidth]{images/dis3D_volren_compo.png} & 
+\includegraphics[width=0.25\textwidth]{images/dis3D_volren_iso.png} &
+\includegraphics[width=0.25\textwidth]{images/dis3D_volren_mip.png} \\ 
+Composite &
+Isosurface &
+MIP \\ 
+\end{tabular}
+\caption{3D display: volume rendering methods}
+\label{fig:dis3D_volren_method}
+\end{figure}
+
+You can rotate (holding your mouse left button while moving it), zoom in and
+out (same movement while holding the right button) and displace the image
+(this time by holding both the left button and the shift key on your keyboard
+while moving the mouse). This allows you to view more precisely any area of
+your image. You can restore the initial settings by pressing r (Although this
+does not seem to affect rotation).
+
+We feel this display is appropriate to get an overall idea of your
+result. However, it may lack precision and it could be troublesome to
+understand what or where you are looking at. Use it cautiously.
+
+\paragraph{Player display}
+
+This display, see figure \ref{fig:dis3D_play}, will display the 3D image
+as a sequence of 2D images that can be played as a movie.
+You can select this display by pressing key F3 on your keyboard.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{images/dis3D_player.png}
+\caption{3D display: player}
+\label{fig:dis3D_play}
+\end{figure}
+
+The button allows you to play/stop or go to previous or next image in the
+sequence. You can select the speed at which images are displayed.
+
+\paragraph{3D displays particularities}
+As you will see, unlike 2D images displays that are updated as the computations
+progress, 3D images displays are not (for performance reasons). You will have
+to update them manually by either hitting key <F5> on your keyboard (with
+the focus on the display you want to update) or call the update method.
+
+We tried to provide Mamba3D with a coherent, useful and appropriate display.
+However, contrary to 2D images, 3D images are difficult to represent on a 2D
+display. Be sure to correctly configure the display before analysing results.
+
+Lastly, as 3D images in Mamba3D are stacks of 2D images (imageMb objects) you 
+always have the possibility to activate their own display at all time.
+
+\lstset{language=Python}
+\begin{lstlisting}
+# Activates the display for slice number 128 of 3D image
+im3D[128].show()
+\end{lstlisting}
+
+\subsubsection{Display shortcuts}
+\label{cha:dis_shortcuts}
+
+There are numerous possibilities to control displays, here is a list of
+keyboard shortcut available in the various displays:
+
+\begin{itemize}
+\item \textbf{P}: will circle through all the available palettes.
+\item \textbf{Z} and \textbf{A}: will zoom in/out in 2D displays (basic, 
+projection, player ...)
+\item \textbf{B} and \textbf{N}: With 32-bit images, these keys will allow you
+to move through byte planes or to show the complete image downscaled.
+\item \textbf{Control-F}: will freeze/unfreeze the display. See the freeze() 
+method.
+\item \textbf{Control-R}: will reset the display to its original size and
+zoom value.
+\item \textbf{Control-V}: will copy any image stored inside the clipboard 
+in your image (only works on 2D images on Windows platforms).
+\item \textbf{F1}: on a 3D image display, will switch to mode PROJECTION.
+\item \textbf{F2}: on a 3D image display, will switch to mode VOLUME
+RENDERING if you have VTK python bindings available on your computer.
+\item \textbf{F3}: on a 3D image display, will switch to mode PLAYER.
+\item \textbf{F5}: on a 3D image display, will update the display with
+the image content. Similar to the method update.
+\item \textbf{Space} : will start/stop the player in the 3D image display
+PLAYER mode.
+\item \textbf{Page-Up} : will display the next image in the sequence in the
+3D image display PLAYER mode.
+\item \textbf{Page-Down} : will display the previous image in the sequence
+in the 3D image display PLAYER mode.
+\end{itemize}
+
+You can also use your mouse:
+
+\begin{itemize}
+\item \textbf{scrolling} : will zoom in/out in 2D displays (basic, 
+projection, player ...)
+\item \textbf{motion+Control} : will allow to move through the image
+in the 3D image display PROJECTION mode.
+\end{itemize}
+
+\subsubsection{Palettes and other display functions}
+
+As you have seen you can activate palette through shortcut P when displaying
+images. Mamba comes with four preintegrated palette : "rainbow", "inverted rainbow",
+"patchwork" and "heat view".
+
+You can create your own palette using the functions offered in package
+mambaDisplay.
+
+\lstset{language=Python}
+\begin{lstlisting}
+import mambaDisplay
+
+# Creates a palette to emphase one specific pixel value
+# Here the 255 valued pixel will be seen in red.
+mambaDisplay.tagOneColorPalette(255, (255,0,0))
+# Once created the palette is available through the P shortcut
+# under the name 'tag 255 (255,0,0)'
+
+# You can also add your own palette
+mambaDisplay.addPalette("my own palette", my_own_palette)
+# where my_own_palette is a tuple containing 256*3 value (r0,g0,b0,r1,g1,b1 ...)
+\end{lstlisting}
+
+Palette can also be used with the save method to colorize the saved image.
+
 Sometimes, you will have lots of images opened and displayed making it quite
 messy on your desktop and thus very difficult to read and analyze. There are a
 bunch of methods and functions to help you organise your displays.
@@ -1103,11 +1366,11 @@ im.setName('result')
 When the screen gets filled with lots of displays it can be excruciatingly
 boring and slow to order all of them so that they don't overlap. To make sure 
 displays are properly and automatically organised you can call the following 
-function:
+function in the mambaDisplay package:
 
 \lstset{language=Python}
 \begin{lstlisting}
-tidyDisplays()
+mambaDisplay.tidyDisplays()
 \end{lstlisting}
 
 The function does not do miracles (like increasing your screen resolution) so
@@ -1115,9 +1378,9 @@ don't have too much expectations.
 
 Large and small images are not displayed at their original size but they are
 zoomed in (if they are too small) or zoomed out (if they are too large). By
-default, images larger than 400 in width or height are zoomed out by a factor 2
+default, images larger than 512 in width or height are zoomed out by a factor 2
 until the size of the zoomed out displayed image is below this maximum value.
-In the same way, an image smaller than 200 will be zoomed in (x2) until
+In the same way, an image smaller than 256 will be zoomed in (x2) until
 the displayed image is larger than this minimum. For instance, a 1024x1024 image
 will be displayed after a zoom-out equal to 25\% whereas a 200\% zoom-in will be
 applied on a 128x128 image.
@@ -1127,13 +1390,13 @@ functions:
 
 \lstset{language=Python}
 \begin{lstlisting}
-setMaxDisplay(size)
-setMinDisplay(size)
+mambaDisplay.setMaxDisplay(size)
+mambaDisplay.setMinDisplay(size)
 \end{lstlisting}
 
 where size is a tuple containing the upper (in setMaxDisplay) or lower (in
 setMinDisplay) limits of the width and height of the display.
-These functions belong to the mambaDisplay module. It is wise to use them at
+These functions belong to the mambaDisplay package. It is wise to use them at
 start before displaying any image. Under Windows, these functions could be put
 in the \_init\_.py file of the Mamba shell (see section \ref{cha:mamba_shell}).
 
@@ -1144,197 +1407,17 @@ import mambaDisplay
 mambaDisplay.setMaxDisplay((800,800))
 \end{lstlisting}
 
-\textbf{Important notice}: We saw previously that two grid definitions were 
-available in Mamba: hexagonal or square grids. However, any image will always be 
-displayed on a square grid, even if this image has been obtained with an operator 
-defined on the hexagonal grid! Remember: the grid is an operator attribute, not an 
-image attribute. This may lead to some strange phenomenons if you are displaying 
-small hexagons for instance. They seem to be distorted and in fact they are. However, 
-be sure that it's only a display artefact: the operator is really applied on an hexagonal 
-grid (as you may ascertain this by displaying larger hexagons).
+\subsubsection{Extra displays}
 
+A specific module has been created to offer some extra display methods.
 
-\subsection{Displaying 3D images}
-\label{cha:disp_im3D}
+The module mambaDisplay.extra offers functions to display, interact and generally 
+perform operations that need the constant intervention of the programmer. For
+example, this module provides an interface to allow dynamic threshold of a given
+image (threshold value can then be modified on the fly by the user).
 
-As for basic Mamba images, 3D images can be displayed each individually with
-their own window, see figure \ref{fig:dis3D_base}. Mamba3D offers by default
-two possibilities to display 3D images and enables you to define your own
-display. Mamba3D allows you to active multiple displays for one image.
-
-\tipBox{
-The foot data used for the display demo in this section can be found at
-\url{http://tc18.liris.cnrs.fr/code_data_set/3D_images.html}
-}
-
-\subsubsection{Volume rendering display}
-This display is ensured through the VTK library. This is the default display
-if you have VTK (with Python bindings) installed on your computer.
-
-To activate the volume display, type:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Shows the 3D image in its own window
-im3D.show()
-# The previous call worked because VTK is the default display method
-# you can explicitly ask for it
-im3D.show("VTK")
-\end{lstlisting}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{images/display_base.png}
-\caption{Image volume displayer window}
-\label{fig:dis3D_base}
-\end{figure}
-
-The image is displayed inside its bounding cube and you can control its rotation
-and zoom with your mouse.
-
-The display comes with an integrated controller which allows you to change
-the various options of display available. As shown in figure \ref{fig:dis3D_ctrl},
-you can change the opacity, the background color and the rendering methods.
-
-The transparency/opacity of a pixel depends on its value. By clicking on the 
-transparency bar, every pixel with value below will be transparent and above
-pixels will be opaque. You can also change the opacity by calling the 
-appropriate method:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Sets the opacity in reverse of default opacity (but let value 0 stay 
-# fully transparent)
-l = range(255,-1,-1)
-l[0] = 0
-im3D.setOpacity(l)
-
-# Resetting the opacity to its default value
-im3D.resetOpacity().
-\end{lstlisting}
-
-The color transfer function works the same as for the mamba images. In fact, you
-must call the same method with the same kind of parameters.
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Indicates that im3D will use palette as a color transfer function
-im3D.setPalette(palette)
-
-# Resets any palette conversion (the image will return to greyscale display)
-im3D.resetPalette()
-\end{lstlisting}
-
-To change the background, just click on the background bar. It will open a
-color chooser dialog box in which you can pick up any background color you
-might want.
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{images/display_ctrl.png}
-\caption{Volume display controls}
-\label{fig:dis3D_ctrl}
-\end{figure}
-
-Mamba 3D uses volume rendering techniques to display the data. VTK provides
-three distinctive methods to perform volume rendering :
-\begin{itemize}
-\item \textbf{Composite} : the result is a blend of all the pixels crossed by
-the ray of light accordingly to their color and transparency.
-\item \textbf{Isosurface} : the result shows only pixels with a given
-value. It also use shading to allow a better visualisation of the volume.
-\item \textbf{Maximum Intensity Pixel (MIP)} : the result is the color and
-transparency of the pixel with the highest value that the light ray hit.
-\end{itemize}
-You can see the results of the 3 different methods in figure 
-\ref{fig:dis3D_method}.
-
-\begin{figure}
-\centering
-\begin{tabular}{ccc}
-\includegraphics[width=0.25\textwidth]{images/display_compo.png} & 
-\includegraphics[width=0.25\textwidth]{images/display_isosurface.png} &
-\includegraphics[width=0.25\textwidth]{images/display_mip.png} \\ 
-Composite &
-Isosurface &
-MIP \\ 
-\end{tabular}
-\caption{Volume rendering techniques}
-\label{fig:dis3D_method}
-\end{figure}
-
-You can rotate (holding your mouse left button while moving it), zoom in and
-out (same movement while holding the right button) and displace the image
-(this time by holding both the left button and the shift key on your keyboard
-while moving the mouse). This allows you to view more precisely any area of
-your image. You can restore the initial settings by pressing r (Although this
-does not seem to affect rotation).
-
-We feel this display is appropriate to get an overall idea of your
-result. However, it may lack precision and it could be troublesome to
-understand what or where you are looking at. Use it cautiously.
-
-\subsubsection{Projection display}
-This display is basically an adaptation of the 2D display available in Mamba.
-It is a basic plane projection along the three axis.
-
-To activate the volume display, type:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Shows the 3D image in its own window using projection along axis
-# Note that if you have opened a VTK display this new one will not
-# replace it (you will now have 2 displays available).
-im3D.show("PROJECTION")
-\end{lstlisting}
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.5]{images/display_proj.png}
-\caption{Image projection displayer window}
-\label{fig:dis3D_proj}
-\end{figure}
-
-You can navigate through planes moving your mouse while holding <ctrl> down.
-The mouse motion will allow you to change the plane following it (the displayer
-shows a red cross to indicate where you are in the image data).
-
-This display does not support opacity tuning. However you can use a color
-palette (same procedure that for VTK display).
-
-This is a more appropriate display if you need precision and careful
-analysis of a result. However it only shows a limited amount of the
-image at any given time.
-
-\subsubsection{3D displays particularities}
-As you will see, unlike 2D images displays that are updated as the computations
-progress, 3D images displays are not (for performance reasons). You will have
-to update them manually by either hitting key <F5> on your keyboard (with
-the focus on the display you want to update) or call the appropriate method
-when you need an update:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Updates the display
-im3D.update()
-\end{lstlisting}
-
-We tried to provide Mamba3D with a coherent, useful and appropriate display.
-However, contrary to 2D images, 3D images are difficult to represent on a 2D
-display. Be sure to correctly configure the display before analysing results.
-We do not believe Mamba3D display will fit all situations and you are
-encouraged to look at other possible ways to display your data if you
-think the one in Mamba3D in not good for you (refer to section \ref{cha:create_own_disp}
-to get an idea of how to create your own display and use it).
-
-Lastly, as 3D images in Mamba3D are stacks of 2D images (imageMb objects) you 
-always have the possibility to activate their own display at all time.
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Activates the display for slice number 128 of 3D image
-im3D[128].show()
-\end{lstlisting}
+This module is not automatically imported and needed to be imported manually if
+you want to use it.
 
 \subsection{Structuring elements}
 
@@ -1365,10 +1448,10 @@ inside your structuring element. Refer to figures \ref{fig:hxgriddir} and
 \lstset{language=Python}
 \begin{lstlisting}
 # Creating a reverse triangle
-reverse_triangle = mambaComposed.structuringElement([0,1,6], mamba.HEXAGONAL)
+reverse_triangle = structuringElement([0,1,6], HEXAGONAL)
 
 # performing an erosion with the created structuring element
-mambaComposed.erode(imIn, imOut, 1, se=reverse_triangle)
+erode(imIn, imOut, 1, se=reverse_triangle)
 \end{lstlisting}
 
 \warnBox{
@@ -1411,19 +1494,6 @@ tetrahedron = structuringElement3D([0,1,2,11], FACE_CENTER_CUBIC)
 pyramid2 = structuringElement3D([0,9,10,11,12], CENTER_CUBIC)
 tetrahedron2 = structuringElement3D([0,7,8,9], FACE_CENTER_CUBIC)
 \end{lstlisting}
-
-\subsection{Extra displays}
-\label{cha:extra}
-
-A specific module has been created to offer some extra display methods.
-
-The module mamba.extra offers functions to display, interact and generally 
-perform operations that need the constant intervention of the programmer. For
-example, this module provides an interface to allow dynamic threshold of a given
-image (threshold value can then be modified on the fly by the user).
-
-This module is not automatically imported and needed to be imported manually if
-you want to use it.
 
 \subsection{Mamba Shell}
 \label{cha:mamba_shell}
@@ -1468,20 +1538,19 @@ perform any task. However, sometimes other constraints (like readability and
 simplicity) gets in the way of the fastest implementation.
 
 For example, consider the opening by build of an image. The openByBuild function
-found in the mambaComposed package is appropriate to perform this operation and
+found in the mamba package is appropriate to perform this operation and
 is as fast as possible if it has to work with all image depths indiscriminately.
-This operator uses the build function (in mambaComposed) which works with any image
-depth. However, there exists (im mamba.py package) a faster reconstruction operator,
-hierarBuild, which works only with 8-bit images. Therefore, If you know that you are
+This operator uses the build function which works with any image
+depth. However, there exists a faster reconstruction operator,
+hierarBuild, which works with 8-bit images. Therefore, If you know that you are
 only using greyscale images, it might be a good idea to create your own openByBuild
 function like this:
 
 \lstset{language=Python}
 \begin{lstlisting}
-import mambaComposed as mC
 import mamba
 
-def openByBuild_greyscale(imIn, imOut, n=1, se=mC.DEFAULT_SE):
+def openByBuild_greyscale(imIn, imOut, n=1, se=mamba.DEFAULT_SE):
     """
     Performs an opening by reconstruction operation on image 'imIn' and puts the
     result in 'imOut'. 'n' controls the size of the opening.
@@ -1492,7 +1561,7 @@ def openByBuild_greyscale(imIn, imOut, n=1, se=mC.DEFAULT_SE):
     
     imWrk = mamba.imageMb(imIn)
     mamba.copy(imIn, imWrk)
-    mC.erode(imIn, imOut, n, se=se)
+    mamba.erode(imIn, imOut, n, se=se)
     mamba.hierarBuild(imWrk, imOut, grid=se.getGrid())
 \end{lstlisting}
 
@@ -1577,8 +1646,8 @@ data of all kinds. Mamba3D uses the volume rendering techniques based on
 \textbf{CPU computation and not GPU} implemented into VTK. Of course, they
 are slower than the ones using the GPU but they do not require a modern
 graphic card. Feel free to modify the source code of Mamba3D to use the
-GPU volume rendering methods. The projection display is less greedy but it
-is still more CPU consuming than a simple 2D display.
+GPU volume rendering methods. Other displays are less greedy but they
+are still more CPU consuming than a simple 2D display.
 
 \tipBox{
 On a side note, it should be mentioned that VTK is faster when compiled in
@@ -1601,11 +1670,11 @@ and thickenings in particular), it is unlikely that they will be translated, as
 this would be a really difficult challenge.
 
 \begin{itemize}
-\item Most of the operators in mambaComposed module thinthick.
-\item All the operators in mambaComposed module largeErodil.
-\item All the operators in mambaComposed module residues.
-\item All the operators in mambaComposed module hierarchies.
-\item All the operators in mambaComposed module measure.
+\item Most of the operators in mamba module thinthick.
+\item All the operators in mamba module largeErodil.
+\item All the operators in mamba module residues.
+\item All the operators in mamba module hierarchies.
+\item Some of the operators in mamba module measure.
 \end{itemize}
 
 Some operators do not work in Mamba3D exactly as in Mamba.
@@ -1671,7 +1740,7 @@ but that you will have to deal with in the meantime.
 Whatever image you load, it will always be assumed that it is a greyscale image.
 By default, Mamba uses the ITU-R 601-2 luma transform to convert color images 
 into greyscale images. You can of course specify your own transformation matrix 
-(refer to the Python and PIL reference documentations).
+(refer to the Python and Pillow reference documentations).
 
 Mamba is known to have some troubles with IDLE. Mamba uses
 Tkinter for image display and this may produce interferences with IDLE. The
@@ -1721,7 +1790,7 @@ and add-ons documentation. Here is a list of these documents and what
 information you can find in them:
 
 \begin{itemize}
-\item \textbf{\textsc{mambaApi Reference Manual}}: This document refers to the
+\item \textbf{\textsc{mamba C API Reference Manual}}: This document refers to the
 low-level C API. It is generated using sources code and Doxygen. If you intend 
 to modify the C functions, this document may be useful to you. It gives some
 explanations regarding the image data structure used inside Mamba. Have also
@@ -1731,7 +1800,7 @@ architecture.
 start using Mamba, you will need to keep this document close to you. All the
 Python functions present in Mamba are explained in this document. It gives
 information on how to use them, what sort of result to expect and so on... 
-\item \textbf{\textsc{Python API quick reference}}: This document is the very
+\item \textbf{\textsc{Mamba API quick reference}}: This document is the very
 compacted version of the previous one. All the functions listed on the shortest
 possible number of pages plus some of the more useful pieces of information you
 might need. This quick reference is meant to help you quickly remember function
@@ -1743,6 +1812,8 @@ functions and operators in Mamba. It indicates also some good practices that
 should avoid problems in your daily use of Mamba. Obviously, these rules are not
 compulsory. However, we strongly advise you to follow them if you intend to share
 your operators and functions with others.
+\item \textbf{\textsc{Mamba Image Examples}}: This document describes various
+examples regarding how to use Mamba and the kind of result you can expect.
 \end{itemize}
 
 \pagebreak
@@ -1821,7 +1892,7 @@ Available at \url{http://en.wikipedia.org/wiki/Connected\_Component\_Labeling}, 
 \end{enumerate}
 
 The code source implementing this algorithm can be found in the C core library
-in file \textbf{MB\_Labelb.c}
+in file \textbf{MB\_Label.c}
 
 \subsection{Large erosions and dilations}
 \label{cha:opt_ero_dil}
@@ -1840,7 +1911,7 @@ Available at \url{http://cmm.ensmp.fr/\~beucher/Mamba\_documentation.html}, 2010
 dilations faster than with the standard method by repeating over a simple
 operator. These algorithms are implemented in the large erosion and dilation
 functions in Mamba. You can found them in module \textbf{erodilLarge.py} of
-the mambaComposed package.
+the mamba package.
 
 \subsection{Hierarchical segmentations}
 \label{cha:hierar_seg}
@@ -1860,7 +1931,7 @@ Available at \url{http://cmm.ensmp.fr/~beucher/publi.html}, 2012
 \end{enumerate}
 
 \ref{art:marcotegui_beucher} and \ref{art:beucher3} describe algorithms
-implemented in module \textbf{hierarchies.py} of the mambaComposed package.
+implemented in module \textbf{hierarchies.py} of the mamba package.
 
 \pagebreak
 
@@ -1899,12 +1970,13 @@ The Python code is split into various packages. The mamba package is the
 main package. It implements the imageMb class that is the
 central data structure of the library. This class is an extended, more Python
 friendly, version of the data structure used to represent image data inside the
-C core library. The mamba module also wraps the core functions to simplify them
-and make them compatible with the imageMb class.
+C core library. It also wraps the core functions to simplify them
+and make them compatible with the imageMb class. The mamba3D package is the
+equivalent of the mamba package for 3D images.
 
 Because the C core library does not offer functions to read image files, Mamba
-relies on the Python Imaging Library (PIL) to do so. An internal module is used
-to create an interface to PIL that makes sure images are properly loaded and
+relies on the Python Imaging Library (Pillow) to do so. An internal module is used
+to create an interface to Pillow that makes sure images are properly loaded and
 converted to a format that is compatible with Mamba internal data representation.
 
 The display capability is implemented by an internal module which relies on
@@ -1912,14 +1984,14 @@ Tkinter for windows and widgets creation.
 
 This architecture is described in figure \ref{fig:archi_lay}.
 
-\subsection{Creating your own display}
+\subsection{Creating your own displayer}
 \label{cha:create_own_disp}
 
 If your intent is to create your own display for Mamba image, you can create
 a "displayer" class inheriting from the mambaDisplayer class described in the
-mambaDisplay module. This class is actually an abstract class (or as close
-as an abstract class that is allowed by Python). The mambaDisplay module
-actually implements one child class of the mambaDisplayer called \_MbDisplayer.
+mambaDisplay package. This class is actually an abstract class (or as close
+as an abstract class that is allowed by Python). The mambaDisplay package
+actually implements one child class of the mambaDisplayer called DftDisplayer.
 Creating your own display will then look like this:
 
 \lstset{language=Python}
@@ -1933,41 +2005,12 @@ class YourOwnDisplayer(mambaDisplay.mambaDisplayer):
 # Creating an instance of your displayer
 your_displayer = YourOwnDisplayer()
 
-# Creating an image using your own display rather than the default one
-im = imageMb(displayer=your_displayer)
-
-# Or alternatively you could override the getDisplayer function of the 
-# mambaDisplay module so that every created image will then use your display
-# without having to precise it
-def getDisplayer():
-    global your_displayer
-    return your_displayer
+# Setting up your displayer as the default
+mambaDisplay.setDisplayer(your_displayer)
 \end{lstlisting}
 
 A "displayer" must implement various functionnalities to work correctly. The 
 best way to create your own is to have a look at the default one in mambaDisplay.
-
-You can also create your own display for 3D images and make image3DMb objects
-use it.
-
-To create your own 3D display, use the image3DDisplay class as a reference. Your
-display will have to offer the methods it describes to work with Mamba3D
-images. This class can be found in module display3D of the mamba3D package.
-
-Once you have created your display, you can make image3DMb use it by calling the
-constructor with an extra argument:
-
-\lstset{language=Python}
-\begin{lstlisting}
-# Registering your display at image creation
-im3D = image3DMb(displayer=yourDisplayClass)
-
-# Now when you call the showDisplay method, it is your display which is 
-# created by default (if no other display was created before).
-im3D.show()
-# You can force the creation of your display like this.
-im3D.show("USR")
-\end{lstlisting}
 
 \subsection{Vectorization}
 \label{cha:vectorization}
