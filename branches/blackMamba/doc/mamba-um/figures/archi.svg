@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="42cm" height="16cm" viewBox="-143 98 825 303" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="400" y1="180" x2="169.736" y2="180"/>
+    <polygon style="fill: #000000" points="162.236,180 172.236,175 169.736,180 172.236,185 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="162.236,180 172.236,175 169.736,180 172.236,185 "/>
+  </g>
+  <g>
+    <rect style="fill: #bfbfbf" x="200" y="220" width="360" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="220" width="360" height="40"/>
+  </g>
+  <g>
+    <rect style="fill: #ffff00" x="200" y="300" width="360" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="300" width="360" height="100"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="380" y="346.233">
+    <tspan x="380" y="346.233">C core library</tspan>
+    <tspan x="380" y="363.167">mamba.dll/libmamba.so </tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffff00" x="200" y="280" width="360" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="280" width="360" height="20"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="380" y="294.7">
+    <tspan x="380" y="294.7">Mamba C API</tspan>
+  </text>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="380" y="236.233">
+    <tspan x="380" y="236.233">SWIG Generated C/Python interface</tspan>
+    <tspan x="380" y="253.167">mambaCore</tspan>
+  </text>
+  <g>
+    <rect style="fill: #1e90ff" x="200" y="100" width="160" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="200" y="100" width="160" height="100"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="280" y="154.7">
+    <tspan x="280" y="154.7">mamba</tspan>
+  </text>
+  <g>
+    <rect style="fill: #1e90ff" x="400" y="100" width="160" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="400" y="100" width="160" height="100"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="480" y="154.7">
+    <tspan x="480" y="154.7">mamba3D</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="380" y1="260" x2="380" y2="270.264"/>
+    <polygon style="fill: #000000" points="380,277.764 375,267.764 380,270.264 385,267.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="380,277.764 375,267.764 380,270.264 385,267.764 "/>
+  </g>
+  <text font-size="22.5778" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="580" y="234.65">
+    <tspan x="580" y="234.65">PYTHON</tspan>
+  </text>
+  <text font-size="22.5778" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="580" y="261">
+    <tspan x="580" y="261">C</tspan>
+  </text>
+  <line style="fill: none; fill-opacity:0; stroke-width: 4; stroke-dasharray: 20; stroke: #ff0000" x1="-140" y1="240" x2="680" y2="240"/>
+  <g>
+    <rect style="fill: #a6d3ff" x="-80" y="100" width="100" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-80" y="100" width="100" height="40"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-30" y="124.7">
+    <tspan x="-30" y="124.7">PIL</tspan>
+  </text>
+  <g>
+    <rect style="fill: #a6d3ff" x="-80" y="160" width="100" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-80" y="160" width="100" height="40"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="-30" y="184.7">
+    <tspan x="-30" y="184.7">tkInter</tspan>
+  </text>
+  <g>
+    <rect style="fill: #1e90ff" x="-110" y="270" width="20" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-110" y="270" width="20" height="20"/>
+  </g>
+  <g>
+    <rect style="fill: #bfbfbf" x="-110" y="310" width="20" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-110" y="310" width="20" height="20"/>
+  </g>
+  <g>
+    <rect style="fill: #a6d3ff" x="-110" y="290" width="20" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-110" y="290" width="20" height="20"/>
+  </g>
+  <g>
+    <rect style="fill: #ffff00" x="-110" y="330" width="20" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-110" y="330" width="20" height="20"/>
+  </g>
+  <text font-size="12.9822" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-80" y="284.5">
+    <tspan x="-80" y="284.5">public use python module/package</tspan>
+  </text>
+  <text font-size="12.9822" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-80" y="304.5">
+    <tspan x="-80" y="304.5">external API/library dependancy</tspan>
+  </text>
+  <text font-size="12.9822" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-80" y="324.5">
+    <tspan x="-80" y="324.5">internal reserved python module/package</tspan>
+  </text>
+  <text font-size="12.9822" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-80" y="344.5">
+    <tspan x="-80" y="344.5">C core library</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="200" y1="120" x2="29.7361" y2="120"/>
+    <polygon style="fill: #000000" points="22.2361,120 32.2361,115 29.7361,120 32.2361,125 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="22.2361,120 32.2361,115 29.7361,120 32.2361,125 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="280" y1="200" x2="280" y2="210.264"/>
+    <polygon style="fill: #000000" points="280,217.764 275,207.764 280,210.264 285,207.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="280,217.764 275,207.764 280,210.264 285,207.764 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="480" y1="200" x2="480" y2="210.264"/>
+    <polygon style="fill: #000000" points="480,217.764 475,207.764 480,210.264 485,207.764 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="480,217.764 475,207.764 480,210.264 485,207.764 "/>
+  </g>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="400" y1="150" x2="369.736" y2="150"/>
+    <polygon style="fill: #000000" points="362.236,150 372.236,145 369.736,150 372.236,155 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="362.236,150 372.236,145 369.736,150 372.236,155 "/>
+  </g>
+  <g>
+    <rect style="fill: #1e90ff" x="40" y="160" width="120" height="40"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="40" y="160" width="120" height="40"/>
+  </g>
+  <text font-size="13.5467" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal" x="100" y="184.7">
+    <tspan x="100" y="184.7">mambaDisplay</tspan>
+  </text>
+  <g>
+    <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="40" y1="180" x2="29.7361" y2="180"/>
+    <polygon style="fill: #000000" points="22.2361,180 32.2361,175 29.7361,180 32.2361,185 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="22.2361,180 32.2361,175 29.7361,180 32.2361,185 "/>
+  </g>
+</svg>

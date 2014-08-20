@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="19cm"
+   height="10cm"
+   viewBox="-91 -92 369 183"
+   id="svg4058"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="fcc_grid.svg">
+  <metadata
+     id="metadata4284">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs4282" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview4280"
+     showgrid="false"
+     inkscape:zoom="0.65802341"
+     inkscape:cx="422.77121"
+     inkscape:cy="177.16536"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4058" />
+  <g
+     id="g4060">
+    <ellipse
+       style="fill: #ffffff"
+       cx="0"
+       cy="0"
+       rx="10"
+       ry="10"
+       id="ellipse4062" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="0"
+       cy="0"
+       rx="10"
+       ry="10"
+       id="ellipse4064" />
+  </g>
+  <g
+     id="g4066">
+    <ellipse
+       style="fill: #ffffff"
+       cx="-40"
+       cy="-60"
+       rx="10"
+       ry="10"
+       id="ellipse4068" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="-40"
+       cy="-60"
+       rx="10"
+       ry="10"
+       id="ellipse4070" />
+  </g>
+  <g
+     id="g4072">
+    <ellipse
+       style="fill: #ffffff"
+       cx="40"
+       cy="-60"
+       rx="10"
+       ry="10"
+       id="ellipse4074" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="40"
+       cy="-60"
+       rx="10"
+       ry="10"
+       id="ellipse4076" />
+  </g>
+  <g
+     id="g4078">
+    <ellipse
+       style="fill: #ffffff"
+       cx="80"
+       cy="0"
+       rx="10"
+       ry="10"
+       id="ellipse4080" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="80"
+       cy="0"
+       rx="10"
+       ry="10"
+       id="ellipse4082" />
+  </g>
+  <g
+     id="g4084">
+    <ellipse
+       style="fill: #ffffff"
+       cx="40"
+       cy="60"
+       rx="10"
+       ry="10"
+       id="ellipse4086" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="40"
+       cy="60"
+       rx="10"
+       ry="10"
+       id="ellipse4088" />
+  </g>
+  <g
+     id="g4090">
+    <ellipse
+       style="fill: #ffffff"
+       cx="-80"
+       cy="0"
+       rx="10"
+       ry="10"
+       id="ellipse4092" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="-80"
+       cy="0"
+       rx="10"
+       ry="10"
+       id="ellipse4094" />
+  </g>
+  <g
+     id="g4096">
+    <ellipse
+       style="fill: #ffffff"
+       cx="-40"
+       cy="60"
+       rx="10"
+       ry="10"
+       id="ellipse4098" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="-40"
+       cy="60"
+       rx="10"
+       ry="10"
+       id="ellipse4100" />
+  </g>
+  <g
+     id="g4102">
+    <ellipse
+       style="fill: #ff5454"
+       cx="40"
+       cy="-20"
+       rx="10"
+       ry="10"
+       id="ellipse4104" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="40"
+       cy="-20"
+       rx="10"
+       ry="10"
+       id="ellipse4106" />
+  </g>
+  <g
+     id="g4108">
+    <ellipse
+       style="fill: #ff8f8f"
+       cx="0"
+       cy="-80"
+       rx="10"
+       ry="10"
+       id="ellipse4110" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="0"
+       cy="-80"
+       rx="10"
+       ry="10"
+       id="ellipse4112" />
+  </g>
+  <g
+     id="g4114">
+    <ellipse
+       style="fill: #ff8f8f"
+       cx="80"
+       cy="-80"
+       rx="10"
+       ry="10"
+       id="ellipse4116" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="80"
+       cy="-80"
+       rx="10"
+       ry="10"
+       id="ellipse4118" />
+  </g>
+  <g
+     id="g4120">
+    <ellipse
+       style="fill: #ff8f8f"
+       cx="120"
+       cy="-20"
+       rx="10"
+       ry="10"
+       id="ellipse4122" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="120"
+       cy="-20"
+       rx="10"
+       ry="10"
+       id="ellipse4124" />
+  </g>
+  <g
+     id="g4126">
+    <ellipse
+       style="fill: #ff8f8f"
+       cx="80"
+       cy="40"
+       rx="10"
+       ry="10"
+       id="ellipse4128" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="80"
+       cy="40"
+       rx="10"
+       ry="10"
+       id="ellipse4130" />
+  </g>
+  <g
+     id="g4132">
+    <ellipse
+       style="fill: #ff5454"
+       cx="-40"
+       cy="-20"
+       rx="10"
+       ry="10"
+       id="ellipse4134" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="-40"
+       cy="-20"
+       rx="10"
+       ry="10"
+       id="ellipse4136" />
+  </g>
+  <g
+     id="g4138">
+    <ellipse
+       style="fill: #ff5454"
+       cx="0"
+       cy="40"
+       rx="10"
+       ry="10"
+       id="ellipse4140" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="0"
+       cy="40"
+       rx="10"
+       ry="10"
+       id="ellipse4142" />
+  </g>
+  <g
+     id="g4144">
+    <ellipse
+       style="fill: #77bcff"
+       cx="0"
+       cy="-40"
+       rx="10"
+       ry="10"
+       id="ellipse4146" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="0"
+       cy="-40"
+       rx="10"
+       ry="10"
+       id="ellipse4148" />
+  </g>
+  <g
+     id="g4150">
+    <ellipse
+       style="fill: #aad1f7"
+       cx="80"
+       cy="-40"
+       rx="10"
+       ry="10"
+       id="ellipse4152" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="80"
+       cy="-40"
+       rx="10"
+       ry="10"
+       id="ellipse4154" />
+  </g>
+  <g
+     id="g4156">
+    <ellipse
+       style="fill: #77bcff"
+       cx="-40"
+       cy="20"
+       rx="10"
+       ry="10"
+       id="ellipse4158" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="-40"
+       cy="20"
+       rx="10"
+       ry="10"
+       id="ellipse4160" />
+  </g>
+  <g
+     id="g4162">
+    <ellipse
+       style="fill: #77bcff"
+       cx="40"
+       cy="20"
+       rx="10"
+       ry="10"
+       id="ellipse4164" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       cx="40"
+       cy="20"
+       rx="10"
+       ry="10"
+       id="ellipse4166" />
+  </g>
+  <g
+     id="g4168">
+    <ellipse
+       style="fill: #aad1f7"
+       cx="0"
+       cy="80"
+       rx="10"
+       ry="10"
+       id="ellipse4170" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="0"
+       cy="80"
+       rx="10"
+       ry="10"
+       id="ellipse4172" />
+  </g>
+  <g
+     id="g4174">
+    <ellipse
+       style="fill: #aad1f7"
+       cx="80"
+       cy="80"
+       rx="10"
+       ry="10"
+       id="ellipse4176" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="80"
+       cy="80"
+       rx="10"
+       ry="10"
+       id="ellipse4178" />
+  </g>
+  <g
+     id="g4180">
+    <ellipse
+       style="fill: #aad1f7"
+       cx="120"
+       cy="20"
+       rx="10"
+       ry="10"
+       id="ellipse4182" />
+    <ellipse
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       cx="120"
+       cy="20"
+       rx="10"
+       ry="10"
+       id="ellipse4184" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="0"
+     y="4.45"
+     id="text4186">
+    <tspan
+       x="0"
+       y="4.45"
+       id="tspan4188">0</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="40"
+     y="-55.55"
+     id="text4190">
+    <tspan
+       x="40"
+       y="-55.55"
+       id="tspan4192">1</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="80"
+     y="4.45"
+     id="text4194">
+    <tspan
+       x="80"
+       y="4.45"
+       id="tspan4196">2</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="40"
+     y="64.45"
+     id="text4198">
+    <tspan
+       x="40"
+       y="64.45"
+       id="tspan4200">3</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="-40"
+     y="64.45"
+     id="text4202">
+    <tspan
+       x="-40"
+       y="64.45"
+       id="tspan4204">4</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="-40"
+     y="-55.55"
+     id="text4206">
+    <tspan
+       x="-40"
+       y="-55.55"
+       id="tspan4208">6</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="-80"
+     y="4.45"
+     id="text4210">
+    <tspan
+       x="-80"
+       y="4.45"
+       id="tspan4212">5</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="40"
+     y="24.45"
+     id="text4214">
+    <tspan
+       x="40"
+       y="24.45"
+       id="tspan4216">7</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="-40"
+     y="24.45"
+     id="text4218">
+    <tspan
+       x="-40"
+       y="24.45"
+       id="tspan4220">8</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="0"
+     y="-35.55"
+     id="text4222">
+    <tspan
+       x="0"
+       y="-35.55"
+       id="tspan4224">9</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="0"
+     y="44.45"
+     id="text4226">
+    <tspan
+       x="0"
+       y="44.45"
+       id="tspan4228">12</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="-40"
+     y="-15.55"
+     id="text4230">
+    <tspan
+       x="-40"
+       y="-15.55"
+       id="tspan4232">10</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="40"
+     y="-15.55"
+     id="text4234">
+    <tspan
+       x="40"
+       y="-15.55"
+       id="tspan4236">11</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-size:12.8212347px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
+     x="171.14384"
+     y="-29.873125"
+     id="text3725">
+    <tspan
+       x="171.14384"
+       y="-29.873125"
+       id="tspan3727">Stacking order:</tspan>
+  </text>
+  <g
+     transform="matrix(1.0016589,0,0,1.0016589,-149.38702,-49.9063)"
+     id="g3729">
+    <rect
+       style="fill:#77bcff"
+       x="330"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3731" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2"
+       x="330"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3733" />
+  </g>
+  <g
+     transform="matrix(1.0016589,0,0,1.0016589,-149.38702,-49.9063)"
+     id="g3735">
+    <rect
+       style="fill:#ffffff"
+       x="330"
+       y="50"
+       width="40"
+       height="20"
+       id="rect3737" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2"
+       x="330"
+       y="50"
+       width="40"
+       height="20"
+       id="rect3739" />
+  </g>
+  <g
+     transform="matrix(1.0016589,0,0,1.0016589,-149.38702,-49.9063)"
+     id="g3741">
+    <rect
+       style="fill:#ff5454"
+       x="330"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3743" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2"
+       x="330"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3745" />
+  </g>
+  <g
+     transform="matrix(1.0016589,0,0,1.0016589,-149.38702,-49.9063)"
+     id="g3747">
+    <rect
+       style="fill:#aad1f7"
+       x="350"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3749" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2"
+       x="350"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3751" />
+  </g>
+  <g
+     transform="matrix(1.0016589,0,0,1.0016589,-149.38702,-49.9063)"
+     id="g3753">
+    <rect
+       style="fill:#ff8f8f"
+       x="350"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3755" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:2"
+       x="350"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3757" />
+  </g>
+  <text
+     font-size="12.8"
+     style="font-size:12.8212347px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
+     x="224.81837"
+     y="-5.0601573"
+     id="text3759">
+    <tspan
+       x="224.81837"
+       y="-5.0601573"
+       id="tspan3761">below</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-size:12.8212347px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
+     x="224.38327"
+     y="35.006199"
+     id="text3763">
+    <tspan
+       x="224.38327"
+       y="35.006199"
+       id="tspan3765">above</tspan>
+  </text>
+</svg>
