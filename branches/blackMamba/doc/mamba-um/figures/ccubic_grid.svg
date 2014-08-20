@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="18cm"
+   height="9cm"
+   viewBox="69 -21 349 173"
+   id="svg3493"
+   version="1.1"
+   inkscape:version="0.48.5 r10040"
+   sodipodi:docname="ccubic_grid.svg">
+  <metadata
+     id="metadata3771">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3769" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1134"
+     id="namedview3767"
+     showgrid="false"
+     inkscape:zoom="0.69458023"
+     inkscape:cx="89.982405"
+     inkscape:cy="159.44882"
+     inkscape:window-x="0"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3493" />
+  <g
+     id="g3495">
+    <rect
+       style="fill: #77bcff"
+       x="180"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3497" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="180"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3499" />
+  </g>
+  <g
+     id="g3501">
+    <rect
+       style="fill: #ffffff"
+       x="150"
+       y="40"
+       width="20"
+       height="20"
+       id="rect3503" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="150"
+       y="40"
+       width="20"
+       height="20"
+       id="rect3505" />
+  </g>
+  <g
+     id="g3507">
+    <rect
+       style="fill: #ff5454"
+       x="200"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3509" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="200"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3511" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="160"
+     y="57"
+     id="text3513">
+    <tspan
+       x="160"
+       y="57"
+       id="tspan3515">0</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="190"
+     y="87"
+     id="text3517">
+    <tspan
+       x="190"
+       y="87"
+       id="tspan3519">9</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="210"
+     y="87"
+     id="text3521">
+    <tspan
+       x="210"
+       y="87"
+       id="tspan3523">15</tspan>
+  </text>
+  <g
+     id="g3525">
+    <rect
+       style="fill: #77bcff"
+       x="180"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3527" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="180"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3529" />
+  </g>
+  <g
+     id="g3531">
+    <rect
+       style="fill: #ffffff"
+       x="150"
+       y="-20"
+       width="20"
+       height="20"
+       id="rect3533" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="150"
+       y="-20"
+       width="20"
+       height="20"
+       id="rect3535" />
+  </g>
+  <g
+     id="g3537">
+    <rect
+       style="fill: #ff5454"
+       x="200"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3539" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="200"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3541" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="160"
+     y="-3"
+     id="text3543">
+    <tspan
+       x="160"
+       y="-3"
+       id="tspan3545">1</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="190"
+     y="27"
+     id="text3547">
+    <tspan
+       x="190"
+       y="27"
+       id="tspan3549">12</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="210"
+     y="27"
+     id="text3551">
+    <tspan
+       x="210"
+       y="27"
+       id="tspan3553">14</tspan>
+  </text>
+  <g
+     id="g3555">
+    <rect
+       style="fill: #aad1f7"
+       x="260"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3557" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="260"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3559" />
+  </g>
+  <g
+     id="g3561">
+    <rect
+       style="fill: #ffffff"
+       x="230"
+       y="-20"
+       width="20"
+       height="20"
+       id="rect3563" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="230"
+       y="-20"
+       width="20"
+       height="20"
+       id="rect3565" />
+  </g>
+  <g
+     id="g3567">
+    <rect
+       style="fill: #ff8f8f"
+       x="280"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3569" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="280"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3571" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="240"
+     y="-3"
+     id="text3573">
+    <tspan
+       x="240"
+       y="-3"
+       id="tspan3575">2</tspan>
+  </text>
+  <g
+     id="g3577">
+    <rect
+       style="fill: #aad1f7"
+       x="260"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3579" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="260"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3581" />
+  </g>
+  <g
+     id="g3583">
+    <rect
+       style="fill: #ffffff"
+       x="230"
+       y="40"
+       width="20"
+       height="20"
+       id="rect3585" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="230"
+       y="40"
+       width="20"
+       height="20"
+       id="rect3587" />
+  </g>
+  <g
+     id="g3589">
+    <rect
+       style="fill: #ff8f8f"
+       x="280"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3591" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="280"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3593" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="240"
+     y="57"
+     id="text3595">
+    <tspan
+       x="240"
+       y="57"
+       id="tspan3597">3</tspan>
+  </text>
+  <g
+     id="g3599">
+    <rect
+       style="fill: #aad1f7"
+       x="260"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3601" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="260"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3603" />
+  </g>
+  <g
+     id="g3605">
+    <rect
+       style="fill: #ffffff"
+       x="230"
+       y="100"
+       width="20"
+       height="20"
+       id="rect3607" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="230"
+       y="100"
+       width="20"
+       height="20"
+       id="rect3609" />
+  </g>
+  <g
+     id="g3611">
+    <rect
+       style="fill: #ff8f8f"
+       x="280"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3613" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="280"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3615" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="240"
+     y="117"
+     id="text3617">
+    <tspan
+       x="240"
+       y="117"
+       id="tspan3619">4</tspan>
+  </text>
+  <g
+     id="g3621">
+    <rect
+       style="fill: #aad1f7"
+       x="180"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3623" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="180"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3625" />
+  </g>
+  <g
+     id="g3627">
+    <rect
+       style="fill: #ffffff"
+       x="150"
+       y="100"
+       width="20"
+       height="20"
+       id="rect3629" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="150"
+       y="100"
+       width="20"
+       height="20"
+       id="rect3631" />
+  </g>
+  <g
+     id="g3633">
+    <rect
+       style="fill: #ff8f8f"
+       x="200"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3635" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="200"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3637" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="160"
+     y="117"
+     id="text3639">
+    <tspan
+       x="160"
+       y="117"
+       id="tspan3641">5</tspan>
+  </text>
+  <g
+     id="g3643">
+    <rect
+       style="fill: #aad1f7"
+       x="100"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3645" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="100"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3647" />
+  </g>
+  <g
+     id="g3649">
+    <rect
+       style="fill: #ffffff"
+       x="70"
+       y="100"
+       width="20"
+       height="20"
+       id="rect3651" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="70"
+       y="100"
+       width="20"
+       height="20"
+       id="rect3653" />
+  </g>
+  <g
+     id="g3655">
+    <rect
+       style="fill: #ff8f8f"
+       x="120"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3657" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 4; stroke: #000000"
+       x="120"
+       y="130"
+       width="20"
+       height="20"
+       id="rect3659" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="80"
+     y="117"
+     id="text3661">
+    <tspan
+       x="80"
+       y="117"
+       id="tspan3663">6</tspan>
+  </text>
+  <g
+     id="g3665">
+    <rect
+       style="fill: #77bcff"
+       x="100"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3667" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="100"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3669" />
+  </g>
+  <g
+     id="g3671">
+    <rect
+       style="fill: #ffffff"
+       x="70"
+       y="40"
+       width="20"
+       height="20"
+       id="rect3673" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="70"
+       y="40"
+       width="20"
+       height="20"
+       id="rect3675" />
+  </g>
+  <g
+     id="g3677">
+    <rect
+       style="fill: #ff5454"
+       x="120"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3679" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="120"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3681" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="80"
+     y="57"
+     id="text3683">
+    <tspan
+       x="80"
+       y="57"
+       id="tspan3685">7</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="110"
+     y="87"
+     id="text3687">
+    <tspan
+       x="110"
+       y="87"
+       id="tspan3689">10</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="130"
+     y="87"
+     id="text3691">
+    <tspan
+       x="130"
+       y="87"
+       id="tspan3693">16</tspan>
+  </text>
+  <g
+     id="g3695">
+    <rect
+       style="fill: #77bcff"
+       x="100"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3697" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="100"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3699" />
+  </g>
+  <g
+     id="g3701">
+    <rect
+       style="fill: #ffffff"
+       x="70"
+       y="-20"
+       width="20"
+       height="20"
+       id="rect3703" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="70"
+       y="-20"
+       width="20"
+       height="20"
+       id="rect3705" />
+  </g>
+  <g
+     id="g3707">
+    <rect
+       style="fill: #ff5454"
+       x="120"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3709" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="120"
+       y="10"
+       width="20"
+       height="20"
+       id="rect3711" />
+  </g>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="80"
+     y="-3"
+     id="text3713">
+    <tspan
+       x="80"
+       y="-3"
+       id="tspan3715">8</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="110"
+     y="27"
+     id="text3717">
+    <tspan
+       x="110"
+       y="27"
+       id="tspan3719">11</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="130"
+     y="27"
+     id="text3721">
+    <tspan
+       x="130"
+       y="27"
+       id="tspan3723">13</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal"
+     x="320"
+     y="20"
+     id="text3725">
+    <tspan
+       x="320"
+       y="20"
+       id="tspan3727">Stacking order:</tspan>
+  </text>
+  <g
+     id="g3729">
+    <rect
+       style="fill: #77bcff"
+       x="330"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3731" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="330"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3733" />
+  </g>
+  <g
+     id="g3735">
+    <rect
+       style="fill: #ffffff"
+       x="330"
+       y="50"
+       width="40"
+       height="20"
+       id="rect3737" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="330"
+       y="50"
+       width="40"
+       height="20"
+       id="rect3739" />
+  </g>
+  <g
+     id="g3741">
+    <rect
+       style="fill: #ff5454"
+       x="330"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3743" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="330"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3745" />
+  </g>
+  <g
+     id="g3747">
+    <rect
+       style="fill: #aad1f7"
+       x="350"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3749" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="350"
+       y="30"
+       width="20"
+       height="20"
+       id="rect3751" />
+  </g>
+  <g
+     id="g3753">
+    <rect
+       style="fill: #ff8f8f"
+       x="350"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3755" />
+    <rect
+       style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000"
+       x="350"
+       y="70"
+       width="20"
+       height="20"
+       id="rect3757" />
+  </g>
+  <text
+     font-size="12.8"
+     style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
+     x="373.58563"
+     y="44.771873"
+     id="text3759">
+    <tspan
+       x="373.58563"
+       y="44.771873"
+       id="tspan3761">below</tspan>
+  </text>
+  <text
+     font-size="12.8"
+     style="font-size:12.80000019px;font-style:normal;font-weight:normal;text-anchor:start;fill:#000000;font-family:sans-serif"
+     x="373.15125"
+     y="84.771873"
+     id="text3763">
+    <tspan
+       x="373.15125"
+       y="84.771873"
+       id="tspan3765">above</tspan>
+  </text>
+</svg>

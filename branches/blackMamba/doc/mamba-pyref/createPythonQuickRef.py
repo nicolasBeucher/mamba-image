@@ -212,8 +212,8 @@ Here is the encoding used for Mamba grids:
 \begin{center}
 \begin{tabular}{cc}
 hexagonal grid & square grid \\
-\includegraphics[scale=0.22]{../mamba-um/figures/hxGriddir.png} &
-\includegraphics[scale=0.3]{../mamba-um/figures/sqGriddir.png} \\
+\includegraphics[width=0.3\columnwidth]{../mamba-um/figures/hexa_grid.pdf} &
+\includegraphics[width=0.3\columnwidth]{../mamba-um/figures/square_grid.pdf} \\
 \end{tabular}
 \end{center}
 \normalsize
@@ -223,7 +223,7 @@ hexagonal grid & square grid \\
 \scriptsize
 By default Mamba defines seven structuring elements:
 \begin{center}
-\includegraphics[scale=0.25]{../mamba-um/figures/se.png}
+\includegraphics[width=0.6\columnwidth]{../mamba-um/figures/se.pdf}
 \end{center}
 
 \scriptsize
