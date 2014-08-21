@@ -69,3 +69,17 @@ class TestDisplay3D(unittest.TestCase):
         im.unfreeze()
         self.assertEqual(self.testDisp.getStatsOnFun("controlWindow"), 2)
         
+    def testName(self):
+        """Verifies that display is informed when image name change"""
+        im = image3DMb()
+        
+        im.setName("test1")
+        self.assertEqual(self.testDisp.getStatsOnFun("updateWindow"), 0)
+        
+        im.show()
+        self.assertEqual(self.testDisp.getStatsOnFun("addWindow"), 1)
+        self.assertEqual(self.testDisp.getStatsOnFun("showWindow"), 1)
+        
+        im.setName("test1")
+        self.assertEqual(self.testDisp.getStatsOnFun("updateWindow"), 1)
+        
