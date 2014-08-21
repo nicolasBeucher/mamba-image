@@ -242,6 +242,7 @@ CENTER\_CUBIC grid.
 };
 \end{tikzpicture}
 
+\pagebreak
 
 """
 

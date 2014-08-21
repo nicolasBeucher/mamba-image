@@ -802,10 +802,10 @@ directions = getDirections(HEXAGONAL)
 There are other utilities functions that are provided by Mamba and Mamba3D to
 handle  directions/neighbors. Refer to the Python API reference.
 
-\subsection{Creating and manipulating 2D images}
+\subsection{Creating and manipulating images}
 \label{cha:create_im}
 
-\paragraph{Creating images}
+\subsubsection{Creating 2D images}
 
 To handle images, a Python class named imageMb has been created. This class will allow
 you to create, load, save and perform standard operations on your images.
@@ -853,14 +853,56 @@ computations between them. If you want to do so, you will have to use the
 cropCopy() function to extract the part of the images you want to match.
 }
 
-\paragraph{Saving and loading images}
+\subsubsection{Creating 3D images}
+
+The basic data model used in Mamba3D is the image3DMb image class. This is the
+complete equivalent to the imageMb class for 3D images.
+
+You should know that this class is actually a stack of standard Mamba images
+(imageMb object) with all the same size and depth. The dimension of a 3D image
+is thus given by the size of the mamba images inside the stack and by its
+length. This choice may seem strange because it differentiates one direction
+(supposedly z-axis) in the data structure from the other two (x-axis and
+y-axis) but it was dictated by the need to reuse as much as possible the 
+basic C functions of Mamba which work with imageMb low-level structure.
+
+There is a wide range of possibilities to create a 3D image object :
+\begin{itemize}
+\item \texttt{\textbf{image3DMb()}} : without arguments will create an empty
+greyscale 3D image (by default its size is 256x256x256).
+\item \texttt{\textbf{image3DMb(im3D)}} : will create a 3D image using the
+same width, height, length and depth than 3D image 'im3D'.
+\item \texttt{\textbf{image3DMb(im)}} : will create a 3D image using the same
+width, height and depth than 2D image 'im' (a imageMb object). Its
+lenght will be defaulted to 256.
+\item \texttt{\textbf{image3DMb(depth)}} : will create a 3D image with the
+desired 'depth' (1, 8 or 32) and default size (256x256x256).
+\item \texttt{\textbf{image3DMb(path)}} : will load the image sequence located
+in 'path', see the load method.
+\item \texttt{\textbf{image3DMb(im3D, depth)}} : will create a 3D image using
+the same size than 3D image 'im3D' and the specified 'depth'.
+\item \texttt{\textbf{image3DMb(im, length)}} : will create a sequence using
+the same width, height and depth than 2D image 'im' (a imageMb object). Its
+length will be the specified 'length'.
+\item \texttt{\textbf{image3DMb(path, depth)}} : will load the image sequence
+located in 'path' and convert it to the specified 'depth'.
+\item \texttt{\textbf{image3DMb(width, height, length)}} : will create a 
+greyscale 3D image with 'width', 'height' and 'length'.
+\item \texttt{\textbf{image3DMb(width, height, length, depth)}} : will create
+a 3D image with the given parameters.
+\end{itemize}
+
+Mamba3D also defines an alias named sequenceMb to this class for compatibility
+purposes.
+
+\subsubsection{Saving and loading images}
 
 Upon creation of after you created an image you can load it with the data
 contained inside a file. Loading an image, either at construction or
 with the load method, make use of the Pillow library. Any image format supported
 by this library will then be supported by Mamba.
 
-You can proceed like this
+You can proceed like this:
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -937,11 +979,26 @@ select a format that supports the mode of the Pillow image (such as TIFF for
 You can also save your image for display purpose, in that case you can use the
 additional parameter of the save function, palette.
 
-You can also use the loadRaw and extractRaw method to load data inside your
-image or extract it and save it. See the python reference of the library for
-more infos.
+On 3D image, the load and save methods will work on directory containing
+a sequence of image. A sequence is a set of file named using number (such
+as "001.png", "002.png" ...). We advise you to look at the methods documentation
+for further information.
 
-\paragraph{Other imageMb methods}
+You can also use the loadRaw and extractRaw method to load data inside your
+image or extract it and save it. The loadRaw method accept either a path to a
+file containing the raw data or the raw data (byte string) itself.
+
+\lstset{language=Python}
+\begin{lstlisting}
+# Loading im1 with raw data
+raw_data = 128*128*b"\x00"
+im1.loadRaw(raw_data)
+\end{lstlisting}
+
+Of course the data size (given on argument or read from the file) must fit the
+image size.
+
+\subsubsection{Other imageMb methods}
 
 Besides creating, loading or saving your image, a range of other functionalities
 are accessible using specific methods.
@@ -978,56 +1035,9 @@ The fill() method allows you to set all the pixels of an image to a given value.
 im2.fill(3)
 \end{lstlisting}
 
-There are other methods that will be explained more thoroughly in the next sections.
-
-\subsection{Creating and manipulating 3D images}
-
-\paragraph{Creating images}
-
-The basic data model used in Mamba3D is the image3DMb image class. This is the
-complete equivalent to the imageMb class for 3D images.
-
-You should know that this class is actually a stack of standard Mamba images
-(imageMb object) with all the same size and depth. The dimension of a 3D image
-is thus given by the size of the mamba images inside the stack and by its
-length. This choice may seem strange because it differentiates one direction
-(supposedly z-axis) in the data structure from the other two (x-axis and
-y-axis) but it was dictated by the need to reuse as much as possible the 
-basic C functions of Mamba which work with imageMb low-level structure.
-
-There is a wide range of possibilities to create a 3D image object :
-\begin{itemize}
-\item \texttt{\textbf{image3DMb()}} : without arguments will create an empty
-greyscale 3D image (by default its size is 256x256x256).
-\item \texttt{\textbf{image3DMb(im3D)}} : will create a 3D image using the
-same width, height, length and depth than 3D image 'im3D'.
-\item \texttt{\textbf{image3DMb(im)}} : will create a 3D image using the same
-width, height and depth than 2D image 'im' (a imageMb object). Its
-lenght will be defaulted to 256.
-\item \texttt{\textbf{image3DMb(depth)}} : will create a 3D image with the
-desired 'depth' (1, 8 or 32) and default size (256x256x256).
-\item \texttt{\textbf{image3DMb(path)}} : will load the image sequence located
-in 'path', see the load method.
-\item \texttt{\textbf{image3DMb(im3D, depth)}} : will create a 3D image using
-the same size than 3D image 'im3D' and the specified 'depth'.
-\item \texttt{\textbf{image3DMb(im, length)}} : will create a sequence using
-the same width, height and depth than 2D image 'im' (a imageMb object). Its
-length will be the specified 'length'.
-\item \texttt{\textbf{image3DMb(path, depth)}} : will load the image sequence
-located in 'path' and convert it to the specified 'depth'.
-\item \texttt{\textbf{image3DMb(width, height, length)}} : will create a 
-greyscale 3D image with 'width', 'height' and 'length'.
-\item \texttt{\textbf{image3DMb(width, height, length, depth)}} : will create
-a 3D image with the given parameters.
-\end{itemize}
-
-Mamba3D also defines an alias named sequenceMb to this class for compatibility
-purposes.
-
-\paragraph{Other methods}
-
-The image3DMb class offers the same methods as its 2D counterpart imageMb. They
-are of course adapted to the 3D images but work basically in the same way.
+There are other methods that will be explained more thoroughly in the next
+sections. In particular the display methods are explained in section 
+\ref{cha:disp_im}.
 
 \subsection{Pixels manipulation}
 
@@ -1124,7 +1134,7 @@ the mouse inside the image (and the pixel value associated).
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.5]{images/mamba_win.png}
+\includegraphics[scale=0.5]{images/dis2D.png}
 \caption{2D display}
 \label{fig:dis2D}
 \end{figure}
@@ -1132,8 +1142,8 @@ the mouse inside the image (and the pixel value associated).
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.5]{images/mamba_menu.png}
-\caption{Contextual menu}
+\includegraphics[scale=0.5]{images/dis2D_menu.png}
+\caption{2D display: contextual menu}
 \label{fig:dis2D_menu}
 \end{figure}
 
