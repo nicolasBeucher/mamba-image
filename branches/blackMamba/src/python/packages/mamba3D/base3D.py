@@ -308,6 +308,14 @@ class image3DMb:
         
         return self.length
         
+    def setName(self, name):
+        """
+        Use this function to set the image 'name'.
+        """
+        self.name = name
+        if self.displayId != '':
+            self.gd.updateWindow(self.displayId)
+        
     def getName(self):
         """
         Returns the name of the 3D image.
