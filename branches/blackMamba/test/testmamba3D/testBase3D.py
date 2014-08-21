@@ -287,4 +287,11 @@ class TestBase3D(unittest.TestCase):
         for im in im3D:
             vol = computeVolume(im)
             self.assertEqual(vol, 0)
+        
+    def testImageNaming(self):
+        """Verifies that image names methods are correctly working"""
+        im3D = image3DMb(64,64,9,8)
+        nb = random.randint(-10000, -1000)
+        im3D.setName("test %d" % (nb))
+        self.assertEqual(im3D.getName(), "test %d" % (nb))
 

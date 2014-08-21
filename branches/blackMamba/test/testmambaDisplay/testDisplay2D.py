@@ -16,6 +16,7 @@ from mamba import *
 import mambaDisplay
 import unittest
 from PIL import Image
+import os
 
 class testDisplayer(mambaDisplay.Displayer):
 
@@ -137,6 +138,7 @@ class TestDisplay2D(unittest.TestCase):
         
         im.convert(1)
         self.assertEqual(testDisp.getStatsOnFun("updateWindow"), 3)
+        os.remove("test.jpg")
         
     def testFreeze(self):
         """Verifies the display freeze and unfreeze front-end methods"""
