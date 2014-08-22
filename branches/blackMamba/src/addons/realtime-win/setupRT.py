@@ -1,6 +1,4 @@
 
-__version__ = "$Revision: 599 $"
-
 # setup.py
 # This is the distutils setup function of Mamba Image library realtime module
 import distutils
@@ -23,8 +21,6 @@ def getVersion(filename):
 ################################################################################
 # Extension modules and Packages
 ################################################################################
-EXTENSIONS = []
-PACKAGES = []
 
 DEF_MACROS = [('__STDC_CONSTANT_MACROS',None),('_CRT_SECURE_NO_WARNINGS',None)]
 SWIGDEF64 = []
