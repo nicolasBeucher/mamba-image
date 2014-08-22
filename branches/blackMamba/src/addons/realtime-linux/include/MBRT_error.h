@@ -37,6 +37,10 @@
 #ifndef MBRT_errorH
 #define MBRT_errorH
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /****************************************/
 /* Includes                             */
 /****************************************/
@@ -67,6 +71,18 @@ typedef enum {
     ERR_RT_INVALID_DISPLAY,
 /** Video acquisition module error */
     ERR_RT_VID,
+/** Cannot create the directshow filter graph */
+	ERR_RT_DSHOW_FILTER_GRAPH,
+/** Cannot create the directshow capture graph builder */
+	ERR_RT_DSHOW_CAPT_GRAPH_BUILD,
+/** Cannot initialize the directshow capture graph builder */
+	ERR_RT_DSHOW_INIT_CAPT_GRAPH_BUILD,
+/** Cannot create the directshow device enumerator */
+	ERR_RT_DSHOW_DEV_ENUM,
+/** Cannot create a directshow video capture device enumerator */
+	ERR_RT_DSHOW_VIDCAP_ENUM,
+/** Cannot found the directshow device */
+	ERR_RT_DSHOW_DEV_NOT_FOUND,
 /** Function is not implemented for video device */
     ERR_RT_NOT_IMPLEMENTED,
 /** Cannot open video device */
@@ -130,5 +146,9 @@ typedef enum {
 /****************************************/
 
 char *MBRT_StrErr(MBRT_errcode error_nb);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

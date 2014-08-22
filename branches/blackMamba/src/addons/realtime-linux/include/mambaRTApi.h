@@ -47,6 +47,8 @@ extern "C" {
 #include "mamba/mamba.h"
 #include "MBRT_error.h"
 
+#include <dshow.h>
+
 /****************************************/
 /* Defines                              */
 /****************************************/
@@ -63,7 +65,7 @@ extern "C" {
 typedef enum {
 /** No events */
     NO_EVENT,
-/** Close event occurs when the user close the window or press esc inside it */
+/** Close event occurs when the user closes the window or press esc inside it */
     EVENT_CLOSE,
 /** Event to toggle on/off the process */
     EVENT_PROCESS,
@@ -75,6 +77,8 @@ typedef enum {
 
 /** Type definition for the acquisition device */
 typedef enum {
+/** DirectShow API type device */
+    DSHOW_TYPE,
 /** Video 4 Linux 1 API type device */
     V4L_TYPE,
 /** Video 4 Linux 2 API type device */
@@ -104,6 +108,8 @@ MBRT_errcode MBRT_GetAcqSize(int *acq_w, int *acq_h);
 MBRT_errcode MBRT_GetAcqFrameRate(double *ofps);
 MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest);
 MBRT_errcode MBRT_GetColorImageFromAcq(MB_Image *destRed, MB_Image *destGreen, MB_Image *destBlue);
+MBRT_errcode MBRT_StartAcq();
+MBRT_errcode MBRT_StopAcq();
 
 /****************************************/
 /* Recording functions                  */

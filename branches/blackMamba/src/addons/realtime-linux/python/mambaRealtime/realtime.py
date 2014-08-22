@@ -40,6 +40,9 @@ _ERR_DEL = 10
 
 ###############################################################################
 #  Definitions
+DSHOW = mambaRTCore.DSHOW_TYPE
+""" Value to use when using a directshow video API device"""
+
 V4L = mambaRTCore.V4L_TYPE
 """ Value to use when using a video for linux 1 api device"""
 
@@ -181,6 +184,8 @@ class _MBRT_Thread(threading.Thread):
             return (0,0)
         self.frequency = freq
         self.period = 1.0/self.frequency
+
+        mambaRTCore.MBRT_StartAcq()
         
         self.red = mamba.imageMb(w,h)
         self.green = mamba.imageMb(w,h)
@@ -208,6 +213,7 @@ class _MBRT_Thread(threading.Thread):
             mambaRTCore.MBRT_DestroyVideoAcq()
         if self.displayCreated:
             mambaRTCore.MBRT_DestroyDisplay()
+        mambaRTCore.MBRT_StopAcq()
         mambaRTCore.MBRT_DestroyContext()
         
     # EVENTS and COMMANDS ######################################################
@@ -492,7 +498,7 @@ def launchRealtime(device, devType, seqlength=10):
 def initializeRealtime(device, devType, seqlength=10):
     """
     Initializes the realtime module using 'device' for the acquisition.
-    'devType' indicates the type of the device (either V4L, V4L2 or AVC).
+    'devType' indicates the type of the device (either V4L2(linux), DSHOW(windows) or AVC).
     This function must be called before any other.
 
     'seqlength' controls the length of the image sequence the thread is
@@ -510,6 +516,22 @@ def initializeRealtime(device, devType, seqlength=10):
             # In the case _display_thread is only created but not running
             # then it is deleted
             _display_thread = None
+
+    # The context is destroyed by precaution
+    mambaRTCore.MBRT_DestroyContext()
+
+    # The context and video acquisition inits are called in the main thread
+    # due to directshow API restrictions (COM)
+    
+    err = mambaRTCore.MBRT_CreateContext()
+    if err!=mambaRTCore.NO_ERR:
+        raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
+
+    err = mambaRTCore.MBRT_CreateVideoAcq(device, devType)
+    if err!=mambaRTCore.NO_ERR:
+        raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
+
+    _display_thread = _MBRT_Thread(_com_queue,seqlength)
 
     _display_thread = _MBRT_Thread(device, devType, _com_queue, seqlength)
 
@@ -548,6 +570,8 @@ def deactivateRealtime():
         while(_display_thread.isAlive()):
             time.sleep(0.01)
         _display_thread = None
+    mambaRTCore.MBRT_DestroyVideoAcq()
+    mambaRTCore.MBRT_DestroyContext()
 
 def isActivatedRealtime():
     """

@@ -118,7 +118,7 @@ MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Imag
 /****************************************/
 /* Display functions                    */
 /****************************************/
-MBRT_errcode MBRT_CreateDisplay(int w, int h);
+MBRT_errcode MBRT_CreateDisplay(int width, int height);
 MBRT_errcode MBRT_DestroyDisplay(void);
 MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps);
 MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Image *srcBlue,
