@@ -30,7 +30,7 @@
 
 %module mambaRTCore
 
-/* Inclusion inside the c file wrapper created by swig*/
+/* Inclusion inside the C file wrapper created by swig*/
 %{
 #include "mambaRTApi.h"
 %}
@@ -38,6 +38,15 @@
 /* Typemaps definition */
 %include <typemaps.i>
 %include <stdint.i>
+
+%init %{
+	/* Initialize COM before anything else for this library to work */
+    if (FAILED(CoInitializeEx(NULL, COINIT_APARTMENTTHREADED)))
+    {
+        PyErr_SetString(PyExc_ImportError, "Initialization of COM failed.");
+        return;
+    }
+%}
 
 %typemap(in) Uint8 *icon {
     if (PyList_Check($input)) {
