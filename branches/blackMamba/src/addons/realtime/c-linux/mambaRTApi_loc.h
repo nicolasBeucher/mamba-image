@@ -49,13 +49,6 @@
 #include <unistd.h>
 #include <string.h>
 
-/* by default the Video 4 Linux 1 support is deactivated */
-/* as it is no longer supported by recent kernels out there */
-#ifdef MBRT_HAVE_V4L
-#include <libv4l1.h>
-#include <linux/videodev.h>
-#endif
-
 #include <libv4l2.h>
 #include <linux/videodev2.h>
 #include <sys/mman.h>
@@ -115,20 +108,6 @@
 /* Structures and Typedef               */
 /****************************************/
 
-#ifdef MBRT_HAVE_V4L
-/* video for linux 1 API */
-/** Information needed by V4L1 acquisition devices */
-typedef struct {
-    PIX8 *FRAMEBUFFER;
-    struct video_capability vcap;
-    struct video_window vwin;
-    struct video_picture vpic;
-    struct video_mmap vmmap;
-    struct video_mbuf vmbuf;
-    struct video_channel vchan;
-} MBRT_v4lvidT;
-#endif
-
 /* video for linux 2 API */
 
 /** buffer structure */
@@ -172,10 +151,6 @@ typedef struct {
 /** union for all the possible cases for video acquisition device */
 typedef union
 {
-#ifdef MBRT_HAVE_V4L
-    /** V4L1 */
-    MBRT_v4lvidT v4l;
-#endif
     /** V4L2 */
     MBRT_v4l2vidT v4l2;
     /** AVC */
@@ -243,15 +218,6 @@ extern MBRT_Context *context;
 /****************************************/
 /* video type specific functions        */
 /****************************************/
-
-#ifdef MBRT_HAVE_V4L
-/*V4L*/
-MBRT_errcode MBRT_CreateVideoAcq_v4l(char *device);
-MBRT_errcode MBRT_DestroyVideoAcq_v4l(void);
-MBRT_errcode MBRT_GetAcqSize_v4l(int *acq_w, int *acq_h);
-MBRT_errcode MBRT_GetAcqFrameRate_v4l(double *fps);
-MBRT_errcode MBRT_GetImageFromAcq_v4l(MB_Image *dest);
-#endif
 
 /*V4L2*/
 MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device);

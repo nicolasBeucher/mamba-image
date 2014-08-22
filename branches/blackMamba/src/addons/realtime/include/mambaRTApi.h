@@ -79,8 +79,6 @@ typedef enum {
 typedef enum {
 /** DirectShow API type device */
     DSHOW_TYPE,
-/** Video 4 Linux 1 API type device */
-    V4L_TYPE,
 /** Video 4 Linux 2 API type device */
     V4L2_TYPE,
 /** Audio video codec API type device (video file) */

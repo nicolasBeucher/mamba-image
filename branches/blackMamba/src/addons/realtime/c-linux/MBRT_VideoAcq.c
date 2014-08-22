@@ -50,13 +50,6 @@ MBRT_errcode MBRT_CreateVideoAcq(char *device, MBRT_vidType type)
     context->type = type;
     
     switch(type){
-        case V4L_TYPE:
-#ifdef MBRT_HAVE_V4L
-            return MBRT_CreateVideoAcq_v4l(device);
-#else
-            return ERR_RT_NOT_HAVE_V4L;
-#endif
-            break;
         case V4L2_TYPE:
             return MBRT_CreateVideoAcq_v4l2(device);
             break;
@@ -81,14 +74,6 @@ MBRT_errcode MBRT_DestroyVideoAcq()
     if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
-        case V4L_TYPE:
-            context->type = NONE_TYPE;
-#ifdef MBRT_HAVE_V4L
-            return MBRT_DestroyVideoAcq_v4l();
-#else
-            return ERR_RT_NOT_HAVE_V4L;
-#endif
-            break;
         case V4L2_TYPE:
             context->type = NONE_TYPE;
             return MBRT_DestroyVideoAcq_v4l2();
@@ -117,13 +102,6 @@ MBRT_errcode MBRT_GetAcqSize(int *acq_w, int *acq_h)
     if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
-        case V4L_TYPE:
-#ifdef MBRT_HAVE_V4L
-            return MBRT_GetAcqSize_v4l(acq_w,acq_h);
-#else
-            return ERR_RT_NOT_HAVE_V4L;
-#endif
-            break;
         case V4L2_TYPE:
             return MBRT_GetAcqSize_v4l2(acq_w,acq_h);
             break;
@@ -149,13 +127,6 @@ MBRT_errcode MBRT_GetAcqFrameRate(double *ofps)
     if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
-        case V4L_TYPE:
-#ifdef MBRT_HAVE_V4L
-            return MBRT_GetAcqFrameRate_v4l(ofps);
-#else
-            return ERR_RT_NOT_HAVE_V4L;
-#endif
-            break;
         case V4L2_TYPE:
             return MBRT_GetAcqFrameRate_v4l2(ofps);
             break;
@@ -181,13 +152,6 @@ MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
     if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
-        case V4L_TYPE:
-#ifdef MBRT_HAVE_V4L
-            return MBRT_GetImageFromAcq_v4l(dest);
-#else
-            return ERR_RT_NOT_HAVE_V4L;
-#endif
-            break;
         case V4L2_TYPE:
             return MBRT_GetImageFromAcq_v4l2(dest);
             break;
@@ -215,13 +179,6 @@ MBRT_errcode MBRT_GetColorImageFromAcq(MB_Image *destRed, MB_Image *destGreen, M
     if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
-        case V4L_TYPE:
-#ifdef MBRT_HAVE_V4L
-            return ERR_RT_NOT_IMPLEMENTED;
-#else
-            return ERR_RT_NOT_HAVE_V4L;
-#endif
-            break;
         case V4L2_TYPE:
             return MBRT_GetColorImageFromAcq_v4l2(destRed, destGreen, destBlue);
             break;

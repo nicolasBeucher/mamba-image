@@ -43,9 +43,6 @@ _ERR_DEL = 10
 DSHOW = mambaRTCore.DSHOW_TYPE
 """ Value to use when using a directshow video API device"""
 
-V4L = mambaRTCore.V4L_TYPE
-""" Value to use when using a video for linux 1 api device"""
-
 V4L2 = mambaRTCore.V4L2_TYPE
 """ Value to use when using a video for linux 2 api device"""
 
