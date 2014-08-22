@@ -45,7 +45,7 @@ MBRT_errcode MBRT_CreateContext()
 {
     context = malloc(sizeof(MBRT_Context));
     if (context==NULL) {
-        return ERR_CANT_CREATE_CONTEXT;
+        return ERR_RT_CANT_CREATE_CONTEXT;
     }
     
     /* blanking the structure */
@@ -55,7 +55,7 @@ MBRT_errcode MBRT_CreateContext()
     context->type = NONE_TYPE;
     context->isRecording = 0;
 
-    return NO_ERR;
+    return NO_ERR_RT;
 }
 
 /**
@@ -82,5 +82,5 @@ MBRT_errcode MBRT_DestroyContext()
         context = NULL;
     }
 
-    return NO_ERR;
+    return NO_ERR_RT;
 }

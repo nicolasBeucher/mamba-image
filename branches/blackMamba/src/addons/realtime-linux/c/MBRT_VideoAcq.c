@@ -40,12 +40,12 @@
  * device and initialize it.
  * \param device the video device (usually /dev/video0) or the video file.
  * \param type the type of device (e.g video4linux, video4linux2, avc ...)
- * \return an error code (NO_ERR if successful)
+ * \return an error code (NO_ERR_RT if successful)
  */
 MBRT_errcode MBRT_CreateVideoAcq(char *device, MBRT_vidType type)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return ERR_RT_INVD_CTX;
     
     context->type = type;
     
@@ -54,7 +54,7 @@ MBRT_errcode MBRT_CreateVideoAcq(char *device, MBRT_vidType type)
 #ifdef MBRT_HAVE_V4L
             return MBRT_CreateVideoAcq_v4l(device);
 #else
-            return ERR_NOT_HAVE_V4L;
+            return ERR_RT_NOT_HAVE_V4L;
 #endif
             break;
         case V4L2_TYPE:
@@ -68,17 +68,17 @@ MBRT_errcode MBRT_CreateVideoAcq(char *device, MBRT_vidType type)
     }
     
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return ERR_RT_VID_TYPE;
 }
 
 /**
  * Closes the acquisition device and resets the structure
- * \return NO_ERR if successful
+ * \return NO_ERR_RT if successful
  */
 MBRT_errcode MBRT_DestroyVideoAcq()
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
         case V4L_TYPE:
@@ -86,7 +86,7 @@ MBRT_errcode MBRT_DestroyVideoAcq()
 #ifdef MBRT_HAVE_V4L
             return MBRT_DestroyVideoAcq_v4l();
 #else
-            return ERR_NOT_HAVE_V4L;
+            return ERR_RT_NOT_HAVE_V4L;
 #endif
             break;
         case V4L2_TYPE:
@@ -102,26 +102,26 @@ MBRT_errcode MBRT_DestroyVideoAcq()
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return ERR_RT_VID_TYPE;
 }
 
 /**
  * Returns the acquisition device resolution.
  * \param acq_w the width (output)
  * \param acq_h the height (output)
- * \return NO_ERR if successful
+ * \return NO_ERR_RT if successful
  */
 MBRT_errcode MBRT_GetAcqSize(int *acq_w, int *acq_h)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
         case V4L_TYPE:
 #ifdef MBRT_HAVE_V4L
             return MBRT_GetAcqSize_v4l(acq_w,acq_h);
 #else
-            return ERR_NOT_HAVE_V4L;
+            return ERR_RT_NOT_HAVE_V4L;
 #endif
             break;
         case V4L2_TYPE:
@@ -135,25 +135,25 @@ MBRT_errcode MBRT_GetAcqSize(int *acq_w, int *acq_h)
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return ERR_RT_VID_TYPE;
 }
 
 /**
  * Returns the acquisition device default framerate.
  * \param ofps the framerate in frame per second (output)
- * \return NO_ERR if successful
+ * \return NO_ERR_RT if successful
  */
 MBRT_errcode MBRT_GetAcqFrameRate(double *ofps)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
         case V4L_TYPE:
 #ifdef MBRT_HAVE_V4L
             return MBRT_GetAcqFrameRate_v4l(ofps);
 #else
-            return ERR_NOT_HAVE_V4L;
+            return ERR_RT_NOT_HAVE_V4L;
 #endif
             break;
         case V4L2_TYPE:
@@ -167,25 +167,25 @@ MBRT_errcode MBRT_GetAcqFrameRate(double *ofps)
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return ERR_RT_VID_TYPE;
 }
 
 /**
  * Obtains an image from the acquisition device
  * \param dest the mamba image filled by the device
- * \return NO_ERR if successful
+ * \return NO_ERR_RT if successful
  */
 MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
         case V4L_TYPE:
 #ifdef MBRT_HAVE_V4L
             return MBRT_GetImageFromAcq_v4l(dest);
 #else
-            return ERR_NOT_HAVE_V4L;
+            return ERR_RT_NOT_HAVE_V4L;
 #endif
             break;
         case V4L2_TYPE:
@@ -199,7 +199,7 @@ MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return ERR_RT_VID_TYPE;
 }
 
 /**
@@ -207,19 +207,19 @@ MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
  * \param destRed the mamba image filled by the device with the red channel
  * \param destGreen the mamba image filled by the device with the green channel
  * \param destBlue the mamba image filled by the device with the blue channel
- * \return NO_ERR if successful
+ * \return NO_ERR_RT if successful
  */
 MBRT_errcode MBRT_GetColorImageFromAcq(MB_Image *destRed, MB_Image *destGreen, MB_Image *destBlue)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return ERR_RT_INVD_CTX;
     
     switch(context->type){
         case V4L_TYPE:
 #ifdef MBRT_HAVE_V4L
-            return ERR_NOT_IMPLEMENTED;
+            return ERR_RT_NOT_IMPLEMENTED;
 #else
-            return ERR_NOT_HAVE_V4L;
+            return ERR_RT_NOT_HAVE_V4L;
 #endif
             break;
         case V4L2_TYPE:
@@ -233,7 +233,7 @@ MBRT_errcode MBRT_GetColorImageFromAcq(MB_Image *destRed, MB_Image *destGreen, M
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return ERR_RT_VID_TYPE;
 }
 
 
