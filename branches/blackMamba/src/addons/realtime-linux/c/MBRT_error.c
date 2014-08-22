@@ -78,8 +78,8 @@ char *err_str[] = {
  * Returns an explanation of the error code 
  */
 char *MBRT_StrErr(MBRT_errcode error_nb) {
-    if (error_nb>ERR_UNKNOWN) {
-        return err_str[ERR_UNKNOWN];
+    if (error_nb>ERR_RT_UNKNOWN) {
+        return err_str[ERR_RT_UNKNOWN];
     } else {
         return err_str[error_nb];
     }

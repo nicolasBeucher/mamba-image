@@ -38,7 +38,7 @@
  * Starts the recording. This function activates the libavformat and libavcodec
  * libraries to encode the image using MPEG2 codec (DVD format).
  * \param filename the path to the created video file
- * \return An error code (NO_ERR if successful)
+ * \return An error code (NO_ERR_RT if successful)
  */
 MBRT_errcode MBRT_RecordStart(char *filename)
 {
@@ -58,12 +58,12 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         /* Selecting the MPEG2 codec to record */
         codec = avcodec_find_encoder(AV_CODEC_ID_MPEG2VIDEO);
         if (!codec)
-            return ERR_AVC_REC_NO_CODEC;
+            return ERR_RT_AVC_REC_NO_CODEC;
         
         /* allocating the format context */
         context->rec_codctx = avcodec_alloc_context3(codec);
         if (!context->rec_codctx) {
-            return ERR_AVC_REC_CODCTX;
+            return ERR_RT_AVC_REC_CODCTX;
         }
         
         /* put sample parameters */
@@ -79,14 +79,14 @@ MBRT_errcode MBRT_RecordStart(char *filename)
 
         /* opening the codec */
         if (avcodec_open2(context->rec_codctx, codec, NULL) < 0) {
-            err = ERR_AVC_REC_CODEC_OPEN;
+            err = ERR_RT_AVC_REC_CODEC_OPEN;
             goto fb_err_avc_rec_codec_open;
         }
 
         /* creating the output file */
         context->rec_file = fopen(filename, "wb");
         if (!context->rec_file) {
-            err = ERR_AVC_REC_FILE_OPEN;
+            err = ERR_RT_AVC_REC_FILE_OPEN;
             goto fb_err_avc_rec_file_open;
         }
         
@@ -94,7 +94,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         /* first the frame in the correct format */
         context->rec_picYUV = avcodec_alloc_frame();
         if (!context->rec_picYUV) {
-            err = ERR_AVC_REC_PICT_ALLOC;
+            err = ERR_RT_AVC_REC_PICT_ALLOC;
             goto fb_err_avc_rec_pict_yuv_alloc;
         }
         (context->rec_picYUV)->format = context->rec_codctx->pix_fmt;
@@ -107,7 +107,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
                              (context->rec_picYUV)->format,
                              32);
         if (ret<0) {
-            err = ERR_AVC_REC_PICT_ALLOC;
+            err = ERR_RT_AVC_REC_PICT_ALLOC;
             goto fb_err_avc_rec_pict_yuv_image_alloc;
         }
         context->rec_picYUV->pts = 0;
@@ -116,7 +116,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         /* and converted to YUV */
         context->rec_picRGB = avcodec_alloc_frame();
         if (!context->rec_picRGB) {
-            err = ERR_AVC_REC_PICT_ALLOC;
+            err = ERR_RT_AVC_REC_PICT_ALLOC;
             goto fb_err_avc_rec_pict_rgb_alloc;
         }
         (context->rec_picRGB)->format = AV_PIX_FMT_RGB24;
@@ -129,7 +129,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
                              (context->rec_picRGB)->format,
                              32);
         if (ret<0) {
-            err = ERR_AVC_REC_PICT_ALLOC;
+            err = ERR_RT_AVC_REC_PICT_ALLOC;
             goto fb_err_avc_rec_pict_rgb_image_alloc;
         }
         
@@ -140,7 +140,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
                                               context->rec_codctx->pix_fmt,
                                               SWS_BICUBIC, NULL, NULL, NULL);
         if (!context->rec_convctx) {
-            err = ERR_AVC_REC_CONVERT_CTX;
+            err = ERR_RT_AVC_REC_CONVERT_CTX;
             goto fb_err_avc_rec_convert_ctx;
             
         }
@@ -148,7 +148,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         context->isRecording = 1;
     }
     
-    return NO_ERR;
+    return NO_ERR_RT;
     
 /* Fallback from errors */
 fb_err_avc_rec_convert_ctx:
@@ -171,7 +171,7 @@ fb_err_avc_rec_codec_open:
 
 /**
  * Ends the recording. Closes the codec and terminates the file.
- * \return An error code (NO_ERR if successful)
+ * \return An error code (NO_ERR_RT if successful)
  */
 MBRT_errcode MBRT_RecordEnd()
 {
@@ -183,7 +183,7 @@ MBRT_errcode MBRT_RecordEnd()
         for (got_output = 1; got_output; i++) {
             ret = avcodec_encode_video2(context->rec_codctx, &(context->rec_pkt), NULL, &got_output);
             if (ret < 0) 
-                return ERR_AVC_REC_ENCODE;
+                return ERR_RT_AVC_REC_ENCODE;
 
             if (got_output) {
                 fwrite(context->rec_pkt.data, 1, context->rec_pkt.size, context->rec_file);
@@ -208,13 +208,13 @@ MBRT_errcode MBRT_RecordEnd()
         context->isRecording = 0;
     }
     
-    return NO_ERR;
+    return NO_ERR_RT;
 }
 
 /**
  * Records an image 
  * \param src the mamba image to record
- * \return An error code (NO_ERR if successful)
+ * \return An error code (NO_ERR_RT if successful)
  */
 MBRT_errcode MBRT_RecordImage(MB_Image *src)
 {
@@ -226,11 +226,11 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
     
     /* if recording is not activated */
     if (context->isRecording==0) 
-        return ERR_AVC_REC_INV_CTX;
+        return ERR_RT_AVC_REC_INV_CTX;
         
     /* only 8-bit images can be recorded*/
     if (src->depth!=8) {
-        return ERR_DEPTH;
+        return ERR_RT_DEPTH;
     }
     
     /* color palette */
@@ -277,7 +277,7 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
                                     context->rec_picYUV,
                                     &got_output);
         if (ret < 0) {
-            return ERR_AVC_REC_ENCODE;
+            return ERR_RT_AVC_REC_ENCODE;
         }
         if (got_output) {
             fwrite(context->rec_pkt.data, 1, context->rec_pkt.size, context->rec_file);
@@ -286,7 +286,7 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
         context->rec_picYUV->pts++;
     }
 
-    return NO_ERR;
+    return NO_ERR_RT;
 }
 
 /**
@@ -294,7 +294,7 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
  * \param srcRed the mamba image to record (red channel)
  * \param srcGreen the mamba image to record (green channel)
  * \param srcBlue the mamba image to record (blue channel)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (NO_ERR_RT if successful)
  */
 MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Image *srcBlue)
 {
@@ -304,13 +304,13 @@ MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Imag
     
     /* if recording is not activated */
     if (context->isRecording==0) 
-        return ERR_AVC_REC_INV_CTX;
+        return ERR_RT_AVC_REC_INV_CTX;
         
     /* only 8-bit images can be recorded*/
     if ( (srcRed->depth!=8) ||
          (srcBlue->depth!=8) ||
          (srcGreen->depth!=8) ) {
-        return ERR_DEPTH;
+        return ERR_RT_DEPTH;
     }
 
     /* filling the picture in RGB */
@@ -349,7 +349,7 @@ MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Imag
                                     context->rec_picYUV,
                                     &got_output);
         if (ret < 0) {
-            return ERR_AVC_REC_ENCODE;
+            return ERR_RT_AVC_REC_ENCODE;
         }
         if (got_output) {
             fwrite(context->rec_pkt.data, 1, context->rec_pkt.size, context->rec_file);
@@ -358,5 +358,5 @@ MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Imag
         context->rec_picYUV->pts++;
     }
 
-    return NO_ERR;
+    return NO_ERR_RT;
 }

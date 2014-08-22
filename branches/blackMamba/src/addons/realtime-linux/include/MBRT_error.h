@@ -52,77 +52,77 @@
 /** Type definition for error code */
 typedef enum {
 /** Value returned by function when no error was encountered. */
-    NO_ERR,
+    NO_ERR_RT,
 /** Cannot create (memory allocation) context */
-    ERR_CANT_CREATE_CONTEXT,
+    ERR_RT_CANT_CREATE_CONTEXT,
 /** Context is not properly initialized */
-    ERR_INVD_CTX,
+    ERR_RT_INVD_CTX,
 /** Init SDL display error */
-    ERR_INIT_DISPLAY,
+    ERR_RT_INIT_DISPLAY,
 /** SDL display cannot support requested format */
-    ERR_FORMAT_DISPLAY,
+    ERR_RT_FORMAT_DISPLAY,
 /** Locking screen for updating failure */
-    ERR_LOCK_DISPLAY,
+    ERR_RT_LOCK_DISPLAY,
 /** Incorrect display (not initialized) error */
-    ERR_INVALID_DISPLAY,
+    ERR_RT_INVALID_DISPLAY,
 /** Video acquisition module error */
-    ERR_VID,
+    ERR_RT_VID,
 /** Function is not implemented for video device */
-    ERR_NOT_IMPLEMENTED,
+    ERR_RT_NOT_IMPLEMENTED,
 /** Cannot open video device */
-    ERR_OPEN_VID,
+    ERR_RT_OPEN_VID,
 /** Video for linux 1 (V4L) is not supported */
-    ERR_NOT_HAVE_V4L,
+    ERR_RT_NOT_HAVE_V4L,
 /** Not a video for linux device */
-    ERR_V4L_VID,
+    ERR_RT_V4L_VID,
 /** Not a video for linux 2 device */
-    ERR_V4L2_VID,
+    ERR_RT_V4L2_VID,
 /** Device does not support streaming */
-    ERR_STRM_VID,
+    ERR_RT_STRM_VID,
 /** Cannot obtain device resolution capabilities */
-    ERR_CAP_VID,
+    ERR_RT_CAP_VID,
 /** Cannot set device format */
-    ERR_FMT_VID,
+    ERR_RT_FMT_VID,
 /** Unsupported palette format */
-    ERR_PAL_VID,
+    ERR_RT_PAL_VID,
 /** Type of the video acquisition is incorrect */
-    ERR_VID_TYPE,
+    ERR_RT_VID_TYPE,
 /** The depth of the mamba image given in argument is incompatible */
-    ERR_DEPTH,
+    ERR_RT_DEPTH,
 /** The size of the mamba image given in argument is incompatible */
-    ERR_SIZE,
+    ERR_RT_SIZE,
 /** Cannot open the video file */
-    ERR_AVC_VID_OPEN,
+    ERR_RT_AVC_VID_OPEN,
 /** Cannot retrieve video stream information */
-    ERR_AVC_STREAM_INFO,
+    ERR_RT_AVC_STREAM_INFO,
 /** No video stream present in video file */
-    ERR_AVC_NO_VID_STREAM,
+    ERR_RT_AVC_NO_VID_STREAM,
 /** Cannot find appropriate video decoder */
-    ERR_AVC_NO_CODEC,
+    ERR_RT_AVC_NO_CODEC,
 /** Cannot open the video codec */
-    ERR_AVC_CODEC_OPEN,
+    ERR_RT_AVC_CODEC_OPEN,
 /** Cannot allocate the video frame */
-    ERR_AVC_FRAME_ALLOC,
+    ERR_RT_AVC_FRAME_ALLOC,
 /** Cannot decode video frame */
-    ERR_AVC_DECODING,
+    ERR_RT_AVC_DECODING,
 /** Cannot allocate codec context for recording */
-    ERR_AVC_REC_CODCTX,
+    ERR_RT_AVC_REC_CODCTX,
 /** Cannot find appropriate video decoder for recording */
-    ERR_AVC_REC_NO_CODEC,
+    ERR_RT_AVC_REC_NO_CODEC,
 /** Cannot open the video codec for recording */
-    ERR_AVC_REC_CODEC_OPEN,
+    ERR_RT_AVC_REC_CODEC_OPEN,
 /** Cannot allocate picture for recording */
-    ERR_AVC_REC_PICT_ALLOC,
+    ERR_RT_AVC_REC_PICT_ALLOC,
 /** Cannot open the output file for recording */
-    ERR_AVC_REC_FILE_OPEN,
+    ERR_RT_AVC_REC_FILE_OPEN,
 /** Cannot create the rgb->yuv converter */
-    ERR_AVC_REC_CONVERT_CTX,
+    ERR_RT_AVC_REC_CONVERT_CTX,
 /** Cannot encode the image for recording */
-    ERR_AVC_REC_ENCODE,
+    ERR_RT_AVC_REC_ENCODE,
 /** Invalid recording context (not started) */
-    ERR_AVC_REC_INV_CTX,
+    ERR_RT_AVC_REC_INV_CTX,
 /** Unknown error */
-    ERR_UNKNOWN
+    ERR_RT_UNKNOWN
 } MBRT_errcode;
 
 /****************************************/

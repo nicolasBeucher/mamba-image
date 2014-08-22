@@ -1,6 +1,6 @@
 Mamba Realtime for Windows
 
-Release 1.1.1
+Release 2.0
 
 ====================================================================
 Mamba Realtime
