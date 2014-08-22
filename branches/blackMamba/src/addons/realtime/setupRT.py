@@ -1,4 +1,3 @@
-
 # setup.py
 # This is the distutils setup function of Mamba Image library realtime module
 import distutils
@@ -21,102 +20,90 @@ def getVersion(filename):
 ################################################################################
 # Extension modules and Packages
 ################################################################################
+# The compilation is heavily platform dependant.
+# Almost nothing in the C code is common between windows and linux
 
-DEF_MACROS = []
-SWIGDEF64 = []
+if platform.system()=='Linux':
 
+    MBRT_DEF_MACROS = []
 
-DEF_MACROS = [('__STDC_CONSTANT_MACROS',None),('_CRT_SECURE_NO_WARNINGS',None)]
-SWIGDEF64 = []
+    MBRT_API_SRC = [
+        "MBRT_VideoAcq",
+        "MBRT_VideoAcq_v4l",
+        "MBRT_VideoAcq_v4l2",
+        "MBRT_VideoAcq_avc",
+        "MBRT_error",
+        "MBRT_Display",
+        "MBRT_Context",
+        "MBRT_Record"
+    ]
+    MBRT_SRC_DIR = "c-linux"
+    MBRT_SRC_EXT = ".c"
+    MBRT_SWIG_OPTS = ['-I./include',
+                      '-I/usr/include/ffmpeg',
+                      '-outdir','python/mambaRealtime']
+    MBRT_INC_DIRS = ['./include',
+                     '/usr/include/ffmpeg']
+    MBRT_LIBS = ['SDL','v4l2','v4l1','avformat','avcodec','swscale']
+    MBRT_LIB_DIRS = []
+    MBRT_PACKAGE_DATA = {}
 
-# Realtime module and associated package
-#"""""""""""""""""""""""""""""""""""""""
+elif platform.system()=='Windows':
 
-# This is the realtime module for linux platforms
+    MBRT_DEF_MACROS = [('__STDC_CONSTANT_MACROS',None),('_CRT_SECURE_NO_WARNINGS',None)]
+    MBRT_API_SRC = [
+        "MBRT_VideoAcq",
+        "MBRT_VideoAcq_dshow",
+        "MBRT_VideoAcq_avc",
+        "MBRT_error",
+        "MBRT_Display",
+        "MBRT_Context",
+        "MBRT_Record"
+    ]
+    MBRT_SRC_DIR = "c-win"
+    MBRT_SRC_EXT = ".cpp"
+    MBRT_SWIG_OPTS = ['-I./include',
+                      '-c++',
+                      '-outdir','python/mambaRealtime/']
+    MBRT_INC_DIRS = ['./include',
+                     # modify the following lines accordingly
+                     'D:/SDL-1.2.14/include', 
+                     'D:/ffmpeg-r26400-swscale-r32676-mingw32-shared-dev/include']
+    MBRT_LIBS = ["kernel32","user32","gdi32","winspool","comdlg32",
+                 "advapi32","shell32","ole32","oleaut32","uuid",
+                 "odbc32","odbccp32","strmiids","SDL","SDLmain",
+                 "avcodec","avutil","avformat","swscale"]
+    MBRT_LIB_DIRS = ["./lib"]
+    # Copying all the DLLs found in the lib directory into the mambaRealtime package
+    list_dll = glob.glob('lib/*.dll')
+    packages_data_dll = []
+    for dll in list_dll:
+        shutil.copyfile(dll, 'python/mambaRealtime/'+os.path.basename(dll))
+        packages_data_dll.append(os.path.basename(dll))
+    MBRT_PACKAGE_DATA = {"mambaRealtime":packages_data_dll}
 
 # List of source files for realtime module
 MBRT_API_SWIG = os.path.join("swig","mambaRTApi.i")
 
-MBRT_API_SRC = [
-    "MBRT_VideoAcq","MBRT_VideoAcq_v4l","MBRT_VideoAcq_v4l2","MBRT_VideoAcq_avc",
-    "MBRT_error","MBRT_Display","MBRT_Context","MBRT_Record"
-    ]
-MBRT_API_SRC.sort() #Compilation in alphabetic order 
-
 filesRT = []
 filesRT.append(MBRT_API_SWIG)
 for s in MBRT_API_SRC:
-    filesRT.append(os.path.join("c", s + ".c"))
-    
-# swig options
-RT_SWIG_OPTS = SWIGDEF64+['-I./include',
-                            '-I./include-private',
-                            '-I../../commons',
-                            '-I/usr/include/ffmpeg',
-                            '-outdir','python/mambaRealtime']
+    filesRT.append(os.path.join(MBRT_SRC_DIR, s + MBRT_SRC_EXT))
 
 # add it to extensions
-EXTENSIONS.append(
+EXTENSIONS = [
     Extension("mambaRealtime._mambaRTCore",
-                filesRT,
-                swig_opts=RT_SWIG_OPTS,
-                include_dirs=['./include','./include-private','/usr/include/ffmpeg','../../commons'],
-                define_macros=DEF_MACROS,
-                libraries=['SDL','v4l2','v4l1','avformat','avcodec','swscale'])
-                )
-
-# This version of the module works only for Windows platform
-
-# List of source files for realtime module
-MBRT_API_SWIG = os.path.join("swig","mambaRTApi.i")
-
-MBRT_API_SRC = [
-    "MBRT_VideoAcq", "MBRT_VideoAcq_dshow", "MBRT_VideoAcq_avc",
-    "MBRT_error",
-    "MBRT_Display",
-    "MBRT_Context", "MBRT_Record"
-    ]
-MBRT_API_SRC.sort() #Compilation in alphabetic order 
-
-filesRT = []
-filesRT.append(MBRT_API_SWIG)
-for s in MBRT_API_SRC:
-    filesRT.append(os.path.join("c", s + ".cpp"))
-    
-# swig options
-RT_SWIG_OPTS = SWIGDEF64+['-I./include',
-                          '-I./include-private',
-                          '-I../../commons',
-                          '-c++',
-                          '-outdir','python/mambaRealtime/']
-
-# adding it to extensions
-EXTENSIONS.append(
-    Extension("mambaRealtime._mambaRTCore",
-                filesRT,
-                swig_opts=RT_SWIG_OPTS,
-                include_dirs=['./include',
-                            '../../commons',
-                            'D:/SDL-1.2.14/include', #<-modify this line accordingly
-                            'D:/ffmpeg-r26400-swscale-r32676-mingw32-shared-dev/include', #<-modify this line accordingly
-                            './include-private'],
-                libraries=["kernel32","user32","gdi32","winspool","comdlg32",
-                           "advapi32","shell32","ole32","oleaut32","uuid",
-                           "odbc32","odbccp32","strmiids","SDL","SDLmain",
-                           "avcodec","avutil","avformat","swscale"],
-                library_dirs=['./lib'],
-                define_macros=DEF_MACROS)
-                )
-
-# Copying all the DLLs found in the lib directory into the mambaRealtime package
-list_dll = glob.glob('lib/*.dll')
-packages_data_dll = []
-for dll in list_dll:
-    shutil.copyfile(dll, 'python/mambaRealtime/'+os.path.basename(dll))
-    packages_data_dll.append(os.path.basename(dll))
+              filesRT,
+              swig_opts=MBRT_SWIG_OPTS,
+              include_dirs=MBRT_INC_DIRS,
+              define_macros=MBRT_DEF_MACROS,
+              libraries=MBRT_LIBS,
+              library_dirs=MBRT_LIB_DIRS,
+             )
+]
 
 PACKAGES = ['mambaRealtime']
-    
+
 ################################################################################
 # Meta-data
 ################################################################################
@@ -136,10 +123,10 @@ setup(name = NAME,
       description = DESCRIPTION,
       version = VERSION,
       url = HOMEPAGE,
-      license = "License X11",
+      license = "GPLv3",
       long_description = DESCRIPTION,
       ext_modules = EXTENSIONS,
       packages = PACKAGES,
       package_dir = {'': 'python'},
-      package_data = {'mambaRealtime': packages_data_dll}
-      )
+      package_data = MBRT_PACKAGE_DATA
+)
