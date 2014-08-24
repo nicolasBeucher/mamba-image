@@ -68,6 +68,8 @@ typedef enum {
     EVENT_PROCESS,
 /** Event to activate or deactive the pause */
     EVENT_PAUSE,
+/** Event to modify the palette */
+    EVENT_PALETTE,
 /** Event to activate or deactive the color */
     EVENT_COLOR
 } MBRT_eventcode;

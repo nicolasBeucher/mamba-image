@@ -171,12 +171,8 @@ typedef struct {
     Uint32 sz_x;
     /** display size (height) */
     Uint32 sz_y;
-    /** color palette */
-    SDL_Color color_palette[256];
-    /** standard palette */
-    SDL_Color standard_palette[256];
-    /** is palette active or not ? */
-    Uint32 isPalettized;
+    /** palette */
+    SDL_Color palette[256];
     /** framerate information and display */
     Uint32 isFpsDisplayed;
     /** call time history to compute a mean framerate */
