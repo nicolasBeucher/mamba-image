@@ -37,6 +37,23 @@
 MBRT_Context *context = NULL;
 
 /**
+ * Initialize the library.
+ * Need to be called before anythong else.
+ */
+MBRT_errcode MBRT_Initialize()
+{
+    MBRT_errcode err = MBRT_NO_ERR;
+    
+    /* Initialize COM before anything else for this library to work */
+    if (FAILED(CoInitializeEx(NULL, COINIT_APARTMENTTHREADED)))
+    {
+        err = MBRT_ERR_INIT;
+    }
+    
+    return err;
+}
+
+/**
  * Creates the context used throughout the library. The context describes the
  * data displayed, the device used for acquisition, and contains general 
  * information needed by all the functions
