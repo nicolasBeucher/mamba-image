@@ -29,7 +29,6 @@ if platform.system()=='Linux':
 
     MBRT_API_SRC = [
         "MBRT_VideoAcq",
-        "MBRT_VideoAcq_v4l",
         "MBRT_VideoAcq_v4l2",
         "MBRT_VideoAcq_avc",
         "MBRT_error",
@@ -50,7 +49,9 @@ if platform.system()=='Linux':
 
 elif platform.system()=='Windows':
 
-    MBRT_DEF_MACROS = [('__STDC_CONSTANT_MACROS',None),('_CRT_SECURE_NO_WARNINGS',None)]
+    MBRT_DEF_MACROS = [('MBRT_WIN',None),
+                       ('__STDC_CONSTANT_MACROS',None),
+                       ('_CRT_SECURE_NO_WARNINGS',None)]
     MBRT_API_SRC = [
         "MBRT_VideoAcq",
         "MBRT_VideoAcq_dshow",
