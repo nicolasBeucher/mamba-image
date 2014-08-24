@@ -39,7 +39,7 @@
  * codec (AVC) library.
  * \param video_path path to the video file (supported codec depend on your local
  * implementation of the libavcodec)
- * \return an error code (NO_ERR_RT if successful)
+ * \return an error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
 {
@@ -67,13 +67,13 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* opening the video file */
     format_ctx = avformat_alloc_context();
     if(avformat_open_input(&format_ctx, video_path, NULL, NULL)!=0) {
-        return ERR_RT_AVC_VID_OPEN;
+        return MBRT_ERR_AVC_VID_OPEN;
     }
     context->video.avc.format_ctx = format_ctx;
     
     /* Retrieving stream information */
     if(avformat_find_stream_info(format_ctx, NULL)<0) {
-        return ERR_RT_AVC_STREAM_INFO;
+        return MBRT_ERR_AVC_STREAM_INFO;
     }
     
     /* Retrieving the video stream number in the file */
@@ -86,7 +86,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         }
     }
     if(context->video.avc.videoStream==-1) {
-        return ERR_RT_AVC_NO_VID_STREAM; 
+        return MBRT_ERR_AVC_NO_VID_STREAM; 
     }
     
     /* codec pointer is extracted */
@@ -96,30 +96,30 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* finding the decoder for the video stream */
     codec=avcodec_find_decoder(codec_ctx->codec_id);
     if(codec==NULL) {
-        return ERR_RT_AVC_NO_CODEC;
+        return MBRT_ERR_AVC_NO_CODEC;
     }
 
     /* opening the codec */
     if(avcodec_open2(codec_ctx, codec, NULL)<0) {
-        return ERR_RT_AVC_CODEC_OPEN; 
+        return MBRT_ERR_AVC_CODEC_OPEN; 
     }
 
     /* creating the video frames */
     /* extracted frame */
     context->video.avc.frame=avcodec_alloc_frame();
     if(context->video.avc.frame==NULL) {
-        return ERR_RT_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     /* yuv frame */
     context->video.avc.yuvframe=avcodec_alloc_frame();
     if(context->video.avc.yuvframe==NULL) {
-        return ERR_RT_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     size = avpicture_get_size(PIX_FMT_YUV420P, codec_ctx->width, codec_ctx->height);
     picture_buf = av_malloc(size);
     if (!picture_buf) {
         av_free(context->video.avc.yuvframe);
-        return ERR_RT_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     avpicture_fill((AVPicture *)context->video.avc.yuvframe,
                    picture_buf,
@@ -129,13 +129,13 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* rgb frame */
     context->video.avc.rgbframe=avcodec_alloc_frame();
     if(context->video.avc.rgbframe==NULL) {
-        return ERR_RT_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     size = avpicture_get_size(PIX_FMT_RGB24, codec_ctx->width, codec_ctx->height);
     picture_buf = av_malloc(size);
     if (!picture_buf) {
         av_free(context->video.avc.rgbframe);
-        return ERR_RT_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     avpicture_fill((AVPicture *)context->video.avc.rgbframe,
                    picture_buf,
@@ -146,13 +146,13 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* initializing some values */
     context->video.avc.packet.data=NULL;
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 
 /**
  * Closes the video file playback (AVC) and resets the structure
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_DestroyVideoAcq_avc()
 {
@@ -164,26 +164,26 @@ MBRT_errcode MBRT_DestroyVideoAcq_avc()
     if (context->video.avc.format_ctx != NULL)
         avformat_close_input(&context->video.avc.format_ctx);
 
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 /**
  * Returns the video played size (AVC).
  * \param acq_w the width (output)
  * \param acq_h the height (output)
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqSize_avc(int *acq_w, int *acq_h)
 {
     *acq_h = context->video.avc.codec_ctx->height;
     *acq_w = context->video.avc.codec_ctx->width;
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Returns the acquisition device default framerate (AVC).
  * \param ofps the framerate in frame per second (output)
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqFrameRate_avc(double *ofps)
 {
@@ -193,13 +193,13 @@ MBRT_errcode MBRT_GetAcqFrameRate_avc(double *ofps)
     
     *ofps = ((double) r_fps.num);
     *ofps /= ((double) r_fps.den);
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Obtains an image from the video (AVC)
  * \param dest the mamba image filled by the device
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
     int nb_bytes;
@@ -215,7 +215,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
 
     /* only 8-bit images can be filled*/
     if (dest->depth!=8) {
-        return ERR_RT_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* reading the frame of the video stream */
@@ -242,7 +242,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
             packet
         );
         if(nb_bytes < 0) {
-            return ERR_RT_AVC_DECODING;
+            return MBRT_ERR_AVC_DECODING;
         }
         
         if (isFrameComplete) {
@@ -276,7 +276,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
         }
     }
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -285,7 +285,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
  * \param destGreen the mamba image filled by the device with the green channel
  * \param destBlue the mamba image filled by the device with the blue channel
  * 
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGreen, MB_Image *destBlue)
 {
@@ -304,7 +304,7 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
     if ( (destRed->depth!=8) ||
          (destBlue->depth!=8) ||
          (destGreen->depth!=8) ) {
-        return ERR_RT_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* reading the frame of the video stream */
@@ -331,7 +331,7 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
             packet
         );
         if(nb_bytes < 0) {
-            return ERR_RT_AVC_DECODING;
+            return MBRT_ERR_AVC_DECODING;
         }
         
         if (isFrameComplete) {
@@ -372,5 +372,5 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
         }
     }
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }

@@ -91,7 +91,7 @@
 #define HISTO_COLOR     0xffffff
 
 /** size of the recording icon */
-#define REC_SIZE 16
+#define REC_SIZE 64
 /** color of the recording icon */
 #define REC_COLOR  0xc00000
 
@@ -188,7 +188,9 @@ typedef struct {
     /** is histogram active or not ? */
     Uint32 isHistoDisplayed;
     /** icon array */
-    Uint8 icon[256];
+    int iconw;
+    int iconh;
+    Uint32 icon[128];
     /** is fullscreen active or not ?*/
     Sint32 isFullscreen;
     /** is recording in progress or not ? */

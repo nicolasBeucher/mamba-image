@@ -41,7 +41,7 @@
  * Fills the video acquisition (V4L2) structure with the parameters of the given
  * device and initializes it.
  * \param device the video device (usually /dev/video0)
- * \return an error code (NO_ERR_RT if successful)
+ * \return an error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
 {
@@ -56,17 +56,17 @@ MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
     /* opening the device */
     context->fd = v4l2_open(device, O_RDWR);
     if(context->fd<0) {
-        return ERR_RT_OPEN_VID;
+        return MBRT_ERR_OPEN_VID;
     }
     
     /* is the device a valid video for linux 2 device? */
     if (v4l2_ioctl(context->fd, VIDIOC_QUERYCAP, &cap) < 0) {
-        return ERR_RT_V4L2_VID;
+        return MBRT_ERR_V4L2_VID;
     }
 
     /* the device must be a capture device (take pictures and support streaming)*/
     if (!(cap.capabilities & (V4L2_CAP_VIDEO_CAPTURE|V4L2_CAP_STREAMING))) {
-        return ERR_RT_STRM_VID;
+        return MBRT_ERR_STRM_VID;
     }
     
     /* Select video input, video standard and tune here. */
@@ -96,7 +96,7 @@ MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
     fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUV420;
     fmt.fmt.pix.field       = V4L2_FIELD_INTERLACED; /* is this needed ?? */
     if (v4l2_ioctl(context->fd, VIDIOC_S_FMT, &fmt) < 0) {
-        return ERR_RT_FMT_VID;
+        return MBRT_ERR_FMT_VID;
     }
     /* VIDIOC_S_FMT may change width and height so... */
     context->video.v4l2.w = fmt.fmt.pix.width;
@@ -109,13 +109,13 @@ MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
     req.memory              = V4L2_MEMORY_MMAP;
     if ((v4l2_ioctl(context->fd, VIDIOC_REQBUFS, &req) < 0) ||
         (req.count < 2) ) {
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
 
     /* allocation the buffers */
     context->video.v4l2.buffers = calloc (req.count, sizeof (*(context->video.v4l2.buffers)));
     if (!(context->video.v4l2.buffers)) {
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
 
     /* init of each buffer and memory mapping */
@@ -130,7 +130,7 @@ MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
         buf.memory      = V4L2_MEMORY_MMAP;
         buf.index       = context->video.v4l2.n_buffers;
         if (v4l2_ioctl(context->fd, VIDIOC_QUERYBUF, &buf) < 0) {
-            return ERR_RT_VID;
+            return MBRT_ERR_VID;
         }
 
         /* memory mapping */
@@ -143,7 +143,7 @@ MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
                               context->fd, buf.m.offset);
 
         if (MAP_FAILED == context->video.v4l2.buffers[context->video.v4l2.n_buffers].start){
-            return ERR_RT_VID;
+            return MBRT_ERR_VID;
         }
     }
 
@@ -155,21 +155,21 @@ MBRT_errcode MBRT_CreateVideoAcq_v4l2(char *device)
         buf.memory      = V4L2_MEMORY_MMAP;
         buf.index       = i;
         if (v4l2_ioctl (context->fd, VIDIOC_QBUF, &buf) < 0 ){
-            return ERR_RT_VID;
+            return MBRT_ERR_VID;
         }
     }
     /* starting the stream */
     type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
     if (v4l2_ioctl (context->fd, VIDIOC_STREAMON, &type) < 0){
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Closes the acquisition device (V4L2) and resets the structure
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_DestroyVideoAcq_v4l2()
 {
@@ -189,38 +189,38 @@ MBRT_errcode MBRT_DestroyVideoAcq_v4l2()
     /* if the device exists it is destroyed */
     v4l2_close(context->fd);
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Returns the acquisition device resolution (V4L2).
  * \param acq_w the width (output)
  * \param acq_h the height (output)
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqSize_v4l2(int *acq_w, int *acq_h)
 {
     *acq_h = context->video.v4l2.h;
     *acq_w = context->video.v4l2.w;
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Returns the acquisition device default framerate (V4L2).
  * \param ofps the framerate in frame per second (output)
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqFrameRate_v4l2(double *ofps)
 {
     *ofps = 10.0f;
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Obtains an image from the acquisition device (V4L2)
  * \param dest the mamba image filled by the device
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetImageFromAcq_v4l2(MB_Image *dest) {
     struct v4l2_buffer buf;
@@ -232,14 +232,14 @@ MBRT_errcode MBRT_GetImageFromAcq_v4l2(MB_Image *dest) {
 
     /* only 8-bit images can be filled*/
     if (dest->depth!=8) {
-        return ERR_RT_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
 
     if (v4l2_ioctl(context->fd, VIDIOC_DQBUF, &buf) < 0) {
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     if(buf.index >= context->video.v4l2.n_buffers){
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     
     ptr = (PLINE) (context->video.v4l2.buffers[buf.index].start);
@@ -247,10 +247,10 @@ MBRT_errcode MBRT_GetImageFromAcq_v4l2(MB_Image *dest) {
     memcpy(dest->pixels, ptr, context->video.v4l2.w*context->video.v4l2.h);
 
     if (v4l2_ioctl (context->fd, VIDIOC_QBUF, &buf) < 0) {
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 static inline PIX8 CLAMP_255(int value)
@@ -264,7 +264,7 @@ static inline PIX8 CLAMP_255(int value)
  * \param destGreen the mamba image filled by the device with the green channel
  * \param destBlue the mamba image filled by the device with the blue channel
  * 
- * \return NO_ERR_RT if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetColorImageFromAcq_v4l2(MB_Image *destRed, MB_Image *destGreen, MB_Image *destBlue)
 {
@@ -281,14 +281,14 @@ MBRT_errcode MBRT_GetColorImageFromAcq_v4l2(MB_Image *destRed, MB_Image *destGre
     if ( (destRed->depth!=8) ||
          (destBlue->depth!=8) ||
          (destGreen->depth!=8) ) {
-        return ERR_RT_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
 
     if (v4l2_ioctl(context->fd, VIDIOC_DQBUF, &buf) < 0) {
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     if(buf.index >= context->video.v4l2.n_buffers){
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     
     ptr = (PLINE) (context->video.v4l2.buffers[buf.index].start);
@@ -310,9 +310,9 @@ MBRT_errcode MBRT_GetColorImageFromAcq_v4l2(MB_Image *destRed, MB_Image *destGre
     }
 
     if (v4l2_ioctl (context->fd, VIDIOC_QBUF, &buf) < 0) {
-        return ERR_RT_VID;
+        return MBRT_ERR_VID;
     }
     
-    return NO_ERR_RT;
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
+    return MBRT_NO_ERR;
 }
