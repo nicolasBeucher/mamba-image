@@ -5,6 +5,7 @@ It provides functions to open the realtime thread and communicate with it.
 import threading
 import time
 import sys
+import platform
 try:
     import queue
 except ImportError:
@@ -38,22 +39,91 @@ _REC_START = 8
 _REC_STOP = 9
 _ERR_DEL = 10
 
+_errorIcon = [
+    0b00000000000000000000000000000000, 0b00000000000000000000000000000000,
+    0b00000000000000000000000000000011, 0b11000000000000000000000000000000,
+    0b00000000000000000000000000000011, 0b11000000000000000000000000000000,
+    0b00000000000000000000000000000110, 0b01100000000000000000000000000000,
+    0b00000000000000000000000000000110, 0b01100000000000000000000000000000,
+    0b00000000000000000000000000001100, 0b00110000000000000000000000000000,
+    0b00000000000000000000000000001100, 0b00110000000000000000000000000000,
+    0b00000000000000000000000000011000, 0b00011000000000000000000000000000,
+    0b00000000000000000000000000011000, 0b00011000000000000000000000000000,
+    0b00000000000000000000000000110000, 0b00001100000000000000000000000000,
+    0b00000000000000000000000000110000, 0b00001100000000000000000000000000,
+    0b00000000000000000000000001100000, 0b00000110000000000000000000000000,
+    0b00000000000000000000000001100000, 0b00000110000000000000000000000000,
+    0b00000000000000000000000011000000, 0b00000011000000000000000000000000,
+    0b00000000000000000000000011000011, 0b11000011000000000000000000000000,
+    0b00000000000000000000000110000011, 0b11000001100000000000000000000000,
+    0b00000000000000000000000110000011, 0b11000001100000000000000000000000,
+    0b00000000000000000000001100000011, 0b11000000110000000000000000000000,
+    0b00000000000000000000001100000011, 0b11000000110000000000000000000000,
+    0b00000000000000000000011000000011, 0b11000000011000000000000000000000,
+    0b00000000000000000000011000000011, 0b11000000011000000000000000000000,
+    0b00000000000000000000110000000011, 0b11000000001100000000000000000000,
+    0b00000000000000000000110000000011, 0b11000000001100000000000000000000,
+    0b00000000000000000001100000000011, 0b11000000000110000000000000000000,
+    0b00000000000000000001100000000011, 0b11000000000110000000000000000000,
+    0b00000000000000000011000000000011, 0b11000000000011000000000000000000,
+    0b00000000000000000011000000000011, 0b11000000000011000000000000000000,
+    0b00000000000000000110000000000011, 0b11000000000001100000000000000000,
+    0b00000000000000000110000000000011, 0b11000000000001100000000000000000,
+    0b00000000000000001100000000000011, 0b11000000000000110000000000000000,
+    0b00000000000000001100000000000011, 0b11000000000000110000000000000000,
+    0b00000000000000011000000000000011, 0b11000000000000011000000000000000,
+    0b00000000000000011000000000000011, 0b11000000000000011000000000000000,
+    0b00000000000000110000000000000011, 0b11000000000000001100000000000000,
+    0b00000000000000110000000000000011, 0b11000000000000001100000000000000,
+    0b00000000000001100000000000000011, 0b11000000000000000110000000000000,
+    0b00000000000001100000000000000011, 0b11000000000000000110000000000000,
+    0b00000000000011000000000000000011, 0b11000000000000000011000000000000,
+    0b00000000000011000000000000000011, 0b11000000000000000011000000000000,
+    0b00000000000110000000000000000011, 0b11000000000000000001100000000000,
+    0b00000000000110000000000000000011, 0b11000000000000000001100000000000,
+    0b00000000001100000000000000000011, 0b11000000000000000000110000000000,
+    0b00000000001100000000000000000011, 0b11000000000000000000110000000000,
+    0b00000000011000000000000000000011, 0b11000000000000000000011000000000,
+    0b00000000011000000000000000000011, 0b11000000000000000000011000000000,
+    0b00000000110000000000000000000011, 0b11000000000000000000001100000000,
+    0b00000000110000000000000000000011, 0b11000000000000000000001100000000,
+    0b00000001100000000000000000000011, 0b11000000000000000000000110000000,
+    0b00000001100000000000000000000011, 0b11000000000000000000000110000000,
+    0b00000011000000000000000000000011, 0b11000000000000000000000011000000,
+    0b00000011000000000000000000000011, 0b11000000000000000000000011000000,
+    0b00000110000000000000000000000011, 0b11000000000000000000000001100000,
+    0b00000110000000000000000000000011, 0b11000000000000000000000001100000,
+    0b00001100000000000000000000000000, 0b00000000000000000000000000110000,
+    0b00001100000000000000000000000000, 0b00000000000000000000000000110000,
+    0b00011000000000000000000000000011, 0b11000000000000000000000000011000,
+    0b00011000000000000000000000000011, 0b11000000000000000000000000011000,
+    0b00110000000000000000000000000011, 0b11000000000000000000000000001100,
+    0b00110000000000000000000000000011, 0b11000000000000000000000000001100,
+    0b01100000000000000000000000000000, 0b00000000000000000000000000000110,
+    0b01100000000000000000000000000000, 0b00000000000000000000000000000110,
+    0b01111111111111111111111111111111, 0b11111111111111111111111111111110,
+    0b01111111111111111111111111111111, 0b11111111111111111111111111111110,
+    0b00000000000000000000000000000000, 0b00000000000000000000000000000000,
+]
+
 ###############################################################################
 #  Definitions
-DSHOW = mambaRTCore.DSHOW_TYPE
-""" Value to use when using a directshow video API device"""
+if platform.system()=='Windows':
+    """ Value to use when using a directshow video API device"""
+    DSHOW = mambaRTCore.DSHOW_TYPE
 
-V4L2 = mambaRTCore.V4L2_TYPE
-""" Value to use when using a video for linux 2 api device"""
+if platform.system()=='Linux':
+    """ Value to use when using a video for linux 2 api device"""
+    V4L2 = mambaRTCore.V4L2_TYPE
 
-AVC = mambaRTCore.AVC_TYPE
 """ Value to use when using a video file (through audio video codec API)"""
+AVC = mambaRTCore.AVC_TYPE
 
-SEQUENTIAL = 1
 """ Value to use when the process uses an image sequence"""
+SEQUENTIAL = 1
 
-INSTANT = 0
 """ Value to use when the process uses only the last image from the video device"""
+INSTANT = 0
 
 
 ################################################################################
@@ -83,13 +153,11 @@ class _MBRT_Item:
 class _MBRT_Thread(threading.Thread):
     # Thread for the acquisition, process and display of the video
     
-    def __init__(self, device, vidtype, queue, seqdepth=10):
+    def __init__(self, queue, seqdepth=10):
         threading.Thread.__init__(self)
         self.daemon = True
         self.q = queue
         self.seqDepth = seqdepth
-        self.device = device
-        self.vidType = vidtype
         self.mustStop = False
         
     def run(self):
@@ -100,7 +168,6 @@ class _MBRT_Thread(threading.Thread):
         self.pauseOn = False
         self.colorOn = False
         self.recOn = False
-        self.deviceCreated = False
         self.displayCreated = False
         self.error = ""
         self.curIcon = None
@@ -158,24 +225,13 @@ class _MBRT_Thread(threading.Thread):
         # specific information. This allow to create the mamba images and
         # sequences.
         
-        err = mambaRTCore.MBRT_CreateContext()
-        if err!=mambaRTCore.NO_ERR_RT:
-            self.error = mambaRTCore.MBRT_StrErr(err)
-            self.mustStop = True
-            return (0,0)
-        err = mambaRTCore.MBRT_CreateVideoAcq(self.device, self.vidType)
-        if err!=mambaRTCore.NO_ERR_RT:
-            self.error = mambaRTCore.MBRT_StrErr(err)
-            self.mustStop = True
-            return (0,0)
-        self.deviceCreated = True
         err,w,h = mambaRTCore.MBRT_GetAcqSize()
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             self.error = mambaRTCore.MBRT_StrErr(err)
             self.mustStop = True
             return (0,0)
         err, freq = mambaRTCore.MBRT_GetAcqFrameRate()
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             self.error = mambaRTCore.MBRT_StrErr(err)
             self.mustStop = True
             return (0,0)
@@ -198,7 +254,7 @@ class _MBRT_Thread(threading.Thread):
         # Creates the display for width w and height h
         if not self.mustStop:
             err = mambaRTCore.MBRT_CreateDisplay(w, h)
-            if err!=mambaRTCore.NO_ERR_RT:
+            if err!=mambaRTCore.MBRT_NO_ERR:
                 self.error = mambaRTCore.MBRT_StrErr(err)
                 self.mustStop = True
                 return
@@ -206,8 +262,6 @@ class _MBRT_Thread(threading.Thread):
             
     def closeAll(self):
         # Closes all the created strcutures and components
-        if self.deviceCreated:
-            mambaRTCore.MBRT_DestroyVideoAcq()
         if self.displayCreated:
             mambaRTCore.MBRT_DestroyDisplay()
         mambaRTCore.MBRT_StopAcq()
@@ -219,7 +273,7 @@ class _MBRT_Thread(threading.Thread):
         # Changes the display color palette
         try:
             err = mambaRTCore.MBRT_PaletteDisplay(list(pal))
-            if err!=mambaRTCore.NO_ERR_RT:
+            if err!=mambaRTCore.MBRT_NO_ERR:
                 self.error = mambaRTCore.MBRT_StrErr(err)
             else:
                 self.palette = pal
@@ -261,7 +315,7 @@ class _MBRT_Thread(threading.Thread):
                 # recording is started
                 if not self.recOn:
                     err = mambaRTCore.MBRT_RecordStart(item.value)
-                    if err!=mambaRTCore.NO_ERR_RT:
+                    if err!=mambaRTCore.MBRT_NO_ERR:
                         self.error = mambaRTCore.MBRT_StrErr(err)
                     else:
                         self.recOn = True
@@ -316,7 +370,7 @@ class _MBRT_Thread(threading.Thread):
     def handleScreenEvents(self):
         # Handles the events occuring within the display (close, key, mouse ...)
         err, event_code = mambaRTCore.MBRT_PollDisplay()
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             self.error = mambaRTCore.MBRT_StrErr(err)
             self.mustStop = True
         elif event_code == mambaRTCore.EVENT_CLOSE:
@@ -416,7 +470,7 @@ class _MBRT_Thread(threading.Thread):
                                     self.blueSeq[self.seqIndex].mbIm)
         else:
             err = mambaRTCore.MBRT_GetImageFromAcq(self.redSeq[self.seqIndex].mbIm)
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             self.error = mambaRTCore.MBRT_StrErr(err)
             self.mustStop = True
 
@@ -430,7 +484,7 @@ class _MBRT_Thread(threading.Thread):
                            self.frequency)
         else:
             err, fps = mambaRTCore.MBRT_UpdateDisplay(self.red.mbIm, self.frequency)
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             self.error = mambaRTCore.MBRT_StrErr(err)
             self.mustStop = True
         
@@ -439,15 +493,15 @@ class _MBRT_Thread(threading.Thread):
             
         # Displays an icon signaling an error
         if self.error and self.curIcon==None:
-            self.curIcon = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            err = mambaRTCore.MBRT_IconDisplay(self.curIcon)
-            if err!=mambaRTCore.NO_ERR_RT:
+            self.curIcon = _errorIcon
+            err = mambaRTCore.MBRT_IconDisplay(64,64,self.curIcon)
+            if err!=mambaRTCore.MBRT_NO_ERR:
                 self.error = mambaRTCore.MBRT_StrErr(err)
                 self.mustStop = True
         if not self.error and self.curIcon!=None:
             self.curIcon = None
-            err = mambaRTCore.MBRT_IconDisplay(256*[0])
-            if err!=mambaRTCore.NO_ERR_RT:
+            err = mambaRTCore.MBRT_IconDisplay(0,0,[])
+            if err!=mambaRTCore.MBRT_NO_ERR:
                 self.error = mambaRTCore.MBRT_StrErr(err)
                 self.mustStop = True
         
@@ -460,7 +514,7 @@ class _MBRT_Thread(threading.Thread):
                                     self.blue.mbIm)
         else:
             err = mambaRTCore.MBRT_RecordImage(self.red.mbIm)
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             self.error = mambaRTCore.MBRT_StrErr(err)
             # recording is stopped
             mambaRTCore.MBRT_RecordEnd()
@@ -521,16 +575,14 @@ def initializeRealtime(device, devType, seqlength=10):
     # due to directshow API restrictions (COM)
     
     err = mambaRTCore.MBRT_CreateContext()
-    if err!=mambaRTCore.NO_ERR:
+    if err!=mambaRTCore.MBRT_NO_ERR:
         raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
 
     err = mambaRTCore.MBRT_CreateVideoAcq(device, devType)
-    if err!=mambaRTCore.NO_ERR:
+    if err!=mambaRTCore.MBRT_NO_ERR:
         raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
 
     _display_thread = _MBRT_Thread(_com_queue,seqlength)
-
-    _display_thread = _MBRT_Thread(device, devType, _com_queue, seqlength)
 
 def activateRealtime():
     """
@@ -606,7 +658,7 @@ def getSizeRealtime():
     global _display_thread
     if _display_thread and _display_thread.isAlive():
         err,w,h = mambaRTCore.MBRT_GetAcqSize()
-        if err!=mambaRTCore.NO_ERR_RT:
+        if err!=mambaRTCore.MBRT_NO_ERR:
             raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
     else:
         w = h = -1

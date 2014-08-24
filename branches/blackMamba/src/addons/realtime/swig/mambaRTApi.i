@@ -39,28 +39,15 @@
 %include <typemaps.i>
 %include <stdint.i>
 
-%init %{
-	/* Initialize COM before anything else for this library to work */
-    if (FAILED(CoInitializeEx(NULL, COINIT_APARTMENTTHREADED)))
-    {
-        PyErr_SetString(PyExc_ImportError, "Initialization of COM failed.");
-        return;
-    }
-%}
-
-%typemap(in) Uint8 *icon {
+%typemap(in) Uint32 *icon {
     if (PyList_Check($input)) {
         int size = PyList_Size($input);
         int i = 0;
-        if (size!=256) {
-            PyErr_SetString(PyExc_ValueError,"Expecting a list of 256 integer");
-            return NULL;
-        }
-        $1 = (Uint8 *) malloc((size)*sizeof(Uint8));
+        $1 = (Uint32 *) malloc((size)*sizeof(Uint32));
         for (i = 0; i < size; i++) {
             PyObject *o = PyList_GetItem($input,i);
             if (PyInt_Check(o))
-                $1[i] = (Uint8) PyInt_AsLong(PyList_GetItem($input,i));
+                $1[i] = (Uint32) PyInt_AsLong(PyList_GetItem($input,i));
             else {
                 PyErr_SetString(PyExc_TypeError,"list must contain integer");
                 free($1);
@@ -73,8 +60,8 @@
     }
 }
 
-%typemap(freearg) Uint8 *icon {
-    free((Uint8 *) $1);
+%typemap(freearg) Uint32 *icon {
+    free((Uint32 *) $1);
 }
 
 %typemap(in) Uint8 *palette {
@@ -135,9 +122,12 @@
 
 /* the functions and variables wrapped */
 %include "mambaRTApi.h"
-%include "MBRT_error.h"
-//%include "mambaCommon.h"
 
-
-
+%init %{
+    if(MBRT_Initialize() != MBRT_NO_ERR)
+    {
+        PyErr_SetString(PyExc_ImportError, "Initialization of MBRT failed.");
+        return;
+    }
+%}
 
