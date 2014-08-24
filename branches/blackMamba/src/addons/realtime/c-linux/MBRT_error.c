@@ -32,11 +32,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "MBRT_error.h"
+#include "mambaRTApi_loc.h"
 
 /** Error value interpretation*/
 char *err_str[] = {
     "No error",
+    "Cannot initialize",
     "Cannot create (memory allocation) context",
     "Context is not properly initialized",
     "Initialize display error (SDL)",
@@ -44,9 +45,14 @@ char *err_str[] = {
     "Locking screen for updating failure",
     "Incorrect display (not initialized) error",
     "Acquisition device error",
+    "Cannot create the directshow filter graph",
+    "Cannot create the directshow capture graph builder",
+    "Cannot initialize the directshow capture graph builder",
+    "Cannot create the directshow device enumerator",
+    "Cannot create a directshow video capture device enumerator",
+    "Cannot find the directshow device",
     "Function is not implemented for video device",
     "Cannot open video device",
-    "Video for linux 1 (V4L) is not supported",
     "Not a video for linux device",
     "Not a video for linux 2 device",
     "Device does not support streaming",
@@ -71,6 +77,7 @@ char *err_str[] = {
     "Cannot create the rgb->yuv converter",
     "Cannot encode the image for recording",
     "Invalid recording context (not started)",
+    "Invalid icon size",
     "Unknown error"
 };
 
@@ -78,8 +85,8 @@ char *err_str[] = {
  * Returns an explanation of the error code 
  */
 char *MBRT_StrErr(MBRT_errcode error_nb) {
-    if (error_nb>ERR_RT_UNKNOWN) {
-        return err_str[ERR_RT_UNKNOWN];
+    if (error_nb>MBRT_ERR_UNKNOWN) {
+        return err_str[MBRT_ERR_UNKNOWN];
     } else {
         return err_str[error_nb];
     }

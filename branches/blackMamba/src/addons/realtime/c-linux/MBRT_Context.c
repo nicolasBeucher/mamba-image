@@ -37,6 +37,17 @@
 MBRT_Context *context = NULL;
 
 /**
+ * Initialize the library.
+ * Need to be called before anythong else.
+ */
+MBRT_errcode MBRT_Initialize()
+{
+    MBRT_errcode err = MBRT_NO_ERR;
+    
+    return err;
+}
+
+/**
  * Creates the context used throughout the library. The context describes the
  * data displayed, the device used for acquisition, and contains general 
  * information needed by all the functions
@@ -45,7 +56,7 @@ MBRT_errcode MBRT_CreateContext()
 {
     context = malloc(sizeof(MBRT_Context));
     if (context==NULL) {
-        return ERR_RT_CANT_CREATE_CONTEXT;
+        return MBRT_ERR_CANT_CREATE_CONTEXT;
     }
     
     /* blanking the structure */
@@ -55,7 +66,7 @@ MBRT_errcode MBRT_CreateContext()
     context->type = NONE_TYPE;
     context->isRecording = 0;
 
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -82,5 +93,5 @@ MBRT_errcode MBRT_DestroyContext()
         context = NULL;
     }
 
-    return NO_ERR_RT;
+    return MBRT_NO_ERR;
 }
