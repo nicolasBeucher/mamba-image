@@ -39,13 +39,6 @@
 #ifndef MBRT_apilocH
 #define MBRT_apilocH
 
-
-/* The local header is the only header called inside each component of
- * the library, The global header is meant for the outside world.
- */
-//#include <windows.h>
-//#include <objbase.h>
-
 /**@cond */
 /* code that must be skipped by Doxygen */
 #pragma include_alias( "dxtrans.h", "qedit.h" )
@@ -61,6 +54,7 @@
 
 #include "mambaRTApi.h"
 #include <SDL.h> 
+#include <dshow.h>
 
 // FFmpeg libraries are pure C and thus must be identified as such to 
 // work with visual C++ which seems to handle correctly C++ code. 
