@@ -17,6 +17,7 @@ import mambaRTCore
 try:
     import mamba
     import mamba3D
+    import mambaDisplay
 except ImportError:
     raise ImportError("Missing Mamba library - http://www.mamba-image.org")
 _mb_version = mamba.VERSION.split('.')
@@ -28,7 +29,6 @@ if int(_mb_version[0])!=2 and int(_mb_version[1])!=0:
 from Tkinter import TclError
 
 # Type of items that can be inserted inside the communication queue
-_PALETTE = 1
 _FREQ = 2
 _ORDER = 3
 _PICTURE = 4
@@ -171,7 +171,7 @@ class _MBRT_Thread(threading.Thread):
         self.displayCreated = False
         self.error = ""
         self.curIcon = None
-        self.palette = None
+        self.palname = ""
         # process variables
         self.procList = []
         self.procType = None
@@ -269,14 +269,27 @@ class _MBRT_Thread(threading.Thread):
         
     # EVENTS and COMMANDS ######################################################
         
-    def setPaletteDisplay(self,pal):
+    def setPaletteDisplay(self):
         # Changes the display color palette
         try:
+            
+            names = [""] + mambaDisplay.listPalettes()
+            try:
+                i = names.index(self.palname)
+            except:
+                i = 0
+            i = (i+1)%len(names)
+            self.palname = names[i]
+            
+            if self.palname:
+                pal = mambaDisplay.getPalette(self.palname)
+            else:
+                pal = ()
+                for i in range(256):
+                    pal += (i,i,i)
             err = mambaRTCore.MBRT_PaletteDisplay(list(pal))
             if err!=mambaRTCore.MBRT_NO_ERR:
                 self.error = mambaRTCore.MBRT_StrErr(err)
-            else:
-                self.palette = pal
         except ValueError as exc:
             self.error = str(exc)
             
@@ -304,13 +317,6 @@ class _MBRT_Thread(threading.Thread):
                 if item.options[0]==INSTANT:
                     self.procList.append([item.value, item.options[1], item.options[2]])
                     self.procOn = True
-            elif item.type == _PALETTE:
-                # Changes the color palette applied
-                try:
-                    self.setPaletteDisplay(item.value)
-                except TypeError:
-                    self.error = "Invalid palette"
-                    pass
             elif item.type == _REC_START:
                 # recording is started
                 if not self.recOn:
@@ -379,6 +385,8 @@ class _MBRT_Thread(threading.Thread):
             self.procOn = not self.procOn
         elif event_code == mambaRTCore.EVENT_PAUSE:
             self.pauseOn = not self.pauseOn
+        elif event_code == mambaRTCore.EVENT_PALETTE:
+            self.setPaletteDisplay()
         elif event_code == mambaRTCore.EVENT_COLOR:
             if not self.pauseOn:
                 self.colorOn = not self.colorOn
@@ -533,20 +541,20 @@ _display_thread = None
 # Functions
 ################################################################################
 
-def launchRealtime(device, devType, seqlength=10):
+def launch(device, devType, seqlength=10):
     """
     Initializes and activates the realtime module using 'device' for the 
     acquisition.
     
-    The options are similar to the ones used in function initializeRealtime.
+    The options are similar to the ones used in function initialize.
     
-    This function is similar to calling successively initializeRealtime and
-    activateRealtime.
+    This function is similar to calling successively initialize and
+    activate.
     """
-    initializeRealtime(device, devType, seqlength)
-    activateRealtime()
+    initialize(device, devType, seqlength)
+    activate()
 
-def initializeRealtime(device, devType, seqlength=10):
+def initialize(device, devType, seqlength=10):
     """
     Initializes the realtime module using 'device' for the acquisition.
     'devType' indicates the type of the device (either V4L2(linux), DSHOW(windows) or AVC).
@@ -584,7 +592,7 @@ def initializeRealtime(device, devType, seqlength=10):
 
     _display_thread = _MBRT_Thread(_com_queue,seqlength)
 
-def activateRealtime():
+def activate():
     """
     Activates the realtime module. Opens the acquisition device and creates the 
     display in a separate thread. The thread ensures the acquisition and display 
@@ -608,7 +616,7 @@ def activateRealtime():
         time.sleep(0.01)
     time.sleep(0.5)
 
-def deactivateRealtime():
+def deactivate():
     """
     Deactivates the realtime module. Closes the acquisition device and the display.
     """
@@ -622,14 +630,14 @@ def deactivateRealtime():
     mambaRTCore.MBRT_DestroyVideoAcq()
     mambaRTCore.MBRT_DestroyContext()
 
-def isActivatedRealtime():
+def isActivated():
     """
     Returns True if the realtime thread is active and alive.
     """
     global _display_thread
     return _display_thread and _display_thread.isAlive()
     
-def getErrorRealtime():
+def getError():
     """
     Returns the last error that occured in the realtime thread. The thread does
     not produce exceptions so if your request did not work, use this function
@@ -647,7 +655,7 @@ def getErrorRealtime():
             _com_queue.put(item)
         return err
 
-def getSizeRealtime():
+def getSize():
     """
     Returns a tuple containing the size of the images acquired and displayed
     by the realtime module.
@@ -665,7 +673,7 @@ def getSizeRealtime():
     
     return (w,h)
 
-def setProcessRealtime(process, type, *args, **kwargs):
+def setProcess(process, type, *args, **kwargs):
     """
     Changes the 'process' (treatment) applied to the images acquired and displayed 
     by the realtime thread. This function will replace any process or chains of
@@ -702,7 +710,7 @@ def setProcessRealtime(process, type, *args, **kwargs):
         item = _MBRT_Item(_PROC_SET, process, [type, args, kwargs])
         _com_queue.put(item)
         
-def addProcessRealtime(process, *args, **kwargs):
+def addProcess(process, *args, **kwargs):
     """
     Adds the given 'process' (treatment) to the list of process to apply to the
     acquired image. This function will append the process to the list of
@@ -729,7 +737,7 @@ def addProcessRealtime(process, *args, **kwargs):
         item = _MBRT_Item(_PROC_ADD, process, [INSTANT, args, kwargs])
         _com_queue.put(item)
 
-def resetProcessRealtime():
+def resetProcess():
     """
     Resets the realtime thread so that no process (treatment) is applied to the 
     images acquired and displayed.
@@ -739,34 +747,12 @@ def resetProcessRealtime():
         item = _MBRT_Item(_PROC_RST, None)
         _com_queue.put(item)
     
-def setPaletteRealtime(palette):
+def setFramerate(f):
     """
-    Sets the palette used to display the acquired images in the realtime thread.
-    'palette' can be any palette as defined in the mamba module.
-    """
-    global _display_thread, _com_queue
-    if _display_thread and _display_thread.isAlive():
-        item = _MBRT_Item(_PALETTE, palette)
-        _com_queue.put(item)
-    
-def resetPaletteRealtime():
-    """
-    Resets the palette used to display the acquired images in the realtime thread.
-    """
-    global _display_thread, _com_queue
-    if _display_thread and _display_thread.isAlive():
-        palette = (0,0,0)
-        for i in range(1,256):
-            palette = palette+(i,i,i)
-        item = _MBRT_Item(_PALETTE, palette)
-        _com_queue.put(item)
-    
-def setFrequencyRealtime(f):
-    """
-    Sets the frequency 'f' of acquisition and display in the realtime thread.
+    Sets the framerate 'f' of acquisition and display in the realtime thread.
     This is strongly limited by the acquisition module and the selected process.
     
-    The frequency is nonetheless limited inside the [1.0, 50.0] fps range by the
+    The framerate is nonetheless limited inside the [1.0, 50.0] fps range by the
     realtime module.
     """
     global _display_thread, _com_queue
@@ -774,7 +760,7 @@ def setFrequencyRealtime(f):
         item = _MBRT_Item(_FREQ, f)
         _com_queue.put(item)
         
-def takePictureRealtime(path):
+def takePicture(path):
     """
     Takes a picture of the current image displayed (at the moment the function
     is called) and puts it into file 'path'.
@@ -784,7 +770,7 @@ def takePictureRealtime(path):
         item = _MBRT_Item(_PICTURE, path)
         _com_queue.put(item)
 
-def startRecordingRealtime(path):
+def startRecording(path):
     """
     Starts the recording of the realtime footage into file 'path'. The created 
     file will be a video encoded using MPEG2 codec (DVD format).
@@ -794,7 +780,7 @@ def startRecordingRealtime(path):
         item = _MBRT_Item(_REC_START, path)
         _com_queue.put(item)
 
-def stopRecordingRealtime():
+def stopRecording():
     """
     Stops the recording of the realtime footage.
     """
@@ -803,7 +789,7 @@ def stopRecordingRealtime():
         item = _MBRT_Item(_REC_STOP, None)
         _com_queue.put(item)
 
-def toggleColorRealtime():
+def toggleColor():
     """
     Toggles the color acquisition and display ON/OFF depending on its
     current status. By default the acquisition is greyscale.
@@ -813,7 +799,7 @@ def toggleColorRealtime():
         item = _MBRT_Item(_ORDER, "color")
         _com_queue.put(item)
 
-def togglePauseRealtime():
+def togglePause():
     """
     Toggles the pause ON/OFF depending on its current status. When paused
     acquisition and process are not executed but you can still execute

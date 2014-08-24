@@ -292,14 +292,10 @@ MBRT_errcode MBRT_CreateDisplay(int width, int height)
     
     /* the original palette is set to grey level */
     for(i=0;i<256;i++) {
-        context->standard_palette[i].r=i;
-        context->standard_palette[i].g=i;
-        context->standard_palette[i].b=i;
-        context->color_palette[i].r = i;
-        context->color_palette[i].g = i;
-        context->color_palette[i].b = i;
+        context->palette[i].r=i;
+        context->palette[i].g=i;
+        context->palette[i].b=i;
     }
-    context->isPalettized = 0;
 
     /*SDL_screen init*/
     context->screen=NULL;
@@ -351,7 +347,6 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
     Uint32 i,j,v;
     Uint32 current_call;
     int bypp,pitch,val;
-    SDL_Color *palette;
     
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
@@ -366,13 +361,6 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
     /* image must have the correct size */
     if ((src->width!=context->sz_x) || (src->height!=context->sz_y)) {
         return MBRT_ERR_SIZE;
-    }
-    
-    /* color palette */
-    if (context->isPalettized) {
-        palette = context->color_palette;
-    } else {
-        palette = context->standard_palette;
     }
     
     /* reset of the histogram */
@@ -393,9 +381,9 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
         for(i=0; i<context->sz_x; i++) {
             bufp = pixels + j*pitch + i*bypp;
             pix = *(src->plines[j]+i);
-            RED(bufp) = palette[pix].r;
-            GREEN(bufp) = palette[pix].g;
-            BLUE(bufp) = palette[pix].b;
+            RED(bufp) = context->palette[pix].r;
+            GREEN(bufp) = context->palette[pix].g;
+            BLUE(bufp) = context->palette[pix].b;
             if (context->isHistoDisplayed)
                 context->histo[pix]++;
         }
@@ -597,11 +585,10 @@ MBRT_errcode MBRT_PaletteDisplay(Uint8 *palette)
     if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
 
     for(i=0;i<256;i++) {
-        context->color_palette[i].r = *palette++;
-        context->color_palette[i].g = *palette++;
-        context->color_palette[i].b = *palette++;
+        context->palette[i].r = *palette++;
+        context->palette[i].g = *palette++;
+        context->palette[i].b = *palette++;
     }
-    context->isPalettized = 1;
     
     return MBRT_NO_ERR;
 }
@@ -654,12 +641,8 @@ MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
                     CREATE_SCREEN();
                     break;
                 case SDLK_p:
-                    /* toggle the palette */
-                    if (context->isPalettized) {
-                        context->isPalettized = 0;
-                    } else {
-                        context->isPalettized = 1;
-                    }
+                    /* produce a palette event */
+                    *event_code = EVENT_PALETTE;
                     break;
                 case SDLK_r:
                     /* toggle the framerate display */

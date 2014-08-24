@@ -218,7 +218,6 @@ MBRT_errcode MBRT_RecordEnd()
  */
 MBRT_errcode MBRT_RecordImage(MB_Image *src)
 {
-    SDL_Color *palette;
     int i, j, ret, got_output;
     PIX8 pix;
     PLINE ptr0;
@@ -232,24 +231,17 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
     if (src->depth!=8) {
         return MBRT_ERR_DEPTH;
     }
-    
-    /* color palette */
-    if (context->isPalettized) {
-        palette = context->color_palette;
-    } else {
-        palette = context->standard_palette;
-    }
 
     /* filling the picture in RGB */
     for(j=0; j<context->sz_y; j++) {
         ptr0 = (PLINE) (context->rec_picRGB->data[0]+j*context->rec_picRGB->linesize[0]);
         for(i=0; i<context->sz_x; i++) {
             pix = *(src->plines[j]+i);
-            *ptr0 = palette[pix].r;
+            *ptr0 = context->palette[pix].r;
             ptr0++;
-            *ptr0 = palette[pix].g;
+            *ptr0 = context->palette[pix].g;
             ptr0++;
-            *ptr0 = palette[pix].b;
+            *ptr0 = context->palette[pix].b;
             ptr0++;
         }
     }
