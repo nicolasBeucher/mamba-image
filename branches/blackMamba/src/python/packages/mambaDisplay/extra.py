@@ -27,7 +27,7 @@ except ImportError:
     print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
     raise
     
-import constants
+from . import constants
 
 ################################################################################
 # Dynamic threshold

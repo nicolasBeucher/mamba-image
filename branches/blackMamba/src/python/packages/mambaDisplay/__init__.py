@@ -123,7 +123,7 @@ def getDisplayer():
     """
     global _global_displayer
     if not _global_displayer:
-        import dftDisplayer
+        from . import dftDisplayer
         _global_displayer = dftDisplayer.DftDisplayer()
     return _global_displayer
     
@@ -154,7 +154,7 @@ def tidyDisplays():
     """
     global _global_displayer
     if not _global_displayer:
-        import dftDisplayer
+        from . import dftDisplayer
         _global_displayer = dftDisplayer.DftDisplayer()
     _global_displayer.tidyWindows()
 

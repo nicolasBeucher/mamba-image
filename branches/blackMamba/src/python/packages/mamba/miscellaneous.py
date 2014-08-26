@@ -133,12 +133,12 @@ def mix(imInR, imInG, imInB):
     mamba.raiseExceptionOnError(err)
     err, sB = core.MB_Extract(imInB.mbIm)
     mamba.raiseExceptionOnError(err)
-    s = ""
+    s = b""
     for i in range(0,h*w,w):
         s = s + sR[i: i+w]
         s = s + sG[i: i+w]
         s = s + sB[i: i+w]
-    im = Image.fromstring("RGB", (w,h), s, "raw", "RGB;L", 0 ,1)
+    im = Image.frombytes("RGB", (w,h), s, "raw", "RGB;L", 0 ,1)
     return im
 
 def split(pilimIn, imOutR, imOutG, imOutB):
@@ -161,10 +161,10 @@ def split(pilimIn, imOutR, imOutG, imOutB):
         pilim_crop = pilim.crop((0,0,min(wc, w),min(hc, h)))
         prov_im.paste(pilim_crop, (0,0,min(wc, w),min(hc, h)))
         pilim = prov_im        
-    s = pilim.tostring("raw", "RGB;L", 0 ,1)
-    sR = ""
-    sG = ""
-    sB = ""
+    s = pilim.tobytes("raw", "RGB;L", 0 ,1)
+    sR = b""
+    sG = b""
+    sB = b""
     for i in range(0,hc):
         sR = sR + s[3*i*wc: (3*i+1)*wc]
         sG = sG + s[(3*i+1)*wc: (3*i+2)*wc]
