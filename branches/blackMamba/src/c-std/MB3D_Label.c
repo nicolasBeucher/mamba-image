@@ -95,7 +95,7 @@ void MB3D_TidyLabel(MB3D_Image *dest,
  * \param lbhigh the first high value NOT allowed for label on the low byte (maximum allowed is 256)
  * \param pNbobj the number of object founds
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_Label(MB3D_Image *src, MB3D_Image *dest,
                       Uint32 lblow, Uint32 lbhigh,
@@ -104,17 +104,17 @@ MB_errcode MB3D_Label(MB3D_Image *src, MB3D_Image *dest,
 {
     /* verification over image size compatibility */
     if (!MB3D_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* Verification over parameter given in entry*/
-    if (lblow>=lbhigh) return ERR_BAD_VALUE;
-    if (lbhigh>256) return ERR_BAD_VALUE;
+    if (lblow>=lbhigh) return MB_ERR_BAD_VALUE;
+    if (lbhigh>256) return MB_ERR_BAD_VALUE;
     /* invalid grid case */
     if (grid==MB3D_INVALID_GRID)
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
     
     /* the output is necessarly a 32-bit image */
-    if ((dest->seq[0]->depth)!=32) return ERR_BAD_DEPTH;
+    if ((dest->seq[0]->depth)!=32) return MB_ERR_BAD_DEPTH;
     
     /* Calling the appropriate function */
     switch (src->seq[0]->depth) {
@@ -131,6 +131,6 @@ MB_errcode MB3D_Label(MB3D_Image *src, MB3D_Image *dest,
         break;
     }
 
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

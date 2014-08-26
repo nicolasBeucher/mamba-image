@@ -65,13 +65,13 @@ const int hxNbDir[2][7][2] = {
  * \param marker the marker image in which the result of segmentation will be put
  * \param max_level the maximum level reach by the water.
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Watershed(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t grid) {
     
     /* verification over depth and size */
     if (!MB_CHECK_SIZE_2(src, marker)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Only grey scale images can be segmented */
@@ -87,5 +87,5 @@ MB_errcode MB_Watershed(MB_Image *src, MB_Image *marker, Uint32 max_level, enum 
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

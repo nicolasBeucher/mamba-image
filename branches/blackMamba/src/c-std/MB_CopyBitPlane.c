@@ -127,7 +127,7 @@ static INLINE void INSERT_BITPLANE_LINE8(PLINE *plines_out,
  * \param src source image
  * \param dest destination image 
  * \param plane the bit plane in which the binary image will be copied
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 static MB_errcode MB_InsertBitPlane1to8(MB_Image *src, MB_Image *dest, Uint32 plane) {
     Uint32 i;
@@ -136,7 +136,7 @@ static MB_errcode MB_InsertBitPlane1to8(MB_Image *src, MB_Image *dest, Uint32 pl
 
     /* the plane index must be between 0 and 7 included */
     if (plane>7) 
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
         
     /* Setting up line pointers */
     plines_in = src->plines;
@@ -148,7 +148,7 @@ static MB_errcode MB_InsertBitPlane1to8(MB_Image *src, MB_Image *dest, Uint32 pl
         INSERT_BITPLANE_LINE8(plines_out, plines_in, bytes_in, plane);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -157,7 +157,7 @@ static MB_errcode MB_InsertBitPlane1to8(MB_Image *src, MB_Image *dest, Uint32 pl
  * \param src source image
  * \param dest destination image
  * \param plane the bit plane index 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 static MB_errcode MB_ExtractBitPlane8to1(MB_Image *src, MB_Image *dest, Uint32 plane) {
     Uint32 i;
@@ -166,7 +166,7 @@ static MB_errcode MB_ExtractBitPlane8to1(MB_Image *src, MB_Image *dest, Uint32 p
 
     /* the plane index must be between 0 and 7 included */
     if (plane>7) 
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
     
     /* Setting up line pointers */
     plines_in = src->plines;
@@ -178,7 +178,7 @@ static MB_errcode MB_ExtractBitPlane8to1(MB_Image *src, MB_Image *dest, Uint32 p
         EXTRACT_BITPLANE_LINE8(plines_out, plines_in, bytes_in, plane);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -267,7 +267,7 @@ static INLINE void INSERT_BITPLANE_LINE32(PLINE *plines_out,
  * \param src source image
  * \param dest destination image 
  * \param plane the bit plane in which the binary image will be copied
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 static MB_errcode MB_InsertBitPlane1to32(MB_Image *src, MB_Image *dest, Uint32 plane) {
     Uint32 i;
@@ -276,7 +276,7 @@ static MB_errcode MB_InsertBitPlane1to32(MB_Image *src, MB_Image *dest, Uint32 p
 
     /* the plane index must be between 0 and 31 included */
     if (plane>31) 
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
         
     /* Setting up line pointers */
     plines_in = src->plines;
@@ -288,7 +288,7 @@ static MB_errcode MB_InsertBitPlane1to32(MB_Image *src, MB_Image *dest, Uint32 p
         INSERT_BITPLANE_LINE32(plines_out, plines_in, bytes_in, plane);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -296,7 +296,7 @@ static MB_errcode MB_InsertBitPlane1to32(MB_Image *src, MB_Image *dest, Uint32 p
  * \param src source image
  * \param dest destination image
  * \param plane the bit plane index 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 plane) {    
     Uint32 i;
@@ -305,7 +305,7 @@ static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 
 
     /* the plane index must be between 0 and 31 included */
     if (plane>31) 
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
     
     /* Setting up line pointers */
     plines_in = src->plines;
@@ -317,7 +317,7 @@ static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 
         EXTRACT_BITPLANE_LINE32(plines_out, plines_in, bytes_in, plane);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -326,13 +326,13 @@ static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 
  * \param src source image
  * \param dest destination image
  * \param plane the plane number
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_CopyBitPlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
 
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Comparing the depth of the src and the destination */
@@ -350,11 +350,11 @@ MB_errcode MB_CopyBitPlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
         return MB_ExtractBitPlane32to1(src,dest,plane);
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
     /* If this point is reached we can assume there was an error*/
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

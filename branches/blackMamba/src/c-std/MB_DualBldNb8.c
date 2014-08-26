@@ -340,7 +340,7 @@ static INLINE void BLD_LINE_RIGHT_HORZ(PLINE *plines_germ,
  * \param pVolume the computed volume of the output image
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_DualBldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *pVolume, enum MB_grid_t grid)
 {
@@ -351,22 +351,22 @@ MB_errcode MB_DualBldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint6
     /* error management */
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(mask, srcdest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* grid value and possible direction are connected, grid value is the */
     /* maximum number of directions */
     if(dirnum>6 && grid==MB_HEXAGONAL_GRID) {
-        return ERR_BAD_DIRECTION;
+        return MB_ERR_BAD_DIRECTION;
     }
     if(dirnum>8 && grid==MB_SQUARE_GRID) {
-        return ERR_BAD_DIRECTION;
+        return MB_ERR_BAD_DIRECTION;
     }
     /* Only binary images can be processed */
     switch (MB_PROBE_PAIR(mask, srcdest)) {
     case MB_PAIR_8_8:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     /* setting up pointers */
@@ -381,5 +381,5 @@ MB_errcode MB_DualBldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint6
     fn = SwitchTo[grid][dirnum];
     fn(plines_inout, plines_mask, bytes_in, mask->height, pVolume );
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

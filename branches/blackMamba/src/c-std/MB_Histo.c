@@ -50,7 +50,7 @@ static INLINE void HISTO_LINE8(PLINE *plines, Uint32 bytes, Uint32 *phisto)
  * The histogram is an array with a minimal size of 256.
  * \param src source image
  * \param phisto pointer to the histogram array
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Histo(MB_Image *src, Uint32 *phisto)
 {
@@ -78,10 +78,10 @@ MB_errcode MB_Histo(MB_Image *src, Uint32 *phisto)
         
     default:
         /* Cannot have histograms for 32-bits or binary images */
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
       }
 
-      return NO_ERR;
+      return MB_NO_ERR;
 }
 

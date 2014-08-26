@@ -495,7 +495,7 @@ def isotropicDistance(imIn, imOut, edge=mamba.FILLED):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imOut.reset()
     oldn = 0
     size = 0

@@ -42,7 +42,7 @@ extern MB_errcode MB_ShiftVector32(MB_Image *src, MB_Image *dest, Sint32 dx, Sin
  * \param dy the vector amplitude in y
  * \param long_filler_pix the value used to fill the created space
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_ShiftVector(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, Uint32 long_filler_pix)
 {
@@ -60,6 +60,6 @@ MB_errcode MB_ShiftVector(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, U
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

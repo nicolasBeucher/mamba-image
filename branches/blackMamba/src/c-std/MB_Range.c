@@ -62,12 +62,12 @@ static INLINE MB_errcode MB_Range1(MB_Image *src, Uint32 *min, Uint32 *max)
             if ( (*max == 1) &&(*min == 0) ) {
                 /* if this is the case they will no longer */
                 /* change so better stop here ;-) */
-                return NO_ERR;
+                return MB_NO_ERR;
             }
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 static INLINE MB_errcode MB_Range8(MB_Image *src, Uint32 *min, Uint32 *max)
@@ -92,7 +92,7 @@ static INLINE MB_errcode MB_Range8(MB_Image *src, Uint32 *min, Uint32 *max)
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 static INLINE MB_errcode MB_Range32(MB_Image *src,Uint32 *min, Uint32 *max)
@@ -117,7 +117,7 @@ static INLINE MB_errcode MB_Range32(MB_Image *src,Uint32 *min, Uint32 *max)
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -126,7 +126,7 @@ static INLINE MB_errcode MB_Range32(MB_Image *src,Uint32 *min, Uint32 *max)
  * \param src source image
  * \param min the minimum value of the pixels
  * \param max the maximum value of the pixels
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Range(MB_Image *src, Uint32 *min, Uint32 *max)
 {
@@ -142,12 +142,12 @@ MB_errcode MB_Range(MB_Image *src, Uint32 *min, Uint32 *max)
         return MB_Range32(src,min,max);
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
     /* If this point is reached we can assume there was an error*/
-    return ERR_BAD_VALUE;
+    return MB_ERR_BAD_VALUE;
 }
 
 /*
@@ -156,7 +156,7 @@ MB_errcode MB_Range(MB_Image *src, Uint32 *min, Uint32 *max)
  * \param src source image
  * \param min the minimum possible value of the pixels
  * \param max the maximum possible value of the pixels
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_depthRange(MB_Image *src, Uint32 *min, Uint32 *max)
 {
@@ -165,24 +165,24 @@ MB_errcode MB_depthRange(MB_Image *src, Uint32 *min, Uint32 *max)
     case 1:
         *min = 0;
         *max = 1;
-        return NO_ERR;
+        return MB_NO_ERR;
         break;
     case 8:
         *min = 0;
         *max = UINT8_MAX;
-        return NO_ERR;
+        return MB_NO_ERR;
         break;
     case 32:
         *min = 0;
         *max = UINT32_MAX;
-        return NO_ERR;
+        return MB_NO_ERR;
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
     /* If this point is reached we can assume there was an error*/
-    return ERR_BAD_VALUE;
+    return MB_ERR_BAD_VALUE;
 }
 

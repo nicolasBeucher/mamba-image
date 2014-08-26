@@ -348,7 +348,7 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
  * \param lbhigh the first high value NOT allowed for label on the low byte (maximum allowed is 256)
  * \param pNbobj the number of object founds
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, Uint32 *pNbobj, enum MB_grid_t grid)
 {
@@ -365,13 +365,13 @@ MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh
     labels.EQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if(labels.EQ==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if(labels.CEQ==NULL){
         /* in case allocation goes wrong */
         MB_free(labels.EQ);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     MB_memset(labels.EQ, 0, labels.maxEQ*sizeof(PIX32));
     MB_memset(labels.CEQ, 0, labels.maxEQ*sizeof(PIX32));
@@ -397,6 +397,6 @@ MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh
     MB_free(labels.EQ);
     MB_free(labels.CEQ);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 

@@ -50,18 +50,18 @@ extern MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_
  * \param marker the 3D marker image in which the result of segmentation will be put
  * \param max_level the maximum level reached by the water.
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_Basins(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_grid_t grid) {
     
     /* verification over depth and size */
     if (!MB3D_CHECK_SIZE_2(src, marker)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* invalid grid case */
     if (grid==MB3D_INVALID_GRID)
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
     
     /* Only grey scale or 32-bit images can be segmented */
     /* the marker image is 32-bit */
@@ -76,5 +76,5 @@ MB_errcode MB3D_Basins(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, en
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

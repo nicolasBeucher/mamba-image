@@ -133,7 +133,7 @@ def supOpen3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):
             linearOpen3D(imIn, imWrk2, d, n, grid, edge=mamba.EMPTY)
             m3D.logic3D(imWrk1, imWrk2, imWrk1, "sup")
     else:
-        mamba.raiseExceptionOnError(core.ERR_BAD_PARAMETER)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_PARAMETER)
     m3D.copy3D(imWrk1, imOut)
     
 def infClose3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):
@@ -176,7 +176,7 @@ def infClose3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):
             linearClose3D(imIn, imWrk2, d, n, grid)
             m3D.logic3D(imWrk1, imWrk2, imWrk1, "inf")
     else:
-        mamba.raiseExceptionOnError(core.ERR_BAD_PARAMETER)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_PARAMETER)
     m3D.copy3D(imWrk1, imOut)
     
 def openByCylinder3D(imInOut, height, section):

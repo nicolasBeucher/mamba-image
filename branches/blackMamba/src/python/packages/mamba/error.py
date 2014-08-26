@@ -25,5 +25,5 @@ def raiseExceptionOnError(err):
     The returned values of mamba C library are used to determine if there was an
     error or not.
     """
-    if err!=core.NO_ERR:
+    if err!=core.MB_NO_ERR:
         raise MambaError(err)

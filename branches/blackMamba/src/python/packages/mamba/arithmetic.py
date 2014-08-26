@@ -287,7 +287,7 @@ def mulRealConst(imIn, v, imOut, nearest=False, precision=2):
     """
     
     if imIn.getDepth()==1 or imOut.getDepth()==1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imWrk1 = mamba.imageMb(imIn, 32)
     imWrk2 = mamba.imageMb(imIn, 1)
     precVal = (10 ** precision)

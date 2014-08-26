@@ -36,18 +36,18 @@ extern MB_errcode MB3D_HierarDualBld32(MB3D_Image *mask, MB3D_Image *srcdest, en
  * \param srcdest the rebuild image
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_HierarDualBld(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_grid_t grid) {
 
     /* verification over depth and size */
     if (!MB3D_CHECK_SIZE_2(srcdest, mask)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     
     /* invalid grid case */
     if (grid==MB3D_INVALID_GRID)
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
 
     /* Only grey scale can be rebuild */
     switch (MB3D_PROBE_PAIR(srcdest, mask)) {
@@ -61,5 +61,5 @@ MB_errcode MB3D_HierarDualBld(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_g
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

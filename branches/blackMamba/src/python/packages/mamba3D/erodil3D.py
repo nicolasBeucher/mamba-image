@@ -117,7 +117,7 @@ def dilate3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.EMPTY):
     (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
     if length!=len(imOut):
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     zext = se.grid.getZExtension()
     imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     if edge==mamba.EMPTY:
@@ -169,7 +169,7 @@ def erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.FILLED):
     (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
     if length!=len(imOut):
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     zext = se.grid.getZExtension()
     imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     if edge==mamba.EMPTY:

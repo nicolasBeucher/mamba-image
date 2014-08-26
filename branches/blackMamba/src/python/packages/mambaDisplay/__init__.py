@@ -6,7 +6,7 @@ mambaDisplay contains all the elements allowing to display mamba images
 user who wishes to defines their own display.
 """
 
-import constants
+from . import constants
 from .palette import *
 
 ################################################################################

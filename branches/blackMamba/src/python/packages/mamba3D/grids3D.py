@@ -103,13 +103,13 @@ class _gridFCCubic3D(_grid3D):
                 conv = self.listConvs[zindex%3][d]
                 dirs[conv[0]] |= (1<<(conv[1]))
         except IndexError:
-            mamba.raiseExceptionOnError(core.ERR_BAD_DIRECTION)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return dirs
     def convertFromDir(self, direction, zindex):
         try:
             conversion = self.listConvs[zindex%3][direction]
         except IndexError:
-            mamba.raiseExceptionOnError(core.ERR_BAD_DIRECTION)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return conversion
     def getZExtension(self):
         return 1
@@ -162,13 +162,13 @@ class _gridCCubic3D(_grid3D):
                 conv = self.listConvs[zindex%2][d]
                 dirs[conv[0]] |= (1<<(conv[1]))
         except IndexError:
-            mamba.raiseExceptionOnError(core.ERR_BAD_DIRECTION)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return dirs
     def convertFromDir(self, direction, zindex):
         try:
             conversion = self.listConvs[zindex%2][direction]
         except IndexError:
-            mamba.raiseExceptionOnError(core.ERR_BAD_DIRECTION)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return conversion
     def getZExtension(self):
         return 1
@@ -209,7 +209,7 @@ class _gridCubic3D(_grid3D):
         dirs = {-1:0,0:0,1:0}
         for d in directions:
             if d>26 or d<0:
-                mamba.raiseExceptionOnError(core.ERR_BAD_DIRECTION)
+                mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
             if d<9:
                 dirs[0] |= (1<<d)
             elif d<18:
@@ -219,7 +219,7 @@ class _gridCubic3D(_grid3D):
         return dirs
     def convertFromDir(self, direction, zindex):
         if direction>26 or direction<0:
-            mamba.raiseExceptionOnError(core.ERR_BAD_DIRECTION)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         if direction<9:
             return (0,direction)
         elif direction<18:

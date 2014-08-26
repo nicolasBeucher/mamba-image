@@ -32,22 +32,22 @@
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Load8(MB_Image *image, PIX8 *indata, Uint32 len)
 {
     /* Only 8 bit image can be loaded */
     if (image->depth!=8) {
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     /* the data given must be sufficient to fill the image */
     if (len!=(image->height*image->width)) {
-        return ERR_LOAD_DATA;
+        return MB_ERR_LOAD_DATA;
     }
 
     MB_memcpy(image->pixels,indata,len);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -55,22 +55,22 @@ MB_errcode MB_Load8(MB_Image *image, PIX8 *indata, Uint32 len)
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Load32(MB_Image *image, PIX8 *indata, Uint32 len)
 {
     /* Only 32 bit image can be loaded */
     if (image->depth!=32) {
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     /* the data given must be sufficient to fill the image */
     if (len!=(image->height*image->width*4)) {
-        return ERR_LOAD_DATA;
+        return MB_ERR_LOAD_DATA;
     }
 
     MB_memcpy(image->pixels,indata,len);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -78,10 +78,10 @@ MB_errcode MB_Load32(MB_Image *image, PIX8 *indata, Uint32 len)
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Load(MB_Image *image, PIX8 *indata, Uint32 len) {
-    MB_errcode err = NO_ERR;
+    MB_errcode err = MB_NO_ERR;
     
     switch(image->depth) {
         case 8:
@@ -91,7 +91,7 @@ MB_errcode MB_Load(MB_Image *image, PIX8 *indata, Uint32 len) {
             err = MB_Load32(image, indata, len);
             break;
         default:
-            err = ERR_BAD_DEPTH;
+            err = MB_ERR_BAD_DEPTH;
             break;
     }
     
@@ -105,24 +105,24 @@ MB_errcode MB_Load(MB_Image *image, PIX8 *indata, Uint32 len) {
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image
  * \param len the length in bytes of data extracted
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Extract8(MB_Image *image, PIX8 **outdata, Uint32 *len)
 {
     if (image->depth!=8) {
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     /* allocating the memory */
     *outdata = MB_malloc((image->height*image->width)*sizeof(PIX8));
     if(*outdata==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     *len = image->height*image->width;
     MB_memcpy(*outdata,image->pixels,*len);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -131,25 +131,25 @@ MB_errcode MB_Extract8(MB_Image *image, PIX8 **outdata, Uint32 *len)
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image
  * \param len the length in bytes of data extracted
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Extract32(MB_Image *image, PIX8 **outdata, Uint32 *len)
 {
     if (image->depth!=32) {
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     /* allocating the memory */
     *outdata = MB_malloc((image->height*image->width*4)*sizeof(PIX8));
     if(*outdata==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
 
     *len = image->height*image->width*4;
     MB_memcpy(*outdata,image->pixels,*len);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -158,10 +158,10 @@ MB_errcode MB_Extract32(MB_Image *image, PIX8 **outdata, Uint32 *len)
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image
  * \param len the length in bytes of data extracted (0 if an error occured)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Extract(MB_Image *image, PIX8 **outdata, Uint32 *len) {
-    MB_errcode err = NO_ERR;
+    MB_errcode err = MB_NO_ERR;
     
     switch(image->depth) {
         case 8:
@@ -172,7 +172,7 @@ MB_errcode MB_Extract(MB_Image *image, PIX8 **outdata, Uint32 *len) {
             break;
         default:
             *len = 0;
-            err = ERR_BAD_DEPTH;
+            err = MB_ERR_BAD_DEPTH;
             break;
     }
     

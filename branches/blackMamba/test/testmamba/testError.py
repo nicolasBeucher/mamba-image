@@ -20,16 +20,16 @@ class TestError(unittest.TestCase):
 
     def testError(self):
         """Tests error function"""
-        for i in range(core.ERR_UNKNOWN+1):
+        for i in range(core.MB_ERR_UNKNOWN+1):
             err_str = core.MB_StrErr(i)
             self.assertNotEqual(err_str, "")
             
-        ref_str = core.MB_StrErr(core.ERR_UNKNOWN)
-        for i in range(core.ERR_UNKNOWN+1,10):
+        ref_str = core.MB_StrErr(core.MB_ERR_UNKNOWN)
+        for i in range(core.MB_ERR_UNKNOWN+1,10):
             err_str = core.MB_StrErr(i)
             self.assertEqual(err_str, ref_str)
             
-        self.assertEqual(core.NO_ERR, 0)
+        self.assertEqual(core.MB_NO_ERR, 0)
 
     def testException(self):
         """Tests the exception"""

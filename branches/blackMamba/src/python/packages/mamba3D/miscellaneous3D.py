@@ -50,7 +50,7 @@ def compare3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
         
     z = 0
     x = -1
@@ -73,7 +73,7 @@ def shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
     if length!=len(imOut):
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     zext = grid.getZExtension()
     imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     for i in range(zext):

@@ -52,7 +52,7 @@ static INLINE void CHECK_LINE(PLINE *plines_in, Uint32 bytes_in, Uint32 * isEmpt
  * Verifies that the image is not empty (all pixels to 0).
  * \param src the source image 
  * \param isEmpty an integer which is set to 1 if empty or 0 if not
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Check(MB_Image *src, Uint32 *isEmpty) 
 {
@@ -72,6 +72,6 @@ MB_errcode MB_Check(MB_Image *src, Uint32 *isEmpty)
         /* As soon as a difference has been found the function ends */
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 

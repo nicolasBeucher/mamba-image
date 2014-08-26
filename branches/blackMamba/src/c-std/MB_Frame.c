@@ -70,7 +70,7 @@ static INLINE MB_errcode MB_Frame1(MB_Image *src, Uint32 *ulx, Uint32 *uly, Uint
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 static INLINE MB_errcode MB_Frame8(MB_Image *src, PIX8 thresval, Uint32 *ulx, Uint32 *uly, Uint32 *brx, Uint32 *bry) {
@@ -107,7 +107,7 @@ static INLINE MB_errcode MB_Frame8(MB_Image *src, PIX8 thresval, Uint32 *ulx, Ui
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 static INLINE MB_errcode MB_Frame32(MB_Image *src, PIX32 thresval, Uint32 *ulx, Uint32 *uly, Uint32 *brx, Uint32 *bry) {
@@ -144,7 +144,7 @@ static INLINE MB_errcode MB_Frame32(MB_Image *src, PIX32 thresval, Uint32 *ulx, 
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -156,7 +156,7 @@ static INLINE MB_errcode MB_Frame32(MB_Image *src, PIX32 thresval, Uint32 *ulx, 
  * \param uly the y-coordinate of the upper left corner of the frame
  * \param brx the x-coordinate of the bottom right corner of the frame
  * \param bry the y-coordinate of the bottom right corner of the frame
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Frame(MB_Image *src, Uint32 thresval, Uint32 *ulx, Uint32 *uly, Uint32 *brx, Uint32 *bry) {
 
@@ -173,11 +173,11 @@ MB_errcode MB_Frame(MB_Image *src, Uint32 thresval, Uint32 *ulx, Uint32 *uly, Ui
         return MB_Frame32(src, (PIX32) thresval, ulx, uly, brx, bry);
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
     /* If this point is reached we can assume there was an error*/
-    return ERR_BAD_VALUE;
+    return MB_ERR_BAD_VALUE;
 }
 

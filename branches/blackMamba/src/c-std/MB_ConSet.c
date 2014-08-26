@@ -31,7 +31,7 @@
  * Fills an image with a specific value
  * \param dest the image
  * \param value the value to fill the image
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_ConSet(MB_Image *dest, Uint32 value) {
     Uint8 pattern8;
@@ -67,9 +67,9 @@ MB_errcode MB_ConSet(MB_Image *dest, Uint32 value) {
         break;
         
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 } 

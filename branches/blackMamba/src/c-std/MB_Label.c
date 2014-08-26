@@ -108,20 +108,20 @@ void MB_TidyLabel(PLINE *plines_out,
  * \param lbhigh the first high value NOT allowed for label on the low byte (maximum allowed is 256)
  * \param pNbobj the number of object founds
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Label(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, Uint32 *pNbobj, enum MB_grid_t grid)
 {
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* Verification over parameter given in entry*/
-    if (lblow>=lbhigh) return ERR_BAD_VALUE;
-    if (lbhigh>256) return ERR_BAD_VALUE;
+    if (lblow>=lbhigh) return MB_ERR_BAD_VALUE;
+    if (lbhigh>256) return MB_ERR_BAD_VALUE;
     
     /* the output is necessarly a 32-bit image */
-    if (dest->depth!=32) return ERR_BAD_DEPTH;
+    if (dest->depth!=32) return MB_ERR_BAD_DEPTH;
     
     /* Calling the appropriate function */
     switch (src->depth) {
@@ -138,6 +138,6 @@ MB_errcode MB_Label(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, 
         break;
     }
 
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

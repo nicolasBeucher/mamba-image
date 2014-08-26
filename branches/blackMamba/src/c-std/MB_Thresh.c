@@ -106,7 +106,7 @@ static INLINE void THRESH_LINE_32_1(PLINE *plines_out, PLINE *plines_in,
  * \param dest destination image
  * \param low low value for threshold
  * \param high high value for treshold
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Thresh(MB_Image *src, MB_Image *dest, Uint32 low, Uint32 high)
 {
@@ -116,12 +116,12 @@ MB_errcode MB_Thresh(MB_Image *src, MB_Image *dest, Uint32 low, Uint32 high)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     
     /* checking input parameters value */
     if (low>high) {
-        return ERR_BAD_VALUE;
+        return MB_ERR_BAD_VALUE;
     }
     
     /* Setting up line pointers */
@@ -147,9 +147,9 @@ MB_errcode MB_Thresh(MB_Image *src, MB_Image *dest, Uint32 low, Uint32 high)
         break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }

@@ -93,7 +93,7 @@
  * \param dest destination image 
  * \param maskf for 0 (false) pixel value
  * \param maskt for 1 (true) pixel value
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Mask(MB_Image *src, MB_Image *dest, Uint32 maskf, Uint32 maskt) {
     Uint32 i;
@@ -102,7 +102,7 @@ MB_errcode MB_Mask(MB_Image *src, MB_Image *dest, Uint32 maskf, Uint32 maskt) {
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     
     /* Setting up line pointers */
@@ -125,10 +125,10 @@ MB_errcode MB_Mask(MB_Image *src, MB_Image *dest, Uint32 maskf, Uint32 maskt) {
             }
             break;
         default:
-            return ERR_BAD_DEPTH;
+            return MB_ERR_BAD_DEPTH;
             break;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 

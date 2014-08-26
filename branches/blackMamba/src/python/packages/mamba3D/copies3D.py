@@ -34,7 +34,7 @@ def copyBitPlane3D(imIn, plane, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.copyBitPlane(imIn[i], plane, imOut[i])
@@ -52,7 +52,7 @@ def copyBytePlane3D(imIn, plane, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.copyBytePlane(imIn[i], plane, imOut[i])

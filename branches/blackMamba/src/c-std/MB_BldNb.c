@@ -45,7 +45,7 @@ extern MB_errcode MB_BldNb32(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, U
  * \param pVolume the computed volume of the output image
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_BldNb(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *pVolume, enum MB_grid_t grid)
 {
@@ -63,5 +63,5 @@ MB_errcode MB_BldNb(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *pV
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

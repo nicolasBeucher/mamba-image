@@ -32,7 +32,7 @@
  * This copy works with same size images.
  * \param src the source image
  * \param dest the destination image
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
 
@@ -45,12 +45,12 @@ MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
     if (src==dest) {
         /* pointing to the same image data */
         /* then nothing to do */
-        return NO_ERR;
+        return MB_NO_ERR;
     }
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* The two images must have the same */
@@ -61,7 +61,7 @@ MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
     case MB_PAIR_32_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
     
@@ -76,7 +76,7 @@ MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
         MB_memcpy(*plines_out,*plines_in,bytes_in);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -85,7 +85,7 @@ MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
  * \param dest the destination image
  * \param insrc_pos the position of the line copied from src
  * \param indest_pos the position in dest in which the line is copied
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 indest_pos) {
 
@@ -98,7 +98,7 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
          (indest_pos>=(dest->height)) ||
          (indest_pos<0) ) {
         /* either the source line or the destination line is out of range*/
-        return ERR_BAD_VALUE;
+        return MB_ERR_BAD_VALUE;
     }
     
     /* verification over src and dest to know */
@@ -106,12 +106,12 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
     if (src==dest && insrc_pos==indest_pos) {
         /* pointing to the same image data */
         /* then nothing to do */
-        return NO_ERR;
+        return MB_NO_ERR;
     }
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* The two images must have the same */
@@ -122,7 +122,7 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
     case MB_PAIR_32_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
     
@@ -135,7 +135,7 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
     
     MB_memcpy(*plines_out,*plines_in,bytes_in);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -154,7 +154,7 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
  * \param y_dest the y position in the destination image where the copy should happen
  * \param w the width of the copy
  * \param h the height of the copy
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
                        MB_Image *dest, Uint32 x_dest, Uint32 y_dest,
@@ -174,21 +174,21 @@ MB_errcode MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
     case MB_PAIR_32_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
    
     /* given size should be at least greater than 0 */
     if (w==0 || h==0) {
-        return ERR_BAD_VALUE;
+        return MB_ERR_BAD_VALUE;
     }
 
     /* verification the given position and the images sizes*/
     if (x_dest>=dest->width || y_dest>=dest->height) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     if (x_src>=src->width || y_src>=src->height) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* computing the size of the copy, its the minimum of all the available */
@@ -215,5 +215,5 @@ MB_errcode MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
         MB_memcpy(*plines_out+linoff_out,*plines_in+linoff_in,bytes_in);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

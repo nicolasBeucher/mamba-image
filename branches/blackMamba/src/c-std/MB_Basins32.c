@@ -340,7 +340,7 @@ static INLINE void MB_Flooding(MB_Basins32_Ctx *local_ctx, Uint32 max_level)
  * \param marker the marker image in which the result of segmentation will be put
  * \param max_level the maximum level reached by the water.
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t grid)
 {
@@ -349,7 +349,7 @@ MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum M
     local_ctx = (MB_Basins32_Ctx *)MB_malloc(sizeof(MB_Basins32_Ctx));
     if(local_ctx==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
     /* local context initialisation */
@@ -366,7 +366,7 @@ MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum M
     if(local_ctx->TokensArray==NULL){
         /* in case allocation goes wrong */
         MB_free(local_ctx);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
     /* grid initialisation */
@@ -387,5 +387,5 @@ MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum M
     /* freeing the context */
     MB_free(local_ctx);
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

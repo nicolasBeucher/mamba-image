@@ -47,7 +47,7 @@ Uint32 MB_getImageCounter(void)
  * \param width the width of the created image 
  * \param height the height of the created image 
  * \param depth the depth of the created image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth) {
     PLINE *plines = NULL;
@@ -64,13 +64,13 @@ MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth)
     image_size = ((Uint64)width) * height;
     if (!(width > 0 && height > 0 &&
         image_size <= MB_MAX_IMAGE_SIZE) ) {
-        return ERR_BAD_IMAGE_DIMENSIONS;
+        return MB_ERR_BAD_IMAGE_DIMENSIONS;
     }
 
     /* verification over the depth*/
     /*acceptable values are 1, 8, or 32 bits*/
     if( (depth != 1) && (depth != 8) && (depth != 32) ){
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     
     /* full height in pixel with edge*/
@@ -90,7 +90,7 @@ MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth)
         /* in case allocation goes wrong */
         MB_aligned_free(pixarray);
         MB_free(plines);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     
     /* Fills in the MB_Image structure */
@@ -107,16 +107,16 @@ MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth)
     
     MB_refcounter++;
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
  * Destroys an image (memory freeing)
  * \param image the image to be destroyed
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Destroy(MB_Image *image) {
-    if (image==NULL) return NO_ERR;
+    if (image==NULL) return MB_NO_ERR;
 
     MB_free(image->plines);
     MB_aligned_free(image->pixels);
@@ -125,6 +125,6 @@ MB_errcode MB_Destroy(MB_Image *image) {
         MB_refcounter--;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 

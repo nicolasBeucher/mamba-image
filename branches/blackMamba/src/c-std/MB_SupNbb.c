@@ -90,7 +90,7 @@
  * \param grid the grid used (either square or hexagonal)
  * \param edge the kind of edge to use (behavior for pixel near edge depends on it)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB_grid_t grid, enum MB_edgemode_t edge)
 {
@@ -103,14 +103,14 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
     /* error management */
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* Only greyscale images can be processed */
     switch (MB_PROBE_PAIR(src, srcdest)) {
     case MB_PAIR_1_1:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     /* If src and srcdest are the same image, we create a temporary */
@@ -118,14 +118,14 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
     if (src==srcdest) {
         temp = MB_malloc(sizeof(MB_Image));
         if (temp==NULL) {
-            return ERR_CANT_ALLOCATE_MEMORY;
+            return MB_ERR_CANT_ALLOCATE_MEMORY;
         }
         err = MB_Create(temp, src->width, src->height, src->depth);
-        if (err!=NO_ERR) {
+        if (err!=MB_NO_ERR) {
             return err;
         }
         err = MB_Copy(src, temp);
-        if (err!=NO_ERR) {
+        if (err!=MB_NO_ERR) {
             return err;
         }
     } else {
@@ -141,14 +141,14 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
     if (grid==MB_SQUARE_GRID) {
         if ((neighbors&MB_NEIGHBOR_ALL_SQUARE)==0) {
             /* No neighbors to take into account */
-            return NO_ERR;
+            return MB_NO_ERR;
         }
         MB_comp_neighbors_square(plines_inout, plines_in, bytes_in, temp->height,
                                  neighbors, edge_val);
     } else {
         if ((neighbors&MB_NEIGHBOR_ALL_HEXAGONAL)==0) {
             /* No neighbors to take into account */
-            return NO_ERR;
+            return MB_NO_ERR;
         }
         MB_comp_neighbors_hexagonal(plines_inout, plines_in, bytes_in, temp->height,
                                     neighbors, edge_val);
@@ -159,7 +159,7 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
         MB_Destroy(temp);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 
