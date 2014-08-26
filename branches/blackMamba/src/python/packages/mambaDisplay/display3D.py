@@ -11,12 +11,12 @@ except ImportError:
     import Tkinter as tk
     import ttk
 
-import constants
-import popup
-import palette
-import display3D_proj
-import display3D_volren
-import display3D_player
+from . import constants
+from . import popup
+from . import palette
+from . import display3D_proj
+from . import display3D_volren
+from . import display3D_player
 
 class Display3D(tk.Toplevel):
     

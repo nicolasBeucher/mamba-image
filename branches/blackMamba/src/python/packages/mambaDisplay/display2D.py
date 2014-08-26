@@ -2,8 +2,10 @@
 This module defines a 2D data displayer for mamba.
 """
 
-import constants
-import palette
+from . import constants
+from . import palette
+from . import popup
+
 import mamba
 import mamba.utils as utils
 from mamba.error import *
@@ -20,14 +22,9 @@ except ImportError:
     except ImportError:
         print("Missing Tkinter library")
         raise
-try:
-    from PIL import ImageTk
-    from PIL import Image
-except ImportError:
-    print("Missing PIL library (pillow) - https://pypi.python.org/pypi/Pillow/")
-    raise
 
-import popup
+from PIL import ImageTk
+from PIL import Image
 
 ###############################################################################
 #  Utilities functions

@@ -15,8 +15,8 @@ import time
 from PIL import Image
 from PIL import ImageTk
 
-import constants
-import palette
+from . import constants
+from . import palette
 
 # Mamba imports
 import mamba3D as m3D

@@ -8,8 +8,8 @@ import mamba
 import mamba3D
 
 import mambaDisplay
-import display2D
-import display3D
+from . import display2D
+from . import display3D
 
 try:
     import tkinter as tk

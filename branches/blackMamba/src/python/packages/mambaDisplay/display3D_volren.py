@@ -23,8 +23,8 @@ try:
 except ImportError:
     _vtk_lib_present = False
 
-import constants
-import palette
+from . import constants
+from . import palette
 
 # Mamba imports
 import mamba3D as m3D
