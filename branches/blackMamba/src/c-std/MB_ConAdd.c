@@ -156,7 +156,7 @@ static INLINE void CONADD_LINE_8_32(PLINE *plines_out,
  * \param src the source image
  * \param value the constant value to be added to the pixels
  * \param dest the image resulting of the addition of image 1 and value. 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_ConAdd(MB_Image *src, Sint64 value, MB_Image *dest)
 {
@@ -166,7 +166,7 @@ MB_errcode MB_ConAdd(MB_Image *src, Sint64 value, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Setting up line pointers */
@@ -198,11 +198,11 @@ MB_errcode MB_ConAdd(MB_Image *src, Sint64 value, MB_Image *dest)
             break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 } 
 
 

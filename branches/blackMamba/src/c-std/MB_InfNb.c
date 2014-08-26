@@ -48,7 +48,7 @@ extern MB_errcode MB_InfNb32(MB_Image *src, MB_Image *srcdest, Uint32 neighbors,
  * \param grid the grid used (either square or hexagonal)
  * \param edge the kind of edge to use (behavior for pixel near edge depends on it)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_InfNb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB_grid_t grid, enum MB_edgemode_t edge)
 {
@@ -66,6 +66,6 @@ MB_errcode MB_InfNb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB_
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

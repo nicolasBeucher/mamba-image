@@ -79,7 +79,7 @@ static INLINE void INSERT_BYTEPLANE_LINE(PLINE *plines_out,
  * \param src source image
  * \param dest destination image 
  * \param plane the byte plane in which the grey scale image will be copied
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 static MB_errcode MB_InsertBytePlane8to32(MB_Image *src, MB_Image *dest, Uint32 plane)
 {
@@ -96,7 +96,7 @@ static MB_errcode MB_InsertBytePlane8to32(MB_Image *src, MB_Image *dest, Uint32 
         INSERT_BYTEPLANE_LINE(plines_out, plines_in, bytes_in, plane);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -105,7 +105,7 @@ static MB_errcode MB_InsertBytePlane8to32(MB_Image *src, MB_Image *dest, Uint32 
  * \param src source image
  * \param dest destination image
  * \param plane the byte plane index 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 static MB_errcode MB_ExtractBytePlane32to8(MB_Image *src, MB_Image *dest, Uint32 plane)
 {
@@ -122,7 +122,7 @@ static MB_errcode MB_ExtractBytePlane32to8(MB_Image *src, MB_Image *dest, Uint32
         EXTRACT_BYTEPLANE_LINE(plines_out, plines_in, bytes_in, plane);
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -131,18 +131,18 @@ static MB_errcode MB_ExtractBytePlane32to8(MB_Image *src, MB_Image *dest, Uint32
  * \param src source image
  * \param dest destination image
  * \param plane the plane number
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_CopyBytePlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* the plane index must be between 0 and 7 included */
     if (plane>3) 
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
 
     /* Comparing the depth of the src and the destination */
     switch (MB_PROBE_PAIR(src, dest)) {
@@ -153,10 +153,10 @@ MB_errcode MB_CopyBytePlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
         return MB_ExtractBytePlane32to8(src,dest,plane);
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
     /* If this point is reached we can assume there was an error*/
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

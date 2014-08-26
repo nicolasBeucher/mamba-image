@@ -369,7 +369,7 @@ static INLINE void MB3D_Flooding(MB3D_Hierardualbld8_Ctx *local_ctx)
  * \param srcdest the rebuild image
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_HierarDualBld8(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_grid_t grid) {
     MB3D_Hierardualbld8_Ctx local_ctx;
@@ -390,14 +390,14 @@ MB_errcode MB3D_HierarDualBld8(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_
     local_ctx.TokensArray = MB_malloc(2*local_ctx.width*local_ctx.height*local_ctx.length*sizeof(MB3D_Token));
     if(local_ctx.TokensArray==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     /* Allocating the pixel status array */
     local_ctx.pix_status = MB_malloc(local_ctx.width*local_ctx.height*local_ctx.length*sizeof(Uint32));
     if(local_ctx.pix_status==NULL){
         /* in case allocation goes wrong */
         MB_free(local_ctx.TokensArray);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
     /* grid initialisation */
@@ -418,5 +418,5 @@ MB_errcode MB3D_HierarDualBld8(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_
     /* freeing the pixel status array */
     MB_free(local_ctx.pix_status);
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

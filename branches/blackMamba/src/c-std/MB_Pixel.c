@@ -79,7 +79,7 @@ static INLINE void PUT_PIXEL_32(PLINE pline, Uint32 x, PIX32 value)
  * \param pixVal the pixel value
  * \param x position in x of the pixel targeted
  * \param y position in y of the pixel targeted
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_PutPixel(MB_Image *dest, Uint32 pixVal, Uint32 x, Uint32 y) 
 {
@@ -88,7 +88,7 @@ MB_errcode MB_PutPixel(MB_Image *dest, Uint32 pixVal, Uint32 x, Uint32 y)
 
     /* verification over the size */
     if (x>=dest->width || y>=dest->height) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
    
     /* Setting up line pointers */
@@ -106,11 +106,11 @@ MB_errcode MB_PutPixel(MB_Image *dest, Uint32 pixVal, Uint32 x, Uint32 y)
             PUT_PIXEL_32(pline, x, (PIX32) pixVal);
             break;
         default:
-            return ERR_BAD_DEPTH;
+            return MB_ERR_BAD_DEPTH;
             break;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -162,7 +162,7 @@ static INLINE void GET_PIXEL_32(PLINE pline, Uint32 x, Uint32 *value)
  * \param pixVal the returned pixel value
  * \param x position in x of the pixel targeted
  * \param y position in y of the pixel targeted
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_GetPixel(MB_Image *src, Uint32 *pixVal, Uint32 x, Uint32 y) 
 {
@@ -170,7 +170,7 @@ MB_errcode MB_GetPixel(MB_Image *src, Uint32 *pixVal, Uint32 x, Uint32 y)
 
     /* verification over the size */
     if (x>=src->width || y>=src->height) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
    
     /* Setting up line pointers */
@@ -187,9 +187,9 @@ MB_errcode MB_GetPixel(MB_Image *src, Uint32 *pixVal, Uint32 x, Uint32 y)
             GET_PIXEL_32(pline, x, pixVal);
             break;
         default:
-            return ERR_BAD_DEPTH;
+            return MB_ERR_BAD_DEPTH;
             break;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

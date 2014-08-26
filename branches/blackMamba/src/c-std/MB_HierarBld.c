@@ -38,13 +38,13 @@ extern MB_errcode MB_HierarBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid
  * \param srcdest the rebuild image
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_HierarBld(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid) {
     
     /* verification over depth and size */
     if (!MB_CHECK_SIZE_2(srcdest, mask)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Only grey scale can be rebuild */
@@ -59,5 +59,5 @@ MB_errcode MB_HierarBld(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid) 
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

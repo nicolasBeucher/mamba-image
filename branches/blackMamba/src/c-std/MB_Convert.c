@@ -32,7 +32,7 @@
  * Pixels to True are set to 255 and to 0 otherwise
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert1to8(MB_Image *src, MB_Image *dest)
 {
@@ -59,7 +59,7 @@ MB_errcode MB_Convert1to8(MB_Image *src, MB_Image *dest)
         }
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -67,7 +67,7 @@ MB_errcode MB_Convert1to8(MB_Image *src, MB_Image *dest)
  * Pixels at 255 are set to True and to False otherwise
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
 {
@@ -95,7 +95,7 @@ MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
         }
     }    
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -103,7 +103,7 @@ MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
  * Pixels to True are set to 0xffffffff and to 0 otherwise
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert1to32(MB_Image *src, MB_Image *dest)
 {
@@ -130,7 +130,7 @@ MB_errcode MB_Convert1to32(MB_Image *src, MB_Image *dest)
         }
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -138,7 +138,7 @@ MB_errcode MB_Convert1to32(MB_Image *src, MB_Image *dest)
  * Pixels at 0xffffffff are set to True and to False otherwise
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert32to1(MB_Image *src, MB_Image *dest)
 {
@@ -168,14 +168,14 @@ MB_errcode MB_Convert32to1(MB_Image *src, MB_Image *dest)
         }
     }    
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
  * Converts an 32-bit image to a 8-bit image (downscaling).
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert32to8(MB_Image *src, MB_Image *dest)
 {
@@ -187,7 +187,7 @@ MB_errcode MB_Convert32to8(MB_Image *src, MB_Image *dest)
     PIX8 *pout;
     
     err = MB_Range(src, &min, &max);
-    if (err != NO_ERR) {
+    if (err != MB_NO_ERR) {
         return err;
     }
 
@@ -214,20 +214,20 @@ MB_errcode MB_Convert32to8(MB_Image *src, MB_Image *dest)
         }
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
  * Converts an image of a given depth into another depth
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert(MB_Image *src, MB_Image *dest)
 {
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Comparing the depth of the src and the destination */
@@ -260,6 +260,6 @@ MB_errcode MB_Convert(MB_Image *src, MB_Image *dest)
     }
 
     /* If this point is reached we can assume there was an error*/
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

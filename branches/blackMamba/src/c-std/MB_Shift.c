@@ -46,7 +46,7 @@ extern MB_errcode MB_Shift32(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint3
  * \param long_filler_pix the value used to fill the created space
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Shift(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint32 count, Uint32 long_filler_pix, enum MB_grid_t grid)
 {
@@ -65,6 +65,6 @@ MB_errcode MB_Shift(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint32 count, 
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }
 

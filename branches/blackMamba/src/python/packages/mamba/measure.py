@@ -59,7 +59,7 @@ def computeArea(imIn, scale=(1.0, 1.0)):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     a = scale[0]*scale[1]*mamba.computeVolume(imIn)
     return a
 
@@ -74,7 +74,7 @@ def computeDiameter(imIn, dir, scale=(1.0, 1.0), grid=mamba.DEFAULT_GRID):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     if dir == 0:
         return 0.0
     dir = ((dir - 1)%(mamba.gridNeighbors(grid)//2)) +1
@@ -108,7 +108,7 @@ def computePerimeter(imIn, scale=(1.0, 1.0), grid=mamba.DEFAULT_GRID):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     p = 0.
     for i in range(1, mamba.gridNeighbors(grid)//2 + 1):
         p += computeDiameter(imIn, i, scale=scale, grid=grid)
@@ -125,7 +125,7 @@ def computeConnectivityNumber(imIn, grid=mamba.DEFAULT_GRID):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imWrk  = mamba.imageMb(imIn)
     if grid == mamba.HEXAGONAL:
         dse = mamba.doubleStructuringElement([1,6],[0],mamba.HEXAGONAL)

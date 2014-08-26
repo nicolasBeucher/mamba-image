@@ -321,7 +321,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
  * \param grid the grid used (either square or hexagonal)
  * \param edge the kind of edge to use (behavior for pixel near edge depends on it)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_InfFarNb8(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32 count, enum MB_grid_t grid, enum MB_edgemode_t edge)
 {
@@ -333,22 +333,22 @@ MB_errcode MB_InfFarNb8(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32 
     /* error management */
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* grid value and possible neighbors are connected, grid value is the */
     /* maximum number of directions */
     if(nbrnum>6 && grid==MB_HEXAGONAL_GRID) {
-        return ERR_BAD_DIRECTION;
+        return MB_ERR_BAD_DIRECTION;
     }
     if(nbrnum>8 && grid==MB_SQUARE_GRID) {
-        return ERR_BAD_DIRECTION;
+        return MB_ERR_BAD_DIRECTION;
     }
     /* Only binary and greyscale images can be processed */
     switch (MB_PROBE_PAIR(src, srcdest)) {
     case MB_PAIR_8_8:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     
     /* if count is to zero it amounts to a simple copy of src into dest */
@@ -373,5 +373,5 @@ MB_errcode MB_InfFarNb8(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32 
     fn = SwitchTo[grid][tran_dir];
     fn(plines_out, plines_in, bytes_in, (Sint32) src->height, count, GREY_FILL_VALUE(edge));
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }

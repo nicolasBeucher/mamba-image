@@ -413,7 +413,7 @@ static INLINE void MB_Flooding(MB_Hierardualbld32_Ctx *local_ctx)
  * \param srcdest the rebuild image
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_HierarDualBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid)
 {
@@ -422,7 +422,7 @@ MB_errcode MB_HierarDualBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t 
     local_ctx = (MB_Hierardualbld32_Ctx *)MB_malloc(sizeof(MB_Hierardualbld32_Ctx));
     if(local_ctx==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
     /* local context initialisation */
@@ -441,7 +441,7 @@ MB_errcode MB_HierarDualBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t 
     if(local_ctx->TokensArray==NULL){
         /* in case allocation goes wrong */
         MB_free(local_ctx);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     /* Allocating the pixel status array */
     local_ctx->pix_status = MB_malloc(srcdest->width*srcdest->height*sizeof(Uint32));
@@ -450,7 +450,7 @@ MB_errcode MB_HierarDualBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t 
         /* freeing the token array */
         MB_free(local_ctx->TokensArray);
         MB_free(local_ctx);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
     /* grid initialisation */
@@ -473,5 +473,5 @@ MB_errcode MB_HierarDualBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t 
     /* freeing the context */
     MB_free(local_ctx);
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

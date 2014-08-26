@@ -137,7 +137,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
  * \param long_filler_pix the value used to fill the created space
  * \param grid the grid used (either square or hexagonal)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Shift32(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint32 count, Uint32 long_filler_pix, enum MB_grid_t grid)
 {
@@ -148,22 +148,22 @@ MB_errcode MB_Shift32(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint32 count
     /* error management */
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* grid value and possible direction are connected, grid value is the */
     /* maximum number of directions */
     if(dirnum>6 && grid==MB_HEXAGONAL_GRID) {
-        return ERR_BAD_DIRECTION;
+        return MB_ERR_BAD_DIRECTION;
     }
     if(dirnum>8 && grid==MB_SQUARE_GRID) {
-        return ERR_BAD_DIRECTION;
+        return MB_ERR_BAD_DIRECTION;
     }
     /* Only 32bit images can be processed */
     switch (MB_PROBE_PAIR(src, dest)) {
     case MB_PAIR_32_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     
     /* if count is to zero it amounts to a simple copy of src into dest */
@@ -181,7 +181,7 @@ MB_errcode MB_Shift32(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint32 count
     fn = SwitchTo[grid][dirnum];
     fn(plines_out, plines_in, bytes_in, (Sint32) src->height, count, (PIX32) long_filler_pix);
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 

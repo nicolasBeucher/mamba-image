@@ -43,7 +43,7 @@ extern MB_errcode MB_InfVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Si
  * \param dy the vector amplitude in y
  * \param edge the kind of edge to use (behavior for pixels near edge depends on it)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_InfVector(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy, enum MB_edgemode_t edge)
 {
@@ -61,5 +61,5 @@ MB_errcode MB_InfVector(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy, 
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

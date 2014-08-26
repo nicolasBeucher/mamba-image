@@ -46,8 +46,8 @@ char *err_str[] = {
  * \param error_nb the error code number
  */
 char *MB_StrErr(MB_errcode error_nb) {
-    if (error_nb>=ERR_UNKNOWN) {
-        return err_str[ERR_UNKNOWN];
+    if (error_nb>=MB_ERR_UNKNOWN) {
+        return err_str[MB_ERR_UNKNOWN];
     } else {
         return err_str[error_nb];
     }

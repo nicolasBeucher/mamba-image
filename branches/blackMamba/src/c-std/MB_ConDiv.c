@@ -87,7 +87,7 @@ static INLINE void CONDIV_LINE_32_32(PLINE *plines_out,
  * \param src the source image
  * \param value the constant value used in the division
  * \param dest the image resulting of the division of image 1 by the value. 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
 {
@@ -97,7 +97,7 @@ MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Setting up line pointers */
@@ -107,7 +107,7 @@ MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
     
     /* verification over value (cannot divide by 0) */
     if (value==0) {
-        return ERR_BAD_VALUE;
+        return MB_ERR_BAD_VALUE;
     }
 
     /* The two images must have the same */
@@ -128,11 +128,11 @@ MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
         break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 } 
 
 

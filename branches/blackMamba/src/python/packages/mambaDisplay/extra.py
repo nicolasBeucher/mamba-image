@@ -335,7 +335,7 @@ def dynamicThreshold(imIn):
     (increasing) and X (decreasing).
     """
     if imIn.getDepth()==1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     mamba.getDisplayer() # To activate Tk root window and hide it
     im = _imageThreshold(imIn.mbIm)
     return im.result
@@ -663,7 +663,7 @@ def interactiveSegment(imIn, imOut):
     the (x,y) format).
     """
     if imIn.getDepth()==1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     mamba.getDisplayer() # To activate Tk root window and hide it
     im = _imageSegment(imIn, imOut)
     imOut.update()
@@ -1047,7 +1047,7 @@ def superpose(imIn1, imIn2):
     
     """
     if imIn1.getSize()!=imIn2.getSize():
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     mamba.getDisplayer() # To activate Tk root window and hide it
     im = _imageSuperpose(imIn1, imIn2)
 

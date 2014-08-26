@@ -42,7 +42,7 @@ def convertByMask3D(imIn, imOut, mFalse, mTrue):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.convertByMask(imIn[i], imOut[i], mFalse, mTrue)
@@ -63,7 +63,7 @@ def threshold3D(imIn, imOut, low, high):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.threshold(imIn[i], imOut[i], low, high)
@@ -81,7 +81,7 @@ def generateSupMask3D(imIn1, imIn2, imOut, strict):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.generateSupMask(imIn1[i], imIn2[i], imOut[i], strict)
@@ -97,7 +97,7 @@ def lookup3D(imIn, imOut, lutable):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.lookup(imIn[i], imOut[i], lutable)

@@ -104,7 +104,7 @@ static INLINE void VOLUME_LINE_32(PLINE *plines, Uint32 bytes, Uint64 *volume)
  * of the image)
  * \param src source image
  * \param pVolume pointer to the volume variable
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Volume(MB_Image *src, Uint64 *pVolume) {
     PLINE *plines;
@@ -139,13 +139,13 @@ MB_errcode MB_Volume(MB_Image *src, Uint64 *pVolume) {
         }
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
     /* returns of volume */
     *pVolume = volume;
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 

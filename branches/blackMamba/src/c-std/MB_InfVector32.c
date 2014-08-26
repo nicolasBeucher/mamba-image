@@ -145,7 +145,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
  * \param dy the vector amplitude in y
  * \param edge the kind of edge to use (behavior for pixels near edge depends on it)
  *
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_InfVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy, enum MB_edgemode_t edge)
 {
@@ -156,14 +156,14 @@ MB_errcode MB_InfVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy
     /* error management */
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* Only binary and greyscale images can be processed */
     switch (MB_PROBE_PAIR(src, srcdest)) {
     case MB_PAIR_32_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     /* setting up pointers */
@@ -176,5 +176,5 @@ MB_errcode MB_InfVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy
     fn = orientationFunc[CODE_ORIENTATION(dx,dy)];
     fn(plines_out, plines_in, bytes_in, (Sint32) src->height, dx, dy, I32_FILL_VALUE(edge));
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }

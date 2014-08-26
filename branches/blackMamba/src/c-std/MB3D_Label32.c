@@ -244,7 +244,7 @@ static void MB3D_fccLabel32(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct *
  * \param lbhigh the first high value NOT allowed for label on the low byte (maximum allowed is 256)
  * \param pNbobj the number of object founds
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_Label32(MB3D_Image *src, MB3D_Image *dest,
                          Uint32 lblow, Uint32 lbhigh,
@@ -263,13 +263,13 @@ MB_errcode MB3D_Label32(MB3D_Image *src, MB3D_Image *dest,
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if (labels.EQ==NULL) {
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if (labels.CEQ==NULL){
         /* in case allocation goes wrong */
         MB_free(labels.EQ);
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     MB_memset(labels.EQ, 0, labels.maxEQ*sizeof(PIX32));
     MB_memset(labels.CEQ, 0, labels.maxEQ*sizeof(PIX32));
@@ -290,7 +290,7 @@ MB_errcode MB3D_Label32(MB3D_Image *src, MB3D_Image *dest,
         default:
             MB_free(labels.EQ);
             MB_free(labels.CEQ);
-            return ERR_BAD_PARAMETER;
+            return MB_ERR_BAD_PARAMETER;
             break;
     }
     MB3D_TidyLabel(dest, (PIX32) lblow, (PIX32) lbhigh, &labels);
@@ -301,6 +301,6 @@ MB_errcode MB3D_Label32(MB3D_Image *src, MB3D_Image *dest,
     MB_free(labels.EQ);
     MB_free(labels.CEQ);
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 

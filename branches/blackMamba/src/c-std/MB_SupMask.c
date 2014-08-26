@@ -221,7 +221,7 @@ static INLINE void SUPMASK_LINE_1_1(PLINE *plines_out,
  * \param src2 source image 2
  * \param dest destination image 
  * \param strict flag indicating if the comparison is strict or large
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 strict)
 {
@@ -231,7 +231,7 @@ MB_errcode MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 str
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Setting up line pointers */
@@ -244,7 +244,7 @@ MB_errcode MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 str
 
     /* dest image must be binary */
     if(dest->depth!=1)
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
 
     /* The two source images must have the same depth */
     switch(MB_PROBE_PAIR(src1,src2)) {
@@ -286,9 +286,9 @@ MB_errcode MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 str
         break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
       }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }

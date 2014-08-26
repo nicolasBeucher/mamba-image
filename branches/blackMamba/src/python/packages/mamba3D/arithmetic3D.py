@@ -33,7 +33,7 @@ def add3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
 
     for i in range(outl):
         mamba.add(imIn1[i], imIn2[i], imOut[i])
@@ -57,7 +57,7 @@ def sub3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
 
     for i in range(outl):
         mamba.sub(imIn1[i], imIn2[i], imOut[i])
@@ -81,7 +81,7 @@ def mul3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
 
     for i in range(outl):
         mamba.mul(imIn1[i], imIn2[i], imOut[i])
@@ -104,7 +104,7 @@ def div3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.div(imIn1[i], imIn2[i], imOut[i])
@@ -124,7 +124,7 @@ def addConst3D(imIn, v, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.addConst(imIn[i], v, imOut[i])
@@ -144,7 +144,7 @@ def subConst3D(imIn, v, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.subConst(imIn[i], v, imOut[i])
@@ -164,7 +164,7 @@ def divConst3D(imIn, v, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.divConst(imIn[i], v, imOut[i])
@@ -182,7 +182,7 @@ def mulConst3D(imIn, v, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.mulConst(imIn[i], v, imOut[i])
@@ -201,7 +201,7 @@ def mulRealConst3D(imIn, v, imOut, nearest=False, precision=2):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.mulRealConst(imIn[i], v, imOut[i], nearest, precision)
@@ -216,7 +216,7 @@ def negate3D(imIn, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.negate(imIn[i], imOut[i])
@@ -240,7 +240,7 @@ def logic3D(imIn1, imIn2 , imOut, log):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.logic(imIn1[i], imIn2[i], imOut[i], log)
@@ -261,7 +261,7 @@ def diff3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.diff(imIn1[i], imIn2[i], imOut[i])
@@ -280,7 +280,7 @@ def ceilingAddConst3D(imIn, v, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.ceilingAddConst(imIn[i], v, imOut[i])
@@ -301,7 +301,7 @@ def ceilingAdd3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.ceilingAdd(imIn1[i], imIn2[i], imOut[i])
@@ -317,7 +317,7 @@ def floorSubConst3D(imIn, v, imOut):
     outl = len(imOut)
     inl = len(imIn)
     if inl!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.floorSubConst(imIn[i], v, imOut[i])
@@ -337,7 +337,7 @@ def floorSub3D(imIn1, imIn2, imOut):
     in1l = len(imIn1)
     in2l = len(imIn2)
     if in1l!=outl or in2l!=outl:
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     
     for i in range(outl):
         mamba.floorSub(imIn1[i], imIn2[i], imOut[i])

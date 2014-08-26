@@ -260,7 +260,7 @@ def geodesicDistance(imIn, imMask, imOut, se=mamba.DEFAULT_SE):
     """
     
     if imIn.getDepth() != 1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imOut.reset()
     imWrk = mamba.imageMb(imIn)
     mamba.logic(imIn, imMask, imWrk, "inf")

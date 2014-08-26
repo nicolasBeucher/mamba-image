@@ -238,7 +238,7 @@ static INLINE void MUL_LINE_8_32_32(PLINE *plines_out,
  * \param src1 image 1
  * \param src2 image 2
  * \param dest image resulting of the multiplication of image 1 and 2. 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Mul(MB_Image *src1, MB_Image *src2, MB_Image *dest)
 {
@@ -248,7 +248,7 @@ MB_errcode MB_Mul(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     
     /* image 2 becomes the deeper one */
@@ -259,7 +259,7 @@ MB_errcode MB_Mul(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     /* Destination image depth must be at least the same or higher */
     /* than image 2 depth otherwise the function returns with an error. */
     if(dest->depth < src2->depth)
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
 
     /* Setting up the pointers */
     plines_in1 = src1->plines;
@@ -333,9 +333,9 @@ MB_errcode MB_Mul(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     /* Other cases are impossible and provoke an error */
     default:
         /* Incompatible depths */
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

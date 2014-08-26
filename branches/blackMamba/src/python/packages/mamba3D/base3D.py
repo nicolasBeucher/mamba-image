@@ -420,7 +420,7 @@ class image3DMb:
         """
         (x,y,z) = position
         if z<0 or z>=self.length:
-            mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
         err, value = core.MB_GetPixel(self.seq[z].mbIm, x, y)
         mamba.raiseExceptionOnError(err)
         return value
@@ -432,7 +432,7 @@ class image3DMb:
         """
         (x,y,z) = position
         if z<0 or z>=self.length:
-            mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
         err = core.MB_PutPixel(self.seq[z].mbIm, value, position[0], position[1])
         mamba.raiseExceptionOnError(err)
 

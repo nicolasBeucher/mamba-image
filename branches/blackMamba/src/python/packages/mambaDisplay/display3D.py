@@ -42,7 +42,6 @@ class Display3D(tk.Toplevel):
             self.volrenFrame.grid(row=1, column=0, sticky=tk.W+tk.E+tk.N+tk.S)
             self.volrenFrame.grid_remove()
         except ValueError as err:
-            print err
             self.volrenFrame = None
         self.selectedFrame = self.projFrame
 

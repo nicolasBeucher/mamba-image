@@ -52,13 +52,13 @@ extern MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level,
  * \param marker the marker image in which the result of segmentation will be put
  * \param max_level the maximum level reached by the water.
  * \param grid the grid used (either square or hexagonal)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Basins(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t grid) {
     
     /* verification over depth and size */
     if (!MB_CHECK_SIZE_2(src, marker)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Only grey scale or 32bit images can be segmented */
@@ -74,5 +74,5 @@ MB_errcode MB_Basins(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_
         break;
     }
     
-    return ERR_BAD_DEPTH;
+    return MB_ERR_BAD_DEPTH;
 }

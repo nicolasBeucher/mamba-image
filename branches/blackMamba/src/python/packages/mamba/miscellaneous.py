@@ -123,9 +123,9 @@ def mix(imInR, imInG, imInB):
     The function returns a PIL/PILLOW image.
     """
     if imInR.getDepth()!=8 or imInG.getDepth()!=8 or imInB.getDepth()!=8:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     if imInR.getSize()!=imInG.getSize() or imInR.getSize()!=imInB.getSize():
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     (w,h) = imInR.getSize()
     err, sR = core.MB_Extract(imInR.mbIm)
     mamba.raiseExceptionOnError(err)
@@ -148,9 +148,9 @@ def split(pilimIn, imOutR, imOutG, imOutB):
     and 'imOutB' respectively.
     """
     if imOutR.getDepth()!=8 or imOutG.getDepth()!=8 or imOutB.getDepth()!=8:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     if imOutR.getSize()!=imOutG.getSize() or imOutR.getSize()!=imOutB.getSize():
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     pilim = pilimIn.convert("RGB")
     (wc,hc) = imOutR.getSize()
     (w,h)= pilim.size

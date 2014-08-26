@@ -403,14 +403,14 @@ static INLINE void MB3D_Process(MB3D_Distanceb_Ctx *local_ctx)
  * \param dest the 32-bits 3D image in which the distance for each pixel is stored
  * \param grid the grid used (either cubic or face_center_cubic)
  * \param edge the kind of edge to use (behavior for pixels near edge depends on it)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_Distanceb(MB3D_Image *src, MB3D_Image *dest, enum MB3D_grid_t grid, enum MB_edgemode_t edge) {
     MB3D_Distanceb_Ctx local_ctx;
     
     /* verification over depth and size */
     if (!MB3D_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Only grey scale images can be segmented */
@@ -419,11 +419,11 @@ MB_errcode MB3D_Distanceb(MB3D_Image *src, MB3D_Image *dest, enum MB3D_grid_t gr
     case MB_PAIR_1_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     /* invalid grid case */
     if (grid==MB3D_INVALID_GRID)
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
         
     /* local context initialisation */
     local_ctx.width = src->seq[0]->width;
@@ -439,7 +439,7 @@ MB_errcode MB3D_Distanceb(MB3D_Image *src, MB3D_Image *dest, enum MB3D_grid_t gr
     local_ctx.TokensArray = MB_malloc(local_ctx.width*local_ctx.height*local_ctx.length*sizeof(MB3D_Token));
     if(local_ctx.TokensArray==NULL){
         /* in case allocation goes wrong */
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     
     /* grid initialisation */
@@ -459,5 +459,5 @@ MB_errcode MB3D_Distanceb(MB3D_Image *src, MB3D_Image *dest, enum MB3D_grid_t gr
     /* freeing the token array */
     MB_free(local_ctx.TokensArray);
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

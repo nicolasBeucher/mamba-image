@@ -30,17 +30,17 @@
  * stacked together.
  * \param image the created image
  * \param length the length of the 3D image (number of images stacked)
- * \return an error code (NO_ERR if everything went OK).
+ * \return an error code (MB_NO_ERR if everything went OK).
  */
 MB_errcode MB3D_Create(MB3D_Image *image, Uint32 length)
 {
     image->length = length;
     image->seq = (MB_Image **) MB_malloc(length*sizeof(MB_Image *));
     if (image->seq==NULL) {
-        return ERR_CANT_ALLOCATE_MEMORY;
+        return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -48,18 +48,18 @@ MB_errcode MB3D_Create(MB3D_Image *image, Uint32 length)
  * \param image the 3D image
  * \param stacked the 2D image stacked in the 3D image
  * \param position the position in the 3D image of the 2D image
- * \return an error code (NO_ERR if everything went OK).
+ * \return an error code (MB_NO_ERR if everything went OK).
  */
 MB_errcode MB3D_Stack(MB3D_Image *image, MB_Image *stacked, Uint32 position)
 {
     
     if (position>=image->length)
     {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     image->seq[position] = stacked;
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }
 
 /*
@@ -69,8 +69,8 @@ MB_errcode MB3D_Stack(MB3D_Image *image, MB_Image *stacked, Uint32 position)
  */
 MB_errcode MB3D_Destroy(MB3D_Image *image)
 {
-    if (image==NULL) return NO_ERR;
+    if (image==NULL) return MB_NO_ERR;
     
     MB_free(image->seq);
-    return NO_ERR;
+    return MB_NO_ERR;
 }

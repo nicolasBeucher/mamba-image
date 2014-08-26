@@ -374,7 +374,7 @@ static void MB_comp_neighbors_hexagonal(
  * \param es1 structuring element for 1 value.
  * \param grid grid configuration
  * \param edge the kind of edge to use (behavior for pixel near edge depends on it)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_BinHitOrMiss(MB_Image *src, MB_Image *dest, Uint32 es0, Uint32 es1, enum MB_grid_t grid, enum MB_edgemode_t edge)
 {
@@ -385,23 +385,23 @@ MB_errcode MB_BinHitOrMiss(MB_Image *src, MB_Image *dest, Uint32 es0, Uint32 es1
     
     /* verification over depth and size */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* images must be binary */
     if (MB_PROBE_PAIR(src, dest)!=MB_PAIR_1_1) {
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
     
     /* verification over src and dest to know */
     /* if they point to the same image which is forbidden */
     if (src==dest) {
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
     }
     /* a neighbor cannot be both true and false so requesting this will */
     /* provoke an error */
     if ((es0&es1)!=0) {
-        return ERR_BAD_PARAMETER;
+        return MB_ERR_BAD_PARAMETER;
     }
 
     /* central point, mask == 1 */
@@ -413,7 +413,7 @@ MB_errcode MB_BinHitOrMiss(MB_Image *src, MB_Image *dest, Uint32 es0, Uint32 es1
         else
             err = MB_ConSet(dest, 1);
 
-    if (err == NO_ERR) {
+    if (err == MB_NO_ERR) {
 
         /* setting up pointers */
         plines_in = src->plines;

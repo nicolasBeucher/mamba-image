@@ -29,12 +29,12 @@
  * Converts an 32-bit image to a 8-bit image (downscaling).
  * \param src source image
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
 {
     Uint32 min, max, allmax, z, j, i;
-    MB_errcode err = NO_ERR;
+    MB_errcode err = MB_NO_ERR;
     double value, multiplicator;
     PLINE *plines_in, *plines_out;
     PIX32 *pin;
@@ -42,7 +42,7 @@ MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
     MB_Image *si;
     
     allmax = 0;
-    for(z=0; z<src->length && err==NO_ERR; z++) {
+    for(z=0; z<src->length && err==MB_NO_ERR; z++) {
         err = MB_Range(src->seq[z], &min, &max);
         allmax = max>allmax ? max : allmax;
     }
@@ -50,14 +50,14 @@ MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
     /* if the max is below the 256 value, simply copy the lower byte */
     /* of the 32 bit image */
     if (allmax<256) {
-        for(z=0; z<src->length && err==NO_ERR; z++) {
+        for(z=0; z<src->length && err==MB_NO_ERR; z++) {
             err = MB_CopyBytePlane(src->seq[z], dest->seq[z], 0);
         }
     } else {
         /* computing the multiplicator */
         multiplicator = ((double) 255.0)/allmax;
 
-        for(z=0; z<src->length && err==NO_ERR; z++) {
+        for(z=0; z<src->length && err==MB_NO_ERR; z++) {
             /* Setting up line pointers */
             si = src->seq[z];
             plines_in = si->plines;
@@ -82,16 +82,16 @@ MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
  * Converts a 3D image of a given depth into another depth
  * \param src 3D source image
  * \param dest 3D destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB3D_Convert(MB3D_Image *src, MB3D_Image *dest)
 {
     Uint32 z;
-    MB_errcode err = NO_ERR;
+    MB_errcode err = MB_NO_ERR;
 
     /* verification over image size compatibility */
     if (!MB3D_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Comparing the depth of the src and the destination */
@@ -100,7 +100,7 @@ MB_errcode MB3D_Convert(MB3D_Image *src, MB3D_Image *dest)
         err = MB3D_Convert32to8(src,dest);
         break;
     default:
-        for(z=0; z<src->length && err==NO_ERR; z++) {
+        for(z=0; z<src->length && err==MB_NO_ERR; z++) {
             err = MB_Convert(src->seq[z], dest->seq[z]);
         }
         break;

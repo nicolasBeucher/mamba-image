@@ -54,7 +54,7 @@ static INLINE void OR_LINE(PLINE *plines_out,
  * \param src1 image 1
  * \param src2 image 2
  * \param dest destination image
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Or(MB_Image *src1, MB_Image *src2, MB_Image *dest)
 {
@@ -64,7 +64,7 @@ MB_errcode MB_Or(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Setting up line pointers */
@@ -74,7 +74,7 @@ MB_errcode MB_Or(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     bytes_in = MB_LINE_COUNT(src1);
 
     if(dest->depth != src1->depth)
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
 
     /* The two source images must have the same */
     /* depth */
@@ -84,12 +84,12 @@ MB_errcode MB_Or(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     case MB_PAIR_32_32:
         break;
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     for (i = 0; i < src1->height; i++, plines_in1++, plines_in2++, plines_out++) {
         OR_LINE(plines_out,plines_in1,plines_in2,bytes_in);
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }

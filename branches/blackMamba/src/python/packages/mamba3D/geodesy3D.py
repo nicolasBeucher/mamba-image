@@ -18,7 +18,7 @@ import mamba.core as core
 def _build3D_1(imMask, imInout, grid):
     # build function for binary 3D images
     if imMask.getDepth()!=1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imMask_8 = m3D.image3DMb(imMask, 8)
     imInout_8= m3D.image3DMb(imInout, 8)
     m3D.convert3D(imMask, imMask_8)
@@ -31,7 +31,7 @@ def _build3D_1(imMask, imInout, grid):
 def _dualBuild3D_1(imMask, imInout, grid):
     # build function for binary 3D images
     if imMask.getDepth()!=1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imMask_8 = m3D.image3DMb(imMask, 8)
     imInout_8= m3D.image3DMb(imInout, 8)
     m3D.convert3D(imMask, imMask_8)

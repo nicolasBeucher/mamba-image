@@ -152,7 +152,7 @@ static INLINE void DIV_LINE_32_8_32(PLINE *plines_out,
  * \param src1 image 1
  * \param src2 image 2
  * \param dest image resulting of the division of image 1 by 2. 
- * \Returns An error code (NO_ERR if successful)
+ * \Returns An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
 {
@@ -162,13 +162,13 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     
     /* Destination image depth must be at least the same or higher */
     /* than image 1 depth otherwise the function returns with an error. */
     if(dest->depth < src1->depth)
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
 
     /* Setting up the pointers */
     plines_in1 = src1->plines;
@@ -217,9 +217,9 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     /* Other cases are impossible and provoke an error */
     default:
         /* Incompatible depths */
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
     
-    return NO_ERR;
+    return MB_NO_ERR;
 }

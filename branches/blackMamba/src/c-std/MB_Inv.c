@@ -100,7 +100,7 @@ static INLINE void INVERT_LINE32(PLINE *plines_out, PLINE *plines_in, Uint32 byt
  * Inverts the pixels values (negation) of the source image.
  * \param src source image
  * \param dest destination image
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Inv(MB_Image *src, MB_Image *dest)
 {
@@ -110,7 +110,7 @@ MB_errcode MB_Inv(MB_Image *src, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     
     /* Setting up line pointers */
@@ -139,9 +139,9 @@ MB_errcode MB_Inv(MB_Image *src, MB_Image *dest)
         break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 } 

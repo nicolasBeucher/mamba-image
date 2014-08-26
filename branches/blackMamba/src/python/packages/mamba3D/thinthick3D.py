@@ -97,9 +97,9 @@ def hitOrMiss3D(imIn, imOut, dse, edge=mamba.EMPTY):
     (width,height,length) = imIn.getSize()
     depth = imIn.getDepth()
     if depth!=1:
-        mamba.raiseExceptionOnError(core.ERR_BAD_DEPTH)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     if length!=len(imOut):
-        mamba.raiseExceptionOnError(core.ERR_BAD_SIZE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     zext = dse.grid.getZExtension()
     imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
     

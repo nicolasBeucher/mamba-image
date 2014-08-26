@@ -94,7 +94,7 @@ static INLINE void INF_LINE(PLINE *plines_out,
  * \param src1 image 1
  * \param src2 image 2
  * \param dest destination image 
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Inf(MB_Image *src1, MB_Image *src2, MB_Image *dest)
 {
@@ -104,11 +104,11 @@ MB_errcode MB_Inf(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
     /* destination image should have the depth that source image */
     if(dest->depth != src1->depth) {
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
     }
 
     /* Setting up line pointers */
@@ -138,9 +138,9 @@ MB_errcode MB_Inf(MB_Image *src1, MB_Image *src2, MB_Image *dest)
         break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }

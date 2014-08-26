@@ -52,7 +52,7 @@ static INLINE void LOOKUP_LINE8(PLINE *plines_out, PLINE *plines_in, Uint32 byte
  * \param src source image
  * \param dest destination image
  * \param ptab the lookup table pointer
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Lookup(MB_Image *src, MB_Image *dest, Uint32 *ptab)
 {
@@ -62,7 +62,7 @@ MB_errcode MB_Lookup(MB_Image *src, MB_Image *dest, Uint32 *ptab)
     
     /* verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
-        return ERR_BAD_SIZE;
+        return MB_ERR_BAD_SIZE;
     }
 
     /* Setting up line pointers */
@@ -81,9 +81,9 @@ MB_errcode MB_Lookup(MB_Image *src, MB_Image *dest, Uint32 *ptab)
         break;
 
     default:
-        return ERR_BAD_DEPTH;
+        return MB_ERR_BAD_DEPTH;
         break;
     }
 
-    return NO_ERR;
+    return MB_NO_ERR;
 }
