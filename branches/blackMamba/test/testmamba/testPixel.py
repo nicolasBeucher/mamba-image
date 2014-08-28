@@ -57,11 +57,13 @@ class TestPixel(unittest.TestCase):
         self.im1.reset()
         for wi in range(w):
             for hi in range(h):
+                self.assertEqual(self.im1.getPixel((wi,hi)), 0)
                 self.im1.setPixel(1, (wi,hi))
                 self.assertEqual(self.im1.getPixel((wi,hi)), 1)
         self.im1.fill(1)
         for wi in range(w):
             for hi in range(h):
+                self.assertEqual(self.im1.getPixel((wi,hi)), 1, "%d,%d" % (wi,hi))
                 self.im1.setPixel(0, (wi,hi))
                 self.assertEqual(self.im1.getPixel((wi,hi)), 0)
 

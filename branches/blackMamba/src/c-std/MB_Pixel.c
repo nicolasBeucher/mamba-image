@@ -44,7 +44,7 @@ static INLINE void PUT_PIXEL_1(PLINE pline, Uint32 x, MB_Vector1 value)
     offset = (MB_Vector1) (x%MB_vec1_size);
    
     v = value<<offset;
-    mask = ~(1L<<offset);
+    mask = ~(((MB_Vector1) 1L)<<offset);
    
     *px = ((*px)&mask) + v;
 }
