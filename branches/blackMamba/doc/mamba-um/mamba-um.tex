@@ -42,7 +42,7 @@ needs. If you are new to it, read the next section, quick start, before going
 further.
 
 This is the user manual of version 2 of the library. If you were a Mamba 1 or
-1.1 user please read the section \ref{cha:change_mamba2}. Many changes
+1.1 user, please read the section \ref{cha:change_mamba2}. Many changes
 were introduced in this version and this section will help you know what to
 expect.
 
@@ -71,14 +71,14 @@ To get started with Mamba, you need to install some software on your PC. The
 most obvious one is Python. You can find Python at \url{http://www.Python.org}. 
 Download version 2.7 or 3.4 and install it. Once Python is installed, you will
 need to download the lastest version of the Python Imaging Library fork, Pillow
-(standard Pillow may not work, we do test Mamba only with Pillow) at 
+(standard PIL may not work, we do test Mamba only with Pillow) at 
 \url{https://pypi.python.org/pypi/Pillow/}.
 You need to download the version corresponding to your version of Python (this
 should be indicated in the name of the file). Again install it. On Linux, you may
 have to install the Tkinter library if it was not provided with your Python
 distribution (Windows users don't need to worry as it is part of the standard 
 Python distribution they just installed). Finally download the Mamba library 
-from \url{http://www.mamba-image.org} (as for Pillow select the version corresponding
+from \url{http://www.mamba-image.org} (as for Pillow, select the version corresponding
 to your Python version) and install it.
 
 These instructions may not be interpreted in the same way depending on your 
@@ -332,6 +332,12 @@ install it on Linux systems).
 bindings if you want to use the mamba3D integrated display based on it.
 \end{itemize}
 
+\warnBox{
+Please note that VTK is not compatible with Python 3 yet. Therefore, if you want
+to use Mamba 3D with all the display capabilities offered by VTK, use Python 2
+(32-bit or 64-bit).
+}
+
 \tipBox{
 While Mamba3D will certainly work on a large range of systems, it is still
 strongly recommanded that you work on a powerful computer if you want an
@@ -343,7 +349,7 @@ optimal experience with it (see section \ref{cha:perfo3D} for more information).
 \section{Installation/Compilation}
 \label{cha:inst_comp}
 
-\subsection{Windows XP/Vista/Seven}
+\subsection{Windows XP/Vista/Seven/Eight}
 
 If you are only interested in installing and don't want to go through the bother
 of compiling it, just pick up the installer on the website. Select the appropriate
@@ -367,15 +373,15 @@ in your PATH environment variable. In particular, make sure that SWIG binary
 (swig.exe) path is devoid of spaces as this may cause problems to the setup
 script.
 
-Because python is not compiled with the same Visual C++ version you may need
-to add some environment variables to link to your version. With python 2.7
+Because Python is not compiled with the same Visual C++ version you may need
+to add some environment variables to link to your version. With Python 2.7
 and visual C++ 2013 express, you need to add variable VS90COMNTOOLS with
 value set to %VS120COMNTOOLS%. This may change if you are using python 3 or
 another visual C++
 
 Get the source code of Mamba from the website. It comes in a zip that once
 extracted will create a directory \textbf{Mamba.X.X}. Alternatively you can
-checkout the latest version for hte subversion repository in 
+checkout the latest version for the subversion repository in 
 \url{https://code.google.com/p/mamba-image/source/checkout}.
 
 Launch CMake.
@@ -383,7 +389,7 @@ Launch CMake.
 In \textit{"where is the source code"}, select \textbf{path/to/Mamba.X.X/src} with
 the browse source button. Select a directory \textit{"where to build the binaries"}.
 This is an out of source build so you must create and select a different
-directory than the source. For the sake of example we will use
+directory than the source. In this example, we will use
 \textbf{mamba\_build} in the following instructions.
 
 Press the configure button in CMake. You should see something like
@@ -401,9 +407,9 @@ There are 4 configurable fields:
 \item \textbf{CMAKE\_CONFIGURATION\_TYPES}: Set this variable to "Release" to 
 generate only the release configuration.
 \item \textbf{CMAKE\_INSTALL\_PREFIX}: Ignore this option. It is a CMake 
-mandatory that is not used by Mamba on windows.
+mandatory that is not used by Mamba on Windows.
 \item \textbf{SELECTED\_PYTHON\_EXECUTABLE}: Make sure this option points 
-to your python executable. In particular, if you have multiple python 
+to your Python executable. In particular, if you have multiple Python 
 installation on your computer you should verify that you are using the 
 correct one.
 \item \textbf{USE\_SSE2}: Only on 32-bit systems, allows you to enable (default)
@@ -425,13 +431,13 @@ Open this file using Visual C++, you should see something similar to figure
 \end{figure}
 
 Open the menu \textit{"Generate"} and select \textit{"Generate ALL\_BUILD"}.
-This should proceed with the compilation and the generation of the python installer.
+This should proceed with the compilation and the generation of the Python installer.
 
 If everything went OK, you should find in the \textbf{mamba\_build} directory
 the following files:
 \begin{itemize}
 \item the python stand alone installer, Mamba Image-X.X.winYY-pyZ.Z.exe: in python/dist subdirectory.
-\item C core library DLL (not needed for python): mamba.dll, mamba.def, mamba.lib in lib/Release subdirectory and includes files in include subdirectory.
+\item C core library DLL (not needed for python): mamba.dll, mamba.def, mamba.lib in lib/Release subdirectory and include files in include subdirectory.
 \end{itemize}
 
 We strongly recommand you verify the generated installer by installing it on
@@ -439,9 +445,9 @@ your computer and running the tests (see section \ref{cha:testing_mamba}).
 
 \subsection{Linux}
 
-As for windows, you will haev to create a directory where you will proceed with
+As for Windows, you will have to create a directory where you will proceed with
 the compilation and installation. Open a terminal and cd your way to this 
-directory. Once there, type the following commands to compile and install on linux:
+directory. Once there, type the following commands to compile and install on Linux:
 
 \texttt{cmake -C path/to/Mamba.X.X/src}\\
 \texttt{cmake -D CMAKE\_BUILD\_TYPE:STRING=Release -D CMAKE\_INSTALL\_PREFIX:STRING=/usr .}\\
@@ -451,9 +457,9 @@ directory. Once there, type the following commands to compile and install on lin
 
 Of course you can use the CMake GUI to perform the first three operations.
 
-In particular, if you want to compile Mamba for a different version of python
+In particular, if you want to compile Mamba for a different version of Python
 the CMake GUI will give you access to the \textbf{SELECTED\_PYTHON\_EXECUTABLE}
-variable to select the appropriate python executable.
+variable to select the appropriate Python executable.
 
 \subsection{Other platforms}
 
@@ -476,7 +482,7 @@ This section explains how to use the library.
 \subsection{Philosophy and implicit working of the library}
 
 Before giving you details regarding how to fully grasp the library, we would
-like to give you details regarding the way it implicitly work. This section aims
+like to give you details regarding the way it implicitly works. This section aims
 at presenting some aspects that will always be present in Mamba but likely not 
 explained nor talked about.
 
@@ -524,47 +530,47 @@ challenge to upgrade your scripts to the newest version.
 The list of changes is quite long and we tried our best to not forget
 anything important:
 \begin{itemize}
-\item All the python sources (modules mamba.py, mambaDraw.py mambaExtra.py,
+\item All the Python sources (modules mamba.py, mambaDraw.py mambaExtra.py,
 mambaDisplay.py and package mambaComposed) have been regrouped inside two packages
 mamba and mambaDisplay. Functions and operators have also been reorganized
 by families inside this package mainly for documentation purposes. This makes old
-imports of mamba incompatibles. The mamba3D package, previously available as an
-addon, has been merged in the main library (both C and python code). image3DMb 
+imports of Mamba incompatible. The mamba3D package, previously available as an
+addon, has been merged in the main library (both C and Python code). image3DMb 
 now longer inherits from sequenceMb (other way around in Mamba 2).
 \item The source reorganisation also impacts display with the creation of
 the package mambaDisplay to contain both 2D and 3D displays. New displays were
 added. Display methods in imageMb and image3DMb have been shortened (show,
 hide, update instead of showDisplay ...). Palette and opacity methods were
-removed from these classes. The 3D displays method were also strongly
+removed from these classes. The 3D display methods were also strongly
 modified by these changes.
-\item Some operators were added (div), others were augmented or modified 
-(label now support 8-bit and 32-bits images and its default behavior regarding
-label values has been changed, convert can be used with all image depth, close
+\item Some operators were added (div), other were augmented or modified 
+(label now support 8-bit and 32-bit images and its default behavior regarding
+label values has been changed, convert can be used with all image depths, close
 and open operators were renamed closing and opening to avoid conflict with
-python standard functions, hitOrMiss now works directly with a
+Python standard functions, hitOrMiss now works directly with a
 doubleStructuringElement object making binaryHMT useless, loadRaw methods were
-homogeneised for image3DMb and imageMb, copyBitPlane now support 32-bit to
+homogenized for image3DMb and imageMb, copyBitPlane now support 32-bit to
 binary and reverse copies). C functions regarding neighbors (sup, inf, diff ...)
-have been modified to gain performance. The corresponding python functions are
+have been modified to gain performance. The corresponding Python functions are
 also impacted. Support for hierarchical algorithms (watershed and build) on
-32-bit images was added in C with removal of the specific python functions
+32-bit images was added in C with removal of the specific Python functions
 (namely watershedSgement32, basinSegment32, hierarBuild32 and hierarDualBuild32).
 The operators are accessible through the standard functions (watershedSgement,
 basinSegment, hierarBuild and hierarDualBuild).
-\item Mamba is now compatible with python 3. This may have impact on the
-behavior of some function (getDirections, for example, is based upon range
-which does not have the same behavior in python 3).
-\item Mamba will no longer be supported on our part for python 2.6. Mamba 2
+\item Mamba is now compatible with Python 3. This may have impact on the
+behavior of some functions (getDirections, for example, is based upon range
+which does not have the same behavior in Python 3).
+\item Mamba will no longer be supported on our part for Python 2.6. Mamba 2
 needs ttk (themed Tk) for its display and the module is not natively available
-in python 2.6.
-\item Mamba use Pillow instead of PIL. You may have to update to Pillow if
+in Python 2.6.
+\item Mamba uses Pillow instead of PIL. You may have to update to Pillow if
 you were a PIL user. Both library are normally equivalent in functionality
 except for import mechanisms.
 \item The C code is now compiled in a specific library (.dll or .so) with
 its include files available separately making it possible to build applications
 with the core functions of Mamba more easily. This has an impact on the
 compilation process which now use CMake.
-\item Mamba has support of windows 64-bit thanks to available win64 packages
+\item Mamba has support of Windows 64-bit thanks to available win64 packages
 of Pillow.
 \item Vectorisation in the C code was changed (see mambaApi\_vector.h).
 \item The documentation was modified : directory containing doc in source renamed,
@@ -581,10 +587,10 @@ library.
 
 The Python Mamba library is composed of four packages:
 \begin{itemize}
-\item mamba : which is the main package of mamba and contains all the operators
+\item mamba : which is the main package of Mamba and contains all the operators
 (from the most basic to quite advanced ones) to perform mathematical morphology
 computations on 2D images.
-\item mamba3D : which contains the same operators (save some of them without
+\item mamba3D : which contains the same operators (except some of them without
 equivalent in a three dimensional context) working on 3D images.
 \item mambaDisplay : which contains all the code related to image displays for
 both 2D and 3D.
@@ -603,7 +609,7 @@ import mamba
 import mamba3D
 \end{lstlisting}
 
-Both import will give you access to the complete library (2D and 3D respectively).
+Both imports will give you access to the complete library (2D and 3D respectively).
 You do not need to import mamba to use mamba3D or vice versa.
 
 You can also use the following syntax:
@@ -708,7 +714,7 @@ is a lot of other structures in crystals that are not represented in Mamba3D.
 }
 
 Here are the Mamba3D grids (the figures representing the grids are projections,
-they indicates directions/neighbors numbers):
+they indicate directions/neighbors numbers):
 
 \begin{itemize}
 \item \textbf{CUBIC}: The very basic cubic grid, built by stacking square
@@ -918,7 +924,7 @@ im2 = imageMb('test.png')
 
 Loading an image after the creation will not change the size of the original 
 image to adapt it to the loaded image. The loaded image is padded/cropped to fit
-the original size. Whereas shen the image is loaded in the constructor it size
+the original size. Whereas, when the image is loaded in the constructor, its size
 is used as an information for the imageMb size.
 
 Pillow images came with a mode property that depends on the type of image.
@@ -983,13 +989,13 @@ select a format that supports the mode of the Pillow image (such as TIFF for
 You can also save your image for display purpose, in that case you can use the
 additional parameter of the save function, palette.
 
-On 3D image, the load and save methods will work on directory containing
+On 3D images, the load and save methods will work on directory containing
 a sequence of image. A sequence is a set of file named using number (such
 as "001.png", "002.png" ...). We advise you to look at the methods documentation
 for further information.
 
 You can also use the loadRaw and extractRaw method to load data inside your
-image or extract it and save it. The loadRaw method accept either a path to a
+image or extract it and save it. The loadRaw method accepts either a path to a
 file containing the raw data or the raw data (byte string) itself.
 
 \lstset{language=Python}
@@ -1079,7 +1085,7 @@ grid (as you may ascertain this by displaying larger hexagons).
 
 \subsubsection{Basic display methods}
 
-The methods describes in this section are found in imageMb and image3DMb.
+The methods described in this section are found in imageMb and image3DMb.
 
 To activate a display, type:
 
@@ -1159,7 +1165,7 @@ the image.
 
 \subsubsection{3D display}
 
-The 3D display is composed of three different approch to display 3D images:
+The 3D display is composed of three different approaches to display 3D images:
 Volume rendering, projection and player. When you activate the 3D display,
 you can dynamically switch between the three as you see fit.
 
@@ -1191,9 +1197,9 @@ image at any given time.
 
 \paragraph{Volume rendering display}
 
-This display, see figure \ref{fig:dis3D_volren} is ensured through the VTK
+This display, see figure \ref{fig:dis3D_volren}, is ensured through the VTK
 library and thus is only available if you have this library installed with
-the python bindings.
+the Python bindings. Remind also that VTK is currently not available with Python 3. 
 You can select this display by pressing key F2 on your keyboard.
 
 \begin{figure}
@@ -1225,17 +1231,17 @@ might want.
 \label{fig:dis3D_volren_ctrl}
 \end{figure}
 
-three distinctive methods to perform volume rendering can be selected :
+Three distinctive methods to perform volume rendering can be selected :
 \begin{itemize}
 \item \textbf{Composite} : the result is a blend of all the pixels crossed by
 the ray of light accordingly to their color and transparency.
 \item \textbf{Isosurface} : the result shows only pixels with a given
-value. It also use shading to allow a better visualisation of the volume.
+value. It also uses shading to allow a better visualisation of the volume.
 \item \textbf{Maximum Intensity Pixel (MIP)} : the result is the color and
 transparency of the pixel with the highest value that the light ray hit.
 \end{itemize}
 You can see the results of the 3 different methods in figure 
-\ref{fig:dis3D_method}.
+\ref{fig:dis3D_volren_method}.
 
 \begin{figure}
 \centering
@@ -1281,14 +1287,14 @@ sequence. You can select the speed at which images are displayed.
 \paragraph{3D displays particularities}
 As you will see, unlike 2D images displays that are updated as the computations
 progress, 3D images displays are not (for performance reasons). You will have
-to update them manually by either hitting key <F5> on your keyboard (with
+to update them manually by either hitting key F5 on your keyboard (with
 the focus on the display you want to update) or call the update method.
 
 We tried to provide Mamba3D with a coherent, useful and appropriate display.
 However, contrary to 2D images, 3D images are difficult to represent on a 2D
 display. Be sure to correctly configure the display before analysing results.
 
-Lastly, as 3D images in Mamba3D are stacks of 2D images (imageMb objects) you 
+Lastly, as 3D images in Mamba3D are stacks of 2D images (imageMb objects), you 
 always have the possibility to activate their own display at all time.
 
 \lstset{language=Python}
@@ -1340,7 +1346,7 @@ in the 3D image display PROJECTION mode.
 
 \subsubsection{Palettes and other display functions}
 
-As you have seen you can activate palette through shortcut P when displaying
+As you have seen above, you can activate palette through shortcut P when displaying
 images. Mamba comes with four preintegrated palette : "rainbow", "inverted rainbow",
 "patchwork" and "heat view".
 
@@ -1352,7 +1358,7 @@ mambaDisplay.
 import mambaDisplay
 
 # Creates a palette to emphase one specific pixel value
-# Here the 255 valued pixel will be seen in red.
+# Here the 255 valued pixels will be seen in red.
 mambaDisplay.tagOneColorPalette(255, (255,0,0))
 # Once created the palette is available through the P shortcut
 # under the name 'tag 255 (255,0,0)'
@@ -1519,7 +1525,7 @@ integrated into a Tkinter GUI. This shortcut serves three purposes:
 
 \begin{itemize}
 \item Make sure IDLE is started with the correct options to run properly Mamba
-(see section \ref{cha:lim_restrict}.
+(see section \ref{cha:lim_restrict}).
 \item Make it easy for beginners to start Mamba by providing them a shortcut
 to a fully working environment with preloaded modules and packages.
 \item Make it easy for advanced users to customize their default environment
@@ -1556,7 +1562,7 @@ found in the mamba package is appropriate to perform this operation and
 is as fast as possible if it has to work with all image depths indiscriminately.
 This operator uses the build function which works with any image
 depth. However, there exists a faster reconstruction operator,
-hierarBuild, which works with 8-bit images. Therefore, If you know that you are
+hierarBuild, which works with non binary images (8-bit or 32-bit). Therefore, If you know that you are
 only using greyscale images, it might be a good idea to create your own openByBuild
 function like this:
 
@@ -1662,13 +1668,6 @@ are slower than the ones using the GPU but they do not require a modern
 graphic card. Feel free to modify the source code of Mamba3D to use the
 GPU volume rendering methods. Other displays are less greedy but they
 are still more CPU consuming than a simple 2D display.
-
-\tipBox{
-On a side note, it should be mentioned that VTK is faster when compiled in
-64-bit mode. This is however problematic for Windows users because Mamba is
-only distributed for 32-bit Windows but if you want, you can compile your
-own version of Mamba for 64-bit Windows.
-}
 
 Last but not least, memory consumption will also be dramatically more important
 in Mamba3D but that goes without saying.
@@ -1947,6 +1946,24 @@ Available at \url{http://cmm.ensmp.fr/~beucher/publi.html}, 2012
 \ref{art:marcotegui_beucher} and \ref{art:beucher3} describe algorithms
 implemented in module \textbf{hierarchies.py} of the mamba package.
 
+\subsection{Working with partitions}
+\label{cha:partitions}
+
+A module, named \textbf{partitions.py}, provides basic and less basic
+morphological transforms applied on partitions which can be considered as a dual representation
+of a graph: each cell of the partition corresponds to a node of the graph and acts as a whole
+(it is sometimes called a super-pixel).
+
+\begin{enumerate}
+\setcounter{enumi}{4}
+\item \label{art:beucher4} Serge Beucher
+\emph{Basic Morphological Operators Applied On Partitions},
+Available at \url{http://cmm.ensmp.fr/~beucher/publi.html}, 2013
+\end{enumerate}
+
+\ref{art:beucher4} describes the various operators implemented in
+module \textbf{partitions.py} of the mambaComposed package.
+
 \pagebreak
 
 \section{Extending and customizing Mamba}
@@ -2052,7 +2069,7 @@ methods that a grid must define to properly work in Mamba3D. Your own grid
 will have to inherit from this class.
 
 Of course, the best way to create your own grid is to copy and modify one
-of the aforementioned grids (They can also be found in the grids3D module).
+of the aforementioned grids (they can also be found in the grids3D module).
 
 \subsection{Testing Mamba}
 \label{cha:testing_mamba}
@@ -2095,7 +2112,7 @@ it there, find documentation and other links for Python.
 \item \url{http://www.greenteapress.com/thinkpython/thinkCSpy/}: How to Think 
 Like a Computer Scientist. A free book to learn computer science with Python
 programming. Many translation are available.
-\item \url{http://www.pythonware.com/products/pil/}: The Python Imaging Library
+\item \url{https://pypi.python.org/pypi/Pillow/}: The Pillow
 website. You can download it, find documentation and source.
 \item \url{http://wiki.python.org/moin/TkInter}: A wiki providing ressources
 for the Tkinter library used in Mamba for display.
