@@ -38,7 +38,7 @@
  * Starts the recording. This function activates the libavformat and libavcodec
  * libraries to encode the image using MPEG2 codec (DVD format).
  * \param filename the path to the created video file
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_RecordStart(char *filename)
 {
@@ -61,12 +61,12 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         /* format is set to MPEG2 (DVD) for recording (simple and fast) */
         rec_ofmt = av_guess_format("dvd", NULL, NULL);
         if (!rec_ofmt)
-            return ERR_AVC_REC_FORMAT;
+            return MBRT_ERR_AVC_REC_FORMAT;
         
         /* allocating the format context */
         context->rec_fmt_ctx = avformat_alloc_context();
         if (!context->rec_fmt_ctx)
-            return ERR_AVC_REC_FMTCTX;
+            return MBRT_ERR_AVC_REC_FMTCTX;
         context->rec_fmt_ctx->oformat = rec_ofmt;
         _snprintf(context->rec_fmt_ctx->filename,
                  sizeof(context->rec_fmt_ctx->filename),
@@ -75,7 +75,7 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         /* stream creation */
         stream = av_new_stream(context->rec_fmt_ctx, 0);
         if (!stream)
-            return ERR_AVC_REC_STREAM;
+            return MBRT_ERR_AVC_REC_STREAM;
 
         /* codec fine tuning */
         cod_ctx = stream->codec;
@@ -96,30 +96,30 @@ MBRT_errcode MBRT_RecordStart(char *filename)
 
         /* set the output parameters */
         if (av_set_parameters(context->rec_fmt_ctx, NULL) < 0)
-            return ERR_AVC_REC_PARAM_SET;
+            return MBRT_ERR_AVC_REC_PARAM_SET;
         
         /* finding the codec */
         codec = avcodec_find_encoder(cod_ctx->codec_id);
         if (!codec)
-            return ERR_AVC_REC_NO_CODEC;
+            return MBRT_ERR_AVC_REC_NO_CODEC;
 
         /* opening the codec */
         if (avcodec_open(cod_ctx, codec) < 0)
-            return ERR_AVC_REC_CODEC_OPEN;
+            return MBRT_ERR_AVC_REC_CODEC_OPEN;
 
         /* allocating the encoded raw picture and corresponding buffer */
         context->video_outbuf = (uint8_t *) malloc(200000);
         if (context->video_outbuf==NULL)
-            return ERR_AVC_REC_PICT_ALLOC;
+            return MBRT_ERR_AVC_REC_PICT_ALLOC;
             
         context->picture = avcodec_alloc_frame();
         if (!context->picture)
-            return ERR_AVC_REC_PICT_ALLOC;
+            return MBRT_ERR_AVC_REC_PICT_ALLOC;
         size = avpicture_get_size(cod_ctx->pix_fmt, context->sz_x, context->sz_y);
         picture_buf = (uint8_t *) av_malloc(size);
         if (!picture_buf) {
             av_free(context->picture);
-            return ERR_AVC_REC_PICT_ALLOC;
+            return MBRT_ERR_AVC_REC_PICT_ALLOC;
         }
         memset(picture_buf, 128, size);
         avpicture_fill((AVPicture *)context->picture,
@@ -130,12 +130,12 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         
         context->pictureRGB = avcodec_alloc_frame();
         if (!context->pictureRGB)
-            return ERR_AVC_REC_PICT_ALLOC;
+            return MBRT_ERR_AVC_REC_PICT_ALLOC;
         size = avpicture_get_size(PIX_FMT_RGB24, context->sz_x, context->sz_y);
         picture_buf = (uint8_t *) av_malloc(size);
         if (!picture_buf) {
             av_free(context->pictureRGB);
-            return ERR_AVC_REC_PICT_ALLOC;
+            return MBRT_ERR_AVC_REC_PICT_ALLOC;
         }
         memset(picture_buf, 0, size);
         avpicture_fill((AVPicture *)context->pictureRGB,
@@ -150,11 +150,11 @@ MBRT_errcode MBRT_RecordStart(char *filename)
                                                   cod_ctx->pix_fmt,
                                                   SWS_BICUBIC, NULL, NULL, NULL);
         if (!context->img_convert_ctx) 
-            return ERR_AVC_REC_PICT_ALLOC;
+            return MBRT_ERR_AVC_REC_PICT_ALLOC;
         
         /* opening the output file, if needed */
         if (url_fopen(&context->rec_fmt_ctx->pb, filename, URL_WRONLY) < 0)
-            return ERR_AVC_REC_FILE_OPEN;
+            return MBRT_ERR_AVC_REC_FILE_OPEN;
         
         /* writing the stream header */
         av_write_header(context->rec_fmt_ctx);
@@ -162,12 +162,12 @@ MBRT_errcode MBRT_RecordStart(char *filename)
         context->isRecording = 1;
     }
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Ends the recording. Closes the codec and terminates the file.
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_RecordEnd()
 {
@@ -196,13 +196,13 @@ MBRT_errcode MBRT_RecordEnd()
         context->isRecording = 0;
     }
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Records an image 
  * \param src the mamba image to record
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_RecordImage(MB_Image *src)
 {
@@ -217,11 +217,11 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
     
     /* if recording is not activated */
     if (context->isRecording==0) 
-        return ERR_AVC_REC_INV_CTX;
+        return MBRT_ERR_AVC_REC_INV_CTX;
         
     /* only 8-bit images can be recorded*/
     if (src->depth!=8) {
-        return ERR_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* color palette */
@@ -287,10 +287,10 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
         
         /* error while encoding */
         if (ret != 0) 
-            return ERR_AVC_REC_ENCODE;
+            return MBRT_ERR_AVC_REC_ENCODE;
     }
 
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -298,7 +298,7 @@ MBRT_errcode MBRT_RecordImage(MB_Image *src)
  * \param srcRed the mamba image to record (red channel)
  * \param srcGreen the mamba image to record (green channel)
  * \param srcBlue the mamba image to record (blue channel)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Image *srcBlue)
 {
@@ -311,13 +311,13 @@ MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Imag
     
     /* if recording is not activated */
     if (context->isRecording==0) 
-        return ERR_AVC_REC_INV_CTX;
+        return MBRT_ERR_AVC_REC_INV_CTX;
         
     /* only 8-bit images can be recorded*/
     if ( (srcRed->depth!=8) ||
          (srcBlue->depth!=8) ||
          (srcGreen->depth!=8) ) {
-        return ERR_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
 
     /* getting the codec context and stream */
@@ -375,8 +375,8 @@ MBRT_errcode MBRT_RecordColorImage(MB_Image *srcRed, MB_Image *srcGreen, MB_Imag
         
         /* error while encoding */
         if (ret != 0) 
-            return ERR_AVC_REC_ENCODE;
+            return MBRT_ERR_AVC_REC_ENCODE;
     }
 
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }

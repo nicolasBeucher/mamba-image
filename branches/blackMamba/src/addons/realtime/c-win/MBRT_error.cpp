@@ -35,7 +35,7 @@
 #include "MBRT_error.h"
 
 /** Error value interpretation*/
-char *err_str[] = {
+char *MBRT_ERR_str[] = {
     "No error",
     "Cannot create (memory allocation) context",
     "Context is not properly initialized",
@@ -78,10 +78,10 @@ char *err_str[] = {
  * Returns an explanation of the error code 
  */
 char *MBRT_StrErr(MBRT_errcode error_nb) {
-    if (error_nb>ERR_UNKNOWN) {
-        return err_str[ERR_UNKNOWN];
+    if (error_nb>MBRT_ERR_UNKNOWN) {
+        return MBRT_ERR_str[MBRT_ERR_UNKNOWN];
     } else {
-        return err_str[error_nb];
+        return MBRT_ERR_str[error_nb];
     }
 }
 
