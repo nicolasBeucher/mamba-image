@@ -248,7 +248,7 @@ static INLINE void CREATE_SCREEN()
  * Initializes SDL and creates the video display (SDL screen)
  * \param w width of the display (resolution)
  * \param h height of the display (resolution)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_CreateDisplay(int w, int h)
 {
@@ -256,13 +256,13 @@ MBRT_errcode MBRT_CreateDisplay(int w, int h)
     Uint32 bpp_supported, call;
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     /* Initialization of SDL video part */
     if (SDL_Init (SDL_INIT_VIDEO) < 0)
     {
         /*failure*/
-        return ERR_INIT_DISPLAY;
+        return MBRT_ERR_INIT_DISPLAY;
     }
     
     /* SDL_Quit must be called when the program exits */
@@ -272,7 +272,7 @@ MBRT_errcode MBRT_CreateDisplay(int w, int h)
     bpp_supported = SDL_VideoModeOK(w, h, 24, SDL_HWSURFACE|SDL_DOUBLEBUF);
     if (bpp_supported<24) {
         /* format unsupported */
-        return ERR_FORMAT_DISPLAY;
+        return MBRT_ERR_FORMAT_DISPLAY;
     }
     
     /* verification for fullscreen mode */
@@ -306,7 +306,7 @@ MBRT_errcode MBRT_CreateDisplay(int w, int h)
     CREATE_SCREEN();
     if (context->screen==NULL) {
        /* no screen created */
-       return ERR_INIT_DISPLAY;
+       return MBRT_ERR_INIT_DISPLAY;
     }
     SDL_WM_SetCaption(MBRT_TITLE, NULL);
     
@@ -320,12 +320,12 @@ MBRT_errcode MBRT_CreateDisplay(int w, int h)
     /* framerate information update */
     context->isHistoDisplayed = 0;
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Destroys the video display (SDL screen) and quits SDL
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_DestroyDisplay()
 {
@@ -335,7 +335,7 @@ MBRT_errcode MBRT_DestroyDisplay()
     }
     SDL_Quit();
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -343,7 +343,7 @@ MBRT_errcode MBRT_DestroyDisplay()
  * \param src the image displayed
  * \param wfps input the desired framerate
  * \param ofps output the framerate
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
 {
@@ -354,18 +354,18 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
     SDL_Color *palette;
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return ERR_INVALID_DISPLAY;
+    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
     
     /* only 8-bit images can be displayed*/
     if (src->depth!=8) {
-        return ERR_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* image must have the correct size */
     if ((src->width!=context->sz_x) || (src->height!=context->sz_y)) {
-        return ERR_SIZE;
+        return MBRT_ERR_SIZE;
     }
     
     /* color palette */
@@ -382,7 +382,7 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
     /*Locking the screen to be able to draw in it */
     if(SDL_MUSTLOCK(context->screen)) {
         if(SDL_LockSurface(context->screen)<0) {
-            return ERR_LOCK_DISPLAY;
+            return MBRT_ERR_LOCK_DISPLAY;
         }
     }
     
@@ -438,7 +438,7 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
     }
 
     SDL_Flip(context->screen);
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -448,7 +448,7 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
  * \param srcBlue image displayed blue channel
  * \param wfps input the desired framerate
  * \param ofps output the framerate
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Image *srcBlue,
                                      double wfps, double *ofps)
@@ -459,15 +459,15 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
     int bypp,pitch;
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return ERR_INVALID_DISPLAY;
+    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
     
     /* only 8-bit images can be displayed*/
     if ( (srcRed->depth!=8) ||
          (srcBlue->depth!=8) ||
          (srcGreen->depth!=8) ) {
-        return ERR_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* histogram cannot be compute with color images */
@@ -477,13 +477,13 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
     if ((srcRed->width!=context->sz_x) || (srcRed->height!=context->sz_y) ||
         (srcBlue->width!=context->sz_x) || (srcBlue->height!=context->sz_y) ||
         (srcGreen->width!=context->sz_x) || (srcGreen->height!=context->sz_y)) {
-        return ERR_SIZE;
+        return MBRT_ERR_SIZE;
     }
     
     /*Locking the screen to be able to draw in it */
     if(SDL_MUSTLOCK(context->screen)) {
         if(SDL_LockSurface(context->screen)<0) {
-            return ERR_LOCK_DISPLAY;
+            return MBRT_ERR_LOCK_DISPLAY;
         }
     }
     
@@ -532,7 +532,7 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
     }
 
     SDL_Flip(context->screen);
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -541,35 +541,35 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
  * array of 256 integers. A 0 value will means the pixel is not drawn, non 0
  * are drawn using the OSD color.
  * \param icon the 16x16 icon pixels array
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_IconDisplay(Uint8 *icon)
 {
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return ERR_INVALID_DISPLAY;
+    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
     
     memcpy(context->icon, icon, 256);
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Changes the palette associated with the display
  * \param palette an array containing the complete palette definition (256*3 
  * integers)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_PaletteDisplay(Uint8 *palette)
 {
     int i;
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return ERR_INVALID_DISPLAY;
+    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
 
     for(i=0;i<256;i++) {
         context->color_palette[i].r = *palette++;
@@ -578,13 +578,13 @@ MBRT_errcode MBRT_PaletteDisplay(Uint8 *palette)
     }
     context->isPalettized = 1;
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Handles event that have occurred in the display
  * \param event_code an integer representing a specific event (output)
- * \return An error code (NO_ERR if successful)
+ * \return An error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
 {
@@ -594,9 +594,9 @@ MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
     *event_code = NO_EVENT;
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return ERR_INVALID_DISPLAY;
+    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
    
     /* Looking for pending events and handling them */
     while ( SDL_PollEvent(&event) ) {
@@ -661,5 +661,5 @@ MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
        }
    }
 
-   return NO_ERR;
+   return MBRT_NO_ERR;
 }

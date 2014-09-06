@@ -39,7 +39,7 @@
  * codec (AVC) library.
  * \param video_path path to the video file (supported codec depends on your local
  * implementation of the libavcodec)
- * \return an error code (NO_ERR if successful)
+ * \return an error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
 {
@@ -59,7 +59,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* opening the video file */
     if(av_open_input_file(&format_ctx, video_path, NULL, 0, NULL)!=0) {
         context->type = NONE_TYPE;
-        return ERR_AVC_VID_OPEN;
+        return MBRT_ERR_AVC_VID_OPEN;
     }
     context->video.avc.format_ctx = format_ctx;
     
@@ -67,7 +67,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     if(av_find_stream_info(format_ctx)<0) {
         context->type = NONE_TYPE;
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_STREAM_INFO;
+        return MBRT_ERR_AVC_STREAM_INFO;
     }
     
     /* Retrieving the video stream number in the file */
@@ -82,7 +82,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     if(context->video.avc.videoStream==-1) {
         context->type = NONE_TYPE;
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_NO_VID_STREAM; 
+        return MBRT_ERR_AVC_NO_VID_STREAM; 
     }
     
     /* codec pointer is extracted */
@@ -95,7 +95,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_NO_CODEC;
+        return MBRT_ERR_AVC_NO_CODEC;
     }
 
     /* opening the codec */
@@ -103,7 +103,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_CODEC_OPEN; 
+        return MBRT_ERR_AVC_CODEC_OPEN; 
     }
 
     /* creating the video frame */
@@ -112,7 +112,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     /* yuv frame */
     context->video.avc.yuvframe=avcodec_alloc_frame();
@@ -120,7 +120,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     size = avpicture_get_size(PIX_FMT_YUV420P, codec_ctx->width, codec_ctx->height);
     picture_buf = (uint8_t *) av_malloc(size);
@@ -129,7 +129,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     avpicture_fill((AVPicture *)context->video.avc.yuvframe,
                    picture_buf,
@@ -142,7 +142,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     size = avpicture_get_size(PIX_FMT_RGB24, codec_ctx->width, codec_ctx->height);
     picture_buf = (uint8_t *) av_malloc(size);
@@ -151,7 +151,7 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
         context->type = NONE_TYPE;
         avcodec_close(context->video.avc.codec_ctx);
         av_close_input_file(context->video.avc.format_ctx);
-        return ERR_AVC_FRAME_ALLOC;
+        return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     avpicture_fill((AVPicture *)context->video.avc.rgbframe,
                    picture_buf,
@@ -162,13 +162,13 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* initializing some values */
     context->video.avc.packet.data=NULL;
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 
 /**
  * Closes the video file playback (AVC) and reset the structure
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_DestroyVideoAcq_avc()
 {
@@ -177,26 +177,26 @@ MBRT_errcode MBRT_DestroyVideoAcq_avc()
     avcodec_close(context->video.avc.codec_ctx);
     av_close_input_file(context->video.avc.format_ctx);
 
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 /**
  * Returns the video played size (AVC).
  * \param acq_w the width (output)
  * \param acq_h the height (output)
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqSize_avc(int *acq_w, int *acq_h)
 {
     *acq_h = context->video.avc.codec_ctx->height;
     *acq_w = context->video.avc.codec_ctx->width;
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Returns the acquisition device default framerate (AVC).
  * \param ofps the framerate in frame per second (output)
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqFrameRate_avc(double *ofps)
 {
@@ -206,13 +206,13 @@ MBRT_errcode MBRT_GetAcqFrameRate_avc(double *ofps)
     
     *ofps = ((double) r_fps.num);
     *ofps /= ((double) r_fps.den);
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Obtains an image from the video (AVC)
  * \param dest the mamba image filled by the device
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
     int nb_bytes;
@@ -228,7 +228,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
 
     /* only 8-bit images can be filled*/
     if (dest->depth!=8) {
-        return ERR_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* reading the frame of the video stream */
@@ -255,7 +255,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
             packet
         );
         if(nb_bytes < 0) {
-            return ERR_AVC_DECODING;
+            return MBRT_ERR_AVC_DECODING;
         }
         
         if (isFrameComplete) {
@@ -289,7 +289,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
         }
     }
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
@@ -298,7 +298,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
  * \param destGreen the mamba image filled by the device with the green channel
  * \param destBlue the mamba image filled by the device with the blue channel
  * 
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGreen, MB_Image *destBlue)
 {
@@ -317,7 +317,7 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
     if ( (destRed->depth!=8) ||
          (destBlue->depth!=8) ||
          (destGreen->depth!=8) ) {
-        return ERR_DEPTH;
+        return MBRT_ERR_DEPTH;
     }
     
     /* reading the frame of the video stream */
@@ -344,7 +344,7 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
             packet
         );
         if(nb_bytes < 0) {
-            return ERR_AVC_DECODING;
+            return MBRT_ERR_AVC_DECODING;
         }
         
         if (isFrameComplete) {
@@ -385,25 +385,25 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
         }
     }
     
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Starts the acquisition device capture process (AVC)
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_StartAcq_avc()
 {
     /* nothing to do for this kind of acquisition */
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }
 
 /**
  * Stops the acquisition device capture process (AVC)
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_StopAcq_avc()
 {
     /* nothing to do for this kind of acquisition */
-    return NO_ERR;
+    return MBRT_NO_ERR;
 }

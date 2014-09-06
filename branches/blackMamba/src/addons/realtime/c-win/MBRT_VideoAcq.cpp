@@ -40,14 +40,14 @@
  * device and initializes it.
  * \param device the video device (a string containing a number) or the video file.
  * \param type the type of device (e.g directshow, avc ...)
- * \return an error code (NO_ERR if successful)
+ * \return an error code (MBRT_NO_ERR if successful)
  */
 MBRT_errcode MBRT_CreateVideoAcq(char *device, MBRT_vidType type)
 {
     int dev_number;
     
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     context->type = type;
     
@@ -64,17 +64,17 @@ MBRT_errcode MBRT_CreateVideoAcq(char *device, MBRT_vidType type)
     }
     
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 /**
  * Closes the acquisition device and resets the structure
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_DestroyVideoAcq()
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -90,19 +90,19 @@ MBRT_errcode MBRT_DestroyVideoAcq()
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 /**
  * Returns the acquisition device resolution.
  * \param acq_w the width (output)
  * \param acq_h the height (output)
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqSize(int *acq_w, int *acq_h)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -116,18 +116,18 @@ MBRT_errcode MBRT_GetAcqSize(int *acq_w, int *acq_h)
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 /**
  * Returns the acquisition device default framerate.
  * \param ofps the framerate in frame per second (output)
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetAcqFrameRate(double *ofps)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -141,18 +141,18 @@ MBRT_errcode MBRT_GetAcqFrameRate(double *ofps)
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 /**
  * Obtains an image form the acquisition device
  * \param dest the mamba image filled by the device
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -166,7 +166,7 @@ MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 /**
@@ -174,12 +174,12 @@ MBRT_errcode MBRT_GetImageFromAcq(MB_Image *dest)
  * \param destRed the mamba image filled by the device with the red channel
  * \param destGreen the mamba image filled by the device with the green channel
  * \param destBlue the mamba image filled by the device with the blue channel
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_GetColorImageFromAcq(MB_Image *destRed, MB_Image *destGreen, MB_Image *destBlue)
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -193,18 +193,18 @@ MBRT_errcode MBRT_GetColorImageFromAcq(MB_Image *destRed, MB_Image *destGreen, M
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 
 /**
  * Starts the acquisition device capture process
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_StartAcq()
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -218,17 +218,17 @@ MBRT_errcode MBRT_StartAcq()
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 /**
  * Stops the acquisition device capture process
- * \return NO_ERR if successful
+ * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_StopAcq()
 {
     /* Verification over context */
-    if (context==NULL) return ERR_INVD_CTX;
+    if (context==NULL) return MBRT_ERR_INVD_CTX;
     
     switch(context->type){
         case DSHOW_TYPE:
@@ -242,7 +242,7 @@ MBRT_errcode MBRT_StopAcq()
     }
          
     /* should not attain here */
-    return ERR_VID_TYPE;
+    return MBRT_ERR_VID_TYPE;
 }
 
 

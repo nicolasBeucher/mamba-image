@@ -93,7 +93,7 @@ your system.
 
  * Microsoft Visual C++ Express 2008 edition (free, only requires inscription)
  * Swig version 1.3.33 or later.
- * SDL library version 1.2.13 (or later) for visual C++ (you can find it at 
+ * SDL library version 2.0.3(or later) for visual C++ (you can find it at 
  www.libsdl.org)
  * The stdint.h header file for visual C++ (which is not shipped by Microsoft, 
  don't ask me why). You can find it at http://msinttypes.googlecode.com/svn/trunk/stdint.h.

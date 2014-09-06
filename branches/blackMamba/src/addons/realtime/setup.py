@@ -64,15 +64,17 @@ elif platform.system()=='Windows':
     MBRT_SRC_DIR = "c-win"
     MBRT_SRC_EXT = ".cpp"
     MBRT_SWIG_OPTS = ['-I./include',
+                      '-DMBRT_WIN',
                       '-c++',
                       '-outdir','python/mambaRealtime/']
     MBRT_INC_DIRS = ['./include',
+                     '../../include',
                      # modify the following lines accordingly
-                     'D:/SDL-1.2.14/include', 
-                     'D:/ffmpeg-r26400-swscale-r32676-mingw32-shared-dev/include']
+                     'C:/Devel/SDL2-devel-2.0.3-VC/SDL2-2.0.3/include', 
+                     'C:/Devel/ffmpeg-20140829-git-4c92047-win64-dev/include']
     MBRT_LIBS = ["kernel32","user32","gdi32","winspool","comdlg32",
                  "advapi32","shell32","ole32","oleaut32","uuid",
-                 "odbc32","odbccp32","strmiids","SDL","SDLmain",
+                 "odbc32","odbccp32","strmiids","SDL2","SDLmain",
                  "avcodec","avutil","avformat","swscale"]
     MBRT_LIB_DIRS = ["./lib"]
     # Copying all the DLLs found in the lib directory into the mambaRealtime package
