@@ -10,7 +10,7 @@ operations such as alternate filter.
 import mamba3D as m3D
 import mamba
 
-def alternateFilter3D(imIn, imOut,n, openFirst, se=m3D.CUBOCTAHEDRON):
+def alternateFilter3D(imIn, imOut,n, openFirst, se=m3D.CUBOCTAHEDRON1):
     """
     Performs an alternate filter operation of size 'n' on 3D image 'imIn'
     and puts the result in 'imOut'. If 'openFirst' is True, the filter
@@ -24,7 +24,7 @@ def alternateFilter3D(imIn, imOut,n, openFirst, se=m3D.CUBOCTAHEDRON):
         m3D.closing3D(imIn, imOut, n, se=se)
         m3D.opening3D(imOut, imOut, n, se=se)
 
-def fullAlternateFilter3D(imIn, imOut, n, openFirst, se=m3D.CUBOCTAHEDRON):
+def fullAlternateFilter3D(imIn, imOut, n, openFirst, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a full alternate filter operation (successive alternate filters of
     increasing sizes, from 1 to 'n') on 3D image 'imIn' and puts the result 
@@ -56,7 +56,7 @@ def linearAlternateFilter3D(imIn, imOut, n, openFirst, grid=m3D.DEFAULT_GRID3D):
         m3D.infClose3D(imIn, imOut, n, grid=grid)
         m3D.supOpen3D(imOut, imOut, n, grid=grid)
 
-def autoMedian3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON):
+def autoMedian3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON1):
     """
     Morphological automedian filter performed with alternate sequential filters.
     """

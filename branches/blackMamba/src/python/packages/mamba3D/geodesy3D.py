@@ -43,7 +43,7 @@ def _dualBuild3D_1(imMask, imInout, grid):
 
 ################################################################################
 
-def upperGeodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def upperGeodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a upper geodesic dilation of 3D image 'imIn' above 'imMask'.
     The result is put inside 'imOut', 'n' controls the size of the dilation.
@@ -69,7 +69,7 @@ def upperGeodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
             m3D.dilate3D(imOut, imOut, se=se)
             m3D.logic3D(imOut, imMask, imOut, "sup")
 
-def lowerGeodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def lowerGeodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a lower geodesic dilation of 3D image 'imIn' below 'imMask'.
     The result is put inside 'imOut', 'n' controls the size of the dilation.
@@ -84,7 +84,7 @@ def lowerGeodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
         m3D.dilate3D(imOut, imOut, se=se)
         m3D.logic3D(imMask, imOut, imOut, "inf")
 
-def geodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def geodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     This operator is simply an alias of lowerGeodesicDilate3D. It is kept for
     compatibility reasons.
@@ -92,7 +92,7 @@ def geodesicDilate3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
     
     lowerGeodesicDilate3D(imIn, imMask, imOut, n, se=se)
     
-def upperGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def upperGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a upper geodesic erosion of 3D image 'imIn' above 'imMask'.
     The result is put inside 'imOut', 'n' controls the size of the erosion.
@@ -107,7 +107,7 @@ def upperGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
         m3D.erode3D(imOut, imOut, se=se)
         m3D.logic3D(imOut, imMask, imOut, "sup")
 
-def lowerGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def lowerGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a lower geodesic erosion of 3D image 'imIn' under 'imMask'.
     The result is put inside 'imOut', 'n' controls the size of the erosion.
@@ -135,7 +135,7 @@ def lowerGeodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
             m3D.erode3D(imOut, imOut, se=se)
             m3D.logic3D(imOut, imMask, imOut, "inf")
  
-def geodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def geodesicErode3D(imIn, imMask, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     This transformation is identical to the previous version and it has been
     kept for compatibilty purposes.

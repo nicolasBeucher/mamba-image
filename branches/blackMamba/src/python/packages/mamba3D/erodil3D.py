@@ -94,8 +94,9 @@ class structuringElement3D:
         return o
         
 # Creating the most usual structuring elements
-CUBOCTAHEDRON_BIS = structuringElement3D([0,1,3,5,7,9,10,11,12,13,14,15,16] , m3D.CENTER_CUBIC)
-CUBOCTAHEDRON = structuringElement3D([0,1,2,3,4,5,6,7,8,9,10,11,12] , m3D.FACE_CENTER_CUBIC)
+CUBOCTAHEDRON3 = structuringElement3D([0,1,3,5,7,9,10,11,12,13,14,15,16] , m3D.CENTER_CUBIC)
+CUBOCTAHEDRON2 = structuringElement3D([0,1,2,3,4,5,6,7,8,9,10,12,14,16,18,19,21,23,25] , m3D.CUBIC)
+CUBOCTAHEDRON1 = structuringElement3D([0,1,2,3,4,5,6,7,8,9,10,11,12] , m3D.FACE_CENTER_CUBIC)
 CUBE2X2X2 = structuringElement3D([0,1,2,3,9,10,11,12] , m3D.CUBIC)
 CUBE3X3X3 = structuringElement3D(list(range(27)) , m3D.CUBIC)
         
@@ -103,10 +104,10 @@ CUBE3X3X3 = structuringElement3D(list(range(27)) , m3D.CUBIC)
 # Dilation and erosion functions
 ################################################################################
 
-def dilate3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.EMPTY):
+def dilate3D(imIn, imOut, n=1, se=CUBOCTAHEDRON1, edge=mamba.EMPTY):
     """
     This operator performs a dilation, using the structuring element 'se' (set
-    by default as CUBOCTAHEDRON), of 3D image 'imIn' and puts the result in 
+    by default as CUBOCTAHEDRON1), of 3D image 'imIn' and puts the result in 
     'imOut'. The operation is repeated 'n' times (default is 1). This operator
     assumes an 'EMPTY' edge by default.
     
@@ -155,10 +156,10 @@ def linearDilate3D(imIn, imOut, d, n=1, grid=m3D.DEFAULT_GRID3D, edge=mamba.EMPT
     m3D.copy3D(imIn, imOut)
     m3D.dilate3D(imOut, imOut, n, se=se, edge=edge)
 
-def erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.FILLED):
+def erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON1, edge=mamba.FILLED):
     """
     This operator performs an erosion, using the structuring element 'se' (set
-    by default as CUBOCTAHEDRON), of 3D image 'imIn' and puts the result in 
+    by default as CUBOCTAHEDRON1), of 3D image 'imIn' and puts the result in 
     'imOut'. The operation is repeated 'n' times (default is 1). This operator
     assumes a 'FILLED' edge by default.
     

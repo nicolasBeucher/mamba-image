@@ -10,12 +10,12 @@ operators such as gradient, top-hat transform, ....
 import mamba3D as m3D
 import mamba
 
-def gradient3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON):
+def gradient3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON1):
     """
     Computes the morphological gradient of 3D image 'imIn' and puts the
     result in 'imOut'. The thickness can be controlled using parameter 'n'
     (1 by default). The structuring element used by the erosion and dilation
-    is defined by 'se' (CUBOCTAHEDRON by default).
+    is defined by 'se' (CUBOCTAHEDRON1 by default).
     """
     
     imWrk = m3D.image3DMb(imIn)
@@ -23,7 +23,7 @@ def gradient3D(imIn, imOut, n=1, se=m3D.CUBOCTAHEDRON):
     m3D.dilate3D(imIn, imOut, n, se=se)
     m3D.sub3D(imOut, imWrk, imOut)
 
-def halfGradient3D(imIn, imOut, type="intern", n=1, se=m3D.CUBOCTAHEDRON):
+def halfGradient3D(imIn, imOut, type="intern", n=1, se=m3D.CUBOCTAHEDRON1):
     """
     Computes the half morphological gradient of 3D image 'imIn' ond puts
     the result in 'imOut'.
@@ -45,24 +45,24 @@ def halfGradient3D(imIn, imOut, type="intern", n=1, se=m3D.CUBOCTAHEDRON):
         m3D.erode3D(imIn, imWrk, n, se=se)
         m3D.sub3D(imIn, imWrk, imOut)
     
-def whiteTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON):
+def whiteTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a white Top Hat operation on 'imIn' and puts the result in 'imOut'.
     This operator extracts from 'imIn' the bright objects thinner than 2*'n'+1.
 
-    The structuring element used is defined by 'se' ('CUBOCTAHEDRON' by default).
+    The structuring element used is defined by 'se' ('CUBOCTAHEDRON1' by default).
     """
     
     imWrk = m3D.image3DMb(imIn)
     m3D.opening3D(imIn, imWrk, n, se=se)
     m3D.sub3D(imIn, imWrk, imOut)
 
-def blackTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON):
+def blackTopHat3D(imIn, imOut, n, se=m3D.CUBOCTAHEDRON1):
     """
     Performs a black Top Hat operation on 'imIn' and puts the result in 'imOut'.
     This operator extracts from 'imIn' the dark objects thinner than 2*'n'+1. 
     
-    The structuring element used is defined by 'se' ('CUBOCTAHEDRON' by default).
+    The structuring element used is defined by 'se' ('CUBOCTAHEDRON1' by default).
     """
     
     imWrk = m3D.image3DMb(imIn)
