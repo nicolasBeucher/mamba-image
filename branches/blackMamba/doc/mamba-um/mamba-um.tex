@@ -713,55 +713,76 @@ cubic) is a structure by which iron atoms organise themselves. Of course, there
 is a lot of other structures in crystals that are not represented in Mamba3D.
 }
 
-Here are the Mamba3D grids (the figures representing the grids are projections,
-they indicate directions/neighbors numbers):
+Here are the Mamba3D grids (they are represented by means of top views and perspective views,
+with the coreesponding directions/neighbors numbers):
 
 \begin{itemize}
 \item \textbf{CUBIC}: The very basic cubic grid, built by stacking square
-grids one on the other. See figure \ref{fig:cubic_grid}.
+grids one on the other. See figures \ref{fig:cubic_grid} and \ref{fig:cubic_grid_3D}.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.55\textwidth]{figures/cubic_grid.pdf}
-\caption{Cubic grid}
+\caption{Cubic grid, top view}
 \label{fig:cubic_grid}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{figures/Cubic_grid_3D.pdf}
+\caption{Cubic grid, perspective view}
+\label{fig:cubic_grid_3D}
 \end{figure}
 
 \item \textbf{FACE\_CENTER\_CUBIC}: A face centered cubic grid. It is in fact
 built by stacking hexagonal grids one on the other with a slight shift. See
-figure \ref{fig:fcc_grid}.
+figures \ref{fig:fcc_grid} and \ref{fig:fcc_grid_3D}.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.55\textwidth]{figures/fcc_grid.pdf}
-\caption{Face centered cubic grid}
+\caption{Face centered cubic grid, top view}
 \label{fig:fcc_grid}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{figures/Fccubic_grid_3D.pdf}
+\caption{Face centered cubic grid, perspective view}
+\label{fig:fcc_grid_3D}
 \end{figure}
 
 \item \textbf{CENTER\_CUBIC}: Known as the body centered cubic, this grid is
 built by stacking square grids with a half shift in the two directions. See
-figure \ref{fig:ccubic_grid}. This grid is not supported by low-level C
-operators.
+figures \ref{fig:ccubic_grid} and \ref{fig:ccubic_grid_3D}. This grid is not
+supported by low-level C operators.
 
 \begin{figure}
 \centering
 \includegraphics[width=0.55\textwidth]{figures/ccubic_grid.pdf}
-\caption{Centered cubic grid}
+\caption{Centered cubic grid, top view}
 \label{fig:ccubic_grid}
 \end{figure}
 
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{figures/Ccubic_grid_3D.pdf}
+\caption{Centered cubic grid, perspective view}
+\label{fig:ccubic_grid_3D}
+\end{figure}
+
 \end{itemize}
+
+Regarding the FACE\_CENTER\_CUBIC, you can notice on figure \ref{fig:fcc_grid_3D}
+that the triangles drawn by below directions (blue) and above directions (red)
+do not point the same way. This is very important to be able to draw a 
+cuboctahedron instead of an anti-cuboctahedron.
 
 As it is, we could have added a lot more grids in Mamba3D. For example,
 we could have built a grid stacking without any shifted hexagonal grids.
 We chose not to do it, but it does not mean you can't, although we doubt very
 much you find such grids useful. In this event, we encourage you to look
 at section \ref{cha:create_grid3D}.
-
-Regarding the FACE\_CENTER\_CUBIC, you can notice on figure \ref{fig:fcc_grid}
-that the triangles drawn by below directions (blue) and above directions (red)
-do not point the same way. This is very important to be able to draw a 
-cuboctahedron instead of an anti-cuboctahedron.
 
 \paragraph{More on grids}
 
@@ -1486,17 +1507,43 @@ element internal grid and the grid you used as an argument (or the default). To
 prevent this, use the getGrid() method of the structuring element class.
 }
 
-Mamba3D predefined four structuring elements to be used with the appropriate
+Mamba3D predefined five structuring elements to be used with the appropriate
 3D operators:
 
 \begin{itemize}
 \item \textbf{CUBIC3X3X3} : A three pixels large cube. Based on the CUBIC grid.
 \item \textbf{CUBIC2X2X2} : A two pixels large cube. Based on the CUBIC grid.
-\item \textbf{CUBOCTAHEDRON} : A cuboctahedron. Based on the
-FACE\_CENTER\_CUBIC grid.
-\item \textbf{CUBOCTAHEDRON\_BIS} : Another cuboctahedron. Based on the
-CENTER\_CUBIC grid. This one is slighty rotated.
+\item \textbf{CUBOCTAHEDRON1} : A first cuboctahedron. Based on the
+FACE\_CENTER\_CUBIC grid (see figure \ref{fig:cuboc_fcc}).
+\item \textbf{CUBOCTAHEDRON2} : A second cuboctahedron. Based on the
+CUBIC grid (see figure \ref{fig:cuboc_c}).
+\item \textbf{CUBOCTAHEDRON3} : A third cuboctahedron. Based on the
+CENTER\_CUBIC grid (see figure \ref{fig:cuboc_cc}).
 \end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/Cuboc_on_fccubic.pdf}
+\caption{Cuboctahedron defined on the face centered cubic grid}
+\label{fig:cuboc_fcc}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/Cuboc_on_cubic.pdf}
+\caption{Cuboctahedron defined on the cubic grid}
+\label{fig:cuboc_c}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.4\textwidth]{figures/Cuboc_on_ccubic.pdf}
+\caption{Cuboctahedron defined on the centered cubic grid}
+\label{fig:cuboc_cc}
+\end{figure}
+
+Note that the orientation and size of the different cuboctahedrons are different
+in the three grids.
 
 You can also, of course, create your own structuring elements:
 
