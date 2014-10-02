@@ -1,7 +1,7 @@
 """
 Copy 3D operators.
 
-This module regroups various complete or partial copy operators fro 3D images.
+This module regroups various complete or partial copy operators for 3D images.
 """
 
 # Contributors : Nicolas BEUCHER
@@ -57,3 +57,24 @@ def copyBytePlane3D(imIn, plane, imOut):
     for i in range(outl):
         mamba.copyBytePlane(imIn[i], plane, imOut[i])
 
+def cropCopy3D(imIn, posin, imOut, posout, size):
+    """
+    Crops a cube of size 'size' at position 'posin' in image 'imIn' and
+    inserts it in image 'imOut' at position 'posout'.
+    'posin', 'posout' and 'size' are tuples containing width, height and length
+    values.
+    This operator is similar to the 2D cropCopy operator. It shares the
+    same restrictions.
+    """
+	
+    if (len(imIn) <= posin[2]) or (len(imOut) <= posout[2]):
+        mamba.raiseExceptionError(core.MB_ERR_BAD_VALUE)
+	
+    nbPlanes = min(size[2], len(imIn) - posin[2], len(imOut) - posout[2])
+    for i in range(nbPlanes):
+        mamba.cropCopy(imIn[posin[2] + i], posin[0:2], imOut[posout[2] + i], posout[0:2],
+                       size[0:2])
+	
+	
+	
+	
