@@ -67,7 +67,9 @@ it to prevent Mamba from dispersing itself into aspects that are not
 related to its original purpose. We believe that there is already
 enough good libraries out there to compute images using other techniques
 than mathematical morphology and thus that there is no need for Mamba
-to include them.
+to include them. On the other hand, as a Python library, Mamba can be
+mixed efficiently with other image processing libraries also developped
+in Python.
 
 
 \subsection{Simple yet Fast}
@@ -80,7 +82,9 @@ Mamba is meant to be used in research and education where you are
 not always sure of your idea. Being able to rapidly evaluate the soundness
 of an algorithm is also what will make Mamba simple to use. In other
 words, the faster Mamba is, the simpler it becomes to try new ideas
-with it.
+with it. Moreover, Mamba is not only a simple educational software and
+it can be used for solving real applications. Performance is even more
+important in this case.
 
 It seems also important for us to provide tools, inside Mamba, helping
 users to \textquotedbl{}visualize\textquotedbl{} their ideas and thus
@@ -152,7 +156,7 @@ applying to Mamba C code.
 \end{itemize}
 Simplicity means that your code must not try to answer all the problems
 or to take into account all the possible situations. You should leave
-the complexity to the high level interface (Where generally it is
+the complexity to the high level interface (where generally it is
 much easier to handle the real life situations).
 
 Readability is a vague notion. Mainly, you have to make sure your
@@ -188,6 +192,9 @@ them if you wish to share your work. Presently, these rules concern mainly the
 use of the very important arguments, edge, structuring element (se) and grid.
 The use of input and output images is also considered.
 
+It is also compulsory that your Python code be compatible with Python 2.x and
+Python 3.x as it is the case for Mamba 2.
+
 \subsubsection{General rules for simplicity and readability}
 
 The Python API is meant to be used easily by users regardless of their
@@ -213,8 +220,9 @@ automatically extracted to build the Python/Mamba reference documentation.
 
 \subsubsection{Rules for operators using 'grid' and/or 'se' as arguments}
 
-The following five rules adress particularly the use of the two arguments 'grid'
-(grid used by the operator, hexagonal or square) and 'se' (structuring element
+The following five rules address particularly the use of the two arguments 'grid'
+(grid used by the operator, hexagonal or square in 2D, cubic, face centered cubic or
+centered cubic in 3D) and 'se' (structuring element
 possibly used by the operator). As 'se' is always defined in association with a
 specific grid, possible conflicts are at stake if these two arguments are used
 in an antagonistic way inside the Mamba/Python scripts defining the operators.\par
@@ -232,15 +240,14 @@ For example, the following C function:
 
 MB_errcode MB_InfNbb(MB_Image *src,
                      MB_Image *srcdest,
-                     unsigned int nbrnum,
-                     unsigned int count,
+                     Uint32 neighbors,
                      enum MB_grid_t grid,
                      enum MB_edgemode_t edge);
 \end{lstlisting}
 is wrapped in Python by the function :
 \lstset{language=Python}
 \begin{lstlisting} 
-def infNeighbor(imIn, imInout, nb, count, grid=DEFAULT_GRID, edge=FILLED):
+def infNeighbor(imIn, imInout, nb, grid=DEFAULT_GRID, edge=FILLED):
 \end{lstlisting}
 
 Information regarding edge and grid have default values in the Python module 
@@ -680,7 +687,7 @@ copyleft obligation is a problem for her/him or not (see the mambaRealtime for
 an example of this situation).
 
 For documentation contributions, make sure that your work license
-allow us to distribute it freely.
+allows us to distribute it freely.
 
 \section{Other contributions}
 
