@@ -4,7 +4,7 @@ Erosion and dilation 3D operators.
 This module provides a set of functions and class to perform erosions and
 dilations. The module contains basic and complex operators that are based
 on neighbor comparisons. In particular it defines the 3D structuring element
-class which serve as the base for these operators. The module also contains
+class which serves as the base for these operators. The module also contains
 distance functions based on erosion.
 """
 
@@ -24,7 +24,7 @@ class structuringElement3D:
         """
         Structuring element constructor. A structuring element is defined by the 
         couple 'directions' (given in an ordered list) and 'grid'. You cannot
-        defines a structuring element that holds a direction more than once.
+        define a structuring element that holds a direction more than once.
         
         You can look at the predefined structuring elements to get examples of
         how to make yours.
@@ -212,7 +212,7 @@ def erodeByCylinder3D(imInOut, height, section):
     """
     Erodes 3D image 'imInOut' using a cylinder with an hexagonal section of size 
     2x'section' and a height of 2x'height'. The image is modified by this
-    function.
+    function. The edge is always set to FILLED.
     """
     
     l = len(imInOut)
@@ -229,7 +229,7 @@ def dilateByCylinder3D(imInOut, height, section):
     """
     Dilates 3D image 'imInOut' using a cylinder with an hexagonal section of size 
     2x'section' and a height of 2x'height'. The image is modified by this
-    function.
+    function. The edge is always set to EMPTY.
     """
     
     l = len(imInOut)
