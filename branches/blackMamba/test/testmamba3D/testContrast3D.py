@@ -94,7 +94,7 @@ class TestContrast3D(unittest.TestCase):
         (x,y,z) = compare3D(self.im8_1, self.im8_2, self.im8_3)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
-    def _growingSpot3D(self, imOut, n=None, se=CUBOCTAHEDRON, inv=False):
+    def _growingSpot3D(self, imOut, n=None, se=CUBOCTAHEDRON1, inv=False):
         (w,h,l) = imOut.getSize()
         imOut.reset()
         prov = image3DMb(imOut)
@@ -115,10 +115,10 @@ class TestContrast3D(unittest.TestCase):
         
     def testWhiteTopHat3D(self):
         """Tests the 3D white top hat operation"""
-        size = self._growingSpot3D(self.im8_1, se=CUBOCTAHEDRON)
+        size = self._growingSpot3D(self.im8_1, se=CUBOCTAHEDRON1)
         for i in range(size+1):
-            whiteTopHat3D(self.im8_1, self.im8_2, i, se=CUBOCTAHEDRON)
-            self._growingSpot3D(self.im8_3, i, se=CUBOCTAHEDRON)
+            whiteTopHat3D(self.im8_1, self.im8_2, i, se=CUBOCTAHEDRON1)
+            self._growingSpot3D(self.im8_3, i, se=CUBOCTAHEDRON1)
             (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
             self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         size = self._growingSpot3D(self.im8_1, se=CUBE3X3X3)
@@ -130,10 +130,10 @@ class TestContrast3D(unittest.TestCase):
         
     def testBlackTopHat3D(self):
         """Tests the 3D black top hat operation"""
-        size = self._growingSpot3D(self.im8_1, se=CUBOCTAHEDRON, inv=True)
+        size = self._growingSpot3D(self.im8_1, se=CUBOCTAHEDRON1, inv=True)
         for i in range(size+1):
-            blackTopHat3D(self.im8_1, self.im8_2, i, se=CUBOCTAHEDRON)
-            self._growingSpot3D(self.im8_3, i, se=CUBOCTAHEDRON)
+            blackTopHat3D(self.im8_1, self.im8_2, i, se=CUBOCTAHEDRON1)
+            self._growingSpot3D(self.im8_3, i, se=CUBOCTAHEDRON1)
             (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
             self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
         size = self._growingSpot3D(self.im8_1, se=CUBE3X3X3, inv=True)
