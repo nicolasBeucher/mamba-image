@@ -28,7 +28,7 @@
  * THE SOFTWARE.
  */
 
-%module mambaRTCore
+%module core
 
 /* Inclusion inside the C file wrapper created by swig*/
 %{
@@ -46,9 +46,11 @@
         $1 = (Uint32 *) malloc((size)*sizeof(Uint32));
         for (i = 0; i < size; i++) {
             PyObject *o = PyList_GetItem($input,i);
-            if (PyInt_Check(o))
+            if (PyLong_Check(o)) {
+                $1[i] = (Uint32) PyLong_AsUnsignedLong(PyList_GetItem($input,i));
+            } else if(PyInt_Check(o)) {
                 $1[i] = (Uint32) PyInt_AsLong(PyList_GetItem($input,i));
-            else {
+            }else {
                 PyErr_SetString(PyExc_TypeError,"list must contain integer");
                 free($1);
                 return NULL;

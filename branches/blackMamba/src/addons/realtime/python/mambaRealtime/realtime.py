@@ -12,7 +12,7 @@ except ImportError:
     import Queue as queue
 import traceback
 
-import mambaRTCore
+import core
 
 try:
     import mamba
@@ -110,14 +110,14 @@ _errorIcon = [
 #  Definitions
 if platform.system()=='Windows':
     """ Value to use when using a directshow video API device"""
-    DSHOW = mambaRTCore.DSHOW_TYPE
+    DSHOW = core.DSHOW_TYPE
 
 if platform.system()=='Linux':
     """ Value to use when using a video for linux 2 api device"""
-    V4L2 = mambaRTCore.V4L2_TYPE
+    V4L2 = core.V4L2_TYPE
 
 """ Value to use when using a video file (through audio video codec API)"""
-AVC = mambaRTCore.AVC_TYPE
+AVC = core.AVC_TYPE
 
 """ Value to use when the process uses an image sequence"""
 SEQUENTIAL = 1
@@ -225,20 +225,20 @@ class _MBRT_Thread(threading.Thread):
         # specific information. This allow to create the mamba images and
         # sequences.
         
-        err,w,h = mambaRTCore.MBRT_GetAcqSize()
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            self.error = mambaRTCore.MBRT_StrErr(err)
+        err,w,h = core.MBRT_GetAcqSize()
+        if err!=core.MBRT_NO_ERR:
+            self.error = core.MBRT_StrErr(err)
             self.mustStop = True
             return (0,0)
-        err, freq = mambaRTCore.MBRT_GetAcqFrameRate()
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            self.error = mambaRTCore.MBRT_StrErr(err)
+        err, freq = core.MBRT_GetAcqFrameRate()
+        if err!=core.MBRT_NO_ERR:
+            self.error = core.MBRT_StrErr(err)
             self.mustStop = True
             return (0,0)
         self.frequency = freq
         self.period = 1.0/self.frequency
 
-        mambaRTCore.MBRT_StartAcq()
+        core.MBRT_StartAcq()
         
         self.red = mamba.imageMb(w,h)
         self.green = mamba.imageMb(w,h)
@@ -253,9 +253,9 @@ class _MBRT_Thread(threading.Thread):
     def initDisplay(self, w, h):
         # Creates the display for width w and height h
         if not self.mustStop:
-            err = mambaRTCore.MBRT_CreateDisplay(w, h)
-            if err!=mambaRTCore.MBRT_NO_ERR:
-                self.error = mambaRTCore.MBRT_StrErr(err)
+            err = core.MBRT_CreateDisplay(w, h)
+            if err!=core.MBRT_NO_ERR:
+                self.error = core.MBRT_StrErr(err)
                 self.mustStop = True
                 return
             self.displayCreated = True
@@ -263,9 +263,8 @@ class _MBRT_Thread(threading.Thread):
     def closeAll(self):
         # Closes all the created strcutures and components
         if self.displayCreated:
-            mambaRTCore.MBRT_DestroyDisplay()
-        mambaRTCore.MBRT_StopAcq()
-        mambaRTCore.MBRT_DestroyContext()
+            core.MBRT_DestroyDisplay()
+        core.MBRT_StopAcq()
         
     # EVENTS and COMMANDS ######################################################
         
@@ -287,9 +286,9 @@ class _MBRT_Thread(threading.Thread):
                 pal = ()
                 for i in range(256):
                     pal += (i,i,i)
-            err = mambaRTCore.MBRT_PaletteDisplay(list(pal))
-            if err!=mambaRTCore.MBRT_NO_ERR:
-                self.error = mambaRTCore.MBRT_StrErr(err)
+            err = core.MBRT_PaletteDisplay(list(pal))
+            if err!=core.MBRT_NO_ERR:
+                self.error = core.MBRT_StrErr(err)
         except ValueError as exc:
             self.error = str(exc)
             
@@ -320,14 +319,14 @@ class _MBRT_Thread(threading.Thread):
             elif item.type == _REC_START:
                 # recording is started
                 if not self.recOn:
-                    err = mambaRTCore.MBRT_RecordStart(item.value)
-                    if err!=mambaRTCore.MBRT_NO_ERR:
-                        self.error = mambaRTCore.MBRT_StrErr(err)
+                    err = core.MBRT_RecordStart(item.value)
+                    if err!=core.MBRT_NO_ERR:
+                        self.error = core.MBRT_StrErr(err)
                     else:
                         self.recOn = True
             elif item.type == _REC_STOP:
                 # recording is stopped
-                mambaRTCore.MBRT_RecordEnd()
+                core.MBRT_RecordEnd()
                 self.recOn = False
             elif item.type == _FREQ:
                 # Changes the framerate
@@ -375,19 +374,19 @@ class _MBRT_Thread(threading.Thread):
             
     def handleScreenEvents(self):
         # Handles the events occuring within the display (close, key, mouse ...)
-        err, event_code = mambaRTCore.MBRT_PollDisplay()
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            self.error = mambaRTCore.MBRT_StrErr(err)
+        err, event_code = core.MBRT_PollDisplay()
+        if err!=core.MBRT_NO_ERR:
+            self.error = core.MBRT_StrErr(err)
             self.mustStop = True
-        elif event_code == mambaRTCore.EVENT_CLOSE:
+        elif event_code == core.EVENT_CLOSE:
             self.mustStop = True
-        elif event_code == mambaRTCore.EVENT_PROCESS:
+        elif event_code == core.EVENT_PROCESS:
             self.procOn = not self.procOn
-        elif event_code == mambaRTCore.EVENT_PAUSE:
+        elif event_code == core.EVENT_PAUSE:
             self.pauseOn = not self.pauseOn
-        elif event_code == mambaRTCore.EVENT_PALETTE:
+        elif event_code == core.EVENT_PALETTE:
             self.setPaletteDisplay()
-        elif event_code == mambaRTCore.EVENT_COLOR:
+        elif event_code == core.EVENT_COLOR:
             if not self.pauseOn:
                 self.colorOn = not self.colorOn
                 self.redSeq.reset()
@@ -472,28 +471,28 @@ class _MBRT_Thread(threading.Thread):
         # Obtains the images from the acquisition device
         # the red channel is used when working greyscale only
         if self.colorOn:
-            err = mambaRTCore.MBRT_GetColorImageFromAcq(
+            err = core.MBRT_GetColorImageFromAcq(
                                     self.redSeq[self.seqIndex].mbIm,
                                     self.greenSeq[self.seqIndex].mbIm,
                                     self.blueSeq[self.seqIndex].mbIm)
         else:
-            err = mambaRTCore.MBRT_GetImageFromAcq(self.redSeq[self.seqIndex].mbIm)
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            self.error = mambaRTCore.MBRT_StrErr(err)
+            err = core.MBRT_GetImageFromAcq(self.redSeq[self.seqIndex].mbIm)
+        if err!=core.MBRT_NO_ERR:
+            self.error = core.MBRT_StrErr(err)
             self.mustStop = True
 
     def displayResult(self):
         # Updates the display with the computed image
         if self.colorOn:
-            err, fps = mambaRTCore.MBRT_UpdateDisplayColor(
+            err, fps = core.MBRT_UpdateDisplayColor(
                            self.red.mbIm,
                            self.green.mbIm,
                            self.blue.mbIm,
                            self.frequency)
         else:
-            err, fps = mambaRTCore.MBRT_UpdateDisplay(self.red.mbIm, self.frequency)
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            self.error = mambaRTCore.MBRT_StrErr(err)
+            err, fps = core.MBRT_UpdateDisplay(self.red.mbIm, self.frequency)
+        if err!=core.MBRT_NO_ERR:
+            self.error = core.MBRT_StrErr(err)
             self.mustStop = True
         
     def displayInfo(self):
@@ -502,30 +501,30 @@ class _MBRT_Thread(threading.Thread):
         # Displays an icon signaling an error
         if self.error and self.curIcon==None:
             self.curIcon = _errorIcon
-            err = mambaRTCore.MBRT_IconDisplay(64,64,self.curIcon)
-            if err!=mambaRTCore.MBRT_NO_ERR:
-                self.error = mambaRTCore.MBRT_StrErr(err)
+            err = core.MBRT_IconDisplay(64,64,self.curIcon)
+            if err!=core.MBRT_NO_ERR:
+                self.error = core.MBRT_StrErr(err)
                 self.mustStop = True
         if not self.error and self.curIcon!=None:
             self.curIcon = None
-            err = mambaRTCore.MBRT_IconDisplay(0,0,[])
-            if err!=mambaRTCore.MBRT_NO_ERR:
-                self.error = mambaRTCore.MBRT_StrErr(err)
+            err = core.MBRT_IconDisplay(0,0,[])
+            if err!=core.MBRT_NO_ERR:
+                self.error = core.MBRT_StrErr(err)
                 self.mustStop = True
         
     def recordResult(self):
         # Records the image
         if self.colorOn:
-            err = mambaRTCore.MBRT_RecordColorImage(
+            err = core.MBRT_RecordColorImage(
                                     self.red.mbIm,
                                     self.green.mbIm,
                                     self.blue.mbIm)
         else:
-            err = mambaRTCore.MBRT_RecordImage(self.red.mbIm)
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            self.error = mambaRTCore.MBRT_StrErr(err)
+            err = core.MBRT_RecordImage(self.red.mbIm)
+        if err!=core.MBRT_NO_ERR:
+            self.error = core.MBRT_StrErr(err)
             # recording is stopped
-            mambaRTCore.MBRT_RecordEnd()
+            core.MBRT_RecordEnd()
             self.rec0n = False
             
     # OTHERS ###################################################################
@@ -577,18 +576,18 @@ def initialize(device, devType, seqlength=10):
             _display_thread = None
 
     # The context is destroyed by precaution
-    mambaRTCore.MBRT_DestroyContext()
+    core.MBRT_DestroyContext()
 
     # The context and video acquisition inits are called in the main thread
     # due to directshow API restrictions (COM)
     
-    err = mambaRTCore.MBRT_CreateContext()
-    if err!=mambaRTCore.MBRT_NO_ERR:
-        raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
+    err = core.MBRT_CreateContext()
+    if err!=core.MBRT_NO_ERR:
+        raise MambaRealtimeError(core.MBRT_StrErr(err))
 
-    err = mambaRTCore.MBRT_CreateVideoAcq(device, devType)
-    if err!=mambaRTCore.MBRT_NO_ERR:
-        raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
+    err = core.MBRT_CreateVideoAcq(device, devType)
+    if err!=core.MBRT_NO_ERR:
+        raise MambaRealtimeError(core.MBRT_StrErr(err))
 
     _display_thread = _MBRT_Thread(_com_queue,seqlength)
 
@@ -627,8 +626,8 @@ def deactivate():
         while(_display_thread.isAlive()):
             time.sleep(0.01)
         _display_thread = None
-    mambaRTCore.MBRT_DestroyVideoAcq()
-    mambaRTCore.MBRT_DestroyContext()
+    core.MBRT_DestroyVideoAcq()
+    core.MBRT_DestroyContext()
 
 def isActivated():
     """
@@ -636,7 +635,7 @@ def isActivated():
     """
     global _display_thread
     return _display_thread and _display_thread.isAlive()
-    
+
 def getError():
     """
     Returns the last error that occured in the realtime thread. The thread does
@@ -665,9 +664,9 @@ def getSize():
     """
     global _display_thread
     if _display_thread and _display_thread.isAlive():
-        err,w,h = mambaRTCore.MBRT_GetAcqSize()
-        if err!=mambaRTCore.MBRT_NO_ERR:
-            raise MambaRealtimeError(mambaRTCore.MBRT_StrErr(err))
+        err,w,h = core.MBRT_GetAcqSize()
+        if err!=core.MBRT_NO_ERR:
+            raise MambaRealtimeError(core.MBRT_StrErr(err))
     else:
         w = h = -1
     
@@ -709,7 +708,7 @@ def setProcess(process, type, *args, **kwargs):
     if _display_thread and _display_thread.isAlive():
         item = _MBRT_Item(_PROC_SET, process, [type, args, kwargs])
         _com_queue.put(item)
-        
+
 def addProcess(process, *args, **kwargs):
     """
     Adds the given 'process' (treatment) to the list of process to apply to the
@@ -746,7 +745,7 @@ def resetProcess():
     if _display_thread and _display_thread.isAlive():
         item = _MBRT_Item(_PROC_RST, None)
         _com_queue.put(item)
-    
+
 def setFramerate(f):
     """
     Sets the framerate 'f' of acquisition and display in the realtime thread.
@@ -759,7 +758,7 @@ def setFramerate(f):
     if _display_thread and _display_thread.isAlive():
         item = _MBRT_Item(_FREQ, f)
         _com_queue.put(item)
-        
+
 def takePicture(path):
     """
     Takes a picture of the current image displayed (at the moment the function

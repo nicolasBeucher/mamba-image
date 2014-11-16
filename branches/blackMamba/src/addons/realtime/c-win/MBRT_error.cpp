@@ -32,11 +32,12 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#include "MBRT_error.h"
+#include "mambaRTApi_loc.h"
 
 /** Error value interpretation*/
-char *MBRT_ERR_str[] = {
+char *err_str[] = {
     "No error",
+    "Cannot initialize",
     "Cannot create (memory allocation) context",
     "Context is not properly initialized",
     "Initialize display error (SDL)",
@@ -44,12 +45,19 @@ char *MBRT_ERR_str[] = {
     "Locking screen for updating failure",
     "Incorrect display (not initialized) error",
     "Acquisition device error",
-	"Cannot create the directshow filter graph",
-	"Cannot create the directshow capture graph builder",
-	"Cannot initialize the directshow capture graph builder",
-	"Cannot create the directshow device enumerator",
-	"Cannot create a directshow video capture device enumerator",
-	"Cannot find the directshow device",
+    "Cannot create the directshow filter graph",
+    "Cannot create the directshow capture graph builder",
+    "Cannot initialize the directshow capture graph builder",
+    "Cannot create the directshow device enumerator",
+    "Cannot create a directshow video capture device enumerator",
+    "Cannot find the directshow device",
+    "Function is not implemented for video device",
+    "Cannot open video device",
+    "Not a video for linux device",
+    "Not a video for linux 2 device",
+    "Device does not support streaming",
+    "Cannot obtain device resolution capabilities",
+    "Cannot set device format",
     "Unsupported palette format",
     "Type of the video acquisition is incorrect",
     "Incompatible depth for realtime acquisition/display",
@@ -61,16 +69,15 @@ char *MBRT_ERR_str[] = {
     "Cannot open the video codec",
     "Cannot allocate the video frame",
     "Cannot decode video frame",
-    "Cannot find format for recording",
-    "Cannot allocate format context for recording",
-    "Cannot create stream for recording",
-    "Invalid output format parameters for recording",
+    "Cannot allocate codec context for recording",
     "Cannot find appropriate video encoder for recording",
     "Cannot open the video codec for recording",
     "Cannot allocate picture for recording",
     "Cannot open the output file for recording",
+    "Cannot create the rgb->yuv converter",
     "Cannot encode the image for recording",
     "Invalid recording context (not started)",
+    "Invalid icon size",
     "Unknown error"
 };
 
@@ -79,9 +86,8 @@ char *MBRT_ERR_str[] = {
  */
 char *MBRT_StrErr(MBRT_errcode error_nb) {
     if (error_nb>MBRT_ERR_UNKNOWN) {
-        return MBRT_ERR_str[MBRT_ERR_UNKNOWN];
+        return err_str[MBRT_ERR_UNKNOWN];
     } else {
-        return MBRT_ERR_str[error_nb];
+        return err_str[error_nb];
     }
 }
-

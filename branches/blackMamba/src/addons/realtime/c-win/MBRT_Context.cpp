@@ -67,7 +67,10 @@ MBRT_errcode MBRT_CreateContext()
     
     memset(context, 0, sizeof(MBRT_Context));
 
-    context->screen = NULL;
+    context->window = NULL;
+    context->renderer = NULL;
+    context->texture = NULL;
+    context->pixels = NULL;
     context->type = NONE_TYPE;
     context->isRecording = 0;
 
@@ -87,7 +90,7 @@ MBRT_errcode MBRT_DestroyContext()
         if (context->type!=NONE_TYPE) {
             MBRT_DestroyVideoAcq();
         }
-        if (context->screen!=NULL) {
+        if (context->pixels!=NULL) {
             MBRT_DestroyDisplay();
         }
         if (context->isRecording==1) {

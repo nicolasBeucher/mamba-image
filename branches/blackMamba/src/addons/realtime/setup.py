@@ -70,12 +70,11 @@ elif platform.system()=='Windows':
     MBRT_INC_DIRS = ['./include',
                      '../../include',
                      # modify the following lines accordingly
-                     'C:/Devel/SDL2-devel-2.0.3-VC/SDL2-2.0.3/include', 
-                     'C:/Devel/ffmpeg-20140829-git-4c92047-win64-dev/include']
-    MBRT_LIBS = ["kernel32","user32","gdi32","winspool","comdlg32",
-                 "advapi32","shell32","ole32","oleaut32","uuid",
-                 "odbc32","odbccp32","strmiids","SDL2","SDLmain",
-                 "avcodec","avutil","avformat","swscale"]
+                     'D:/SDL2-2.0.3/include', 
+                     'D:/ffmpeg-20141115-git-933eca9-win32-dev/include']
+    MBRT_LIBS = ["avcodec","avutil","avformat","swresample","swscale",
+                 "ole32","strmiids",
+                 "SDL2"]
     MBRT_LIB_DIRS = ["./lib"]
     # Copying all the DLLs found in the lib directory into the mambaRealtime package
     list_dll = glob.glob('lib/*.dll')
@@ -95,7 +94,7 @@ for s in MBRT_API_SRC:
 
 # add it to extensions
 EXTENSIONS = [
-    Extension("mambaRealtime._mambaRTCore",
+    Extension("mambaRealtime._core",
               filesRT,
               swig_opts=MBRT_SWIG_OPTS,
               include_dirs=MBRT_INC_DIRS,
@@ -112,7 +111,7 @@ PACKAGES = ['mambaRealtime']
 ################################################################################
 
 NAME = "Mamba Realtime"
-VERSION = getVersion(os.path.join("python",os.path.join("mambaRealtime","realtime.py")))
+VERSION = getVersion(os.path.join("python",os.path.join("mambaRealtime","__init__.py")))
 DESCRIPTION = "A realtime module extension for the Mamba library"
 AUTHOR = "Nicolas BEUCHER", "nicolas.beucher@ensta.org"
 HOMEPAGE = "www.mamba-image.org"
