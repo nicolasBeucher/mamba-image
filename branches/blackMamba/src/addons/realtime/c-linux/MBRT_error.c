@@ -91,4 +91,3 @@ char *MBRT_StrErr(MBRT_errcode error_nb) {
         return err_str[error_nb];
     }
 }
-

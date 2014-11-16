@@ -302,7 +302,7 @@ MBRT_errcode MBRT_GetImageFromAcq_dshow(MB_Image *dest)
     /* pixels in order BGR */
     buf = (PLINE) acqDevice->buffer;
     for(i=0; i<acqDevice->h; i++) {
-        rowptr = (PLINE) (dest->PLINES[Y_TOP+i]+X_LEFT);
+        rowptr = (PLINE) (dest->plines[i]);
         ptr = (buf+(acqDevice->h-1-i)*acqDevice->w*3);
         for(j=0; j<acqDevice->w; j++, rowptr++) {
             /* the BGR format is converted into greyscale format */
@@ -357,9 +357,9 @@ MBRT_errcode MBRT_GetColorImageFromAcq_dshow(MB_Image *destRed, MB_Image *destGr
     /* pixels in order BGR */
     buf = (PLINE) acqDevice->buffer;
     for(i=0; i<acqDevice->h; i++) {
-        rowptrR = (PLINE) (destRed->PLINES[Y_TOP+i]+X_LEFT);
-        rowptrG = (PLINE) (destGreen->PLINES[Y_TOP+i]+X_LEFT);
-        rowptrB = (PLINE) (destBlue->PLINES[Y_TOP+i]+X_LEFT);
+        rowptrR = (PLINE) (destRed->plines[i]);
+        rowptrG = (PLINE) (destGreen->plines[i]);
+        rowptrB = (PLINE) (destBlue->plines[i]);
         ptr = (buf+(acqDevice->h-1-i)*acqDevice->w*3);
         for(j=0; j<acqDevice->w; j++, rowptrR++, rowptrG++, rowptrB++) {
             /* the BGR format is converted into greyscale format */

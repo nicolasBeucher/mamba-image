@@ -65,12 +65,7 @@
 /* Defines                              */
 /****************************************/
 
-/* compiler specific */
-#ifdef _MSC_VER
-    #define INLINE __inline
-#else
-    #define INLINE inline
-#endif
+#define INLINE inline
 
 /** window title */
 #define MBRT_TITLE "Mamba RealTime"

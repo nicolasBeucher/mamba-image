@@ -37,7 +37,7 @@
 /**
  * Opens a video file as a video acquisition device using the advanced video
  * codec (AVC) library.
- * \param video_path path to the video file (supported codec depends on your local
+ * \param video_path path to the video file (supported codec depend on your local
  * implementation of the libavcodec)
  * \return an error code (MBRT_NO_ERR if successful)
  */
@@ -46,42 +46,43 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     int i;
     AVFormatContext *format_ctx; /* local pointer to keep the code simpler */
     AVCodecContext *codec_ctx;
-    AVCodec *codec; 
+    AVCodec *codec;
     uint8_t *picture_buf;
     int size;
+    
+    /* The pointer to context for AVC are set to NULL */
+    context->video.avc.format_ctx = NULL;
+    context->video.avc.codec_ctx = NULL;
+    context->video.avc.frame = NULL;
 
     /* registering all codecs, formats ... */
     av_register_all();
     
-    /* disabling logging (mess with the Python command line) */
+    /* disabling logging (mess with the python command line) */
     av_log_set_level(-1);
     
     /* opening the video file */
-    if(av_open_input_file(&format_ctx, video_path, NULL, 0, NULL)!=0) {
-        context->type = NONE_TYPE;
+    format_ctx = avformat_alloc_context();
+    if(avformat_open_input(&format_ctx, video_path, NULL, NULL)!=0) {
         return MBRT_ERR_AVC_VID_OPEN;
     }
     context->video.avc.format_ctx = format_ctx;
     
     /* Retrieving stream information */
-    if(av_find_stream_info(format_ctx)<0) {
-        context->type = NONE_TYPE;
-        av_close_input_file(context->video.avc.format_ctx);
+    if(avformat_find_stream_info(format_ctx, NULL)<0) {
         return MBRT_ERR_AVC_STREAM_INFO;
     }
     
     /* Retrieving the video stream number in the file */
     context->video.avc.videoStream=-1;
-    for(i=0; i<format_ctx->nb_streams; i++) {
-        if((format_ctx->streams[i])->codec->codec_type==CODEC_TYPE_VIDEO)
+    for(i=0; i<(int)format_ctx->nb_streams; i++) {
+        if((format_ctx->streams[i])->codec->codec_type==AVMEDIA_TYPE_VIDEO)
         {
             context->video.avc.videoStream=i;
             break;
         }
     }
     if(context->video.avc.videoStream==-1) {
-        context->type = NONE_TYPE;
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_NO_VID_STREAM; 
     }
     
@@ -92,43 +93,29 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
     /* finding the decoder for the video stream */
     codec=avcodec_find_decoder(codec_ctx->codec_id);
     if(codec==NULL) {
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_NO_CODEC;
     }
 
     /* opening the codec */
-    if(avcodec_open(codec_ctx, codec)<0) {
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
+    if(avcodec_open2(codec_ctx, codec, NULL)<0) {
         return MBRT_ERR_AVC_CODEC_OPEN; 
     }
 
-    /* creating the video frame */
-    context->video.avc.frame=avcodec_alloc_frame();
+    /* creating the video frames */
+    /* extracted frame */
+    context->video.avc.frame=av_frame_alloc();
     if(context->video.avc.frame==NULL) {
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     /* yuv frame */
-    context->video.avc.yuvframe=avcodec_alloc_frame();
+    context->video.avc.yuvframe=av_frame_alloc();
     if(context->video.avc.yuvframe==NULL) {
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     size = avpicture_get_size(PIX_FMT_YUV420P, codec_ctx->width, codec_ctx->height);
-    picture_buf = (uint8_t *) av_malloc(size);
+    picture_buf = (uint8_t *)av_malloc(size);
     if (!picture_buf) {
         av_free(context->video.avc.yuvframe);
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     avpicture_fill((AVPicture *)context->video.avc.yuvframe,
@@ -137,20 +124,14 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
                    codec_ctx->width,
                    codec_ctx->height);
     /* rgb frame */
-    context->video.avc.rgbframe=avcodec_alloc_frame();
+    context->video.avc.rgbframe=av_frame_alloc();
     if(context->video.avc.rgbframe==NULL) {
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     size = avpicture_get_size(PIX_FMT_RGB24, codec_ctx->width, codec_ctx->height);
-    picture_buf = (uint8_t *) av_malloc(size);
+    picture_buf = (uint8_t *)av_malloc(size);
     if (!picture_buf) {
         av_free(context->video.avc.rgbframe);
-        context->type = NONE_TYPE;
-        avcodec_close(context->video.avc.codec_ctx);
-        av_close_input_file(context->video.avc.format_ctx);
         return MBRT_ERR_AVC_FRAME_ALLOC;
     }
     avpicture_fill((AVPicture *)context->video.avc.rgbframe,
@@ -167,15 +148,18 @@ MBRT_errcode MBRT_CreateVideoAcq_avc(char *video_path)
 
 
 /**
- * Closes the video file playback (AVC) and reset the structure
+ * Closes the video file playback (AVC) and resets the structure
  * \return MBRT_NO_ERR if successful
  */
 MBRT_errcode MBRT_DestroyVideoAcq_avc()
 {
     /* Frees the frame, codec and format */
-    av_free(context->video.avc.frame);
-    avcodec_close(context->video.avc.codec_ctx);
-    av_close_input_file(context->video.avc.format_ctx);
+    if (context->video.avc.frame != NULL)
+        av_free(context->video.avc.frame);
+    if (context->video.avc.codec_ctx != NULL)
+        avcodec_close(context->video.avc.codec_ctx);
+    if (context->video.avc.format_ctx != NULL)
+        avformat_close_input(&context->video.avc.format_ctx);
 
     return MBRT_NO_ERR;
 }
@@ -271,7 +255,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
                 SWS_SPLINE, NULL, NULL, NULL); 
             sws_scale(
                 img_convert_ctx,
-                context->video.avc.frame->data,
+                (const uint8_t* const*) context->video.avc.frame->data,
                 context->video.avc.frame->linesize, 
                 0,
                 context->video.avc.codec_ctx->height,
@@ -281,7 +265,7 @@ MBRT_errcode MBRT_GetImageFromAcq_avc(MB_Image *dest) {
             /* Copy the image into destination */
             for(j=0; j<context->video.avc.codec_ctx->height; j++) {
                 ptr = (PLINE) (context->video.avc.yuvframe->data[0]+j*context->video.avc.yuvframe->linesize[0]);
-                pdest = (dest->PLINES[Y_TOP+j]+X_LEFT);
+                pdest = dest->plines[j];
                 for(i=0; i<context->video.avc.codec_ctx->width; i++, ptr++, pdest++) {
                     *pdest = *ptr;
                 }
@@ -360,7 +344,7 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
                 SWS_SPLINE, NULL, NULL, NULL); 
             sws_scale(
                 img_convert_ctx,
-                context->video.avc.frame->data,
+                (const uint8_t* const*) context->video.avc.frame->data,
                 context->video.avc.frame->linesize, 
                 0,
                 context->video.avc.codec_ctx->height,
@@ -370,9 +354,9 @@ MBRT_errcode MBRT_GetColorImageFromAcq_avc(MB_Image *destRed, MB_Image *destGree
             /* Copy the image into destination */
             for(j=0; j<context->video.avc.codec_ctx->height; j++) {
                 ptr = (PLINE) (context->video.avc.rgbframe->data[0]+j*context->video.avc.rgbframe->linesize[0]);
-                pdR = (destRed->PLINES[Y_TOP+j]+X_LEFT);
-                pdG = (destGreen->PLINES[Y_TOP+j]+X_LEFT);
-                pdB = (destBlue->PLINES[Y_TOP+j]+X_LEFT);
+                pdR = (destRed->plines[j]);
+                pdG = (destGreen->plines[j]);
+                pdB = (destBlue->plines[j]);
                 for(i=0; i<context->video.avc.codec_ctx->width; i++, pdR++, pdG++, pdB++) {
                     *pdR = *ptr;
                     ptr++;

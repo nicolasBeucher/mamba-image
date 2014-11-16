@@ -95,28 +95,29 @@ your system.
  * Swig version 1.3.33 or later.
  * SDL library version 2.0.3(or later) for visual C++ (you can find it at 
  www.libsdl.org)
- * The stdint.h header file for visual C++ (which is not shipped by Microsoft, 
- don't ask me why). You can find it at http://msinttypes.googlecode.com/svn/trunk/stdint.h.
+ * The stdint.h and inttypes.h header files for visual C++ (which is not 
+ shipped by Microsoft, don't ask me why). You can find it at
+ http://msinttypes.googlecode.com/
  * FFmpeg builds for Windows. you can find them at http://ffmpeg.zeranoe.com/builds/
  or visit www.ffmpeg.org (These builds are under GPL)
 
 Make sure Python and Swig binaries are in your PATH environnement variable.
 
-First step is to put the stdint.h header file into you current visual C++ 
-include directory. Should be something like this :
+First step is to put the stdint.h and inttypes.h header files into you current
+visual C++ include directory. Should be something like this :
 
 C:\Program Files\Microsoft Visual Studio 9.0\VC\include
 
 You should have obtained from the SDL website a zip package containing all the SDL 
 libraries and header files built for visual C++. Unzip it anywhere on your PC. 
-Then edit the file setupRT.py in the sources files and change the following lines
+Then edit the file setup.py in the sources files and change the following lines
 with the correct include path to your SDL files.
 
-                include_dirs=['./include',
-                            '../../commons',
-                            'D:/SDL-1.2.13/include', #<-modify this line accordingly
-                            'D:/ffmpeg-r24228-swscale-r31722-mingw32-shared-dev/include', #<-modify this line accordingly
-                            './include-private'],
+    MBRT_INC_DIRS = ['./include',
+                     '../../include',
+                     # modify the following lines accordingly
+                     'C:/Devel/SDL2-devel-2.0.3-VC/SDL2-2.0.3/include', 
+                     'C:/Devel/ffmpeg-20140829-git-4c92047-win64-dev/include']
                             
 Now copy the content of the directory lib/ of your SDL directory (should look 
 something like SDL-1.2.13/lib) into the lib directory of the mambaRealtime module
@@ -124,7 +125,7 @@ sources.
 
 From the FFmpeg build website, download the w32 shared and w32 shared-dev 7z 
 packages of the latest build. Extract them on your computer. As well as for the 
-SDL library you will need to edit the setupRT.py script to indicate where are
+SDL library you will need to edit the setup.py script to indicate where are
 the include files of the FFmpeg library (the include directory is extracted 
 from the shared-dev package). Then you will need to copy inside the lib directory
 of the mambaRealtime module some DLLs and lib files. The DLLs you will need 
@@ -144,8 +145,4 @@ python setupRT.py build_ext bdist_wininst
 it will compile and create a "dist" directory where you will find an exe 
 installer for the realtime module. Double click to install.
 
-The compiler may get very talkative issuing warnings but you can safely ignore 
-them in our experience (getting ride of them might prove impossible).
-
 The installer created will contain all the DLLs and your new mambaRealtime module.
-

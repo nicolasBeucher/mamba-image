@@ -48,27 +48,15 @@
  */
 static INLINE void DRAW_FPS_RATE(double ofps, double wfps)
 {
-    PIX8 * bufp,*pixels;
+    PIX8 *bufp,*pixels;
     int val;
-    SDL_Rect rect;
-    Uint32 i,j;
-    int allowBlackening;
-    int bypp,pitch;
-    
-    /*Locking the screen to be able to blacken the background*/
-    allowBlackening = 1;
-    if(SDL_MUSTLOCK(context->screen)) {
-        if(SDL_LockSurface(context->screen)<0) {
-            allowBlackening = 0;
-        }
-    }
-    
-    pixels = ((PIX8 *)context->screen->pixels);
-    pitch = context->screen->pitch;
-    bypp = context->screen->format->BytesPerPixel;
-    for(j=(context->sz_y-12-FPS_THICKNESS); allowBlackening && j<context->sz_y; j++) {
+    Uint32 i,j,w;
+
+    /* blackening the background */
+    pixels = ((PIX8 *)context->pixels);
+    for(j=(context->sz_y-12-FPS_THICKNESS); j<context->sz_y; j++) {
         for(i=0; i<context->sz_x; i++) {
-            bufp = pixels + j*pitch + i*bypp;
+            bufp = pixels + j*context->sz_x*4 + i*4;
             val = ((int) *bufp) - HISTO_BLACKENING;
             *bufp = val<0 ? 0 :(PIX8) val;
             bufp++;
@@ -78,30 +66,24 @@ static INLINE void DRAW_FPS_RATE(double ofps, double wfps)
             val = ((int) *bufp) - HISTO_BLACKENING;
             *bufp = val<0 ? 0 :(PIX8) val;
         }
-    }
-    if(SDL_MUSTLOCK(context->screen)) {
-        SDL_UnlockSurface(context->screen);
     }
     
     /* drawing the FPS bar */
-    rect.x = 7;
-    rect.y = context->sz_y-7;
-    rect.w = context->sz_x/2+4;
-    rect.h = 1;
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.y -= (FPS_THICKNESS+3);
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.w = 1;
-    rect.h = FPS_THICKNESS+4;
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.x = context->sz_x/2+10;
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.x = 9;
-    rect.y = context->sz_y-FPS_THICKNESS-8;
-    rect.h = FPS_THICKNESS;
-    rect.w = (int) ((context->sz_x/2*(ofps))/wfps);
-    rect.w = rect.w>context->sz_x/2 ? context->sz_x/2:rect.w;
-    SDL_FillRect(context->screen, &rect, FPS_VALUE_COLOR);
+    for (i=0; i<context->sz_x/2+4; i++) {
+        context->pixels[(context->sz_y-7)*context->sz_x+i+7] = FRAME_COLOR;
+        context->pixels[(context->sz_y-10-FPS_THICKNESS)*context->sz_x+i+7] = FRAME_COLOR;
+    }
+    for (i=0; i<FPS_THICKNESS+4; i++) {
+        context->pixels[(context->sz_y-7-i)*context->sz_x+7] = FRAME_COLOR;
+        context->pixels[(context->sz_y-7-i)*context->sz_x+10+context->sz_x/2] = FRAME_COLOR;
+    }
+    w = (Uint32) ((context->sz_x/2*(ofps))/wfps);
+    w = w>(Uint32)context->sz_x/2 ? context->sz_x/2:w;
+    for (i=0; i<w; i++) {
+        for (j=0; j<FPS_THICKNESS; j++) {
+            context->pixels[(context->sz_y-9-j)*context->sz_x+i+9] = FRAME_COLOR;
+        }
+    }
 }
 
 /**
@@ -111,11 +93,9 @@ static INLINE void DRAW_HISTO()
 {
     PIX8 * bufp,*pixels;
     int val;
-    Uint32 i,j,h;
-    int allowBlackening, ybegin;
-    SDL_Rect rect;
+    int i,j,h;
+    int ybegin;
     Uint32 max_histo = 0;
-    int bypp,pitch;
     
     /* looking for histo max */
     for(i=0; i<256; i++) {
@@ -123,22 +103,14 @@ static INLINE void DRAW_HISTO()
             max_histo = context->histo[i];
     }
     
-    /*Locking the screen to be able to blacken the background*/
-    allowBlackening = 1;
+    /* blackening the background */
     ybegin = context->sz_y-13-FPS_THICKNESS;
     h = (context->sz_y/2);
-    if(SDL_MUSTLOCK(context->screen)) {
-        if(SDL_LockSurface(context->screen)<0) {
-            allowBlackening = 0;
-        }
-    }
     
-    pixels = ((PIX8 *)context->screen->pixels);
-    pitch = context->screen->pitch;
-    bypp = context->screen->format->BytesPerPixel;
-    for(j=0; allowBlackening && j<(h+2); j++) {
+    pixels = ((PIX8 *)context->pixels);
+    for(j=0; j<(h+2); j++) {
         for(i=0; i<258; i++) {
-            bufp = pixels + (ybegin-1-j)*pitch + (i + 8)*bypp;
+            bufp = pixels + (ybegin-1-j)*context->sz_x*4 + (i + 8)*4;
             val = ((int) *bufp) - HISTO_BLACKENING;
             *bufp = val<0 ? 0 :(PIX8) val;
             bufp++;
@@ -148,34 +120,23 @@ static INLINE void DRAW_HISTO()
             val = ((int) *bufp) - HISTO_BLACKENING;
             *bufp = val<0 ? 0 :(PIX8) val;
         }
-    }
-    if(SDL_MUSTLOCK(context->screen)) {
-        SDL_UnlockSurface(context->screen);
     }
     
     /* drawing the frame */
-    rect.w = 1;
-    rect.x = 7;
-    rect.h = h+4;
-    rect.y = ybegin-(h+3);
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.x = 266;
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.x = 7;
-    rect.y = ybegin-(h+3);
-    rect.w = 260;
-    rect.h = 1;
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
-    rect.y = ybegin;
-    SDL_FillRect(context->screen, &rect, FRAME_COLOR);
+    for (i=0; i<h+4; i++) {
+        context->pixels[(ybegin-i)*context->sz_x+7] = FRAME_COLOR;
+        context->pixels[(ybegin-i)*context->sz_x+266] = FRAME_COLOR;
+    }
+    for (i=0; i<260; i++) {
+        context->pixels[(ybegin-h-3)*context->sz_x+7+i] = FRAME_COLOR;
+        context->pixels[(ybegin)*context->sz_x+7+i] = FRAME_COLOR;
+    }
     
     /* drawing histo */
     for(i=0; i<256; i++) {
-        rect.w = 1;
-        rect.x = 9+i;
-        rect.h = ( h*context->histo[i] )/max_histo;
-        rect.y = ybegin-1-rect.h;
-        SDL_FillRect(context->screen, &rect, HISTO_COLOR);
+        for (j = ( h*context->histo[i] )/max_histo; j>=0; j--) {
+            context->pixels[(ybegin-1-j)*context->sz_x+9+i] = HISTO_COLOR;
+        }
     }
 }
 
@@ -185,63 +146,19 @@ static INLINE void DRAW_HISTO()
  */
 static INLINE void DRAW_RECORD()
 {
-    SDL_Rect rect;
+    int x,y;
     
     /* blinking at 2hz */
     /* this is ensured by looking at the call timestamp */
     if ((context->old_call[context->index_fps]/500)%2==0) {
     
         /* drawing the rectangle */
-        rect.w = REC_SIZE;
-        rect.h = 1;
-        rect.x = (context->sz_x)-2*REC_SIZE;
-        rect.y = REC_SIZE;
-        SDL_FillRect(context->screen, &rect, REC_COLOR);
-        rect.w = 1;
-        rect.h = REC_SIZE;
-        rect.x = (context->sz_x)-2*REC_SIZE;
-        rect.y = REC_SIZE;
-        SDL_FillRect(context->screen, &rect, REC_COLOR);
-        rect.w = REC_SIZE;
-        rect.h = 1;
-        rect.x = (context->sz_x)-2*REC_SIZE;
-        rect.y = 2*REC_SIZE-1;
-        SDL_FillRect(context->screen, &rect, REC_COLOR);
-        rect.w = 1;
-        rect.h = REC_SIZE;
-        rect.x = (context->sz_x)-REC_SIZE-1;
-        rect.y = REC_SIZE;
-        SDL_FillRect(context->screen, &rect, REC_COLOR);
-        
-        rect.w = REC_SIZE-4;
-        rect.h = REC_SIZE-4;
-        rect.x = (context->sz_x)-2*REC_SIZE+2;
-        rect.y = REC_SIZE+2;
-        SDL_FillRect(context->screen, &rect, REC_COLOR);
+        for (x=0; x<REC_SIZE; x++) {
+            for(y=0; y<REC_SIZE; y++) {
+                context->pixels[(REC_SIZE+y)*context->sz_x+(context->sz_x)-REC_SIZE-x] = REC_COLOR;
+            }
+        }
     }
-}
-
-/**
- * Creates the SDL screen display (also used to toggle fullscreen).
- */ 
-static INLINE void CREATE_SCREEN()
-{
-    Uint32 flags;
-    
-    flags = SDL_HWSURFACE|SDL_DOUBLEBUF;
-    if (context->isFullscreen==1) {
-        flags |= SDL_FULLSCREEN;
-        /* the cursor is disabled in fullscreen */
-        SDL_ShowCursor(SDL_DISABLE);
-    } else {
-        SDL_ShowCursor(SDL_ENABLE);
-    }
-    
-    if (context->screen) {
-        SDL_FreeSurface(context->screen);
-    }
-    
-    context->screen = SDL_SetVideoMode(context->sz_x, context->sz_y, 24, flags);
 }
 
 /**
@@ -253,7 +170,7 @@ static INLINE void CREATE_SCREEN()
 MBRT_errcode MBRT_CreateDisplay(int w, int h)
 {
     int i;
-    Uint32 bpp_supported, call;
+    Uint32 call;
     
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
@@ -268,47 +185,49 @@ MBRT_errcode MBRT_CreateDisplay(int w, int h)
     /* SDL_Quit must be called when the program exits */
     atexit(SDL_Quit);
     
-    /* supported format verification */
-    bpp_supported = SDL_VideoModeOK(w, h, 24, SDL_HWSURFACE|SDL_DOUBLEBUF);
-    if (bpp_supported<24) {
-        /* format unsupported */
-        return MBRT_ERR_FORMAT_DISPLAY;
-    }
-    
-    /* verification for fullscreen mode */
-    bpp_supported = SDL_VideoModeOK(w, h, 24, SDL_HWSURFACE|SDL_DOUBLEBUF|SDL_FULLSCREEN);
-    if (bpp_supported!=24) {
-        /* supported ! screen is not fullscreen at the beginning */
-        context->isFullscreen = 0;
-    } else {
-        /* Unsupported ! the fullscreen indicator is set to a value */
-        /* that will prevent the fullscreen to be toggled on */
-        context->isFullscreen = 2;
-    }
-    
     /* screen size */
     context->sz_x = w;
     context->sz_y = h;
     
     /* the original palette is set to grey level */
     for(i=0;i<256;i++) {
-        context->standard_palette[i].r=i;
-        context->standard_palette[i].g=i;
-        context->standard_palette[i].b=i;
-        context->color_palette[i].r = i;
-        context->color_palette[i].g = i;
-        context->color_palette[i].b = i;
+        context->palette[i].r=i;
+        context->palette[i].g=i;
+        context->palette[i].b=i;
     }
-    context->isPalettized = 0;
 
-    /*SDL_screen init*/
-    context->screen=NULL;
-    CREATE_SCREEN();
-    if (context->screen==NULL) {
-       /* no screen created */
+    /*SDL windows, rendering and textures init*/
+    context->window = SDL_CreateWindow(
+        MBRT_TITLE,
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        context->sz_x, context->sz_y,
+        0);
+    if (context->window==NULL) {
+       /* no windows created */
        return MBRT_ERR_INIT_DISPLAY;
     }
-    SDL_WM_SetCaption(MBRT_TITLE, NULL);
+    context->renderer = SDL_CreateRenderer(context->window, -1, 0);
+    if (context->renderer==NULL) {
+       /* no renderer created */
+       return MBRT_ERR_INIT_DISPLAY;
+    }
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
+    SDL_RenderSetLogicalSize(context->renderer, context->sz_x, context->sz_y);
+    context->texture = SDL_CreateTexture(
+        context->renderer,
+        SDL_PIXELFORMAT_ARGB8888,
+        SDL_TEXTUREACCESS_STREAMING,
+        context->sz_x, context->sz_y);
+    if (context->texture==NULL) {
+       /* no texture created */
+       return MBRT_ERR_INIT_DISPLAY;
+    }
+    context->pixels = (Uint32 *) malloc(context->sz_x*context->sz_y*sizeof(Uint32));
+    if (context->pixels==NULL) {
+       /* no pixels created */
+       return MBRT_ERR_INIT_DISPLAY;
+    }
     
     /* framerate information update */
     call = SDL_GetTicks();
@@ -329,9 +248,24 @@ MBRT_errcode MBRT_CreateDisplay(int w, int h)
  */
 MBRT_errcode MBRT_DestroyDisplay()
 {
-    if ((context!=NULL) && (context->screen!=NULL)) {
-        SDL_FreeSurface(context->screen);
-        context->screen = NULL;
+    if (context!=NULL)
+    {
+        if (context->window) {
+            SDL_DestroyWindow(context->window);
+            context->window = NULL;
+        }
+        if (context->renderer) {
+            SDL_DestroyRenderer(context->renderer);
+            context->renderer = NULL;
+        }
+        if (context->texture) {
+            SDL_DestroyTexture(context->texture);
+            context->texture = NULL;
+        }
+        if (context->pixels) {
+            free(context->pixels);
+            context->pixels = NULL;
+        }
     }
     SDL_Quit();
     
@@ -348,15 +282,14 @@ MBRT_errcode MBRT_DestroyDisplay()
 MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
 {
     PIX8 *bufp, *pixels, pix;
-    Uint32 i,j;
+    Uint32 i,j,v;
     Uint32 current_call;
-    int bypp,pitch;
-    SDL_Color *palette;
+    int val;
     
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
+    if (context->pixels==NULL) return MBRT_ERR_INVALID_DISPLAY;
     
     /* only 8-bit images can be displayed*/
     if (src->depth!=8) {
@@ -368,53 +301,40 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
         return MBRT_ERR_SIZE;
     }
     
-    /* color palette */
-    if (context->isPalettized) {
-        palette = context->color_palette;
-    } else {
-        palette = context->standard_palette;
-    }
-    
     /* reset of the histogram */
     if (context->isHistoDisplayed)
         memset(context->histo, 0, 256*sizeof(Uint32));
     
-    /*Locking the screen to be able to draw in it */
-    if(SDL_MUSTLOCK(context->screen)) {
-        if(SDL_LockSurface(context->screen)<0) {
-            return MBRT_ERR_LOCK_DISPLAY;
-        }
-    }
-    
-    pixels = ((PIX8 *)context->screen->pixels);
-    pitch = context->screen->pitch;
-    bypp = context->screen->format->BytesPerPixel;
+    pixels = ((PIX8 *)context->pixels);
     for(j=0; j<context->sz_y; j++) {
         for(i=0; i<context->sz_x; i++) {
-            bufp = pixels + j*pitch + i*bypp;
+            bufp = pixels + j*context->sz_x*4 + 4*i;
             pix = *(src->plines[j]+i);
-            RED(bufp) = palette[pix].r;
-            GREEN(bufp) = palette[pix].g;
-            BLUE(bufp) = palette[pix].b;
+            RED(bufp) = context->palette[pix].r;
+            GREEN(bufp) = context->palette[pix].g;
+            BLUE(bufp) = context->palette[pix].b;
             if (context->isHistoDisplayed)
                 context->histo[pix]++;
         }
     }
     
     /* icon display */
-    for(i=0; i<16; i++) {
-        for(j=0; j<16; j++) {
-            if (context->icon[i+16*j]!=0) {
-                bufp = pixels + (REC_SIZE+j)*pitch + (REC_SIZE+i)*bypp;
-                RED(bufp) = (PIX8) ((FRAME_COLOR>>16)&0xFF);
-                GREEN(bufp) = (PIX8) ((FRAME_COLOR>>8)&0xFF);
-                BLUE(bufp) = (PIX8) ((FRAME_COLOR)&0xFF);
+    for(j=0, v=0; j<(Uint32)context->iconh; j++) {
+        for(i=0; i<(Uint32)context->iconw; i++, v++) {
+            bufp = pixels + (16+j)*context->sz_x*4 + (16+i)*4;
+            if (context->icon[v>>5] & (0x80000000>>(v&0x1f))) {
+                *((Uint32 *)bufp) = FRAME_COLOR;
+            } else {
+                val = ((int) *bufp) - HISTO_BLACKENING;
+                *bufp = val<0 ? 0 :(PIX8) val;
+                bufp++;
+                val = ((int) *bufp) - HISTO_BLACKENING;
+                *bufp = val<0 ? 0 :(PIX8) val;
+                bufp++;
+                val = ((int) *bufp) - HISTO_BLACKENING;
+                *bufp = val<0 ? 0 :(PIX8) val;
             }
         }
-    }
-
-    if(SDL_MUSTLOCK(context->screen)) {
-        SDL_UnlockSurface(context->screen);
     }
     
     /* timestamp recording (used for video recording, blinking, and framerate computation */
@@ -437,7 +357,10 @@ MBRT_errcode MBRT_UpdateDisplay(MB_Image *src, double wfps, double *ofps)
         DRAW_RECORD();
     }
 
-    SDL_Flip(context->screen);
+    SDL_UpdateTexture(context->texture, NULL, context->pixels, context->sz_x*sizeof(Uint32));
+    SDL_RenderClear(context->renderer);
+    SDL_RenderCopy(context->renderer, context->texture, NULL, NULL);
+    SDL_RenderPresent(context->renderer);
     return MBRT_NO_ERR;
 }
 
@@ -454,14 +377,14 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
                                      double wfps, double *ofps)
 {
     PIX8 *bufp, *pixels;
-    Uint32 i,j;
+    Uint32 i,j,v;
     Uint32 current_call;
-    int bypp,pitch;
+    int val;
     
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
+    if (context->pixels==NULL) return MBRT_ERR_INVALID_DISPLAY;
     
     /* only 8-bit images can be displayed*/
     if ( (srcRed->depth!=8) ||
@@ -480,19 +403,10 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
         return MBRT_ERR_SIZE;
     }
     
-    /*Locking the screen to be able to draw in it */
-    if(SDL_MUSTLOCK(context->screen)) {
-        if(SDL_LockSurface(context->screen)<0) {
-            return MBRT_ERR_LOCK_DISPLAY;
-        }
-    }
-    
-    pixels = ((PIX8 *)context->screen->pixels);
-    pitch = context->screen->pitch;
-    bypp = context->screen->format->BytesPerPixel;
+    pixels = ((PIX8 *)context->pixels);
     for(j=0; j<context->sz_y; j++) {
         for(i=0; i<context->sz_x; i++) {
-            bufp = pixels + j*pitch + i*bypp;
+            bufp = pixels + j*context->sz_x*4 + i*4;
             RED(bufp) = *(srcRed->plines[j]+i);
             GREEN(bufp) = *(srcGreen->plines[j]+i);
             BLUE(bufp) = *(srcBlue->plines[j]+i);
@@ -500,19 +414,22 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
     }
     
     /* icon display */
-    for(i=0; i<16; i++) {
-        for(j=0; j<16; j++) {
-            if (context->icon[i+16*j]!=0) {
-                bufp = pixels + (REC_SIZE+j)*pitch + (REC_SIZE+i)*bypp;
-                RED(bufp) = (PIX8) ((FRAME_COLOR>>16)&0xFF);
-                GREEN(bufp) = (PIX8) ((FRAME_COLOR>>8)&0xFF);
-                BLUE(bufp) = (PIX8) ((FRAME_COLOR)&0xFF);
+    for(j=0, v=0; j<(Uint32)context->iconh; j++) {
+        for(i=0; i<(Uint32)context->iconw; i++, v++) {
+            bufp = pixels + (16+j)*context->sz_x*4 + (16+i)*4;
+            if (context->icon[v>>5] & (0x80000000>>(v&0x1f))) {
+                *((Uint32 *)bufp) = FRAME_COLOR;
+            } else {
+                val = ((int) *bufp) - HISTO_BLACKENING;
+                *bufp = val<0 ? 0 :(PIX8) val;
+                bufp++;
+                val = ((int) *bufp) - HISTO_BLACKENING;
+                *bufp = val<0 ? 0 :(PIX8) val;
+                bufp++;
+                val = ((int) *bufp) - HISTO_BLACKENING;
+                *bufp = val<0 ? 0 :(PIX8) val;
             }
         }
-    }
-
-    if(SDL_MUSTLOCK(context->screen)) {
-        SDL_UnlockSurface(context->screen);
     }
     
     /* timestamp recording (used for video recording, blinking, and framerate computation */
@@ -531,27 +448,35 @@ MBRT_errcode MBRT_UpdateDisplayColor(MB_Image *srcRed, MB_Image *srcGreen, MB_Im
         DRAW_RECORD();
     }
 
-    SDL_Flip(context->screen);
+    SDL_UpdateTexture(context->texture, NULL, context->pixels, context->sz_x*sizeof(Uint32));
+    SDL_RenderClear(context->renderer);
+    SDL_RenderCopy(context->renderer, context->texture, NULL, NULL);
+    SDL_RenderPresent(context->renderer);
     return MBRT_NO_ERR;
 }
 
 /**
- * Changes the small (16x16) icon (black and white) in the upper left corner of 
+ * Changes the icon (black and white) in the upper left corner of 
  * the display. This allows to inform the user of some events. The icon is an 
- * array of 256 integers. A 0 value will means the pixel is not drawn, non 0
- * are drawn using the OSD color.
- * \param icon the 16x16 icon pixels array
+ * array of binary 32bit integers.
+ * \param width
+ * \param height
+ * \param icon the icon pixels array
  * \return An error code (MBRT_NO_ERR if successful)
  */
-MBRT_errcode MBRT_IconDisplay(Uint8 *icon)
+MBRT_errcode MBRT_IconDisplay(int width, int height, Uint32 *icon)
 {
     
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
-    /* verification over display */
-    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
+    /* icon must be smaller than 64 pixels */
+    if ((width>64) || (height>64)) return MBRT_ERR_ICON_SIZE;
     
-    memcpy(context->icon, icon, 256);
+    context->iconw = width;
+    context->iconh = height;
+    if (width*height>0) {
+        memcpy(context->icon, icon, (width*height*sizeof(Uint32))/32);
+    }
     
     return MBRT_NO_ERR;
 }
@@ -568,15 +493,12 @@ MBRT_errcode MBRT_PaletteDisplay(Uint8 *palette)
     
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
-    /* verification over display */
-    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
 
     for(i=0;i<256;i++) {
-        context->color_palette[i].r = *palette++;
-        context->color_palette[i].g = *palette++;
-        context->color_palette[i].b = *palette++;
+        context->palette[i].r = *palette++;
+        context->palette[i].g = *palette++;
+        context->palette[i].b = *palette++;
     }
-    context->isPalettized = 1;
     
     return MBRT_NO_ERR;
 }
@@ -596,7 +518,7 @@ MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
     /* Verification over context */
     if (context==NULL) return MBRT_ERR_INVD_CTX;
     /* verification over display */
-    if (context->screen==NULL) return MBRT_ERR_INVALID_DISPLAY;
+    if (context->pixels==NULL) return MBRT_ERR_INVALID_DISPLAY;
    
     /* Looking for pending events and handling them */
     while ( SDL_PollEvent(&event) ) {
@@ -612,8 +534,9 @@ MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
                         /* fullscreen (too obvious way to move out of the */
                         /* fullscreen that it may cause troubles if the result */
                         /* is to close the complete operation */
+                        SDL_SetWindowFullscreen(context->window, 0);
+                        SDL_ShowCursor(1);
                         context->isFullscreen = 0;
-                        CREATE_SCREEN();
                     } else {
                         /* in the other case, the realtime process is closed */
                         *event_code = EVENT_CLOSE;
@@ -625,16 +548,19 @@ MBRT_errcode MBRT_PollDisplay(MBRT_eventcode *event_code)
                     break;
                 case SDLK_f:
                     /* toggle fullscreen */
-                    context->isFullscreen = (1-context->isFullscreen);
-                    CREATE_SCREEN();
+                    if (context->isFullscreen==1) {
+                        SDL_SetWindowFullscreen(context->window, 0);
+                        SDL_ShowCursor(1);
+                        context->isFullscreen = 0;
+                    } else {
+                        SDL_SetWindowFullscreen(context->window, SDL_WINDOW_FULLSCREEN);
+                        SDL_ShowCursor(0);
+                        context->isFullscreen = 1;
+                    }
                     break;
                 case SDLK_p:
                     /* toggle the palette */
-                    if (context->isPalettized) {
-                        context->isPalettized = 0;
-                    } else {
-                        context->isPalettized = 1;
-                    }
+                    *event_code = EVENT_PALETTE;
                     break;
                 case SDLK_r:
                     /* toggle the framerate display */

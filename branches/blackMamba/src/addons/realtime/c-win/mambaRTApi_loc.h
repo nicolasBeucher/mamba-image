@@ -41,14 +41,14 @@
 
 /**@cond */
 /* code that must be skipped by Doxygen */
-// #pragma include_alias( "dxtrans.h", "qedit.h" )
-// #define __IDxtCompositor_INTERFACE_DEFINED__
-// #define __IDxtAlphaSetter_INTERFACE_DEFINED__
-// #define __IDxtJpeg_INTERFACE_DEFINED__
-// #define __IDxtKey_INTERFACE_DEFINED__
+#pragma include_alias( "dxtrans.h", "qedit.h" )
+#define __IDxtCompositor_INTERFACE_DEFINED__
+#define __IDxtAlphaSetter_INTERFACE_DEFINED__
+#define __IDxtJpeg_INTERFACE_DEFINED__
+#define __IDxtKey_INTERFACE_DEFINED__
 /**@endcond*/
 
-// #include <qedit.h> // Sample Grabber, Null Renderer
+#include <qedit.h> // Sample Grabber, Null Renderer
 //
 //#pragma comment (lib, "strmiids.lib")
 
@@ -65,9 +65,12 @@
 extern "C" {
 #endif
 
+#define inline __inline
+#include <libavutil/avutil.h>
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
 
 #ifdef __cplusplus
 }
@@ -76,6 +79,13 @@ extern "C" {
 /****************************************/
 /* Defines                              */
 /****************************************/
+
+/* compiler specific */
+#ifdef _MSC_VER
+    #define INLINE __inline
+#else
+    #define INLINE inline
+#endif
 
 /** Title displayed in the SDL window*/
 #define MBRT_TITLE "Mamba RealTime"
@@ -123,7 +133,7 @@ typedef struct {
     /** device number as given when starting realtime */
     int devnum;
     /** width of the video */
-    int w
+    int w;
     /** height of the video */
     int h;
     /** size of the pixels buffer */
@@ -165,18 +175,20 @@ typedef struct {
     MBRT_vidType type;
     /** video device description */
     MBRT_vidUnion video;
-    /** screen */
-    SDL_Surface *screen;
+    /** windows */
+    SDL_Window *window;
+    /** renderer */
+    SDL_Renderer *renderer;
+    /** texture */
+    SDL_Texture *texture;
+    /** pixels */
+    Uint32 *pixels;
     /** display width */
     Uint32 sz_x;
     /** display height */
     Uint32 sz_y;
-    /** color palette */
-    SDL_Color color_palette[256];
-    /** greyscale palette */
-    SDL_Color standard_palette[256];
-    /** Using color palette */
-    Uint32 isPalettized;
+    /** palette */
+    SDL_Color palette[256];
     /** framerate information is displayed */
     Uint32 isFpsDisplayed;
     /** Timing storage for FPS computation */
@@ -187,22 +199,26 @@ typedef struct {
     Uint32 histo[256];
     /** histogram information is displayed */
     Uint32 isHistoDisplayed;
-    /** icon */
-    Uint8 icon[256];
+    /** icon array */
+    int iconw;
+    int iconh;
+    Uint32 icon[128];
     /** fullscreen */
     Sint32 isFullscreen;
     /** recording is ON/OFF*/
     Uint32 isRecording;
-    /** recording context */
-    AVFormatContext *rec_fmt_ctx;
-    /** recording color picture */
-    AVFrame *pictureRGB;
-    /** recording greyscale picture */
-    AVFrame *picture;
-    /** recording format converter */
-    struct SwsContext *img_convert_ctx;
-    /** recording buffer */
-    uint8_t *video_outbuf;
+    /** The recording codex context */
+    AVCodecContext *rec_codctx;
+    /** The recording output file */
+    FILE *rec_file;
+    /** packet for recording */
+    AVPacket rec_pkt;
+    /** frame buffer to record in rgb format */
+    AVFrame *rec_picRGB;
+    /** frame buffer to record in codec requested format */
+    AVFrame *rec_picYUV;
+    /** frame format conversion structure */
+    struct SwsContext *rec_convctx;
     
 } MBRT_Context;
 
