@@ -96,7 +96,7 @@ your system.
  * SDL library version 2.0.3(or later) for visual C++ (you can find it at 
  www.libsdl.org)
  * The stdint.h and inttypes.h header files for visual C++ (which is not 
- shipped by Microsoft, don't ask me why). You can find it at
+ shipped by Microsoft, don't ask me why). You can find them at
  http://msinttypes.googlecode.com/
  * FFmpeg builds for Windows. you can find them at http://ffmpeg.zeranoe.com/builds/
  or visit www.ffmpeg.org (These builds are under GPL)
@@ -119,28 +119,27 @@ with the correct include path to your SDL files.
                      'C:/Devel/SDL2-devel-2.0.3-VC/SDL2-2.0.3/include', 
                      'C:/Devel/ffmpeg-20140829-git-4c92047-win64-dev/include']
                             
-Now copy the content of the directory lib/ of your SDL directory (should look 
-something like SDL-1.2.13/lib) into the lib directory of the mambaRealtime module
-sources.
+Now copy the content of the directory lib/x86 or lib/x64 of your SDL directory
+(should look something like SDL2-2.0.3/lib) into the lib directory of the
+mambaRealtime module sources.
 
-From the FFmpeg build website, download the w32 shared and w32 shared-dev 7z 
-packages of the latest build. Extract them on your computer. As well as for the 
-SDL library you will need to edit the setup.py script to indicate where are
-the include files of the FFmpeg library (the include directory is extracted 
-from the shared-dev package). Then you will need to copy inside the lib directory
+From the FFmpeg build website, download the shared and dev 7z 
+packages of the latest build for your architecture.
+Extract them on your computer. As well as for the SDL library you will
+need to edit the setup.py script to indicate where are the include files
+of the FFmpeg library (the include directory is extracted 
+from the dev package). Then you will need to copy inside the lib directory
 of the mambaRealtime module some DLLs and lib files. The DLLs you will need 
 are in the bin/ directory extracted from the shared package. You need the
-avcore, avcodec, avformat, avutil and swscale DLLs (their name are extended with the 
-current version). Now from the shared-dev package, copy the corresponding lib files.
-
-The last operation before compiling is to remove the file stdint.h that can be 
-found in the FFmpeg shared-dev package include directory. This file contradicts
-both an other SDL include file (at least visual c++ thinks so).
+avcodec, avformat, avutil, swresample and swscale DLLs (their name are
+extended with the current version). Now produce the corresponding lib files
+using the def found in the dev package and the procedure described in
+https://www.ffmpeg.org/platform.html#Linking-to-FFmpeg-with-Microsoft-Visual-C_002b_002b.
 
 Then to perform the compilation, open a command Window and browse to the 
 directory where you put the realtime module sources files. Type :
 
-python setupRT.py build_ext bdist_wininst
+python setup.py build_ext bdist_wininst
 
 it will compile and create a "dist" directory where you will find an exe 
 installer for the realtime module. Double click to install.
