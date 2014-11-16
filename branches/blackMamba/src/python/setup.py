@@ -8,6 +8,7 @@ import platform
 import os
 import glob
 import re
+import shutil
 
 ################################################################################
 # Tool functions
@@ -38,10 +39,10 @@ package_data = {'mambaShell': ['*.ico','*.bmp']}
 
 if platform.platform().find("Windows")>=0:
     scripts = ['scripts/mamba_post_install.py']
-    data_files = [('',['../lib/Release/mamba.dll'])]
+    shutil.copy('../lib/Release/mamba.dll', 'packages/mamba/')
+    package_data['mamba'] = ['mamba.dll']
 else:
     scripts = []
-    data_files = []
 
 ################################################################################
 # Meta-data
@@ -67,7 +68,6 @@ setup(name = NAME,
       ext_modules = EXTENSION,
       packages = PACKAGES,
       package_dir = {'': 'packages'},
-      data_files = data_files,
       package_data = package_data,
       scripts = scripts
       )
