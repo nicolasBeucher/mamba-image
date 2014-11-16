@@ -109,6 +109,7 @@ else(NOT WIN32)
                         -I${PROJECT_BINARY_DIR}/include
                       bdist_wininst
                         --install-script=mamba_post_install.py
+                        --bitmap=${PROJECT_SOURCE_DIR}/../doc/style/mamba_logo.bmp
                       DEPENDS mamba
                       WORKING_DIRECTORY ${PROJECT_BINARY_DIR}/python
                       COMMENT "Generating the python installer")
