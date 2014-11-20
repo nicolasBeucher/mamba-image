@@ -128,7 +128,7 @@ im3D[i]
 \label{fig:image3D_coord}
 \end{figure}
 
-Figure \ref{fig:image3D_ccord} shows the coordinates arrangement of a 3D Mamba image. The length of the pile of 2D images (the third
+Figure \ref{fig:image3D_coord} shows the coordinates arrangement of a 3D Mamba image. The length of the pile of 2D images (the third
 dimension of the 3D image) corresponds to the length of the im3D list:
 
 \lstset{language=Python}
@@ -393,9 +393,9 @@ structuring element:
 >>> dirs = CUBOCTAHEDRON1.getDirections()
 >>> CUBOCTAHEDRON1.grid.getEncodedDirs(dirs, 0)
 {0: 127, 1: 67, -1: 97}
->>> CUBOCTAHEDRON.grid.getEncodedDirs(dirs, 1)
+>>> CUBOCTAHEDRON1.grid.getEncodedDirs(dirs, 1)
 {0: 127, 1: 49, -1: 25}
->>> CUBOCTAHEDRON.grid.getEncodedDirs(dirs, 2)
+>>> CUBOCTAHEDRON1.grid.getEncodedDirs(dirs, 2)
 {0: 127, 1: 13, -1: 7}
 \end{lstlisting}
 
