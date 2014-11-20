@@ -20,10 +20,10 @@
 \mambaFigures
 
 \section{Introduction}
-This documentation describes in more details the characteristics of Mamba images , both in
+This documentation describes in more detail the characteristics of Mamba images, both in
 2D and 3D, together with their connection with the grids in use and the way their edges are handled.
-Some complements will also be given regarding the implementation and use of the  2D and 3D
-Structuring elements. Although this information may be of lesser interest if you intend to use
+Some complements will also be given regarding the implementation and use of the 2D and 3D
+structuring elements. Although this information may be of lesser interest if you intend to use
 only the Mamba operators already existing in the library, it can be of greater importance if you
 want to define your own transformations of if you want to use more complex structuring elements.
 
@@ -40,13 +40,13 @@ figure \ref{fig:image_coord}. Each pixel can take a 1-bit (binary), 8-bit (greys
 This parameter is called \textit{depth} of the image. If you want to process 16-bit images, you will have to
 load them in a 32-bit Mamba image (which is actually not at all a problem).
 
-Width w and height h are the two other parameters (attributes) of an image. \txtit{width} is the number of
+Width w and height h are the two other parameters (attributes) of an image. \textit{width} is the number of
 pixels per line in the horizontal direction, \textit{height} the number of lines (or the number of pixels in
 the vertical direction, see figure \ref{fig:image_coord}.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{images/xxx.png}
+\includegraphics[scale=0.3]{figures/xxx.png}
 \caption{Image pixels coordinates}
 \label{fig:image_coord}
 \end{figure}
@@ -91,7 +91,8 @@ Nevertheless, cropping can be performed by two means:
 
 \begin{itemize}
 \item \textbf{cropCopy} can be used to extract from the padded image the part which interests you. Note that
-\textbf{cropCopy} does not clear the destination image, it simply replace the cropped part (see the Mamba Image Examples manual [\ref{art:MIEman}]).
+\textbf{cropCopy} does not clear the destination image, it simply replace the cropped part (see the Mamba
+Image Examples manual [\ref{art:MIEman}]).
 \item The size of the destination image can also be set before loading the image file:
 
 \lstset{language=Python}
@@ -120,8 +121,15 @@ be accessed by:
 im3D[i]
 \end{lstlisting}
 
-The length of the pile of 2D images (the third dimension of the 3D image) corresponds to the length of the im3D
-list:
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{figures/xxx.png}
+\caption{Image 3D pixels coordinates}
+\label{fig:image3D_coord}
+\end{figure}
+
+Figure \ref{fig:image3D_ccord} shows the coordinates arrangement of a 3D Mamba image. The length of the pile of 2D images (the third
+dimension of the 3D image) corresponds to the length of the im3D list:
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -134,8 +142,8 @@ exists only two ways to load a 3D image:
 
 \begin{itemize}
 \item By using the \textbf{loadRaw} method, where raw data are stored in the 3D image. Note that a preprocessing can
-be performed on the data before loading them in the 3D image. See the Mamaba Image User Manual [\ref{art:MIUman}]
-and the Mamaba Image Library Python Reference manual [\ref{art:MILPRman}] for further details. 
+be performed on the data before loading them in the 3D image. See the Mamba Image User Manual [\ref{art:MIUman}]
+and the Mamba Image Library Python Reference manual [\ref{art:MILPRman}] for further details. 
 \item By using the \textbf{load} operator which reads a 3D image from a directory containing the corresponding pile
 of 2D images.
 \end{itemize}
@@ -155,7 +163,7 @@ Indeed, a sequence is simply a list of 2D images. It can be considered as a spec
 the third dimension is time.
 
 \section{Grids}
-Grids provide information on the neighborhood relationships between pixels of an image.
+Grids provide information on the neighborhood relationships between the pixels of an image.
 
 A grid is not an attribute of the image. This point is very important and it is often disturbing as
 displaying digitized images on a square grid (rectangular in fact) is quite common and lets believe that
@@ -182,12 +190,12 @@ are shifted to the left in relation to the odd lines, see figure \ref{fig:hex_gr
  
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{images/xxx.png}
+\includegraphics[scale=0.3]{figures/xxx.png}
 \caption{Odd and even lines in the hexagonal grid}
 \label{fig:hex_grid}
 \end{figure}
 
-Some public operators are available with 2D grids (which are instances of a class /textbf{_grid}). They are self
+Some public operators are available with 2D grids (which are instances of a class /textbf{\_grid}). They are self
 explanatory. See the documentation on the directions encoding for further details.
 
 \subsection{3D grids}
@@ -204,12 +212,12 @@ see figure \ref{fig:3D_grids}.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{images/xxx.png}
+\includegraphics[scale=0.3]{figures/xxx.png}
 \caption{3D grids defined in Mamba3D}
 \label{fig:3D_grids}
 \end{figure}
 
-These grids are instances of a \textbf{_grid3D} class. Each grid comes with various methods to handle it. Some of them are similar to
+These grids are instances of a \textbf{\_grid3D} class. Each grid comes with various methods to handle it. Some of them are similar to
 the operators provided with 2D grids. However, some others are specific and are more complex. These operators will be explicited
 below for the different grids.
 
@@ -235,7 +243,7 @@ by a list of directions) into three 2D structuring elements corresponding to the
 element, see section \ref{cha:structelem} for further explanations.
 
 \textbf{convertFromDir} requires two parameters: a 3D direction and the z coordinate of the pixel. It returns a tuple containing the section
-(-1 if below, 0 if current and 1 if above) and the 2D direction in this section corresponding to the 3D direction and the z position of the
+(-1 if below, 0 if current and 1 if above) and the 2D direction in this section corresponding to the 3D direction and to the z position of the
 pixel. We have for instance:
 
 \lstset{language=Python}
@@ -255,7 +263,7 @@ of this shifting.
 
 \subsubsection{Centered cubic grid}
 \label{cha:CCgrid}
-Here again, this grid (named CENTER_CUBIC) is defined by stacking 2D images defined with a square grid. But the odd sections
+Here again, this grid (named CENTER\_CUBIC) is defined by stacking 2D images defined with a square grid. But the odd sections
 are shifted compared to the even sections just below so that the pixels be placed in the middle of the 2x2 squares of the below
 section, hence the name "centered cubic". Therefore, this grid is made of an assembly of two shifted square grids which is
 repeated all along the z axis.
@@ -264,7 +272,7 @@ Figure \ref{fig:CC_grid} shows the relative arrangement of the odd and even plan
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{images/xxx.png}
+\includegraphics[scale=0.3]{figures/xxx.png}
 \caption{Planes arrangement in the centered cubic grid}
 \label{fig:CC_grid}
 \end{figure}
@@ -284,7 +292,7 @@ of the starting and ending planes.
 
 \subsubsection{Face centered cubic grid}
 \label{FCCgrid}
-The face centered cubic grid (named FACE_CENTER_CUBIC) is the most complex grid defined in Mamba3D. The 2D base grid is hexagonal
+The face centered cubic grid (named FACE\_CENTER\_CUBIC) is the most complex grid defined in Mamba3D. The 2D base grid is hexagonal
 and the 3D grid is obtained by piling and shifting these 2D hexagonal grids.
 
 In this case, three 2D hexagonal grids are used and shifted according to the scheme given in figure \ref{fig:FCC_grid}. Then, this configuration
@@ -292,12 +300,12 @@ is repeated along the z axis.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{images/xxx.png}
+\includegraphics[scale=0.3]{figures/xxx.png}
 \caption{Planes arrangement in the face centered cubic grid}
 \label{fig:FCC_grid}
 \end{figure}
 
-The \textbf{convertFromDir operator} provides different results according to the congruence modulo 3 of the z coordinate with the values
+The \textbf{convertFromDir} operator provides different results according to the congruence modulo 3 of the z coordinate with the values
 0, 1 and 2:
 
 \lstset{language=Python}
@@ -311,7 +319,7 @@ The \textbf{convertFromDir operator} provides different results according to the
 \end{lstlisting}
 
 Stacking and shifting 3 planes (instead of 2 as for the centered cubic grid) allows to define symmetrical structuring elements (cuboctahedrons).
-Shifting only two planes would produce another grid structure named hexagonal closed packed structure. Unfortunately, the structuring
+Shifting only two planes would produce another grid structure named \textit{hexagonal closed packed} structure. Unfortunately, the structuring
 elements defined on this grid are not symmetrical (we have in particular anticuboctahedrons).
 
 \section{Edges}
@@ -323,12 +331,12 @@ Edge management for 3D images is a combination of two approaches as edges in a 3
 images, the edges parallel to the z axis are defined by the edges of the corresponding 2D images. These edges are therefore virtual and their management
 is controlled by the \textit{edge} argument (set to EMPTY or FILLED) of the 2D images. But two other edges must be defined. They correspond
 to the floor and the ceiling (along the z axis) of the 3D volume of data formed by a 3D image. Contrary to the 2D edges, these two ones are
-real and are built by adding two supplementary 2D images set to 0 or to the maximum value (1, 256 or $2^{32}$ - 1) depending on the status (FILLED or EMPTY)
+real and are built by adding two supplementary 2D images set to 0 or to the maximum value (1, 256 or $2^{32} - 1$) depending on the status (FILLED or EMPTY)
 of the 2D edge (figure \ref{fig:3D_edges}).
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.3]{images/xxx.png}
+\includegraphics[scale=0.3]{figures/xxx.png}
 \caption{Edges in a 3D image}
 \label{fig:3D_edges}
 \end{figure}
@@ -349,16 +357,20 @@ class. Remember also that a \textbf{doubleStructuringElement} and a \textbf{doub
 the thinning and thickening operators.
 Each structuring element is associated to a grid. It is defined by the neighbors of the central point it contains. Its origin is always
 the central point, even when this point does not belong to the structuring element. Different methods exist to deal with these 2D and
-3D structuring elemnts: \textbf{getGrid} rturn the grid associated with the structuring element, \textbf{getDirections} returns the
+3D structuring elements: \textbf{getGrid} returns the grid associated with the structuring element, \textbf{getDirections} returns the
 directions used by the structuring element (with or without direction 0), \textbf{hasZero} indicates if the structuring element contains
 or not the central point, etc.
-In 2D, a major difference between Mamba 1.x and Mamba 2.x lies in the way directions are defined in the \textbf{infNeighbor}, \textbf{supNeighbor}
+In 2D, a major difference between Mamba 1.x and Mamba 2.x lies in the way directions are defined and used in the \textbf{infNeighbor}, \textbf{supNeighbor}
 and \textbf{diffNeighbor} operators. It is now possible to use several directions at the same time. These directions, however, must be coded.
-This coding is performed by the \textbf{getEncodedDirections} method. All the directions i of the structuring element se are used to define a
-number nb equal to:
+This coding is performed by the \textbf{getEncodedDirections} method. All the directions \emph{i} of the structuring element \emph{se} are used to define a
+number \emph{nb} equal to:
+
+\begin{displaymath}
+nb = \sum_{i \in se} 2^i
+\end{displaymath}
 
 which is actually used by the operators. The main advantage of this approach is a dramatic increase of the computation speed of the basic
-morphological transforms (erosion, dilation).
+morphological transforms (erosion, dilation). Here are examples of direction encoding for some common structuring elements:
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -404,14 +416,11 @@ Mamba documentation available at \url{http://www.mamba-image.org}.
 Mamba documentation available at \url{http://www.mamba-image.org}.
 \item \label{art:MQRman} Nicolas Beucher,
 \emph{Mamba API Quick Reference},
-Mamba documentation available at \url{http://www.mamba-image.org}.\end{enumerate}
+Mamba documentation available at \url{http://www.mamba-image.org}.
+\end{enumerate}
 
 \end{document}
 
-%\url{http://docs.python.org/tutorial/})
-%\pagebreak
-%\tipBox{}
-%\warnBox{\textbf{\textsc{not}}}
 
 
 
