@@ -39,6 +39,13 @@ pdflatex mamba-std.tex
 copy mamba-std.pdf ..
 popd
 
+rem IMAGE CHARACTERISTICS AND SETTINGS
+pushd mamba-ics
+pdflatex mamba-ics.tex
+pdflatex mamba-ics.tex
+copy mamba-ics.pdf ..
+popd
+
 Rem API REFERENCE
 Rem This batch works with doxygen 1.8.6 (errors with the latest release)
 pushd mamba-cref
