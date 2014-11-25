@@ -32,7 +32,7 @@ def infFarNeighbor(imIn, imInout, nb, amp, grid=mamba.DEFAULT_GRID, edge=mamba.F
     """
     Performs a minimum operation between the 'imInout' image pixels and their 
     neighbor 'nb' at distance 'amp' according to 'grid' in image 'imIn'. The result
-    is put in 'imOut'. 
+    is put in 'imInOut'. 
    
     'grid' value can be HEXAGONAL or SQUARE. 'edge' value can be EMPTY or FILLED.
     
@@ -41,7 +41,7 @@ def infFarNeighbor(imIn, imInout, nb, amp, grid=mamba.DEFAULT_GRID, edge=mamba.F
     its value equals the maximal allowed value according to the depth of 'imIn'
     image.
     
-    'imIn' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same size and depth.
+    'imIn' and 'imInOut' can be 1-bit, 8-bit or 32-bit images of same size and depth.
     """
     err = core.MB_InfFarNb(imIn.mbIm, imInout.mbIm, nb, amp, grid.id, edge.id)
     mamba.raiseExceptionOnError(err)
@@ -51,7 +51,7 @@ def supFarNeighbor(imIn, imInout, nb, amp, grid=mamba.DEFAULT_GRID, edge=mamba.E
     """
     Performs a maximum operation between the 'imInout' image pixels and their 
     neighbor 'nb' at distance 'amp' according to 'grid' in image 'imIn'. The result
-    is put in 'imOut'. 
+    is put in 'imInOut'. 
    
     'grid' value can be HEXAGONAL or SQUARE. 'edge' value can be EMPTY or FILLED.
     
@@ -60,7 +60,7 @@ def supFarNeighbor(imIn, imInout, nb, amp, grid=mamba.DEFAULT_GRID, edge=mamba.E
     its value equals the maximal allowed value according to the depth of 'imIn'
     image.
     
-    'imIn' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same size and depth.
+    'imIn' and 'imInOut' can be 1-bit, 8-bit or 32-bit images of same size and depth.
     """
     err = core.MB_SupFarNb(imIn.mbIm, imInout.mbIm, nb, amp, grid.id, edge.id)
     mamba.raiseExceptionOnError(err)
