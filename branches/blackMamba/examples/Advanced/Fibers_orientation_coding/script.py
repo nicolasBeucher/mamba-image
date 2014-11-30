@@ -6,7 +6,8 @@
 # Fibers orientation coding
 
 ## DESCRIPTION #################################################################
-# This example shows how to use the directional operators defined in example M20
+# This example shows how to use the directional operators defined in example
+# entitled "Directional morphological operators in 12 or 16 directions"
 # to detect and code the orientation of fibers. This application is performed in
 # two steps. The first step consists in determining the maximum elongation of
 # each fiber in a given direction. This is performed by a directional ultimate
