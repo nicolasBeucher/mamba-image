@@ -164,7 +164,8 @@ def cellsBuild(imIn, imInOut, grid=mamba.DEFAULT_GRID):
     """
     Geodesic reconstruction of the cells of the partition image 'imIn' which
     are marked by the image 'imInOut'. The marked cells take the value of
-    their corresponding marker.
+    their corresponding marker. Note that the background cells (labelled by 0)
+    are also modified if they are marked.
     The result is stored in 'imInOut'.
     The images can be 8-bit or 32-bit images.
     'grid' can be set to HEXAGONAL or SQUARE.
