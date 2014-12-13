@@ -28,4 +28,5 @@ from .miscellaneous import *
 from .hierarchies import *
 from .partitions import *
 from .extrema import *
+from .labellings import *
 
