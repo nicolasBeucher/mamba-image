@@ -23,14 +23,14 @@ def partitionLabel(imIn, imOut):
     """
     
     imWrk1 = mamba.imageMb(imIn, 1)
-    imWrk2 = mamba.imageMb(imIn, 2)
+    imWrk2 = mamba.imageMb(imIn, 32)
     
-    if imIn.depth() == 1:
+    if imIn.getDepth() == 1:
         mamba.negate(imIn, imWrk1)
     else:
         mamba.threshold(imIn, imWrk1, 0, 0)
     nb1 = mamba.label(imWrk1, imWrk2)
-    mamba.convertByMask(imWrk1, imOut, 0, mamba.computeMaxRange(imOut)[1])
+    mamba.convertByMask(imWrk1, imOut, mamba.computeMaxRange(imOut)[1], 0)
     mamba.logic(imOut, imWrk2, imOut, "sup")
     nb2 = mamba.label(imIn, imWrk2)
     mamba.addConst(imWrk2, nb1, imWrk2)
@@ -46,7 +46,7 @@ def measureLabelling(imIn, imMeasure, imOut):
     """
     
     imWrk1 = mamba.imageMb(imIn, 32)
-    imWrk2 = mamba.imageMb(imIn)
+    imWrk2 = mamba.imageMb(imIn, 1)
     imWrk3 = mamba.imageMb(imIn, 8)
     imWrk4 = mamba.imageMb(imIn, 8)
     imWrk5 = mamba.imageMb(imIn, 8)
@@ -55,7 +55,7 @@ def measureLabelling(imIn, imMeasure, imOut):
     # Output image is emptied.
     imOut.reset()
     # Labelling the initial image.
-    if imIn.depth() == 1:
+    if imIn.getDepth() == 1:
         nbParticles = mamba.label(imIn, imWrk1)
     else:
         nbParticles = partitionLabel(imIn, imWrk1)
@@ -104,9 +104,9 @@ def areaLabelling(imIn, imOut):
     is stored in the 32-bit image 'imOut'.
     """
 	
-    imWrk = mamba.image(imIn, 1)
+    imWrk = mamba.imageMb(imIn, 1)
     
-    if imIn.depth() == 1:
+    if imIn.getDepth() == 1:
         mamba.copy(imIn, imWrk)
     else:
         imWrk.fill(1)
@@ -121,19 +121,20 @@ def diameterLabelling(imIn, imOut, dir, grid=mamba.DEFAULT_GRID):
     'dir' can be any strictly positive integer value.
     """
     
-    imWrk1 = mamba.imageMb(imIn)
-    imWrk2 = mamba.image(imIn, 1)
+    imWrk1 = mamba.imageMb(imIn, 1)
+    imWrk2 = mamba.imageMb(imIn)
     
     ed = 1 << ((dir - 1)%(mamba.gridNeighbors(grid)/2)) +1
     # The intercept points in direction 'dir' are stored in imWrk2.
-    mamba.copy(imIn, imWrk)
-    if imIn.depth() == 1:
-        mamba.diffNeighbor(imIn, imWrk2, ed, grid=grid)
+    # mamba.copy(imIn, imWrk2)
+    if imIn.getDepth() == 1:
+        mamba.copy(imIn, imWrk1)
+        mamba.diffNeighbor(imIn, imWrk1, ed, grid=grid)
     else:
-        mamba.nonEqualNeighbors(imIn, imWrk1, ed, grid=grid, edge= mamba.EMPTY)
-        mamba.threshold(imWrk1, imWrk2, 0, 0)
+        mamba.nonEqualNeighbors(imIn, imWrk2, ed, grid=grid, edge= mamba.EMPTY)
+        mamba.threshold(imWrk2, imWrk1, 1, mamba.computeMaxRange(imWrk2)[1])
     # They are used for the labelling.
-    measureLabelling(imIn, imWrk2, imOut)
+    measureLabelling(imIn, imWrk1, imOut)
  
 def feretDiameterLabelling(imIn, imOut, direc):
     """
@@ -162,7 +163,7 @@ def feretDiameterLabelling(imIn, imOut, direc):
     mamba.linearErode(imWrk1, imWrk1, dir, grid=mamba.SQUARE, edge=mamba.EMPTY)
     mamba.computeDistance(imWrk1, imOut, grid=mamba.SQUARE, edge=mamba.FILLED)
     mamba.addConst(imOut, 1, imOut)
-    if imIn.depth() == 1:
+    if imIn.getDepth() == 1:
 	    # Each particle is valued with the distance.
         mamba.convertByMask(imIn, imWrk2, 0, mamba.computeMaxRange(imWrk3)[1])
         mamba.logic(imOut, imWrk2, imWrk3, "inf")
@@ -183,7 +184,7 @@ def feretDiameterLabelling(imIn, imOut, direc):
         mamba.sub(imWrk3, imWrk4, imOut)
     else:
         mamba.copy(imOut, imWrk3)
-        if imIn.depth() == 32:
+        if imIn.getDepth() == 32:
             mamba.copy(imIn, imWrk2)
         else:
             mamba.convert(imIn, imWrk2)
@@ -206,7 +207,7 @@ def volumeLabelling(imIn1, imIn2, imOut):
     this component. The result is put in the 32-bit image 'imOut'.
     """
     
-    imWrk1 = mamba.imageMb(imIn1)
+    imWrk1 = mamba.imageMb(imIn1, 1)
     imWrk2 = mamba.imageMb(imIn1, 32)
     imWrk3 = mamba.imageMb(imIn1, 8)
     
