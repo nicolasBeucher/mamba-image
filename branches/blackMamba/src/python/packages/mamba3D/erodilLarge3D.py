@@ -9,6 +9,7 @@ dilations with large structuring elements.
 
 import mamba3D as m3D
 import mamba
+import mamba.core as core
 
 def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     """
@@ -21,7 +22,8 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     if length!=len(imOut):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     # Cubic grid case (the simplest one).
-    if grid == m3D.CUBIC:
+    if grid.getCValue() == m3D.CUBIC.getCValue():
+        # The above statement is an (ugly) way to get the grid in use.
         if d < 9:
             # Horizontal shift.
             for i in range(length):
@@ -34,7 +36,7 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
             for i in range(amp, length):
                 j = i - amp
                 mamba.shift( imIn[i], imOut[j], hd, amp, fill, grid=mamba.SQUARE)
-            start = length - amp
+            start = max(length - amp, 0)
             end = length
         else:
             # Upwards shift.
@@ -43,9 +45,9 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
                 j = i + amp
                 mamba.shift( imIn[i], imOut[j], hd, amp, fill, grid=mamba.SQUARE)
             start = 0
-            end = amp
+            end = min(amp, length)
     # Centered cubic grid.
-    elif grid == m3D.CENTER_CUBIC:
+    elif grid.getCValue() == m3D.CENTER_CUBIC.getCValue():
         if d < 9:
             # Horizontal shift.
             for i in range(length):
@@ -54,30 +56,32 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
             end = 0
         elif d < 13:
             # Downwards shift.
-            hd1 = m3B.CENTER_CUBIC.convertFromDir(d, 0)[0]
-            hd2 = m3D.CENTER_CUBIC.convertFromDir(d, 1)[0]
+            hd1 = m3D.CENTER_CUBIC.convertFromDir(d, 0)[1]
+            hd2 = m3D.CENTER_CUBIC.convertFromDir(d, 1)[1]
             amp1 = amp//2 + amp%2
             for i in range(amp, length):
                 j = i - amp
                 amp2 = amp//2 + i%2
                 mamba.shift( imIn[i], imOut[j], hd1, amp1, fill, grid=mamba.SQUARE)
-                mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE) 
-            start = length - amp
+                if hd2 <> 0:
+                    mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE) 
+            start = max(length - amp, 0)
             end = length
         else:
             # Upwards shift.
-            hd1 = m3B.CENTER_CUBIC.convertFromDir(d, 0)[0]
-            hd2 = m3D.CENTER_CUBIC.convertFromDir(d, 1)[0]
+            hd1 = m3D.CENTER_CUBIC.convertFromDir(d, 0)[1]
+            hd2 = m3D.CENTER_CUBIC.convertFromDir(d, 1)[1]
             amp1 = amp//2 + amp%2
             for i in range(length - amp - 1, -1, -1):
                 j = i + amp
                 amp2 = amp//2 + i%2
                 mamba.shift( imIn[i], imOut[j], hd1, amp1, fill, grid=mamba.SQUARE)
-                mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE)                 
+                if hd2 <> 0:
+                    mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE)                 
             start = 0
-            end = amp
+            end = min(amp, length)
     # Face centered cubic grid.
-    elif grid == m3D.FACE_CENTER_CUBIC:
+    else:
         if d < 7:
             # Horizontal shift.
             for i in range(length):
@@ -97,7 +101,7 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
                 mamba.shift( imIn[i], imOut[j], hdList[dirUse[0]], amp1, fill, grid=mamba.HEXAGONAL)
                 amp1 = amp//3 + extraS[i%3][amp%3][dirUse[1]]
                 mamba.shift(imOut[j], imOut[j], hdList[dirUse[1]], amp1, fill, grid=mamba.HEXAGONAL) 
-            start = length - amp
+            start = max(length - amp, 0)
             end = length
         elif d == 9:
             # Specific algorithm is setup for direction 9 to avoid edge effects.
@@ -108,8 +112,8 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
                 (sc, sh) = extraS[i%3][amp%3]
                 nc = (amp//3 +sc) * 2
                 mamba.shift( imIn[i], imOut[j], 1, nc, fill, grid=mamba.SQUARE)
-                if sh<>0:
-                    if (i%3)==2:
+                if sh <> 0:
+                    if (i%3) == 2:
                         hd = 1
                     else:
                         hd = 6
@@ -130,7 +134,7 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
                 amp1 = amp//3 + extraS[i%3][amp%3][dirUse[1]]
                 mamba.shift(imOut[j], imOut[j], hdList[dirUse[1]], amp1, fill, grid=mamba.HEXAGONAL) 
             start = 0
-            end = amp
+            end = min(amp, length)
         else:
             # Specific algorithm for direction 12.
             extraS = (((0,0),(0,0),(0,1)),((0,0),(0,1),(1,0)),((0,0),(0,1),(0,1)))
@@ -140,16 +144,14 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
                 (sc, sh) = extraS[i%3][amp%3]
                 nc = (amp//3 +sc) * 2
                 mamba.shift( imIn[i], imOut[j], 1, nc, fill, grid=mamba.SQUARE)
-                if sh<>0:
-                    if (i%3)==2:
+                if sh <> 0:
+                    if (i%3) == 2:
                         hd = 3
                     else:
                         hd = 4
                     mamba.shift(imOut[j], imOut[j], hd, 1, fill, grid=mamba.HEXAGONAL) 
             start = 0
-            end = amp           
-    else:
-        mamba.raiseExceptionError(core.MB3D_INVALID_GRID)
+            end = min(amp, length)           
     for i in range(start, end):
         imOut[i].fill(fill)
         
