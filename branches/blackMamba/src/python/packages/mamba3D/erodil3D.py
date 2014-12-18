@@ -60,8 +60,8 @@ class structuringElement3D:
         Returns the grid associated with the structuring element.
         
         Example:
-        >>>CUBOCTAHEDRON.getGrid()
-        HEXAGONAL3D
+        >>>CUBOCTAHEDRON1.getGrid()
+        mamba3D.FACE_CENTER_CUBIC
         """
         
         return self.grid
