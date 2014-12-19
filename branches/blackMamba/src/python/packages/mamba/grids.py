@@ -16,9 +16,7 @@ class _grid:
         self.default = default
         
     def __repr__(self):
-        if self.default:
-            return "DEFAULT_GRID"
-        elif self.id==core.MB_HEXAGONAL_GRID:
+        if self.id==core.MB_HEXAGONAL_GRID:
             return "HEXAGONAL"
         elif self.id==core.MB_SQUARE_GRID:
             return "SQUARE"
