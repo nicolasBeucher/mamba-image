@@ -169,7 +169,7 @@ class Display3D(tk.Toplevel):
                 self.popup.info("palette set to "+self.palname)
             else:
                 self.popup.info("No palette set")
-        elif "mode" in options:
+        if "mode" in options:
             if options["mode"]=="PLAYER":
                 self.selectPlayer(None)
             elif options["mode"]=="VOLUME":
