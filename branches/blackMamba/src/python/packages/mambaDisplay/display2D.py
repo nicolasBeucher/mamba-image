@@ -466,6 +466,9 @@ class Display2D(tk.Toplevel):
             else:
                 self.popup.info("No palette set")
             self.updateim()
+        if "plane" in options:
+            self.bplane = options["plane"]
+            self.updateim()
         if "zoom" in options:
             self.setZoom(options["zoom"])
         if "at" in options:
