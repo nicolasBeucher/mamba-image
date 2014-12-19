@@ -454,11 +454,19 @@ class Display2D(tk.Toplevel):
         
         self.updateim()
     
-    def show(self):
+    def show(self, **options):
         # Shows the display (enabling update).
         if self.state()!="normal":
             self.deiconify()
-            self.updateim()
+        if "palette" in options:
+            self.palname = options["palette"]
+            if self.palname:
+                self.popup.info("palette set to "+self.palname)
+            else:
+                self.popup.info("No palette set")
+        elif "zoom" in options:
+            self.setZoom(options["zoom"])
+        self.updateim()
             
     def hide(self):
         # Hides the display.
