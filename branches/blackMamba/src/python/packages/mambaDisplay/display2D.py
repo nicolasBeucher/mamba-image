@@ -269,11 +269,11 @@ class Display2D(tk.Toplevel):
         self.canvas_vb.grid_remove()
         imsize = self.osize[:]
         self.zoom = 1.0
-        while imsize[0]<constants._MINW or imsize[1]<constants._MINH:
+        while imsize[0]<constants._MIN or imsize[1]<constants._MIN:
             imsize[0] = imsize[0]*2
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
-        while imsize[0]>constants._MAXW or imsize[1]>constants._MAXH:
+        while imsize[0]>constants._MAX or imsize[1]>constants._MAX:
             imsize[0] = imsize[0]/2
             imsize[1] = imsize[1]/2
             self.zoom = self.zoom/2
