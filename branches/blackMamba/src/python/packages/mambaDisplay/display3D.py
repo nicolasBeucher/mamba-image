@@ -159,10 +159,23 @@ class Display3D(tk.Toplevel):
         # Hide the display
         self.withdraw()
         
-    def show(self):
+    def show(self, **options):
         # Show the display
         if self.state()!="normal":
             self.deiconify()
+        if "palette" in options:
+            self.palname = options["palette"]
+            if self.palname:
+                self.popup.info("palette set to "+self.palname)
+            else:
+                self.popup.info("No palette set")
+        elif "mode" in options:
+            if options["mode"]=="PLAYER":
+                self.selectPlayer(None)
+            elif options["mode"]=="VOLUME":
+                self.selectVolRen(None)
+            else:
+                self.selectProjection(None)
         self.updateim()
         
     def freeze(self):

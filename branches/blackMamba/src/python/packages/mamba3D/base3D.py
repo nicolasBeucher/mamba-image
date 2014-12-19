@@ -365,17 +365,19 @@ class image3DMb:
         self.depth = depth
         
     ### Display methods ########################################################
-    def show(self):
+    def show(self, **options):
         """
         Called to show the display associated to the image.
+        
+        You can specify 'options' that will be given to the displayer.
         """
         if self.displayId != '':
-            self.gd.showWindow(self.displayId)
+            self.gd.showWindow(self.displayId, **options)
         else:
             if self.gd == None:
                 self.gd = getDisplayer()
             self.displayId = self.gd.addWindow(im=self)
-            self.gd.showWindow(self.displayId)
+            self.gd.showWindow(self.displayId, **options)
 
     def hide(self):
         """

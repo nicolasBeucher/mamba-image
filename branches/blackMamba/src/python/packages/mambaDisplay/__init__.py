@@ -42,11 +42,12 @@ class Displayer:
         """
         return ''
         
-    def showWindow(self, wKey):
+    def showWindow(self, wKey, **options):
         """
         Method used to recall and redisplay a window that has been hidden,
         iconified or withdrawn from the screen. 'wKey' indicates the particular
-        window to redisplay.
+        window to redisplay. 'options' can be used to control specific
+        element of the windows. It depends on the displayer.
         
         The function is also called right after the creation of the window. It 
         can be called even if the window was not hidden, iconified or withdrawn.

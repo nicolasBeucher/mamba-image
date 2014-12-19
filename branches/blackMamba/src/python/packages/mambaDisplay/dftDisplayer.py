@@ -67,9 +67,9 @@ class DftDisplayer(mambaDisplay.Displayer):
             imd.connect(im_ref)
         return skey
         
-    def showWindow(self, wKey):
+    def showWindow(self, wKey, **options):
         # Displays the window identified by 'key'.
-        self.windows[wKey].show()
+        self.windows[wKey].show(**options)
         self.root.update()
         # Storing the standard geometry.
         if not self.windows[wKey].std_geometry:
