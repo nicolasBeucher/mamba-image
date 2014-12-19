@@ -169,6 +169,8 @@ class Display3D(tk.Toplevel):
                 self.popup.info("palette set to "+self.palname)
             else:
                 self.popup.info("No palette set")
+        if "plane" in options:
+            self.bplane = options["plane"]
         if "mode" in options:
             if options["mode"]=="PLAYER":
                 self.selectPlayer(None)
