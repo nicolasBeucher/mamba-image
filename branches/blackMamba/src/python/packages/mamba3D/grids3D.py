@@ -132,6 +132,10 @@ class _gridFCCubic3D(_grid3D):
         return core.MB3D_FCC_GRID
     def __repr__(self):
         return "mamba3D."+self.name
+    def __eq__(self, other):
+        return other.getCValue()==core.MB3D_FCC_GRID
+    def __ne__(self, other):
+        return other.getCValue()!=core.MB3D_FCC_GRID
     
 FACE_CENTER_CUBIC = _gridFCCubic3D()
 
@@ -191,6 +195,14 @@ class _gridCCubic3D(_grid3D):
         return core.MB3D_INVALID_GRID
     def __repr__(self):
         return "mamba3D."+self.name
+    def __eq__(self, other):
+        comp  = other.getCValue()==core.MB3D_INVALID_GRID
+        comp &= other.maxNeighbors()==16
+        return comp
+    def __ne__(self, other):
+        comp  = other.getCValue()==core.MB3D_INVALID_GRID
+        comp &= other.maxNeighbors()==16
+        return not comp
 
 CENTER_CUBIC = _gridCCubic3D()
 
@@ -240,6 +252,10 @@ class _gridCubic3D(_grid3D):
         return core.MB3D_CUBIC_GRID
     def __repr__(self):
         return "mamba3D."+self.name
+    def __eq__(self, other):
+        return other.getCValue()==core.MB3D_CUBIC_GRID
+    def __ne__(self, other):
+        return other.getCValue()!=core.MB3D_CUBIC_GRID
 
 CUBIC = _gridCubic3D()
         
@@ -270,7 +286,7 @@ class _gridDefault3D(_grid3D):
     def getCValue(self):
         return self.proxyGrid.getCValue()
     def __repr__(self):
-        return "mamba3D."+self.name
+        return repr(self.proxyGrid)
 
 DEFAULT_GRID3D = _gridDefault3D()
 DEFAULT_GRID3D.setProxyGrid(FACE_CENTER_CUBIC)
