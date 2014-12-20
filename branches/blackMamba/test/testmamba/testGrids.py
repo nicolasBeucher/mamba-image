@@ -46,7 +46,7 @@ class TestVarious(unittest.TestCase):
         self.assertEqual(repr(FILLED), "FILLED")
         self.assertEqual(repr(HEXAGONAL), "HEXAGONAL")
         self.assertEqual(repr(SQUARE), "SQUARE")
-        self.assertEqual(repr(DEFAULT_GRID), "DEFAULT_GRID")
+        self.assertEqual(repr(DEFAULT_GRID), "HEXAGONAL")
         DEFAULT_GRID.id = 40
         DEFAULT_GRID.default = False
         self.assertEqual(repr(DEFAULT_GRID), "")
