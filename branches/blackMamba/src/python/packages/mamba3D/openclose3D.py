@@ -110,8 +110,6 @@ def supOpen3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):
     imWrk2 = m3D.image3DMb(imIn)
     imWrk1.reset()
     # Default grid is a proxy for an actual grid
-    if grid == m3D.DEFAULT_GRID3D:
-        grid = grid.proxyGrid
     if grid == m3D.CUBIC:
         # First neighbors located at a sqrt(2) distance from the center
         size = int((1.4142 * n + 1)/2)
@@ -153,8 +151,6 @@ def infClose3D(imIn, imOut, n, grid=m3D.DEFAULT_GRID3D):
     imWrk2 = m3D.image3DMb(imIn)
     imWrk1.fill(m3D.computeMaxRange3D(imIn)[1])
     # Default grid is a proxy for an actual grid
-    if grid == m3D.DEFAULT_GRID3D:
-        grid = grid.proxyGrid
     if grid == m3D.CUBIC:
         # First neighbors located at a sqrt(2) distance from the center
         size = int((1.4142 * n + 1)/2)
