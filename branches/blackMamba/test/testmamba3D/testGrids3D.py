@@ -139,13 +139,19 @@ class TestGrids3D(unittest.TestCase):
         self.assertEqual(grid.getDirections(), range(13))
         self.assertEqual(grid.maxNeighbors(), 12)
         self.assertEqual(grid.getCValue(), core.MB3D_FCC_GRID)
-        self.assertEqual(repr(grid), "mamba3D.DEFAULT_GRID3D")
+        self.assertEqual(repr(grid), "mamba3D.FACE_CENTER_CUBIC")
         
     def testSetDefaultGrid3D(self):
         """Verifies that modification of the default 3D grid works"""
         self.assertRaises(ValueError, setDefaultGrid3D, 0)
         setDefaultGrid3D(CUBIC)
         grid = DEFAULT_GRID3D
+        self.assertTrue(grid==CUBIC)
+        self.assertFalse(grid==CENTER_CUBIC)
+        self.assertFalse(grid==FACE_CENTER_CUBIC)
+        self.assertFalse(grid!=CUBIC)
+        self.assertTrue(grid!=CENTER_CUBIC)
+        self.assertTrue(grid!=FACE_CENTER_CUBIC)
         
         self.assertEqual(grid.getEncodedDirs(range(27), 0), {-1:0x1ff,0:0x1ff,1:0x1ff})
         self.assertRaises(MambaError,grid.getEncodedDirs,[27],0)
@@ -167,9 +173,23 @@ class TestGrids3D(unittest.TestCase):
         self.assertEqual(grid.getDirections(), range(27))
         self.assertEqual(grid.maxNeighbors(), 26)
         self.assertEqual(grid.getCValue(), core.MB3D_CUBIC_GRID)
-        self.assertEqual(repr(grid), "mamba3D.DEFAULT_GRID3D")
+        self.assertEqual(repr(grid), "mamba3D.CUBIC")
+
+        setDefaultGrid3D(CENTER_CUBIC)
+        self.assertFalse(grid==CUBIC)
+        self.assertTrue(grid==CENTER_CUBIC)
+        self.assertFalse(grid==FACE_CENTER_CUBIC)
+        self.assertTrue(grid!=CUBIC)
+        self.assertFalse(grid!=CENTER_CUBIC)
+        self.assertTrue(grid!=FACE_CENTER_CUBIC)
         
         setDefaultGrid3D(FACE_CENTER_CUBIC)
+        self.assertFalse(grid==CUBIC)
+        self.assertFalse(grid==CENTER_CUBIC)
+        self.assertTrue(grid==FACE_CENTER_CUBIC)
+        self.assertTrue(grid!=CUBIC)
+        self.assertTrue(grid!=CENTER_CUBIC)
+        self.assertFalse(grid!=FACE_CENTER_CUBIC)
         
     def testGetDirections3D(self):
         """Verifies that the directions are correctly returned"""
