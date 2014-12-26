@@ -58,26 +58,35 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
             # Downwards shift.
             hd1 = m3D.CENTER_CUBIC.convertFromDir(d, 0)[1]
             hd2 = m3D.CENTER_CUBIC.convertFromDir(d, 1)[1]
-            amp1 = amp//2 + amp%2
             for i in range(amp, length):
                 j = i - amp
-                amp2 = amp//2 + i%2
+                amp1 = amp//2
+                amp2 = amp//2
+                if amp%2 == 1:
+                    if i%2 == 0:
+                        amp1 = amp1 + 1
+                    else:
+                        amp2 = amp2 + 1
+                print hd1, amp1, hd2, amp2
                 mamba.shift( imIn[i], imOut[j], hd1, amp1, fill, grid=mamba.SQUARE)
-                if hd2 <> 0:
-                    mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE) 
+                mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE) 
             start = max(length - amp, 0)
             end = length
         else:
             # Upwards shift.
             hd1 = m3D.CENTER_CUBIC.convertFromDir(d, 0)[1]
             hd2 = m3D.CENTER_CUBIC.convertFromDir(d, 1)[1]
-            amp1 = amp//2 + amp%2
             for i in range(length - amp - 1, -1, -1):
                 j = i + amp
-                amp2 = amp//2 + i%2
+                amp1 = amp//2
+                amp2 = amp//2
+                if amp%2 == 1:
+                    if i%2 == 0:
+                        amp1 = amp1 + 1
+                    else:
+                        amp2 = amp2 + 1
                 mamba.shift( imIn[i], imOut[j], hd1, amp1, fill, grid=mamba.SQUARE)
-                if hd2 <> 0:
-                    mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE)                 
+                mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE)                 
             start = 0
             end = min(amp, length)
     # Face centered cubic grid.
@@ -106,7 +115,6 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
         elif d == 9:
             # Specific algorithm is setup for direction 9 to avoid edge effects.
             extraS = (((0,0),(0,1),(1,0)),((0,0),(0,0),(0,1)),((0,0),(0,1),(0,1)))
-            hdList = [m3D.FACE_CENTER_CUBIC.convertFromDir(d, i)[1] for i in range(3)]
             for i in range(amp, length):
                 j = i - amp
                 (sc, sh) = extraS[i%3][amp%3]
@@ -138,7 +146,6 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
         else:
             # Specific algorithm for direction 12.
             extraS = (((0,0),(0,0),(0,1)),((0,0),(0,1),(1,0)),((0,0),(0,1),(0,1)))
-            hdList = [m3D.FACE_CENTER_CUBIC.convertFromDir(d, i)[1] for i in range(3)]
             for i in range(length - amp - 1, -1, -1):
                 j = i + amp
                 (sc, sh) = extraS[i%3][amp%3]
