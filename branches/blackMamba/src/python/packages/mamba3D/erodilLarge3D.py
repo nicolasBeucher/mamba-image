@@ -94,12 +94,12 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
         if d < 7:
             # Horizontal shift.
             for i in range(length):
-                mamba.shift( imIn[i], imOut[i], d, amp, fill, grid=mamba.HEXAGONAL)
+                mamba.shift(imIn[i], imOut[i], d, amp, fill, grid=mamba.HEXAGONAL)
             start = 0
             end = 0
         elif d < 9:
             # Downwards shift.
-            extraS = (((0,0,0),(1,0,0),(1,0,1)),((0,0,0),(0,1,0),(1,1,0)),((0,0,0),(0,0,1),(1,1,1)))
+            extraS = (((0,0,0),(1,0,0),(1,0,1)),((0,0,0),(0,1,0),(1,1,0)),((0,0,0),(0,0,1),(0,1,1)))
             hdList = [m3D.FACE_CENTER_CUBIC.convertFromDir(d, i)[1] for i in range(3)]
             dirUse = [0, 1, 2]
             v = hdList.index(0)
