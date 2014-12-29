@@ -49,6 +49,11 @@ class _grid3D:
         # Returns the biggest distance in plane a neighbor pixel can be
         # from the central point
         return 0
+    
+    def getGridPeriod(self):
+        # Returns the periodicity of the grid stacking (number of planes
+        # between two vertically superposed planes)
+        return 0
         
     def getDirections(self, withoutZero=False):
         # Returns the available directions on the grid
@@ -96,6 +101,7 @@ class _gridFCCubic3D(_grid3D):
                      (1,0), (1,2), (1,3)
                     ]
         self.listConvs = [listConv0, listConv1, listConv2]
+    
     def getEncodedDirs(self, directions, zindex):
         dirs = {-1:0,0:0,1:0}
         try:
@@ -105,16 +111,23 @@ class _gridFCCubic3D(_grid3D):
         except IndexError:
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return dirs
+    
     def convertFromDir(self, direction, zindex):
         try:
             conversion = self.listConvs[zindex%3][direction]
         except IndexError:
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return conversion
+    
     def getZExtension(self):
         return 1
+    
+    def getGridPeriod(self):
+        return 2
+        
     def get2DGrid(self):
         return self.basegrid
+    
     def getTranDir(self, d):
         if d==0:
             return 0
@@ -124,16 +137,22 @@ class _gridFCCubic3D(_grid3D):
             return d+3
         else:
             return d-3
+    
     def getDirections(self, withoutZero=False):
         return range(withoutZero and 1 or 0, len(self.listConvs[0]), 1)
+    
     def maxNeighbors(self):
         return len(self.listConvs[0])-1
+    
     def getCValue(self):
         return core.MB3D_FCC_GRID
+    
     def __repr__(self):
         return "mamba3D."+self.name
+    
     def __eq__(self, other):
         return other.getCValue()==core.MB3D_FCC_GRID
+    
     def __ne__(self, other):
         return other.getCValue()!=core.MB3D_FCC_GRID
     
@@ -159,6 +178,7 @@ class _gridCCubic3D(_grid3D):
                      (1,0), (1,3), (1,4), (1,5)
                     ]
         self.listConvs = [listConv0, listConv1]
+    
     def getEncodedDirs(self, directions, zindex):
         dirs = {-1:0,0:0,1:0}
         try:
@@ -168,16 +188,23 @@ class _gridCCubic3D(_grid3D):
         except IndexError:
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return dirs
+    
     def convertFromDir(self, direction, zindex):
         try:
             conversion = self.listConvs[zindex%2][direction]
         except IndexError:
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return conversion
+    
     def getZExtension(self):
         return 1
+    
+    def getGridPeriod(self):
+        return 1
+        
     def get2DGrid(self):
         return self.basegrid
+    
     def getTranDir(self, d):
         if d==0:
             return 0
@@ -187,18 +214,24 @@ class _gridCCubic3D(_grid3D):
             return d+4
         else:
             return d-4
+    
     def getDirections(self, withoutZero=False):
         return range(withoutZero and 1 or 0, 17, 1)
+    
     def maxNeighbors(self):
         return 16
+    
     def getCValue(self):
         return core.MB3D_INVALID_GRID
+    
     def __repr__(self):
         return "mamba3D."+self.name
+    
     def __eq__(self, other):
         comp  = other.getCValue()==core.MB3D_INVALID_GRID
         comp &= other.maxNeighbors()==16
         return comp
+    
     def __ne__(self, other):
         comp  = other.getCValue()==core.MB3D_INVALID_GRID
         comp &= other.maxNeighbors()==16
@@ -217,6 +250,7 @@ class _gridCubic3D(_grid3D):
             21:16,16:21,22:17,17:22,23:10,10:23,
             24:11,11:24,25:12,12:25,26:13,13:26
             }
+    
     def getEncodedDirs(self, directions, zindex):
         dirs = {-1:0,0:0,1:0}
         for d in directions:
@@ -229,6 +263,7 @@ class _gridCubic3D(_grid3D):
             else:
                 dirs[1] |= (1<<(d-18))
         return dirs
+    
     def convertFromDir(self, direction, zindex):
         if direction>26 or direction<0:
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
@@ -238,22 +273,34 @@ class _gridCubic3D(_grid3D):
             return (-1,direction-9)
         else:
             return (1,direction-18)
+    
     def getZExtension(self):
         return 1
+    
+    def getgridPeriod(self):
+        return 0
+        
     def get2DGrid(self):
         return self.basegrid
+    
     def getTranDir(self, d):
         return self.transpDict[d]
+    
     def getDirections(self, withoutZero=False):
         return range(withoutZero and 1 or 0, 27, 1)
+    
     def maxNeighbors(self):
         return 26
+    
     def getCValue(self):
         return core.MB3D_CUBIC_GRID
+    
     def __repr__(self):
         return "mamba3D."+self.name
+    
     def __eq__(self, other):
         return other.getCValue()==core.MB3D_CUBIC_GRID
+    
     def __ne__(self, other):
         return other.getCValue()!=core.MB3D_CUBIC_GRID
 
@@ -264,27 +311,40 @@ class _gridDefault3D(_grid3D):
     def __init__(self):
         self.name = "DEFAULT_GRID3D"
         self.proxyGrid = None
+    
     def setProxyGrid(self, grid):
         if isinstance(grid, _grid3D):
             self.proxyGrid = grid
         else:
             raise ValueError("Invalid 3D grid for default")
+    
     def getEncodedDirs(self, directions, zindex):
         return self.proxyGrid.getEncodedDirs(directions,zindex)
+    
     def convertFromDir(self, direction, zindex):
         return self.proxyGrid.convertFromDir(direction,zindex)
+    
     def getZExtension(self):
         return self.proxyGrid.getZExtension()
+    
+    def getGridPeriod(self):
+        return self.proxyGrid.getGridPeriod()
+        
     def get2DGrid(self):
         return self.proxyGrid.get2DGrid()
+    
     def getTranDir(self, d):
         return self.proxyGrid.getTranDir(d)
+    
     def getDirections(self, withoutZero=False):
         return self.proxyGrid.getDirections(withoutZero)
+    
     def maxNeighbors(self):
         return self.proxyGrid.maxNeighbors()
+    
     def getCValue(self):
         return self.proxyGrid.getCValue()
+    
     def __repr__(self):
         return repr(self.proxyGrid)
 
