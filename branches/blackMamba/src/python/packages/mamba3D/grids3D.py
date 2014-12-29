@@ -37,6 +37,17 @@ class _grid3D:
         # actual position of the plane of the starting point
         return (0,0)
         
+    def getShiftDirsList(self, d, amp, zindex):
+        # Returns a list containing the directions, the amplitude of
+        # the horizontal shifts and the 2D grid on which they are
+        # performed to shift the plane at position 'zindex' in direction
+        # 'd' of the grid with an amplitude 'amp'.
+        # This list contains tuples (dh, amph, grid2D), each one
+        # cntaining the horizontal irection 'dh', the amplitude of the
+        # shift 'amph' and the 2D grid 'grid2D' on which this shift
+        # is performed.
+        return ((d, amp, mamba.SQUARE))
+        
     def get2DGrid(self):
         # Used to indicates the 2D grid on which the 3D grid is based.
         return mamba.HEXAGONAL
@@ -119,6 +130,52 @@ class _gridFCCubic3D(_grid3D):
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return conversion
     
+    def getShiftDirsList(self, d, amp, zindex):
+        if d < 7:
+            dirList = [(d, amp, mamba.HEXAGONAL)]
+        elif d < 9:
+            extraS = (((0,0,0),(1,0,0),(1,0,1)),((0,0,0),(0,1,0),(1,1,0)),((0,0,0),(0,0,1),(0,1,1)))
+            hdList = [self.convertFromDir(d, i)[1] for i in range(3)]
+            usedDir = [0, 1, 2]
+            del usedDir[hdList.index(0)]
+            amph = amp//3 + extraS[zindex%3][amp%3][usedDir[0]]
+            dirList = [(hdList[usedDir[0]], amph, mamba.HEXAGONAL)]
+            amph = amp//3 + extraS[zindex%3][amp%3][usedDir[1]]
+            dirList.append((hdList[usedDir[1]], amph, mamba.HEXAGONAL))
+        elif d == 9:
+            extraS = (((0,0),(0,1),(1,0)),((0,0),(0,0),(0,1)),((0,0),(0,1),(0,1)))
+            (sc, sh) = extraS[zindex%3][amp%3]
+            nc = (amp//3 +sc) * 2
+            dirList = [(1, nc, mamba.SQUARE)]               
+            if sh <> 0:
+                if (zindex%3) == 2:
+                    hd = 1
+                else:
+                    hd = 6
+                dirList.append((hd, 1, mamba.HEXAGONAL))                  
+        elif d < 12:
+            extraS = (((0,0,0),(1,0,0),(1,1,0)),((0,0,0),(0,1,0),(0,1,1)),((0,0,0),(0,0,1),(1,0,1)))
+            hdList = [self.convertFromDir(d, i)[1] for i in range(3)]
+            usedDir = [0, 1, 2]
+            del usedDir[hdList.index(0)]
+            amph = amp//3 + extraS[zindex%3][amp%3][usedDir[0]]
+            dirList = [(hdList[usedDir[0]], amph, mamba.HEXAGONAL)]
+            amph = amp//3 + extraS[zindex%3][amp%3][usedDir[1]]
+            dirList.append((hdList[usedDir[1]], amph, mamba.HEXAGONAL))
+
+        elif d == 12:
+            extraS = (((0,0),(0,0),(0,1)),((0,0),(0,1),(1,0)),((0,0),(0,1),(0,1)))
+            (sc, sh) = extraS[i%3][amp%3]
+            nc = (amp//3 +sc) * 2
+            dirList = [(1, nc, mamba.SQUARE)]
+            if sh <> 0:
+                if (zindex%3) == 2:
+                    hd = 3
+                else:
+                    hd = 4
+                dirList.append((hd, 1, mamba.HEXAGONAL))        
+        return dirList
+    
     def getZExtension(self):
         return 1
     
@@ -196,6 +253,21 @@ class _gridCCubic3D(_grid3D):
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         return conversion
     
+    def getShiftDirsList(self, d, amp, zindex):
+        if d < 9:
+            dirList = [(d, amp, mamba.SQUARE)]
+        else:
+            dirList =[]
+            dh1 = self.convertFromDir(d, 0)[1]
+            if dh1<>0:
+                amph1 = amp//2 + (amp%2)*(1 - zindex%2)
+                dirList.append((dh1, amph1, mamba.SQUARE))
+            dh2 = self.convertFromDir(d, 1)[1]
+            if dh2<>0:
+                amph2 = amp//2 + (amp%2)*(zindex%2)
+                dirList.append((dh2, amph2, mamba.SQUARE))       
+        return dirList
+        
     def getZExtension(self):
         return 1
     
@@ -274,6 +346,10 @@ class _gridCubic3D(_grid3D):
         else:
             return (1,direction-18)
     
+    def getShiftDirsList(self, d, amp, zindex):
+        dh = self.convertFromDir(d, 0)[1]
+        return [(dh, amp, mamba.SQUARE)]
+        
     def getZExtension(self):
         return 1
     
@@ -324,6 +400,9 @@ class _gridDefault3D(_grid3D):
     def convertFromDir(self, direction, zindex):
         return self.proxyGrid.convertFromDir(direction,zindex)
     
+    def getShiftDirsList(self, d, amp, zindex):
+        return self.proxyGrid.getShiftDirsList(d, amp, zindex)
+        
     def getZExtension(self):
         return self.proxyGrid.getZExtension()
     

@@ -69,7 +69,6 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
                         amp1 = amp1 + 1
                     else:
                         amp2 = amp2 + 1
-                print hd1, amp1, hd2, amp2
                 mamba.shift( imIn[i], imOut[j], hd1, amp1, fill, grid=mamba.SQUARE)
                 mamba.shift(imOut[j], imOut[j], hd2, amp2, fill, grid=mamba.SQUARE) 
             start = max(length - amp, 0)
