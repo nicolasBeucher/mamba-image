@@ -85,7 +85,7 @@ def shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
         m3D.copy3D(imOut, imWrk, 0, 1)
         for i in range(length):
             j = i + 1 - planeOffset
-            dc = grid.convertFromDir(d,j+1)[1]
+            dc = grid.convertFromDir(d,j-1)[1]
             mamba.shift(imWrk[j], imOut[i], dc, 1, fill, grid=grid.get2DGrid())
 
 # Other operators ##############################################################
