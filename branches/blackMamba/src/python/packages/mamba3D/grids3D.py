@@ -131,7 +131,9 @@ class _gridFCCubic3D(_grid3D):
         return conversion
     
     def getShiftDirsList(self, d, amp, zindex):
-        if d < 7:
+        if d < 0 or d > 12:
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
+        elif d < 7:
             dirList = [(d, amp, mamba.HEXAGONAL)]
         elif d < 9:
             extraS = (((0,0,0),(1,0,0),(1,0,1)),((0,0,0),(0,1,0),(1,1,0)),((0,0,0),(0,0,1),(0,1,1)))
@@ -162,7 +164,6 @@ class _gridFCCubic3D(_grid3D):
             dirList = [(hdList[usedDir[0]], amph, mamba.HEXAGONAL)]
             amph = amp//3 + extraS[zindex%3][amp%3][usedDir[1]]
             dirList.append((hdList[usedDir[1]], amph, mamba.HEXAGONAL))
-
         elif d == 12:
             extraS = (((0,0),(0,0),(0,1)),((0,0),(0,1),(1,0)),((0,0),(0,1),(0,1)))
             (sc, sh) = extraS[i%3][amp%3]
@@ -254,7 +255,9 @@ class _gridCCubic3D(_grid3D):
         return conversion
     
     def getShiftDirsList(self, d, amp, zindex):
-        if d < 9:
+        if d < 0 or d > 16:
+            mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
+        elif d < 9:
             dirList = [(d, amp, mamba.SQUARE)]
         else:
             dirList =[]
