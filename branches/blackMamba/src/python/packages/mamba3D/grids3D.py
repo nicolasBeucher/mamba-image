@@ -166,7 +166,7 @@ class _gridFCCubic3D(_grid3D):
             dirList.append((hdList[usedDir[1]], amph, mamba.HEXAGONAL))
         elif d == 12:
             extraS = (((0,0),(0,0),(0,1)),((0,0),(0,1),(1,0)),((0,0),(0,1),(0,1)))
-            (sc, sh) = extraS[i%3][amp%3]
+            (sc, sh) = extraS[zindex%3][amp%3]
             nc = (amp//3 +sc) * 2
             dirList = [(1, nc, mamba.SQUARE)]
             if sh <> 0:
