@@ -11,7 +11,7 @@ import mamba3D as m3D
 import mamba
 import mamba.core as core
 
-def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
+def fastShift3D_old(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     """
     Shifts 3D image 'imIn' in direction 'd' of the 'grid' over an amplitude of
     'amp'. The emptied space is filled with 'fill' value.
@@ -166,5 +166,39 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
             mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
     for i in range(start, end):
         imOut[i].fill(fill)
+ 
+def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
+    """
+    Shifts 3D image 'imIn' in direction 'd' of the 'grid' over an amplitude of
+    'amp'. The emptied space is filled with 'fill' value.
+    This implementation is fast as a minimal number of shifts is used.
+    The result is put in 'imOut'.
+    """
+    (width,height,length) = imIn.getSize()
+    if length!=len(imOut):
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
+    # Computing limits according to the scanning direction.
+    scan = grid.convertFromDir(d,0)[0]
+    if scan == 0:
+        startPlane, ehdPlane, scanDir = 0, length, 1
+        startFill, endFill = 0, 0
+    elif scan == -1:
+        startPlane, endPlane, scanDir = amp, length, 1
+        startFill, endFill = max(length - amp, 0), length
+    else:
+        startPlane, endPlane, scanDir = length - amp - 1, -1, -1
+        startFill, endFill = 0, min(amp, length)    
+    # Performing the shift operations given by the getShiftDirList method.
+    for i in range(startPlane, endPlane, scanDir):
+        j = i + amp * scan
+        dirList = grid.getShiftDirsList(d, amp, i)
+        mamba.shift( imIn[i], imOut[j], dirList[0][0] , dirList[0][1], fill, grid=dirList[0][2])
+        if len(dirList) > 1:
+            mamba.shift( imOut[j], imOut[j], dirList[1][0] , dirList[1][1], fill, grid=dirList[1][2])       
+    # Filling the necessary planes.
+    for i in range(startFill, endFill):
+        imOut[i].fill(fill)
         
+ 
+ 
  
