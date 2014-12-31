@@ -168,7 +168,7 @@ class _gridFCCubic3D(_grid3D):
             extraS = (((0,0),(0,0),(0,1)),((0,0),(0,1),(1,0)),((0,0),(0,1),(0,1)))
             (sc, sh) = extraS[zindex%3][amp%3]
             nc = (amp//3 +sc) * 2
-            dirList = [(1, nc, mamba.SQUARE)]
+            dirList = [(5, nc, mamba.SQUARE)]
             if sh <> 0:
                 if (zindex%3) == 2:
                     hd = 3
