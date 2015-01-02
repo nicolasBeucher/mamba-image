@@ -192,9 +192,9 @@ def fastShift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     for i in range(startPlane, endPlane, scanDir):
         j = i + amp * scan
         dirList = grid.getShiftDirsList(d, amp, i)
-        mamba.shift( imIn[i], imOut[j], dirList[0][0] , dirList[0][1], fill, grid=dirList[0][2])
+        mamba.shift(imIn[i], imOut[j], dirList[0][0] , dirList[0][1], fill, grid=dirList[0][2])
         if len(dirList) > 1:
-            mamba.shift( imOut[j], imOut[j], dirList[1][0] , dirList[1][1], fill, grid=dirList[1][2])       
+            mamba.shift(imOut[j], imOut[j], dirList[1][0] , dirList[1][1], fill, grid=dirList[1][2])       
     # Filling the necessary planes.
     for i in range(startFill, endFill):
         imOut[i].fill(fill)

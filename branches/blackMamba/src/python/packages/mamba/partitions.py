@@ -189,7 +189,7 @@ def cellsBuild(imIn, imInOut, grid=mamba.DEFAULT_GRID):
             mamba.convertByMask(imWrk3, imWrk1, 0, mamba.computeMaxRange(imIn)[1])
             mamba.linearDilate(imInOut, imWrk2, d, 1, grid=grid)
             mamba.logic(imWrk2, imWrk1, imWrk2, "inf")
-            mamba.buildNeighbor(imWrk1, imWrk2, d, grid=grid)
+            v = mamba.buildNeighbor(imWrk1, imWrk2, d, grid=grid)
             mamba.logic(imWrk2, imInOut, imInOut, "sup")
         vol = mamba.computeVolume(imInOut)
 
