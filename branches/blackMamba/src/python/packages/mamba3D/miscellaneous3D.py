@@ -63,31 +63,40 @@ def compare3D(imIn1, imIn2, imOut):
     else:
         z -= 1
     return (x,y,z)
-        
-def shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
+
+def Shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     """
     Shifts 3D image 'imIn' in direction 'd' of the 'grid' over an amplitude of
     'amp'. The emptied space is filled with 'fill' value.
+    This implementation is fast as a minimal number of shifts is used.
     The result is put in 'imOut'.
     """
+    
     (width,height,length) = imIn.getSize()
-    depth = imIn.getDepth()
     if length!=len(imOut):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
-    zext = grid.getZExtension()
-    imWrk = m3D.image3DMb(width, height, length+zext*2, depth)
-    for i in range(zext):
-        imWrk[i].fill(fill)
-        imWrk[length+zext*2-1-i].fill(fill)
-    planeOffset = grid.convertFromDir(d,0)[0]
-    m3D.copy3D(imIn, imOut)
-    for n in range(amp):
-        m3D.copy3D(imOut, imWrk, 0, 1)
-        for i in range(length):
-            j = i + 1 - planeOffset
-            dc = grid.convertFromDir(d,j-1)[1]
-            mamba.shift(imWrk[j], imOut[i], dc, 1, fill, grid=grid.get2DGrid())
-
+    # Computing limits according to the scanning direction.
+    scan = grid.convertFromDir(d,0)[0]
+    if scan == 0:
+        startPlane, endPlane, scanDir = 0, length, 1
+        startFill, endFill = 0, 0
+    elif scan == -1:
+        startPlane, endPlane, scanDir = amp, length, 1
+        startFill, endFill = max(length - amp, 0), length
+    else:
+        startPlane, endPlane, scanDir = length - amp - 1, -1, -1
+        startFill, endFill = 0, min(amp, length)    
+    # Performing the shift operations given by the getShiftDirList method.
+    for i in range(startPlane, endPlane, scanDir):
+        j = i + amp * scan
+        dirList = grid.getShiftDirsList(d, amp, i)
+        mamba.shift(imIn[i], imOut[j], dirList[0][0] , dirList[0][1], fill, grid=dirList[0][2])
+        if len(dirList) > 1:
+            mamba.shift(imOut[j], imOut[j], dirList[1][0] , dirList[1][1], fill, grid=dirList[1][2])       
+    # Filling the necessary planes.
+    for i in range(startFill, endFill):
+        imOut[i].fill(fill)
+ 
 # Other operators ##############################################################
 
 def drawEdge3D(imOut, thick=1):
