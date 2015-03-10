@@ -110,7 +110,7 @@ from mamba3D import *
 \tipBox{
 If you are using Windows, you can start more easily by clicking on the created
 Mamba Shell shortcut in your start menu. It will launch an IDLE (the standard
-Python shell on Windows) with preloaded mamba modules and packages and some 
+Python shell on Windows) with preloaded Mamba modules and packages and some 
 default images created. If you are an IDLE user, this is the
 recommanded way (see section \ref{cha:lim_restrict} for more information
 regarding Mamba and IDLE).
@@ -324,11 +324,11 @@ processors. However, you have to verify if yours supports SSE2 instructions. If 
 are not sure, install the version of Mamba without SSE2, please note this version
 is very slow. See \url{http://en.wikipedia.org/wiki/SSE2#CPUs_supporting_SSE2}
 for a list of compatible CPUs.
-\item Python version 2.7 or later (python 3 is supported).
+\item Python version 2.7 or later (Python 3 is supported).
 \item Python Imaging library (Pillow) for your current version of Python.
 \item Tkinter (normally comes with Python on Windows systems but you may need to
 install it on Linux systems).
-\item VTK (optional, see \url{http://www.vtk.org/} for more info) with python
+\item VTK (optional, see \url{http://www.vtk.org/} for more info) with Python
 bindings if you want to use the mamba3D integrated display based on it.
 \end{itemize}
 
@@ -353,7 +353,7 @@ optimal experience with it (see section \ref{cha:perfo3D} for more information).
 
 If you are only interested in installing and don't want to go through the bother
 of compiling it, just pick up the installer on the website. Select the appropriate
-installer corresponding to your version of python (2 or 3, 32bit or 64bit), 
+installer corresponding to your version of Python (2 or 3, 32bit or 64bit), 
 launch it and follow the instructions.
 
 If you actually are interested in compiling the installers, here is the tools
@@ -376,7 +376,7 @@ script.
 Because Python is not compiled with the same Visual C++ version you may need
 to add some environment variables to link to your version. With Python 2.7
 and visual C++ 2013 express, you need to add variable VS90COMNTOOLS with
-value set to \%VS120COMNTOOLS\%. This may change if you are using python 3 or
+value set to \%VS120COMNTOOLS\%. This may change if you are using Python 3 or
 another visual C++ compiler.
 
 Get the source code of Mamba from the website. It comes in a zip that once
@@ -436,11 +436,11 @@ This should proceed with the compilation and the generation of the Python instal
 If everything went OK, you should find in the \textbf{mamba\_build} directory
 the following files:
 \begin{itemize}
-\item the python stand alone installer, Mamba Image-X.X.winYY-pyZ.Z.exe: in python/dist subdirectory.
-\item C core library DLL (not needed for python): mamba.dll, mamba.def, mamba.lib in lib/Release subdirectory and include files in include subdirectory.
+\item the Python stand alone installer, Mamba Image-X.X.winYY-pyZ.Z.exe: in python/dist subdirectory.
+\item C core library DLL (not needed for Python): mamba.dll, mamba.def, mamba.lib in lib/Release subdirectory and include files in include subdirectory.
 \end{itemize}
 
-We strongly recommand you verify the generated installer by installing it on
+We strongly recommand you to verify the generated installer by installing it on
 your computer and running the tests (see section \ref{cha:testing_mamba}).
 
 \subsection{Linux}
@@ -544,17 +544,17 @@ hide, update instead of showDisplay ...). Palette and opacity methods were
 removed from these classes. The 3D display methods were also strongly
 modified by these changes.
 \item Some operators were added (div), other were augmented or modified 
-(label now support 8-bit and 32-bit images and its default behavior regarding
+(label now supports 8-bit and 32-bit images and its default behavior regarding
 label values has been changed, convert can be used with all image depths, close
 and open operators were renamed closing and opening to avoid conflict with
 Python standard functions, hitOrMiss now works directly with a
 doubleStructuringElement object making binaryHMT useless, loadRaw methods were
-homogenized for image3DMb and imageMb, copyBitPlane now support 32-bit to
+homogenized for image3DMb and imageMb, copyBitPlane now supports 32-bit to
 binary and reverse copies). C functions regarding neighbors (sup, inf, diff ...)
 have been modified to gain performance. The corresponding Python functions are
 also impacted. Support for hierarchical algorithms (watershed and build) on
 32-bit images was added in C with removal of the specific Python functions
-(namely watershedSgement32, basinSegment32, hierarBuild32 and hierarDualBuild32).
+(namely watershedSegment32, basinSegment32, hierarBuild32 and hierarDualBuild32).
 The operators are accessible through the standard functions (watershedSgement,
 basinSegment, hierarBuild and hierarDualBuild).
 \item Mamba is now compatible with Python 3. This may have impact on the
@@ -668,11 +668,11 @@ figure \ref{fig:hxgriddir}.
 \begin{figure}
 \centering
 \includegraphics[width=0.2\textwidth]{figures/hexa_grid.pdf}
-\caption{Hexagonal grid :representation and directions}
+\caption{Hexagonal grid: representation and directions}
 \label{fig:hxgriddir}
 \end{figure}
 
-\item \textbf{SQUARE}:. defines the usual eight neighbours for each pixel as
+\item \textbf{SQUARE}: defines the usual eight neighbours for each pixel as
 in figure \ref{fig:sqgriddir}.
 
 \begin{figure}
@@ -905,7 +905,7 @@ greyscale 3D image (by default its size is 256x256x256).
 same width, height, length and depth than 3D image 'im3D'.
 \item \texttt{\textbf{image3DMb(im)}} : will create a 3D image using the same
 width, height and depth than 2D image 'im' (a imageMb object). Its
-lenght will be defaulted to 256.
+length will be defaulted to 256.
 \item \texttt{\textbf{image3DMb(depth)}} : will create a 3D image with the
 desired 'depth' (1, 8 or 32) and default size (256x256x256).
 \item \texttt{\textbf{image3DMb(path)}} : will load the image sequence located
@@ -1010,8 +1010,8 @@ select a format that supports the mode of the Pillow image (such as TIFF for
 You can also save your image for display purpose, in that case you can use the
 additional parameter of the save function, palette.
 
-On 3D images, the load and save methods will work on directory containing
-a sequence of image. A sequence is a set of file named using number (such
+On 3D images, the load and save methods will work on any directory containing
+a sequence of images. A sequence is a set of files named using number (such
 as "001.png", "002.png" ...). We advise you to look at the methods documentation
 for further information.
 
@@ -1154,8 +1154,11 @@ im.freeze()
 im.unfreeze()
 \end{lstlisting}
 
-Of course all the displays come with integrated controls, we describe them in
-\ref{cha:dis_shortcuts}.
+Of course all the displays come with integrated controls. There are two ways to control
+the display. The first one is achieved with the show() command with some arguments
+added. These arguments are described in  we describe them in \ref{cha:dis_arguments}. This
+first possibility allows you to control the displays inside scripts. The second way
+consists inusing interactive controls. They are described in \ref{cha:dis_shortcuts}.
 
 \subsubsection{2D display}
 
@@ -1252,13 +1255,13 @@ might want.
 \label{fig:dis3D_volren_ctrl}
 \end{figure}
 
-Three distinctive methods to perform volume rendering can be selected :
+Three distinctive methods to perform volume rendering can be selected:
 \begin{itemize}
-\item \textbf{Composite} : the result is a blend of all the pixels crossed by
+\item \textbf{Composite}: the result is a blend of all the pixels crossed by
 the ray of light accordingly to their color and transparency.
-\item \textbf{Isosurface} : the result shows only pixels with a given
+\item \textbf{Isosurface}: the result shows only pixels with a given
 value. It also uses shading to allow a better visualisation of the volume.
-\item \textbf{Maximum Intensity Pixel (MIP)} : the result is the color and
+\item \textbf{Maximum Intensity Pixel (MIP)}: the result is the color and
 transparency of the pixel with the highest value that the light ray hit.
 \end{itemize}
 You can see the results of the 3 different methods in figure 
@@ -1324,11 +1327,77 @@ always have the possibility to activate their own display at all time.
 im3D[128].show()
 \end{lstlisting}
 
+\subsubsection{Display control inside a script}
+\label{cha:dis_arguments}
+
+Image displays can be set and controlled inside a script (Mamba program) through the use
+of some arguments inside the show() method.
+
+The palette can be changed. For instance, changing the im palette to "rainbow"
+can be performed by:
+
+\lstset{language=Python}
+\begin{lstlisting}
+im.show(palette="rainbow")
+\end{lstlisting}
+
+Returning back to the default palette (grey) can be achieved by:
+
+\lstset{language=Python}
+\begin{lstlisting}
+im.show(palette=None)
+# This also works...
+im.show(palette="")
+\end{lstlisting}
+
+The zoom value can be set with the zoom argument. For instance:
+
+\lstset{language=Python}
+\begin{lstlisting}
+im.show(zoom=1.5)
+\end{lstlisting}
+
+It is also possible to move the zoomed image with the argument at=(x,y), (x,y) being
+a tuple defining the origin of the zoomed part (it is similar to a displacement of the
+scroll bars of the display window). Both arguments can be used simultaneously:
+
+\lstset{language=Python}
+\begin{lstlisting}
+im.show(zoom=2, at=(50,60))
+\end{lstlisting}
+
+When displaying 32bit images, the plane argument allows to select the byte plane among the
+four ones which will be displayed:
+
+\lstset{language=Python}
+\begin{lstlisting}
+im32.show(plane=2)
+\end{lstlisting}
+
+To come back to the whole display, enter:
+
+\lstset{language=Python} 
+\begin{lstlisting}
+im32.show(plane=4)
+\end{lstlisting}
+
+Regarding 3D images, there exists three different display modes in Mamba: VOLUME, PROJECTION
+and PLAYER (for image sequences which are considered in Mamba 2 as 3D images). Each mode can be set up
+by using the mode argument:
+
+\lstset{language=Python}
+\begin{lstlisting}
+# This mode enables the 3D rendering display (provided that VTK is properly installed)
+im32.show(mode="VOLUME")
+\end{lstlisting}
+
+Any string other than the three mentioned above enables the default display(PROJECTION).
+
 \subsubsection{Display shortcuts}
 \label{cha:dis_shortcuts}
 
-There are numerous possibilities to control displays, here is a list of
-keyboard shortcut available in the various displays:
+There are numerous possibilities to interactively control displays. Here is a list of
+keyboard shortcuts available in the various displays:
 
 \begin{itemize}
 \item \textbf{P}: will circle through all the available palettes.
@@ -1344,7 +1413,7 @@ zoom value.
 in your image (only works on 2D images on Windows platforms).
 \item \textbf{F1}: on a 3D image display, will switch to mode PROJECTION.
 \item \textbf{F2}: on a 3D image display, will switch to mode VOLUME
-RENDERING if you have VTK python bindings available on your computer.
+RENDERING if you have VTK Python bindings available on your computer.
 \item \textbf{F3}: on a 3D image display, will switch to mode PLAYER.
 \item \textbf{F5}: on a 3D image display, will update the display with
 the image content. Similar to the method update.
@@ -1677,7 +1746,7 @@ for a postfix "3D" indicator.
 erode(imIn, imOut, n=1, se=DEFAULT_SE, edge=FILLED)
 # will become in Mamba3D (beware of the mamba.FILLED needed if you did 
 # not import mamba)
-erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON, edge=mamba.FILLED)
+erode3D(imIn, imOut, n=1, se=CUBOCTAHEDRON1, edge=mamba.FILLED)
 \end{lstlisting}
 
 Although it might seem bothersome to add the "3D" postfix to every
@@ -1723,7 +1792,7 @@ in Mamba3D but that goes without saying.
 \label{cha:missing3D}
 
 As you will see, Mamba3D does not completely translate the Mamba API into
-a 3D version of it. There is still some missing operators. Here is a non
+a 3D version of it. There are still some missing operators. Here is a non
 exhaustive list of 2D operators that have not been transposed in Mamba 3D yet.
 Some of them could be added in the future. For some others (rotating thinnings
 and thickenings in particular), it is unlikely that they will be translated, as
@@ -1731,7 +1800,8 @@ this would be a really difficult challenge.
 
 \begin{itemize}
 \item Most of the operators in mamba module thinthick.
-\item All the operators in mamba module largeErodil.
+\item Some operators in mamba module largeErodil, especially those using 3D Steiner polyhedra (except
+for the cube).
 \item All the operators in mamba module residues.
 \item All the operators in mamba module hierarchies.
 \item Some of the operators in mamba module measure.
@@ -2136,7 +2206,7 @@ set of test by typing the following command in a terminal:
 Once the tests are done, you will find an HTML report with all the results in it.
 
 The test runner make use of coverage (see \url{https://pypi.python.org/pypi/coverage/3.7.1})
-package to generate coverage information for the python packages.
+package to generate coverage information for the Python packages.
 
 If you want more information regarding the test runner, you can type:
 
@@ -2158,7 +2228,7 @@ it there, find documentation and other links for Python.
 \item \url{http://docs.python.org/tutorial/}: The official Python tutorial.
 \item \url{http://www.greenteapress.com/thinkpython/thinkCSpy/}: How to Think 
 Like a Computer Scientist. A free book to learn computer science with Python
-programming. Many translation are available.
+programming. Many translations are available.
 \item \url{https://pypi.python.org/pypi/Pillow/}: The Pillow
 website. You can download it, find documentation and source.
 \item \url{http://wiki.python.org/moin/TkInter}: A wiki providing ressources
