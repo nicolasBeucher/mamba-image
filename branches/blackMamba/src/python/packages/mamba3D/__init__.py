@@ -8,6 +8,7 @@ from .base3D import *
 from .copies3D import *
 from .grids3D import *
 from .erodil3D import *
+from .erodilLarge3D import *
 from .extrema3D import *
 from .contrasts3D import *
 from .filter3D import *
