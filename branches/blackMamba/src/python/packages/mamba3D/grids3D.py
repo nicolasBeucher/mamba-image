@@ -6,7 +6,7 @@ computations. It also defines the 3D grids (cubic, face-centered cubic ...)
 used with the 3D operators.
 """
 
-# Contributors : Nicolas BEUCHER
+# Contributors : Nicolas BEUCHER, Serge BEUCHER
 
 import mamba3D as m3D
 import mamba
@@ -43,7 +43,7 @@ class _grid3D:
         # performed to shift the plane at position 'zindex' in direction
         # 'd' of the grid with an amplitude 'amp'.
         # This list contains tuples (dh, amph, grid2D), each one
-        # cntaining the horizontal irection 'dh', the amplitude of the
+        # containing the horizontal direction 'dh', the amplitude of the
         # shift 'amph' and the 2D grid 'grid2D' on which this shift
         # is performed.
         return ((d, amp, mamba.SQUARE))
