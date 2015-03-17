@@ -7,7 +7,8 @@
 ## DESCRIPTION #################################################################
 # This example shows you how to select and activate the various displays
 # available in mamba 3D package. The foot image data used can be 
-# downloaded at http://tc18.liris.cnrs.fr/code_data_set/3D_images.html.
+# downloaded at http://tc18.liris.cnrs.fr/code_data_set/3D_images.html. The
+# file foot.raw.gz must be decoompressed and renamed foot.raw before use.
 
 ## SCRIPT ######################################################################
 # Importing the mamba module
