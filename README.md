@@ -1,4 +1,4 @@
-# mamba-image
+### mamba-image
 Mamba actually stands for **MA**thematical **M**orphology li**B**r**A**ry and contains a very wide range 
 of 2D and 3D operators based on mathematical morphology.
 
@@ -12,6 +12,6 @@ Mamba was created and is updated with the following philosophy:
 
 This project contains the source code for the version 2 of the library.
 
-THIS IS STILL A WORK IN PROGRESS AND MAY NOT WORK
+*THIS IS STILL A WORK IN PROGRESS AND MAY NOT WORK*
 
 Code for previous version cannot be found here (visit our website).
