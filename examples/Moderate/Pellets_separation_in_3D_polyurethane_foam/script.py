@@ -59,4 +59,4 @@ imH = image3DMb(imA)
 # The watershed is displayed. Watershed surfaces correspond to the separations
 # between the pellets.
 threshold3D(imG, imH, 0, 0)
-imH.show()
+imH.show(mode="VOLUME")

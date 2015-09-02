@@ -18,8 +18,8 @@ from mamba3D import *
 im3D = image3DMb()
 im3D.loadRaw("foot.raw")
 
-# Activating the display. This will make a window appear
-im3D.show() 
+# Activating the display. This will make a 3D window appear
+im3D.show(mode="VOLUME") 
 
 # This line will activate a volume rendering display if you have VTK
 # installed on your computer. You can rotate (holding your mouse left
@@ -30,8 +30,10 @@ im3D.show()
 # restore the initial settings by pressing r (Although this does not seem
 # to affect rotation).
 
-# If you want to activate a more precise display or if you don't have
-# VTK installed you may want to use the plane projection display
+# If you want to activate a more precise display or if you have not
+# VTK installed (remind that VTK is not currently available with Python 3),
+# you may want to use the plane projection display:
+im3D.show() # (default display)
 
 # You can navigate through planes moving your mouse while holding <ctrl> down.
 # The mouse motion will allow you to change the plane following it (the
