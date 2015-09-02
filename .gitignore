@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+
+# Latex
+*.aux
+*.lof
+*.log
+*.out
+*.toc
+*.pdf
