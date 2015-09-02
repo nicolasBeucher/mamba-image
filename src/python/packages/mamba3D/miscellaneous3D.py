@@ -64,7 +64,7 @@ def compare3D(imIn1, imIn2, imOut):
         z -= 1
     return (x,y,z)
 
-def Shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
+def shift3D(imIn, imOut, d, amp, fill, grid=m3D.DEFAULT_GRID3D):
     """
     Shifts 3D image 'imIn' in direction 'd' of the 'grid' over an amplitude of
     'amp'. The emptied space is filled with 'fill' value.
