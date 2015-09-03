@@ -250,7 +250,7 @@ def buildNeighbor3D(imMask, imInOut, d, grid=m3D.DEFAULT_GRID3D):
             mamba.supNeighbor(imWrk, imInOut[i+scan], 1<<dh, grid2D)
         mamba.logic(imInOut[endPlane], imMask[endPlane], imInOut[endPlane], "inf")
         vol = mamba.computeVolume(imInOut[length - 1])
-        volume += vol           
+        volume += vol
     return volume
     
 def dualbuildNeighbor3D(imMask, imInout, d, grid=m3D.DEFAULT_GRID3D):
@@ -289,7 +289,6 @@ def dualbuildNeighbor3D(imMask, imInout, d, grid=m3D.DEFAULT_GRID3D):
             mamba.infNeighbor(imWrk, imInOut[i+scan], 1<<dh, grid2D)
         mamba.logic(imInOut[endPlane], imMask[endPlane], imInOut[endPlane], "sup")
         vol = mamba.computeVolume(imInOut[length - 1])
-        volume += vol           
+        volume += vol
     return volume
-    
     

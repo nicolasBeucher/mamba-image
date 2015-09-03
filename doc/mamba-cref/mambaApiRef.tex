@@ -1,7 +1,12 @@
 \documentclass[a4paper,10pt,oneside]{article}
 \usepackage{doxygen}
 \usepackage{mamba}
+
 \newcommand{\printindex}{}
+\newcommand{\+}{\discretionary{\mbox{\scriptsize$\hookleftarrow$}}{}{}}
+\newcommand{\clearemptydoublepage}{%
+  \newpage{\pagestyle{empty}\cleardoublepage}%
+}
 
 \title{Mamba C API Reference Manual}
 \author{Automatically generated using doxygen}
