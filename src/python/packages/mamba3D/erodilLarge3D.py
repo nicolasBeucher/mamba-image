@@ -36,13 +36,13 @@ def supFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
     """
     
     (width,height,length) = imIn.getSize()
-    if length!=len(imOut):
+    if length!=len(imInOut):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     imWrk = mamba.imageMb(imIn[0])
     # Computing limits according to the scanning direction.
     scan = grid.convertFromDir(nb,0)[0]
     if scan == 0:
-        startPlane, ehdPlane, scanDir = 0, length, 1
+        startPlane, endPlane, scanDir = 0, length, 1
         startFill, endFill = 0, 0
     elif scan == 1:
         startPlane, endPlane, scanDir = 0, length - amp, 1
@@ -59,11 +59,11 @@ def supFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
         j = i + amp * scan
         dirList = grid.getShiftDirsList(nb, amp, i)
         if len(dirList) == 1:
-            mamba.farSupNeighbor(imIn[j], imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)
+            mamba.supFarNeighbor(imIn[j], imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)
         else:
             d = dirList[1][2].getTranDir(dirList[1][0])
             mamba.shift(imIn[j], imWrk, d, dirList[1][1], fillValue, grid=dirList[1][2])
-            mamba.farSupNeighbor(imWrk, imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)            
+            mamba.supFarNeighbor(imWrk, imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)            
     # Filling the necessary planes.
     if edge == mamba.FILLED:
         for i in range(startFill, endFill):
@@ -78,13 +78,13 @@ def infFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
     """
     
     (width,height,length) = imIn.getSize()
-    if length!=len(imOut):
+    if length!=len(imInOut):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     imWrk = mamba.imageMb(imIn[0])
     # Computing limits according to the scanning direction.
     scan = grid.convertFromDir(nb,0)[0]
     if scan == 0:
-        startPlane, ehdPlane, scanDir = 0, length, 1
+        startPlane, endPlane, scanDir = 0, length, 1
         startFill, endFill = 0, 0
     elif scan == 1:
         startPlane, endPlane, scanDir = 0, length - amp, 1
@@ -101,11 +101,11 @@ def infFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
         j = i + amp * scan
         dirList = grid.getShiftDirsList(nb, amp, i)
         if len(dirList) == 1:
-            mamba.farInfNeighbor(imIn[j], imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)
+            mamba.infFarNeighbor(imIn[j], imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)
         else:
             d = dirList[1][2].getTranDir(dirList[1][0])
             mamba.shift(imIn[j], imWrk, d, dirList[1][1], fillValue, grid=dirList[1][2])
-            mamba.farInfNeighbor(imWrk, imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)            
+            mamba.infFarNeighbor(imWrk, imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)            
     # Filling the necessary planes.
     if edge == mamba.EMPTY:
         for i in range(startFill, endFill):
