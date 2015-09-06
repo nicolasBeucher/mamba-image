@@ -61,7 +61,7 @@ def supFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
         if len(dirList) == 1:
             mamba.supFarNeighbor(imIn[j], imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)
         else:
-            d = dirList[1][2].getTranDir(dirList[1][0])
+            d = mamba.transposeDirection(dirList[1][0], dirList[1][2])
             mamba.shift(imIn[j], imWrk, d, dirList[1][1], fillValue, grid=dirList[1][2])
             mamba.supFarNeighbor(imWrk, imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)            
     # Filling the necessary planes.
@@ -103,7 +103,7 @@ def infFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
         if len(dirList) == 1:
             mamba.infFarNeighbor(imIn[j], imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)
         else:
-            d = dirList[1][2].getTranDir(dirList[1][0])
+            d = mamba.transposeDirection(dirList[1][0], dirList[1][2])
             mamba.shift(imIn[j], imWrk, d, dirList[1][1], fillValue, grid=dirList[1][2])
             mamba.infFarNeighbor(imWrk, imInOut[i], dirList[0][0] , dirList[0][1], grid=dirList[0][2], edge=edge)            
     # Filling the necessary planes.
