@@ -228,7 +228,6 @@ def buildNeighbor3D(imMask, imInOut, d, grid=m3D.DEFAULT_GRID3D):
     (width, height, length) = imInOut.getSize()
     if length!=len(imMask):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
-    imWrk = mamba.imageMb(imInOut[0])
     grid2D = grid.get2DGrid()
     scan = grid.convertFromDir(d,0)[0]
     volume = 0L
@@ -242,18 +241,18 @@ def buildNeighbor3D(imMask, imInOut, d, grid=m3D.DEFAULT_GRID3D):
         else:
             startPlane, endPlane = length - 1, 0
         for i in range(startPlane, endPlane, scan):
-            mamba.logic(imInOut[i], imMask[i], imWrk, "inf")
-            vol = mamba.computeVolume(imWrk)
+            mamba.logic(imInOut[i], imMask[i], imInOut[i], "inf")
+            vol = mamba.computeVolume(imInOut[i])
             volume += vol
             td = grid.getTranDir(d)
             dh = grid.convertFromDir(td,i+scan)[1]
-            mamba.supNeighbor(imWrk, imInOut[i+scan], 1<<dh, grid2D)
+            mamba.supNeighbor(imInOut[i], imInOut[i+scan], 1<<dh, grid2D)
         mamba.logic(imInOut[endPlane], imMask[endPlane], imInOut[endPlane], "inf")
-        vol = mamba.computeVolume(imInOut[length - 1])
+        vol = mamba.computeVolume(imInOut[endPlane])
         volume += vol
     return volume
     
-def dualbuildNeighbor3D(imMask, imInout, d, grid=m3D.DEFAULT_GRID3D):
+def dualbuildNeighbor3D(imMask, imInOut, d, grid=m3D.DEFAULT_GRID3D):
     """
     Dual builds image 'imInout' in direction 'd' according to 'grid' using 
     'imMask' as a mask (the propagation is performed only in 'd' direction).
@@ -267,13 +266,12 @@ def dualbuildNeighbor3D(imMask, imInout, d, grid=m3D.DEFAULT_GRID3D):
     (width, height, length) = imInOut.getSize()
     if length!=len(imMask):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
-    imWrk = mamba.imageMb(imInOut[0])
     grid2D = grid.get2DGrid()
     scan = grid.convertFromDir(d,0)[0]
     volume = 0L
     if scan == 0:
         for i in range(length):
-            vol = mamba.buildNeighbor(imMask[i], imInOut[i], d, grid2D)
+            vol = mamba.dualbuildNeighbor(imMask[i], imInOut[i], d, grid2D)
             volume += vol
     else:
         if scan == 1:
@@ -281,14 +279,14 @@ def dualbuildNeighbor3D(imMask, imInout, d, grid=m3D.DEFAULT_GRID3D):
         else:
             startPlane, endPlane = length - 1, 0
         for i in range(startPlane, endPlane, scan):
-            mamba.logic(imInOut[i], imMask[i], imWrk, "sup")
-            vol = mamba.computeVolume(imWrk)
+            mamba.logic(imInOut[i], imMask[i], imInOut[i], "sup")
+            vol = mamba.computeVolume(imInOut[i])
             volume += vol
             td = grid.getTranDir(d)
             dh = grid.convertFromDir(td,i+scan)[1]
-            mamba.infNeighbor(imWrk, imInOut[i+scan], 1<<dh, grid2D)
+            mamba.infNeighbor(imInOut[i], imInOut[i+scan], 1<<dh, grid2D)
         mamba.logic(imInOut[endPlane], imMask[endPlane], imInOut[endPlane], "sup")
-        vol = mamba.computeVolume(imInOut[length - 1])
+        vol = mamba.computeVolume(imInOut[endPlane])
         volume += vol
     return volume
     
