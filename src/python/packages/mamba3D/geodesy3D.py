@@ -5,7 +5,7 @@ This module provides a set of functions to perform geodesic computations.
 It includes build and dualbuild operations, geodesic erosion and dilation ...
 """
 
-# Contributors: Nicolas BEUCHER
+# Contributors: Nicolas BEUCHER, Serge BEUCHER
 
 import mamba3D as m3D
 import mamba

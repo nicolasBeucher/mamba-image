@@ -6,7 +6,7 @@ operators because of their unique nature or other peculiarity. As such, it
 regroups some utility functions.
 """
 
-# Contributors : Nicolas BEUCHER
+# Contributors : Nicolas BEUCHER, Serge BEUCHER
 
 import mamba3D as m3D
 import mamba
