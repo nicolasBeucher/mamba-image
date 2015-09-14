@@ -13,6 +13,8 @@ Python functions:
     dualBuild3D
     closeHoles3D
     removeEdgeParticles3D
+    buildNeighbor3D
+    dualbuildNeighbor3D
 """
 
 from mamba import *
