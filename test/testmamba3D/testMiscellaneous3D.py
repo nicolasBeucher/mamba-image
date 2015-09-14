@@ -97,7 +97,7 @@ class TestMiscellaneous3D(unittest.TestCase):
                     diff3D(self.im8_3, self.im8_2, self.im8_3)
                     shift3D(self.im8_1, self.im8_2, d, amp, 0, grid3D)
                     (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_4)
-                    self.assertLess(z, 0, "diff in (%d,%d,%d)"%(x,y,z))
+                    self.assertLess(z, 0, "grid3D %s, dir %d : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
         
     def _drawEdge(self, im, value):
         # draws the edge
