@@ -32,7 +32,8 @@ class TestGeodesy3D(unittest.TestCase):
         self.im8_2 = image3DMb(64,64,64,8)
         self.im8_3 = image3DMb(64,64,64,8)
         self.im8_4 = image3DMb(64,64,64,8)
-        self.im8_5 = image3DMb(128,128,128,8)
+        self.im8_5 = image3DMb(64,64,64,8)
+        self.im8_6 = image3DMb(128,128,128,8)
         self.im32_1 = image3DMb(64,64,64,32)
         self.im32_2 = image3DMb(64,64,64,32)
         self.im32_3 = image3DMb(64,64,64,32)
@@ -50,6 +51,7 @@ class TestGeodesy3D(unittest.TestCase):
         del(self.im8_3)
         del(self.im8_4)
         del(self.im8_5)
+        del(self.im8_6)
         del(self.im32_1)
         del(self.im32_2)
         del(self.im32_3)
@@ -78,18 +80,18 @@ class TestGeodesy3D(unittest.TestCase):
         
     def testSizeCheck(self):
         """Verifies that the functions check the size of the image"""
-        self.assertRaises(MambaError, build3D, self.im8_5, self.im8_2)
+        self.assertRaises(MambaError, build3D, self.im8_6, self.im8_2)
         self.assertRaises(MambaError, build3D, self.im1_5, self.im1_2)
         self.assertRaises(MambaError, build3D, self.im32_5, self.im32_2)
-        self.assertRaises(MambaError, dualBuild3D, self.im8_5, self.im8_2)
+        self.assertRaises(MambaError, dualBuild3D, self.im8_6, self.im8_2)
         self.assertRaises(MambaError, dualBuild3D, self.im1_5, self.im1_2)
         self.assertRaises(MambaError, dualBuild3D, self.im32_5, self.im32_2)
-        self.assertRaises(MambaError, upperGeodesicDilate3D, self.im8_5, self.im8_2, self.im8_3)
-        self.assertRaises(MambaError, lowerGeodesicDilate3D, self.im8_5, self.im8_2, self.im8_3)
-        self.assertRaises(MambaError, geodesicDilate3D, self.im8_5, self.im8_2, self.im8_3)
-        self.assertRaises(MambaError, upperGeodesicErode3D, self.im8_5, self.im8_2, self.im8_3)
-        self.assertRaises(MambaError, lowerGeodesicErode3D, self.im8_5, self.im8_2, self.im8_3)
-        self.assertRaises(MambaError, geodesicErode3D, self.im8_5, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError, upperGeodesicDilate3D, self.im8_6, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError, lowerGeodesicDilate3D, self.im8_6, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError, geodesicDilate3D, self.im8_6, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError, upperGeodesicErode3D, self.im8_6, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError, lowerGeodesicErode3D, self.im8_6, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError, geodesicErode3D, self.im8_6, self.im8_2, self.im8_3)
         
     def testBuild3D_1(self):
         """Tests the reconstruction operator on binary 3D images"""
@@ -373,3 +375,41 @@ class TestGeodesy3D(unittest.TestCase):
         (x,y,z) = compare3D(self.im1_3, self.im1_2, self.im1_3)
         self.assertLess(x, 0, "%d : %d,%d,%d" %(i,x,y,z))
 
+    def testBuildNeighbor3D(self):
+        """Tests the buildNeighbor3D (directional build) operator"""   
+        (w, h, l) = self.im8_1.getSize()
+        
+        self.im8_1.reset()
+        self.im8_2.reset()
+        cube = (w//2 - 25, h//2 -25, l//2 + 25, w//2 + 25, h//2 + 25, l//2 - 25)
+        drawCube(self.im8_1, cube, 255)
+        self.im8_2.setPixel(200, (w//2, h//2, l//2))
+        for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
+            for d in getDirections3D(grid3D, withoutZero=True):
+                copy3D(self.im8_2, self.im8_3)
+                dt = transposeDirection3D(d, grid3D)
+                linearDilate3D(self.im8_3, self.im8_4, dt, 30, grid3D)
+                logic3D(self.im8_1, self.im8_4, self.im8_4, "inf")
+                buildNeighbor3D(self.im8_1, self.im8_3, d, grid3D)
+                (x,y,z) = compare3D(self.im8_4, self.im8_3, self.im8_5)
+                self.assertLess(x, 0, "grid3D %s, dir %d : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
+    
+    def testDualbuildNeighbor3D(self):
+        """Tests the dualbuildNeighbor3D (directional dual build) operator"""   
+        (w, h, l) = self.im8_1.getSize()
+        
+        self.im8_1.fill(255)
+        self.im8_2.fill(255)
+        cube = (w//2 - 25, h//2 -25, l//2 + 25, w//2 + 25, h//2 + 25, l//2 - 25)
+        drawCube(self.im8_1, cube, 0)
+        self.im8_2.setPixel(0, (w//2, h//2, l//2))
+        for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
+            for d in getDirections3D(grid3D, withoutZero=True):
+                copy3D(self.im8_2, self.im8_3)
+                dt = transposeDirection3D(d, grid3D)
+                linearErode3D(self.im8_3, self.im8_4, dt, 30, grid3D)
+                logic3D(self.im8_1, self.im8_4, self.im8_4, "sup")
+                dt = transposeDirection3D(d, grid3D)
+                dualbuildNeighbor3D(self.im8_1, self.im8_3, d, grid3D)
+                (x,y,z) = compare3D(self.im8_4, self.im8_3, self.im8_5)    
+                self.assertLess(x, 0, "grid3D %s, dir %d : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
