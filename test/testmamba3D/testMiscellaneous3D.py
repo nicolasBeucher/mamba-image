@@ -23,7 +23,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         self.im8_1 = image3DMb(8)
         self.im8_2 = image3DMb(8)
         self.im8_3 = image3DMb(8)
-        self.im8_4 = image3DMb(128,128,128,8)
+        self.im8_4 = image3DMb(8)
         self.im8_5 = image3DMb(128,128,128,8)
         self.im32_1 = image3DMb(32)
         self.im32_2 = image3DMb(32)
@@ -38,17 +38,18 @@ class TestMiscellaneous3D(unittest.TestCase):
         del(self.im8_2)
         del(self.im8_3)
         del(self.im8_4)
+        del(self.im8_5)
         del(self.im32_1)
         del(self.im32_2)
         del(self.im32_3)
         
     def testSizeCheck(self):
         """Verifies that the functions check the size of the image"""
-        self.assertRaises(MambaError,compare3D, self.im8_4, self.im8_2, self.im8_3)
-        self.assertRaises(MambaError,shift3D, self.im8_4, self.im8_2, 1,1,1)
+        self.assertRaises(MambaError,compare3D, self.im8_5, self.im8_2, self.im8_3)
+        self.assertRaises(MambaError,shift3D, self.im8_5, self.im8_2, 1,1,1)
         
     def testCheckEmptiness3D(self):
-        """Tests the emptyness verification on 3D images"""
+        """Tests the emptiness verification on 3D images"""
         self.im8_1.reset()
         self.im8_1.setPixel(23, (128,128,0))
         empty = checkEmptiness3D(self.im8_1)
@@ -85,14 +86,17 @@ class TestMiscellaneous3D(unittest.TestCase):
     def testShift3D(self):
         """Tests the shifting inside 3D images"""
         (w,h,l) = self.im8_1.getSize()
-        self.im8_1.fill(128)
-        self.im8_1.setPixel(255, (w//2,h//2,l//2))
-        self.im8_2.fill(128)
-        self.im8_2[0].reset()
-        self.im8_2.setPixel(255, (w//2,h//2,l//2+1))
-        shift3D(self.im8_1, self.im8_3, d=18, amp=1, fill=0, grid=CUBIC)
-        (x,y,z) = compare3D(self.im8_3, self.im8_2, self.im8_3)
-        self.assertLess(z, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        self.im8_1.setPixel(200, (w//2, h//2, l//2))
+        for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
+            for d in getDirections3D(grid3D, withoutZero=True):
+                dt = transposeDirection3D(d, grid3D)
+                for amp in [1, 37, 67]:
+                    linearDilate3D(self.im8_1, self.im8_2, dt, amp-1, grid3D)
+                    linearDilate3D(self.im8_2, self.im8_3, dt, 1, grid3D)
+                    diff3D(self.im8_3, self.im8_2, self.im8_3)
+                    shift3D(self.im8_1, self.im8_2, d, amp, 0, grid3D)
+                    (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_4)
+                    self.assertLess(z, 0, "diff in (%d,%d,%d)"%(x,y,z))
         
     def _drawEdge(self, im, value):
         # draws the edge

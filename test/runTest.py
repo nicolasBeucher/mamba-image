@@ -16,10 +16,10 @@ Usage:
         If not specified, the script will play all the tests.
         -d <directory> specifies the test directory to be used. Several 
         directories can be specified by repeating this option.
-        If not specified, the basics and advanced tests will be performed.
+        If not specified, all the tests will be performed.
         -o or --output <file> specifies the file in which the report will be
         written (by default on the standard output)
-        
+        h
 visit www.mamba-image.org for more.
     
 Copyright (c) <2009>, <Nicolas BEUCHER>
