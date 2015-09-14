@@ -86,6 +86,7 @@ class TestMiscellaneous3D(unittest.TestCase):
     def testShift3D(self):
         """Tests the shifting inside 3D images"""
         (w,h,l) = self.im8_1.getSize()
+        self.im8_1.reset()
         self.im8_1.setPixel(200, (w//2, h//2, l//2))
         for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
             for d in getDirections3D(grid3D, withoutZero=True):
