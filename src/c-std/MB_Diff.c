@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Computes the diff between two lines of 32-bits images
+ * Computes the diff between two lines of 32-bit images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -67,7 +67,7 @@ static INLINE void DIFF_LINE_32_32(PLINE *plines_out,
 }
 
 /*
- * Computes the diff between two lines of 8-bits images
+ * Computes the diff between two lines of 8-bit images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -107,7 +107,7 @@ static INLINE void DIFF_LINE_8_8(PLINE *plines_out,
 }
 
 /*
- * Computes the diff between two lines of bynary images
+ * Computes the diff between two lines of bynary images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -133,7 +133,7 @@ static INLINE void DIFF_LINE_1_1(PLINE *plines_out,
  * Computes the set difference between two images.
  * The result image pixel value is the pixel value of
  * image 1 if this value was greater than value of pixel 2
- * otherwise the minimum possible value is set for the pixel
+ * otherwise the minimum possible value is set for the pixel.
  * \param src1 source image 1
  * \param src2 source image 2
  * \param dest destination image 
@@ -145,11 +145,11 @@ MB_errcode MB_Diff(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     PLINE *plines_in1, *plines_in2, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* verification over depth */
+    /* Verification over depth */
     if(src1->depth != dest->depth) {
         return MB_ERR_BAD_DEPTH;
     }

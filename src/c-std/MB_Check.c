@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Checks if the line is empty
+ * Checks if the line is empty.
  * \param plines_in pointer on the source image pixel line
  * \param linoff_in offset inside the source image line
  * \param bytes_in number of bytes inside the line
@@ -64,7 +64,7 @@ MB_errcode MB_Check(MB_Image *src, Uint32 *isEmpty)
     plines_in = src->plines;
     bytes_in = MB_LINE_COUNT(src);
     
-    /* Emptyness is assume false at the begining */
+    /* Emptiness is assumed false at the begining */
     *isEmpty = 1;
 
     for(i = 0; (i < src->height) && (*isEmpty==1); i++, plines_in++) {

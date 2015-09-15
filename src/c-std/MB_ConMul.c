@@ -28,8 +28,8 @@
 #include "mambaApi_loc.h"
 
 /*
- * Multiplies a constant value to an 8-bits pixels image and places the 
- * result in an 8-bits image. 
+ * Multiplies a constant value to an 8-bit pixels image and places the 
+ * result in an 8-bit image. 
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -59,8 +59,8 @@ static INLINE void CONMUL_LINE_8_8(PLINE *plines_out,
 }
 
 /*
- * Multiplies a constant value to a 32-bits pixels image and places the 
- * result in a 32-bits image.
+ * Multiplies a constant value to a 32-bit pixels image and places the 
+ * result in a 32-bit image.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -93,7 +93,7 @@ MB_errcode MB_ConMul(MB_Image *src, Uint32 value, MB_Image *dest)
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -108,7 +108,7 @@ MB_errcode MB_ConMul(MB_Image *src, Uint32 value, MB_Image *dest)
     switch(MB_PROBE_PAIR(src,dest)) {
 
     case MB_PAIR_8_8:
-        /* addition with saturation */
+        /* Addition with saturation */
         for (i = 0;i < src->height;i++, plines_in++, plines_out++) {
             CONMUL_LINE_8_8( plines_out, plines_in, bytes_in, value );
         }

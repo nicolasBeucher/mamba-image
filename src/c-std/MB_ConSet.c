@@ -28,7 +28,7 @@
 #include "mambaApi_loc.h"
 
 /*
- * Fills an image with a specific value
+ * Fills an image with a specific value.
  * \param dest the image
  * \param value the value to fill the image
  * \return An error code (MB_NO_ERR if successful)
@@ -39,10 +39,10 @@ MB_errcode MB_ConSet(MB_Image *dest, Uint32 value) {
     Uint32 i;
     Uint32 *pix;
     
-    /* pattern depends on the depth of the image */
+    /* Pattern depends on the depth of the image */
     switch(dest->depth) {
     case 1:
-        /* pattern computation */
+        /* Pattern computation */
         /* in binary image, value is either one or zero */
         pattern8 = (value) ? 0XFF : 0;
         bytes = (dest->width*dest->height)/8;
@@ -51,7 +51,7 @@ MB_errcode MB_ConSet(MB_Image *dest, Uint32 value) {
         break;
 
     case 8:
-        /* pattern computation */
+        /* Pattern computation */
         pattern8 = value & 0xFF;
         bytes = (dest->width*dest->height);
         /* Lines fill */
@@ -59,7 +59,7 @@ MB_errcode MB_ConSet(MB_Image *dest, Uint32 value) {
         break;
 
     case 32:
-        /* pretending the signed 32 bit is unsigned */
+        /* Pretending the signed 32-bit is unsigned */
         bytes = (dest->width*dest->height);
         for(i=0, pix=(Uint32 *)dest->pixels;i<bytes;i++,pix++) {
             *pix = value;

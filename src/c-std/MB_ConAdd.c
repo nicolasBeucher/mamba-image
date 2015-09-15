@@ -30,7 +30,7 @@
 
 /*
  * Adds a constant value to an 8-bits pixels image and places the 
- * result in an 8-bits image. 
+ * result in an 8-bit image. 
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -53,8 +53,8 @@ static INLINE void CONADD_LINE_8_8(PLINE *plines_out,
     /* Computing the saturated value to add */
     /* or substract if the value is negative */
     if (ubvalue<0) {
-        /* the value is negative */
-        /* we substracts its absolute value to the pixels */
+        /* The value is negative */
+        /* We subtract its absolute value to the pixels */
         if (ubvalue<-255) {
             satvalue = 255;
         } else {
@@ -70,8 +70,8 @@ static INLINE void CONADD_LINE_8_8(PLINE *plines_out,
         }
         
     } else {
-        /* the value is positive */
-        /* we add it to the pixels */
+        /* The value is positive */
+        /* We add it to the pixels */
         if (ubvalue>255) {
             satvalue = 255;
         } else {
@@ -108,7 +108,7 @@ static INLINE void CONADD_LINE_8_8(PLINE *plines_out,
 
 /*
  * Adds a constant value to a 32-bits pixels image and places the 
- * result in a 32-bits image.
+ * result in a 32-bit image.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -130,7 +130,7 @@ static INLINE void CONADD_LINE_32_32(PLINE *plines_out,
 
 /*
  * Adds a constant value to an 8-bits pixels image and places the 
- * result in a 32-bits image.
+ * result in a 32-bit image.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -164,7 +164,7 @@ MB_errcode MB_ConAdd(MB_Image *src, Sint64 value, MB_Image *dest)
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -179,7 +179,7 @@ MB_errcode MB_ConAdd(MB_Image *src, Sint64 value, MB_Image *dest)
     switch(MB_PROBE_PAIR(src,dest)) {
 
     case MB_PAIR_8_8:
-            /* addition with saturation */
+            /* Addition with saturation */
             for (i = 0;i < src->height;i++, plines_in++, plines_out++) {
             CONADD_LINE_8_8( plines_out, plines_in, bytes_in, (Sint16) value );
         }

@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Compares the pixels of two 32-bits images lines
+ * Compares the pixels of two 32-bit image lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param plines_cmp pointer on the comparaison image pixel line
@@ -57,7 +57,7 @@ static INLINE void COMP_LINE_32(PLINE *plines_out,
 }
 
 /*
- * Compares the pixels of two 8-bits images lines
+ * Compares the pixels of two 8-bit image lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param plines_cmp pointer on the comparaison image pixel line
@@ -86,7 +86,7 @@ static INLINE void COMP_LINE_8(PLINE *plines_out,
 
 
 /*
- * Compares the pixels of two binary images lines
+ * Compares the pixels of two binary image lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param plines_cmp pointer on the comparaison image pixel line
@@ -111,8 +111,8 @@ static INLINE void COMP_LINE_1(PLINE *plines_out,
         vec_in = *pin;
         vec_cmp = *pcmp;
         if(vec_in!=vec_cmp){
-            /* the two pixels vectors are differents */
-            /* we will look for the first pixel in it that is */
+            /* The two pixels vectors are differents */
+            /* We will look for the first pixel in it that is */
             /* different */
             while(vec_in!=vec_cmp) {
                 /* shifting to access pixel by pixel */
@@ -120,7 +120,7 @@ static INLINE void COMP_LINE_1(PLINE *plines_out,
                 vec_cmp = vec_cmp>>1;
                 value2shift++;
             }
-            /* we put the pixel to 1 in the out image */
+            /* We put the pixel to 1 in the out image */
             (*pout) = (*pout) | (((MB_Vector1) 1L)<<(value2shift-1));
             *x = (Sint32) (i*8 + (value2shift-1));
             break;
@@ -145,11 +145,11 @@ MB_errcode MB_Compare(MB_Image *src, MB_Image *cmp, MB_Image *dest, Sint32 *px, 
     PLINE *plines_in, *plines_cmp, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src, cmp, dest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* verification over depth */
+    /* Verification over depth */
     if(src->depth != dest->depth) {
         return MB_ERR_BAD_DEPTH;
     }
@@ -205,7 +205,7 @@ MB_errcode MB_Compare(MB_Image *src, MB_Image *cmp, MB_Image *dest, Sint32 *px, 
         break;
     }
 
-    /* value output */
+    /* Value output */
     *px = x;
     *py = y;
 

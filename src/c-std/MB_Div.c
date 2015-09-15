@@ -30,8 +30,8 @@
 
 
 /*
- * Divides the 8-bits pixels of a line with the 8-bits pixels of another. 
- * The results is put in a 8-bits pixels line.
+ * Divides the 8-bit pixels of a line with the 8-bits pixels of another. 
+ * The results is put in a 8-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
  * \param plines_in2 pointer on the source image 8-bit pixel line
@@ -58,8 +58,8 @@ static INLINE void DIV_LINE_8_8_8(PLINE *plines_out,
 }
  
 /*
- * Divides the 8-bits pixels of a line with the 8-bits pixels of another. 
- * The results is put in a 32-bits pixels line.
+ * Divides the 8-bit pixels of a line with the 8-bits pixels of another. 
+ * The results is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
  * \param plines_in2 pointer on the source image 8-bit pixel line
@@ -86,8 +86,8 @@ static INLINE void DIV_LINE_8_8_32(PLINE *plines_out,
 }
 
 /*
- * Divides the 32-bits pixels of a line with the 32-bits pixels of another. 
- * The results is put in a 32-bits pixels line.
+ * Divides the 32-bit pixels of a line with the 32-bits pixels of another. 
+ * The results is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
  * \param plines_in2 pointer on the source image 8-bit pixel line
@@ -114,8 +114,8 @@ static INLINE void DIV_LINE_32_32_32(PLINE *plines_out,
 }
 
 /*
- * Divides the 32-bits pixels of a line with the 8-bits pixels of another. 
- * The results is put in a 32-bits pixels line.
+ * Divides the 32-bit pixels of a line with the 8-bits pixels of another. 
+ * The results is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
  * \param plines_in2 pointer on the source image 8-bit pixel line
@@ -160,7 +160,7 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     Uint32 bytes_in;
     Uint32 i;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -179,13 +179,13 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     bytes_in = MB_LINE_COUNT(src1);
     
     /* Evaluating the division case : 
-     * 9 case can happen depending of the two input images depth
-     * Only the "legal" one are being considered. Other cases make
+     * 9 cases can happen depending of the two input images depth
+     * Only the "legal" ones are being considered. Other cases make
      * The function returns with an error.
      */
     switch(MB_PROBE_PAIR(src1,src2)) {
 
-    /* two 8 bits images */
+    /* Two 8-bit images */
     case MB_PAIR_8_8:
         if(dest->depth == 8) {
             for (i=0; i<src1->height;i++, plines_out++, plines_in1++, plines_in2++) {
@@ -199,7 +199,7 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
         }
         break;
 
-    /* two 32 bits images */
+    /* Two 32-bit images */
     case MB_PAIR_32_32:
         for (i=0; i<src1->height;i++, plines_out++, plines_in1++, plines_in2++) {
             DIV_LINE_32_32_32(plines_out, plines_in1, plines_in2, bytes_in);
@@ -207,7 +207,7 @@ MB_errcode MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest)
         break;
 
 
-    /*8 bits image + 32 bits image*/
+    /*8-bit image + 32-bit image*/
     case MB_PAIR_32_8:
         for (i=0; i<src1->height;i++, plines_out++, plines_in1++, plines_in2++) {
             DIV_LINE_32_8_32(plines_out, plines_in1, plines_in2, bytes_in);

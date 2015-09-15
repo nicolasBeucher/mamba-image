@@ -27,7 +27,7 @@
  */
 #include "mambaApi_loc.h"
 
-/* image counter */
+/* Image counter */
 static Uint32 MB_refcounter = 0;
 
 /*
@@ -56,29 +56,29 @@ MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth)
     Uint32 full_w, full_h;
     Uint64 image_size;
     
-    /* computation of the corrected size */
+    /* Computation of the corrected size */
     width = ((width + MB_ROUND_W-1) / MB_ROUND_W) * MB_ROUND_W;
     height = ((height + MB_ROUND_H-1) / MB_ROUND_H) * MB_ROUND_H;
 
-    /* verification over the image size */
+    /* Verification over the image size */
     image_size = ((Uint64)width) * height;
     if (!(width > 0 && height > 0 &&
         image_size <= MB_MAX_IMAGE_SIZE) ) {
         return MB_ERR_BAD_IMAGE_DIMENSIONS;
     }
 
-    /* verification over the depth*/
-    /*acceptable values are 1, 8, or 32 bits*/
+    /* Verification over the depth*/
+    /* Acceptable values are 1, 8, or 32 bits*/
     if( (depth != 1) && (depth != 8) && (depth != 32) ){
         return MB_ERR_BAD_DEPTH;
     }
     
-    /* full height in pixel with edge*/
+    /* Full height in pixel with edge*/
     full_h = height;
-    /* full width in bytes with edge*/
+    /* Full width in bytes with edge*/
     full_w = (width*depth+7)/8;
 
-    /*memory allocation*/
+    /* Memory allocation*/
     plines = (PLINE *) MB_malloc(full_h*sizeof(PLINE));
     /*
      * We need aligned memory allocation to be sure that it works correctly with
@@ -87,7 +87,7 @@ MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth)
     pixarray = (PIX8 *) MB_aligned_malloc(full_w*full_h, 16);
 
     if(pixarray==NULL || plines==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_aligned_free(pixarray);
         MB_free(plines);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
@@ -111,7 +111,7 @@ MB_errcode MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth)
 }
 
 /*
- * Destroys an image (memory freeing)
+ * Destroys an image (memory freeing).
  * \param image the image to be destroyed
  * \return An error code (MB_NO_ERR if successful)
  */

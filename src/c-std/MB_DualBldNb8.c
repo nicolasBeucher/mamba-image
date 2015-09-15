@@ -31,7 +31,7 @@
 /****************************************/
 /* Base functions                       */
 /****************************************/
-/* The functions described here realised the basic operation */
+/* The functions described here realised the basic operations */
 /* needed to shift pixel in any directions */
 
 /*
@@ -165,7 +165,7 @@ static INLINE void BLD_LINE_LEFT(PLINE *plines_germ, PLINE *plines_germ_nbr,
     PLINE mask = (PLINE) (*plines_mask+bytes_in-1);
     PLINE germ_nbr = (PLINE) (*plines_germ_nbr+bytes_in); /* inout image shifted */
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     a = (*germ)<(edge_val) ? (*germ) : edge_val;
     a = a>(*mask) ? a : (*mask);
     *germ = a;
@@ -202,7 +202,7 @@ static INLINE void BLD_LINE_LEFT_HORZ(PLINE *plines_germ,
     
     edge_val = (PIX8) GREY_FILL_VALUE(MB_FILLED_EDGE);
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     a = (*germ)<(edge_val) ? (*germ) : edge_val;
     a = a>(*mask) ? a : (*mask);
     *germ = a;
@@ -264,7 +264,7 @@ static INLINE void BLD_LINE_RIGHT(PLINE *plines_germ, PLINE *plines_germ_nbr,
     PLINE mask = (PLINE) (*plines_mask);
     PLINE germ_nbr = (PLINE) (*plines_germ_nbr-1); /* inout image shifted */
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     a = (*germ)<(edge_val) ? (*germ) : edge_val;
     a = a>(*mask) ? a : (*mask);
     *germ = a;
@@ -301,7 +301,7 @@ static INLINE void BLD_LINE_RIGHT_HORZ(PLINE *plines_germ,
     
     edge_val = (PIX8) GREY_FILL_VALUE(MB_FILLED_EDGE);
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     a = (*germ)<(edge_val) ? (*germ) : edge_val;
     a = a>(*mask) ? a : (*mask);
     *germ = a;
@@ -348,12 +348,12 @@ MB_errcode MB_DualBldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint6
     PLINE *plines_mask, *plines_inout;
     NEIBFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(mask, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* grid value and possible direction are connected, grid value is the */
+    /* Grid value and possible direction are connected, grid value is the */
     /* maximum number of directions */
     if(dirnum>6 && grid==MB_HEXAGONAL_GRID) {
         return MB_ERR_BAD_DIRECTION;
@@ -369,12 +369,12 @@ MB_errcode MB_DualBldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint6
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_mask = mask->plines;
     plines_inout = srcdest->plines;
     bytes_in = MB_LINE_COUNT(mask);
 
-    /*initial value of volume*/
+    /* Initial value of volume*/
     *pVolume = 0;
 
     /* Calling the corresponding function */

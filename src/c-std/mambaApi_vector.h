@@ -2,7 +2,7 @@
  * \file mambaApi_vector.h
  * \date 18-11-2012
  *
- * This file contains all the macro and definition used to vectorize in the
+ * This file contains all the macros and definitions used to vectorize in the
  * Mamba library. Modify this file to add support for other vectorization
  * instruction-set.
  */
@@ -44,7 +44,7 @@
  ******************************************************************************/
 /* Computations on binary image are always vectorized */
 
-/* binary computations are performed on a complete 64 bits integer */
+/* binary computations are performed on a complete 64-bit integer */
 #ifdef VECTOR_32BIT
     typedef uint32_t MB_Vector1;
     #define MB_vec1_size 32
@@ -66,15 +66,15 @@
 #define MB_vec1_adds(vec1, vec2) ((vec1)|(vec2))
 #define MB_vec1_subs(vec1, vec2) ((vec1)&(~(vec2)))
 
-/* shifting */
+/* Shifting */
 # define MB_vec1_shlft(vec, dec) ((vec)<<(dec))
 # define MB_vec1_shrgt(vec, dec) ((vec)>>(dec))
 
-/* extrema */
+/* Extrema */
 #define MB_vec1_min(vec1, vec2) ((vec1)&(vec2))
 #define MB_vec1_max(vec1, vec2) ((vec1)|(vec2))
 
-/* accumulation */
+/* Accumulation */
 #define MB_vec1_acc(result,vec) \
 { \
 MB_Vector1 vc; \
@@ -103,7 +103,7 @@ typedef __m128i MB_Vector8;
 #define MB_vec8_set32(value) _mm_set1_epi32((int) value)
 #define MB_vec8_setzero _mm_setzero_si128()
 
-/* comparison */
+/* Comparison */
 #define MB_vec8_cmpeq(vec1, vec2) _mm_cmpeq_epi8(vec1,vec2)
 
 /* Arithmetic operations */
@@ -114,15 +114,15 @@ typedef __m128i MB_Vector8;
 #define MB_vec8_subs(vec1, vec2) _mm_subs_epu8(vec1,vec2)
 #define MB_vec8_sub(vec1, vec2) _mm_sub_epi8(vec1, vec2)
 
-/* shifting */
+/* Shifting */
 # define MB_vec8_shlft(vec, dec) _mm_slli_si128(vec,dec)
 # define MB_vec8_shrgt(vec, dec) _mm_srli_si128(vec,dec)
 
-/* extrema */
+/* Extrema */
 #define MB_vec8_min(vec1, vec2) _mm_min_epu8(vec1, vec2)
 #define MB_vec8_max(vec1, vec2) _mm_max_epu8(vec1, vec2)
 
-/* accumulation */
+/* Accumulation */
 #define MB_vec8_acc(result,vec) \
 { \
     __m128i acc_vec; \
@@ -151,7 +151,7 @@ typedef __m128i MB_Vector32;
 #define MB_vec32_set(value) _mm_set1_epi32((int) value)
 #define MB_vec32_setzero _mm_setzero_si128()
 
-/* comparison */
+/* Comparison */
 #define MB_vec32_cmpgt(vec1, vec2) _mm_cmpgt_epi32(vec1,vec2)
 
 /* Arithmetic operations */

@@ -201,7 +201,7 @@ static INLINE void BLD_LINE_LEFT_HORZ(PLINE *plines_germ,
     
     edge_val = GREY_FILL_VALUE(MB_EMPTY_EDGE);
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     pix1 = (*germ)>(edge_val) ? (*germ) : edge_val;
     pix1 = pix1<(*mask) ? pix1 : (*mask);
     *germ = pix1;
@@ -252,7 +252,7 @@ static INLINE void BLD_LINE_RIGHT(PLINE *plines_germ, PLINE *plines_germ_nbr,
         vec1 = MB_vec8_min(vec3,vec1);
         MB_vec8_store(germ,vec1);
         edge = vec2;
-        /* accumulating the volume */
+        /* Accumulating the volume */
         MB_vec8_acc(vol, vec1);
     }
     
@@ -263,7 +263,7 @@ static INLINE void BLD_LINE_RIGHT(PLINE *plines_germ, PLINE *plines_germ_nbr,
     PLINE mask = (PLINE) (*plines_mask);
     PLINE germ_nbr = (PLINE) (*plines_germ_nbr-1); /* inout image shifted */
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     pix1 = (*germ)>(edge_val) ? (*germ) : edge_val;
     pix1 = pix1<(*mask) ? pix1 : (*mask);
     *germ = pix1;
@@ -300,7 +300,7 @@ static INLINE void BLD_LINE_RIGHT_HORZ(PLINE *plines_germ,
     
     edge_val = GREY_FILL_VALUE(MB_EMPTY_EDGE);
     
-    /* the first pixel is inside the edge */
+    /* The first pixel is inside the edge */
     pix1 = (*germ)>(edge_val) ? (*germ) : edge_val;
     pix1 = pix1<(*mask) ? pix1 : (*mask);
     *germ = pix1;
@@ -347,12 +347,12 @@ MB_errcode MB_BldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *p
     PLINE *plines_mask, *plines_inout;
     NEIBFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(mask, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* grid value and possible direction are connected, grid value is the */
+    /* Grid value and possible direction are connected, grid value is the */
     /* maximum number of directions */
     if(dirnum>6 && grid==MB_HEXAGONAL_GRID) {
         return MB_ERR_BAD_DIRECTION;
@@ -368,12 +368,12 @@ MB_errcode MB_BldNb8(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *p
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_mask = mask->plines;
     plines_inout = srcdest->plines;
     bytes_in = MB_LINE_COUNT(mask);
 
-    /*initial value of volume*/
+    /* Initial value of volume*/
     *pVolume = 0;
 
     /* Calling the corresponding function */

@@ -46,7 +46,7 @@
 /**@cond */
 /* code that must be skipped by Doxygen */
 
-/* compiler specific */
+/* Compiler specific */
 #ifdef _MSC_VER
     #define INLINE __inline
 #else
@@ -74,23 +74,23 @@
 /* Macros                               */
 /****************************************/
 
-/** Returns the value of the images combination MB_PAIR_x_x */
+/** Returns the value of the image combination MB_PAIR_x_x */
 #define MB_PROBE_PAIR(im_in, im_out) \
     (((im_in->depth)<<7) + (im_out)->depth)
     
-/** Returns True if the two images sizes are compatibles */
+/** Returns True if the two images sizes are compatible */
 # define MB_CHECK_SIZE_2(im1, im2) \
     (((im1->width)==(im2->width))&&((im1->height)==(im2->height)))
     
-/** Returns True if the three images sizes are compatibles */
+/** Returns True if the three image sizes are compatible */
 # define MB_CHECK_SIZE_3(im1, im2, im3) \
     (MB_CHECK_SIZE_2(im1, im2) && MB_CHECK_SIZE_2(im1, im3))
     
-/** Returns the value of the images combination MB3D_PAIR_x_x */
+/** Returns the value of the image combination MB3D_PAIR_x_x */
 #define MB3D_PROBE_PAIR(im_in, im_out) \
     (((im_in->seq[0]->depth)<<7) + im_out->seq[0]->depth)
 
-/** Returns True if the two images sizes are compatibles */
+/** Returns True if the two images sizes are compatible */
 # define MB3D_CHECK_SIZE_2(im1, im2) \
     (((im1->seq[0]->width)  == (im2->seq[0]->width) ) && \
      ((im1->seq[0]->height) == (im2->seq[0]->height)) && \
@@ -99,15 +99,15 @@
 /** Returns the size in bytes of an image line */
 #define MB_LINE_COUNT(im) ((im->width*im->depth)/8)
 
-/** How to fill the edge (binary bits images) */
+/** How to fill the edge (1-bit images) */
 #define BIN_FILL_VALUE(edge) ((edge==MB_FILLED_EDGE) ? UINT64_MAX:0)
-/** How to fill the edge (8 bits images) */
+/** How to fill the edge (8-bit images) */
 #define GREY_FILL_VALUE(edge) ((edge==MB_FILLED_EDGE) ? UINT32_MAX:0)
-/** How to fill the edge (32 bits images) */
+/** How to fill the edge (32-bit images) */
 #define I32_FILL_VALUE(edge) ((edge==MB_FILLED_EDGE) ? UINT32_MAX:0)
 
-/* neighbor pixel reading and accessing */
-/* macros work with the pointer to the pixel */
+/* Neighbor pixel reading and accessing */
+/* Macros work with the pointer to the pixel */
 /* Macro returning the value of a pixel */
 #define VAL(p_pix) (*p_pix)
 /* Macro returning the value of the left neighbor pixel */
@@ -124,11 +124,11 @@
  * labels attribution and creation.
  */
 typedef struct {
-    /* Equivalence between label in an image */
+    /* Equivalence between labels in an image */
     PIX32 *EQ;
-    /* Equivalence between corrected label in an image */
+    /* Equivalence between corrected labels in an image */
     PIX32 *CEQ;
-    /* The greatest number of label possible according to current image size */
+    /* The greatest number of labels possible according to current image size */
     Uint32 maxEQ;
     /* Current label index (value given to the next label) */
     PIX32 current;
@@ -138,7 +138,7 @@ typedef struct {
     PIX32 nbObjs;
 } MB_Label_struct;
 
-/* label handling */
+/* Label handling */
 PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow, PIX32 lbhigh);
 PIX32 MB_find_above_label(MB_Label_struct *labels, PIX32 inlabel);
 void MB_TidyLabel(PLINE *plines_out,
@@ -164,9 +164,9 @@ typedef void (LABELGRIDFUNC) (PLINE *plines_out, PLINE *plines_in,
 #define CANDIDATE 0x01000000
 /* Queued : pixels in the HQ not yet sorted out */
 #define QUEUED 0x02000000
-/* RG_Labelled : pixels that were process and do not belong to the watershed */
+/* RG_Labelled : pixels that were processed and do not belong to the watershed */
 #define RG_LAB 0x00000000
-/* WTS_Labelled : pixels that were process and do belong to the watershed */
+/* WTS_Labelled : pixels that were processed and do belong to the watershed */
 #define WTS_LAB 0xFF000000
 
 /* Macro to extract the label of the pixel */
@@ -247,14 +247,14 @@ extern const int sqNbDir[9][2];
 /* the direction depends on the oddness/evenness of the line */
 extern const int hxNbDir[2][7][2];
 
-/** Table giving the offset for the neighbor in cube grid (x, y and z) */ 
+/** Table giving the offset for the neighbor in cubic grid (x, y and z) */ 
 extern const int cubeNbDir[27][3];
 
 /** Table giving the offset for the neighbor in face-centered cubic grid (x, y and z) */
 /* the direction depends on the coordinates of the line y and planes z*/
 extern const int fccNbDir[6][13][3];
 
-/* Table giving the offset for the previous neighbor in cube grid (x, y and z) */ 
+/* Table giving the offset for the previous neighbor in cubic grid (x, y and z) */ 
 extern const int cubePreDir[13][3];
 
 /* Table giving the offset for the neighbor in face-centered cubic grid (x, y and z) */
@@ -262,7 +262,7 @@ extern const int cubePreDir[13][3];
 extern const int fccPreDir[6][6][3];
 
 /****************************************/
-/* volume arrays                        */
+/* Volume arrays                        */
 /****************************************/
 
 /** Volume arrays*/

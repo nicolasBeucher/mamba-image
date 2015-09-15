@@ -37,7 +37,7 @@ extern MB_errcode MB_DiffNb32(MB_Image *src, MB_Image *srcdest, Uint32 neighbors
 
 /*
  * Computes the set difference between two image pixels
- * (a central pixel and its neighbors in the other image)
+ * (a central pixel and its neighbors in the other image).
  * The neighbor depends on the grid used (see mambaCommon.h). Neighbors are
  * described using a pattern. If no neighbor
  * is defined, the function will leave silently doing nothing.

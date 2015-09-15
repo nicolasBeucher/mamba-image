@@ -31,13 +31,13 @@
 typedef void (INSERTNB32) (void *ctx, int x, int y);
 
 /* Structure holding the function contextual information 
- * such as the size of the image processed, the pointer to the pixel lines
+ * such as the size of the processed image, the pointer to the pixel lines
  * the array of tokens and the current flooding level
  */
 typedef struct {
-    /* The width of the images processed */
+    /* The width of the processed images */
     Uint32 width;
-    /* The height of the images processed */
+    /* The height of the processed images */
     Uint32 height;
     
     /* The memory used to hold the elements of the hierarchical list */
@@ -46,11 +46,11 @@ typedef struct {
     MB_ListControl HierarchicalList[65536];
     MB_ListControl OverList;
     
-    /* pointer to the lines of the marker image */
+    /* Pointer to the lines of the marker image */
     PLINE *plines_marker;
-    /* pointer to the lines of the source image */
+    /* Pointer to the lines of the source image */
     PLINE *plines_src;
-    /* size in byte of the marker image lines */
+    /* Size in byte of the marker image lines */
     Uint32 bytes_marker;
     
     /* Variable indicating which level in the hierarchical list
@@ -59,7 +59,7 @@ typedef struct {
      */
     PIX32 current_water_level;
     
-    /* meta function which redirects the neighbor function according to the grid */
+    /* Meta function which redirects the neighbor function according to the grid */
     INSERTNB32 *InsertNeighbors;
 } MB_Basins32_Ctx;
 
@@ -83,13 +83,13 @@ static INLINE void MB_InsertInHierarchicalList(MB_Basins32_Ctx *local_ctx, int x
     int lx, ly;
     MB_ListControl *list;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
+    /* Insertion in the hierarchical list */
     /* first if the value is outside the currently supported range */
     /* it will be put in the overlist */
     limit = ((local_ctx->current_water_level>>16) +1)<<16;
@@ -104,7 +104,7 @@ static INLINE void MB_InsertInHierarchicalList(MB_Basins32_Ctx *local_ctx, int x
         list = &(local_ctx->HierarchicalList[hvalue]);
     }
     
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = list->lastx;
     ly = list->lasty;
     position = lx+ly*local_ctx->width;
@@ -134,7 +134,7 @@ static INLINE void MB_HierarchyInit(MB_Basins32_Ctx *local_ctx)
     Uint32 i,j;
     PIX32 *p;
     
-    /*All the controls are reset */
+    /* All the controls are reset */
     for(i=0;i<65536;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
@@ -166,11 +166,11 @@ static INLINE Uint32 MB_HandlesOverList(MB_Basins32_Ctx *local_ctx)
     PIX32 *p;
     int fx,fy,cfx,cfy,pos;
     
-    /* over list handles */
+    /* Over list handles */
     fx = local_ctx->OverList.firstx;
     fy = local_ctx->OverList.firsty;
     
-    /* resetting the hierarchical lists */
+    /* Resetting the hierarchical lists */
     for(i=0;i<65536;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
@@ -178,7 +178,7 @@ static INLINE Uint32 MB_HandlesOverList(MB_Basins32_Ctx *local_ctx)
     local_ctx->OverList.firstx = local_ctx->OverList.lastx = MB_LIST_END;
     local_ctx->OverList.firsty = local_ctx->OverList.lasty = MB_LIST_END;
     
-    /* emptying the over list */
+    /* Emptying the over list */
     while(fx>=0) {
         done = 0;
         pos = fx+fy*local_ctx->width;
@@ -215,13 +215,13 @@ static void MB_InsertNeighbors_square(void *ctx, int x, int y)
     int nbx,nby;
     MB_Basins32_Ctx *local_ctx = (MB_Basins32_Ctx *) ctx;
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     pix = (PIX32 *) (local_ctx->plines_marker[y] + x*4);
     *pix &= 0x00FFFFFF;
     
     /* For the 8 neighbors of the pixel */
     for(i=1; i<9; i++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+sqNbDir[i][0];
         nby = y+sqNbDir[i][1];
         
@@ -256,13 +256,13 @@ static void MB_InsertNeighbors_hexagonal(void *ctx, int x, int y)
     int nbx,nby;
     MB_Basins32_Ctx *local_ctx = (MB_Basins32_Ctx *) ctx;
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     pix = (PIX32 *) (local_ctx->plines_marker[y] + x*4);
     *pix = *pix & 0x00FFFFFF;
     
     /* For the 6 neighbors of the pixel */
     for(i=1; i<7; i++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+hxNbDir[y%2][i][0];
         nby = y+hxNbDir[y%2][i][1];
         
@@ -271,7 +271,7 @@ static void MB_InsertNeighbors_hexagonal(void *ctx, int x, int y)
             p = (PIX32 *) (local_ctx->plines_marker[nby] + nbx*4);
             
             if ((*p)==0x01000000) {
-                /* the neighbor is not tagged yet */
+                /* The neighbor is not tagged yet */
                 value = *((PIX32 *)(local_ctx->plines_src[nby] + nbx*4));
                 MB_InsertInHierarchicalList(local_ctx, nbx, nby, value);
                 /* The neighbor is updated with the pixel tag value*/
@@ -319,7 +319,7 @@ static INLINE void MB_Flooding(MB_Basins32_Ctx *local_ctx, Uint32 max_level)
 }
 
 /************************************************/
-/*High level function and global variables      */
+/* High level function and global variables     */
 /************************************************/
 
 /*
@@ -348,15 +348,15 @@ MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum M
     
     local_ctx = (MB_Basins32_Ctx *)MB_malloc(sizeof(MB_Basins32_Ctx));
     if(local_ctx==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* local context initialisation */
+    /* Local context initialisation */
     local_ctx->width = src->width;
     local_ctx->height = src->height;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     local_ctx->plines_src = src->plines;
     local_ctx->plines_marker = marker->plines;
     local_ctx->bytes_marker = MB_LINE_COUNT(marker);
@@ -364,12 +364,12 @@ MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum M
     /* Allocating the token array */
     local_ctx->TokensArray = MB_malloc(src->width*src->height*sizeof(MB_Token));
     if(local_ctx->TokensArray==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_free(local_ctx);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* grid initialisation */
+    /* Grid initialisation */
     if (grid==MB_SQUARE_GRID) {
          local_ctx->InsertNeighbors = MB_InsertNeighbors_square;
      } else {
@@ -382,9 +382,9 @@ MB_errcode MB_Basins32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum M
     /* Actual flooding */
     MB_Flooding(local_ctx, max_level);
     
-    /* freeing the token array */
+    /* Freeing the token array */
     MB_free(local_ctx->TokensArray);
-    /* freeing the context */
+    /* Freeing the context */
     MB_free(local_ctx);
     
     return MB_NO_ERR;

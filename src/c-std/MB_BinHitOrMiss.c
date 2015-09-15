@@ -354,7 +354,7 @@ static void MB_comp_neighbors_hexagonal(
 /****************************************/
 
 /*
- * Performs a binary Hit-or-Miss operation on image imIn using the structuring elements es0 and es1.
+ * Performs a binary Hit-or-Miss operation on src image using the structuring elements es0 and es1.
  * Structuring elements are integer values coding which direction must be taken into account.
  * es0 indicating which neighbor of the current pixel will be checked for 0 value.
  * es1 those which will be evaluated for 1 value.
@@ -383,28 +383,28 @@ MB_errcode MB_BinHitOrMiss(MB_Image *src, MB_Image *dest, Uint32 es0, Uint32 es1
     MB_errcode err;
     MB_Vector1 edge_val = BIN_FILL_VALUE(edge);
     
-    /* verification over depth and size */
+    /* Verification over depth and size */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
 
-    /* images must be binary */
+    /* Images must be binary */
     if (MB_PROBE_PAIR(src, dest)!=MB_PAIR_1_1) {
         return MB_ERR_BAD_DEPTH;
     }
     
-    /* verification over src and dest to know */
+    /* Verification over src and dest to know */
     /* if they point to the same image which is forbidden */
     if (src==dest) {
         return MB_ERR_BAD_PARAMETER;
     }
-    /* a neighbor cannot be both true and false so requesting this will */
+    /* A neighbor cannot be both true and false so requesting this will */
     /* provoke an error */
     if ((es0&es1)!=0) {
         return MB_ERR_BAD_PARAMETER;
     }
 
-    /* central point, mask == 1 */
+    /* Central point, mask == 1 */
     if (es1 & 1)
         err = MB_Copy(src, dest);
     else
@@ -415,7 +415,7 @@ MB_errcode MB_BinHitOrMiss(MB_Image *src, MB_Image *dest, Uint32 es0, Uint32 es1
 
     if (err == MB_NO_ERR) {
 
-        /* setting up pointers */
+        /* Setting up pointers */
         plines_in = src->plines;
         plines_inout = dest->plines;
         bytes_in = MB_LINE_COUNT(src);

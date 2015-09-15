@@ -28,7 +28,7 @@
 #include "mambaApi_loc.h"
 
 /*
- * Copies an image data contents into another image
+ * Copies an image data contents into another image.
  * This copy works with same size images.
  * \param src the source image
  * \param dest the destination image
@@ -40,15 +40,15 @@ MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
     Uint32 bytes_in;
     Uint32 i;
     
-    /* verification over src and dest to know */
+    /* Verification over src and dest to know */
     /* if the copy is really needed */
     if (src==dest) {
-        /* pointing to the same image data */
+        /* Pointing to the same image data */
         /* then nothing to do */
         return MB_NO_ERR;
     }
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -80,7 +80,7 @@ MB_errcode MB_Copy(MB_Image *src, MB_Image *dest) {
 }
 
 /*
- * Copies an image line contents into another image line
+ * Copies an image line contents into another image line.
  * \param src the source image
  * \param dest the destination image
  * \param insrc_pos the position of the line copied from src
@@ -92,24 +92,24 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over the line indexes that need to be copied */
+    /* Verification over the line indexes that need to be copied */
     if ( (insrc_pos>=(src->height))   ||
          (insrc_pos<0)                ||
          (indest_pos>=(dest->height)) ||
          (indest_pos<0) ) {
-        /* either the source line or the destination line is out of range*/
+        /* Either the source line or the destination line is out of range*/
         return MB_ERR_BAD_VALUE;
     }
     
-    /* verification over src and dest to know */
+    /* Verification over src and dest to know */
     /* if the copy is really needed */
     if (src==dest && insrc_pos==indest_pos) {
-        /* pointing to the same image data */
+        /* Pointing to the same image data */
         /* then nothing to do */
         return MB_NO_ERR;
     }
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -140,7 +140,7 @@ MB_errcode MB_CopyLine(MB_Image *src, MB_Image *dest, Uint32 insrc_pos, Uint32 i
 
 /*
  * Copies an image data contents into another image.
- * This copy can work with image of different sizes. As the size can be different
+ * This copy can work with image of different sizes. As the size can be different,
  * the position where the copy occurs must be specified for both images as well
  * as the size of the copy. 
  * The function will compute the actual crop inside the source and destination 
@@ -178,12 +178,12 @@ MB_errcode MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
         break;
     }
    
-    /* given size should be at least greater than 0 */
+    /* Given size should be at least greater than 0 */
     if (w==0 || h==0) {
         return MB_ERR_BAD_VALUE;
     }
 
-    /* verification the given position and the images sizes*/
+    /* Verification the given position and the images sizes*/
     if (x_dest>=dest->width || y_dest>=dest->height) {
         return MB_ERR_BAD_SIZE;
     }
@@ -191,7 +191,7 @@ MB_errcode MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
         return MB_ERR_BAD_SIZE;
     }
 
-    /* computing the size of the copy, its the minimum of all the available */
+    /* Computing the size of the copy, its the minimum of all the available */
     /* spaces */
     w_dest = dest->width-x_dest;
     h_dest = dest->height-y_dest;

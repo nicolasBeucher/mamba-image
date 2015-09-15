@@ -31,13 +31,13 @@
 typedef void (INSERTNB8) (void *ctx, int x, int y);
 
 /* Structure holding the function contextual information 
- * such as the size of the image processed, the pointer to the pixel lines
+ * such as the size of the processed image, the pointer to the pixel lines,
  * the array of tokens and the current flooding level
  */
 typedef struct {
-    /* The width of the images processed */
+    /* The width of the processed images */
     Uint32 width;
-    /* The height of the images processed */
+    /* The height of the processed images */
     Uint32 height;
     
     /* The memory used to hold the elements of the hierarchical list */
@@ -45,20 +45,20 @@ typedef struct {
     /* The hierarchical list entries for watershed segmentation */
     MB_ListControl HierarchicalList[256];
     
-    /* pointer to the lines of the marker image */
+    /* Pointer to the lines of the marker image */
     PLINE *plines_marker;
-    /* pointer to the lines of the source image */
+    /* Pointer to the lines of the source image */
     PLINE *plines_src;
-    /* size in byte of the marker image lines */
+    /* Size in byte of the marker image lines */
     Uint32 bytes_marker;
     
     /* Variable indicating which level in the hierarchical list
-     * the "water" as attained. Only this level and above can be filled with new
+     * the "water" has attained. Only this level and above can be filled with new
      * tokens.
      */
     PIX8 current_water_level;
     
-    /* meta function which redirects the neighbor function according to the grid */
+    /* Meta function which redirects the neighbor function according to the grid */
     INSERTNB8 *InsertNeighbors;
 } MB_Basins8_Ctx;
 
@@ -80,17 +80,17 @@ static INLINE void MB_InsertInHierarchicalList(MB_Basins8_Ctx *local_ctx, int x,
     int position;
     int lx, ly;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
+    /* Insertion in the hierarchical list */
     /* the value is normed as we do not want to process */
     /* already flooded levels */
     value = (value < (local_ctx->current_water_level)) ? (local_ctx->current_water_level) : value;
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = local_ctx->HierarchicalList[value].lastx;
     ly = local_ctx->HierarchicalList[value].lasty;
     position = lx+ly*local_ctx->width;
@@ -160,13 +160,13 @@ static void MB_InsertNeighbors_square(void *ctx, int x, int y)
     int nbx,nby;
     MB_Basins8_Ctx *local_ctx = (MB_Basins8_Ctx *) ctx;
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     pix = (PIX32 *) (local_ctx->plines_marker[y] + x*4);
     *pix &= 0x00FFFFFF;
     
     /* For the 8 neighbors of the pixel */
     for(i=1; i<9; i++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+sqNbDir[i][0];
         nby = y+sqNbDir[i][1];
         
@@ -175,7 +175,7 @@ static void MB_InsertNeighbors_square(void *ctx, int x, int y)
             p = (PIX32 *) (local_ctx->plines_marker[nby] + nbx*4);
             
             if ((*p)==0x01000000) {
-                /* the neighbor is not tagged yet */
+                /* The neighbor is not tagged yet */
                 value = *(local_ctx->plines_src[nby] + nbx);
                 MB_InsertInHierarchicalList(local_ctx, nbx, nby, value);
                 /* The neighbor is updated with the pixel tag value*/
@@ -201,13 +201,13 @@ static void MB_InsertNeighbors_hexagonal(void *ctx, int x, int y)
     int nbx,nby;
     MB_Basins8_Ctx *local_ctx = (MB_Basins8_Ctx *) ctx;
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     pix = (PIX32 *) (local_ctx->plines_marker[y] + x*4);
     *pix = *pix & 0x00FFFFFF;
     
     /* For the 6 neighbors of the pixel */
     for(i=1; i<7; i++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+hxNbDir[y%2][i][0];
         nby = y+hxNbDir[y%2][i][1];
         
@@ -216,7 +216,7 @@ static void MB_InsertNeighbors_hexagonal(void *ctx, int x, int y)
             p = (PIX32 *) (local_ctx->plines_marker[nby] + nbx*4);
             
             if ((*p)==0x01000000) {
-                /* the neighbor is not tagged yet */
+                /* The neighbor is not tagged yet */
                 value = *(local_ctx->plines_src[nby] + nbx);
                 MB_InsertInHierarchicalList(local_ctx, nbx, nby, value);
                 /* The neighbor is updated with the pixel tag value*/
@@ -256,16 +256,16 @@ static INLINE void MB_Flooding(MB_Basins8_Ctx *local_ctx, Uint32 max_level)
 }
 
 /************************************************/
-/*High level function and global variables      */
+/* High level function and global variables     */
 /************************************************/
 
 /*
  * Performs a watershed segmentation of the image using the marker image
  * as a starting point for the flooding. The function returns the catchment 
- * basins of the watershed but no actual watershed line. It is recommanded
+ * basins of the watershed but no actual watershed line. It is recommended
  * to use this functions rather than MB_Watershed if you are only interested
  * in catchment basins (faster).
- * The result is put into a the 32-bits marker image.
+ * The result is put into a the 32-bit marker image.
  *
  * The segmentation is coded as follows into the 32 bit values.
  * | 0      | 1      | 2      | 3      |
@@ -282,16 +282,16 @@ static INLINE void MB_Flooding(MB_Basins8_Ctx *local_ctx, Uint32 max_level)
 MB_errcode MB_Basins8(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t grid) {
     MB_Basins8_Ctx local_ctx;
     
-    /* maximum level for flood cannot be greater than 256 */
+    /* Maximum level for flood cannot be greater than 256 */
     if (max_level>256)
         return MB_ERR_BAD_VALUE;
     if (max_level==0) max_level=256;
     
-    /* local context initialisation */
+    /* Local context initialisation */
     local_ctx.width = src->width;
     local_ctx.height = src->height;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     local_ctx.plines_src = src->plines;
     local_ctx.plines_marker = marker->plines;
     local_ctx.bytes_marker = MB_LINE_COUNT(marker);
@@ -303,7 +303,7 @@ MB_errcode MB_Basins8(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* grid initialisation */
+    /* Grid initialisation */
     if (grid==MB_SQUARE_GRID) {
          local_ctx.InsertNeighbors = MB_InsertNeighbors_square;
      } else {
@@ -316,7 +316,7 @@ MB_errcode MB_Basins8(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB
     /* Actual flooding */
     MB_Flooding(&local_ctx, max_level);
     
-    /* freeing the token array */
+    /* Freeing the token array */
     MB_free(local_ctx.TokensArray);
     
     return MB_NO_ERR;

@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Sets the bit at the given position.
+ * Sets the bit plane at the given position.
  * \param value the value in which the bit will be modified
  * \param bitval the bit value we want to set
  * \param pos the position of the bit
@@ -38,21 +38,21 @@
 Uint8 SET_BIT_PLANE8(Uint8 value, Uint8 bitval, Uint32 pos)
 {
     if ((bitval==0) && ((value&(1<<pos))!=0) ) {
-        /* unset the bit if set in value*/
+        /* Unset the bit if set in value*/
         return value-(1<<pos);
     }
     if ((bitval==1) && ((value&(1<<pos))==0) ) {
-        /* set the bit if not set in value*/
+        /* Set the bit if not set in value*/
         return value+(1<<pos);
     }
     
-    /* other cases means that value is already */
+    /* Other cases means that value is already */
     /* alright */
     return value;
 }
 
 /*
- * Extracts the bit at the given position.
+ * Extracts the bit plane at the given position.
  * \param value the value in which the bit will be extracted
  * \param pos the position of the bit
  * \return the value of the bit
@@ -81,9 +81,9 @@ static INLINE void EXTRACT_BITPLANE_LINE8(PLINE *plines_out,
     MB_Vector1 *pout = (MB_Vector1 *) (*plines_out);
     PLINE pin = (PLINE) (*plines_in);
     
-    /* working with MB_vec1_size bit word (MB_Vector1 size) */
+    /* Working with MB_vec1_size bit word (MB_Vector1 size) */
     for(i=0,j=0;i<bytes_in;i+=sizeof(MB_Vector1),j+=MB_vec1_size,pout++) {
-        /* building the pixel register */
+        /* Building the pixel register */
         pix_reg = 0;
         for(u=MB_vec1_size-1;u>-1;u--){
             pix_reg = (pix_reg<<1) | EXTRACT_BIT_PLANE(pin[j+u], plane);
@@ -94,7 +94,7 @@ static INLINE void EXTRACT_BITPLANE_LINE8(PLINE *plines_out,
 
 
 /*
- * Inserts the bit plane at the given position in 32-bits lines.
+ * Inserts the bit plane at the given position in 32-bit lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param bytes_in number of bytes inside the line
@@ -114,7 +114,7 @@ static INLINE void INSERT_BITPLANE_LINE8(PLINE *plines_out,
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
         pix_reg = *pin;
         for(u=0;u<MB_vec1_size;u++,pout++){
-            /* for all the pixels in the pixel register */
+            /* For all the pixels in the pixel register */
             *pout = SET_BIT_PLANE8(*pout, pix_reg&1, plane);
             pix_reg = pix_reg>>1;
         }    
@@ -134,7 +134,7 @@ static MB_errcode MB_InsertBitPlane1to8(MB_Image *src, MB_Image *dest, Uint32 pl
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
 
-    /* the plane index must be between 0 and 7 included */
+    /* The plane index must be between 0 and 7 included */
     if (plane>7) 
         return MB_ERR_BAD_PARAMETER;
         
@@ -143,7 +143,7 @@ static MB_errcode MB_InsertBitPlane1to8(MB_Image *src, MB_Image *dest, Uint32 pl
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
     
-    /* converting the 1-bit values in 8-bit values */
+    /* Converting the 1-bit values in 8-bit values */
     for(i=0; i<src->height; i++,plines_in++,plines_out++) {
         INSERT_BITPLANE_LINE8(plines_out, plines_in, bytes_in, plane);
     }
@@ -164,7 +164,7 @@ static MB_errcode MB_ExtractBitPlane8to1(MB_Image *src, MB_Image *dest, Uint32 p
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
 
-    /* the plane index must be between 0 and 7 included */
+    /* The plane index must be between 0 and 7 included */
     if (plane>7) 
         return MB_ERR_BAD_PARAMETER;
     
@@ -173,7 +173,7 @@ static MB_errcode MB_ExtractBitPlane8to1(MB_Image *src, MB_Image *dest, Uint32 p
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(dest);
     
-    /* converting the 8-bit values in 1-bit values */
+    /* Converting the 8-bit values in 1-bit values */
     for(i=0; i<src->height; i++,plines_in++,plines_out++) {
         EXTRACT_BITPLANE_LINE8(plines_out, plines_in, bytes_in, plane);
     }
@@ -191,15 +191,15 @@ static MB_errcode MB_ExtractBitPlane8to1(MB_Image *src, MB_Image *dest, Uint32 p
 Uint32 SET_BIT_PLANE32(Uint32 value, Uint32 bitval, Uint32 pos)
 {
     if ((bitval==0) && ((value&(1<<pos))!=0) ) {
-        /* unset the bit if set in value*/
+        /* Unset the bit if set in value*/
         return value-(1<<pos);
     }
     if ((bitval==1) && ((value&(1<<pos))==0) ) {
-        /* set the bit if not set in value*/
+        /* Set the bit if not set in value*/
         return value+(1<<pos);
     }
     
-    /* other cases means that value is already */
+    /* Other cases means that value is already */
     /* alright */
     return value;
 }
@@ -222,9 +222,9 @@ static INLINE void EXTRACT_BITPLANE_LINE32(PLINE *plines_out,
     MB_Vector1 *pout = (MB_Vector1 *) (*plines_out);
     PIX32 *pin = (PIX32 *) (*plines_in);
     
-    /* working with MB_vec1_size bit word (MB_Vector1 size) */
+    /* Working with MB_vec1_size bit word (MB_Vector1 size) */
     for(i=0,j=0;i<bytes_in;i+=sizeof(MB_Vector1),j+=MB_vec1_size,pout++) {
-        /* building the pixel register */
+        /* Building the pixel register */
         pix_reg = 0;
         for(u=MB_vec1_size-1;u>-1;u--){
             pix_reg = (pix_reg<<1) | EXTRACT_BIT_PLANE(pin[j+u], plane);
@@ -235,7 +235,7 @@ static INLINE void EXTRACT_BITPLANE_LINE32(PLINE *plines_out,
 
 
 /*
- * Inserts the bit plane at the given position in 32-bits lines.
+ * Inserts the bit plane at the given position in 32-bit lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param bytes_in number of bytes inside the line
@@ -255,7 +255,7 @@ static INLINE void INSERT_BITPLANE_LINE32(PLINE *plines_out,
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
         pix_reg = *pin;
         for(u=0;u<MB_vec1_size;u++,pout++){
-            /* for all the pixels in the pixel register */
+            /* For all the pixels in the pixel register */
             *pout = SET_BIT_PLANE32(*pout, pix_reg&1, plane);
             pix_reg = pix_reg>>1;
         }
@@ -274,7 +274,7 @@ static MB_errcode MB_InsertBitPlane1to32(MB_Image *src, MB_Image *dest, Uint32 p
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
 
-    /* the plane index must be between 0 and 31 included */
+    /* The plane index must be between 0 and 31 included */
     if (plane>31) 
         return MB_ERR_BAD_PARAMETER;
         
@@ -283,7 +283,7 @@ static MB_errcode MB_InsertBitPlane1to32(MB_Image *src, MB_Image *dest, Uint32 p
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
     
-    /* converting the 1-bit values in 8-bit values */
+    /* Converting the 1-bit values in 8-bit values */
     for(i=0; i<src->height; i++,plines_in++,plines_out++) {
         INSERT_BITPLANE_LINE32(plines_out, plines_in, bytes_in, plane);
     }
@@ -303,7 +303,7 @@ static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
 
-    /* the plane index must be between 0 and 31 included */
+    /* The plane index must be between 0 and 31 included */
     if (plane>31) 
         return MB_ERR_BAD_PARAMETER;
     
@@ -312,7 +312,7 @@ static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(dest);
     
-    /* converting the 8-bit values in 1-bit values */
+    /* Converting the 8-bit values in 1-bit values */
     for(i=0; i<src->height; i++,plines_in++,plines_out++) {
         EXTRACT_BITPLANE_LINE32(plines_out, plines_in, bytes_in, plane);
     }
@@ -330,7 +330,7 @@ static MB_errcode MB_ExtractBitPlane32to1(MB_Image *src, MB_Image *dest, Uint32 
  */
 MB_errcode MB_CopyBitPlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
 
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -354,7 +354,7 @@ MB_errcode MB_CopyBitPlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
         break;
     }
 
-    /* If this point is reached we can assume there was an error*/
+    /* If this point is reached we can assume there was an error */
     return MB_ERR_BAD_DEPTH;
 }
 

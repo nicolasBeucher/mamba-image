@@ -28,7 +28,7 @@
 #include "mambaApi_loc.h"
 
 /*
- * Extracts the byte plane at the given position out of 32-bits lines.
+ * Extracts the byte plane at the given position out of 32-bit lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param bytes_in number of bytes inside the line
@@ -51,7 +51,7 @@ static INLINE void EXTRACT_BYTEPLANE_LINE(PLINE *plines_out,
 
 
 /*
- * Inserts the byte plane at the given position in 32-bits lines.
+ * Inserts the byte plane at the given position in 32-bit lines.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
  * \param bytes_in number of bytes inside the line
@@ -74,7 +74,7 @@ static INLINE void INSERT_BYTEPLANE_LINE(PLINE *plines_out,
 }
 
 /*
- * Inserts the grey scale into the byte plane of the 32-bits
+ * Inserts the grey scale into the byte plane of the 32-bit
  * image.
  * \param src source image
  * \param dest destination image 
@@ -100,7 +100,7 @@ static MB_errcode MB_InsertBytePlane8to32(MB_Image *src, MB_Image *dest, Uint32 
 }
 
 /*
- * Extracts the byte plane of the 32-bits image and
+ * Extracts the byte plane of the 32-bit image and
  * puts it in the grey scale image.
  * \param src source image
  * \param dest destination image
@@ -135,12 +135,12 @@ static MB_errcode MB_ExtractBytePlane32to8(MB_Image *src, MB_Image *dest, Uint32
  */
 MB_errcode MB_CopyBytePlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
 
-    /* the plane index must be between 0 and 7 included */
+    /* The plane index must be between 0 and 7 included */
     if (plane>3) 
         return MB_ERR_BAD_PARAMETER;
 

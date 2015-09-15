@@ -29,7 +29,7 @@
 
 /*
  * Converts a binary image to an 8-bit image.
- * Pixels to True are set to 255 and to 0 otherwise
+ * Pixels to True are set to 255 and to 0 otherwise.
  * \param src source image
  * \param dest destination image 
  * \return An error code (MB_NO_ERR if successful)
@@ -45,7 +45,7 @@ MB_errcode MB_Convert1to8(MB_Image *src, MB_Image *dest)
     plines_in = src->plines;
     plines_out = dest->plines;
     
-    /* converting the 1-bit values in 8-bit values */
+    /* Converting the 1-bit values in 8-bit values */
     for(j=0; j<src->height; j++,plines_in++,plines_out++) {
         pin = (Uint32 *) (*plines_in);
         pout = (Uint8 *) (*plines_out);
@@ -64,7 +64,7 @@ MB_errcode MB_Convert1to8(MB_Image *src, MB_Image *dest)
 
 /*
  * Converts an 8-bit image to a binary image.
- * Pixels at 255 are set to True and to False otherwise
+ * Pixels at 255 are set to True and to False otherwise.
  * \param src source image
  * \param dest destination image 
  * \return An error code (MB_NO_ERR if successful)
@@ -80,13 +80,13 @@ MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
     plines_in = src->plines;
     plines_out = dest->plines;
     
-    /* converting the 8-bit values in 1-bit values */
-    /* if 8-bit value is equal to 255 (white) the bit is set to 1 */
+    /* Converting the 8-bit values in 1-bit values */
+    /* If 8-bit value is equal to 255 (white) the bit is set to 1 */
     /* and 0 in all other cases */
     for(j=0; j<src->height; j++,plines_in++,plines_out++) {
         pout = (Uint32 *) (*plines_out);
         for(i=0; i<src->width; i+=32,pout++) {
-            /* building the pixel register */
+            /* Building the pixel register */
             pix_reg = 0;
             for(u=31;u>-1;u--){
                 pix_reg = (pix_reg<<1) | (*(*plines_in+i+u)==0xFF);
@@ -100,7 +100,7 @@ MB_errcode MB_Convert8to1(MB_Image *src, MB_Image *dest)
 
 /*
  * Converts a binary image to an 32-bit image.
- * Pixels to True are set to 0xffffffff and to 0 otherwise
+ * Pixels to True are set to 0xffffffff and to 0 otherwise.
  * \param src source image
  * \param dest destination image 
  * \return An error code (MB_NO_ERR if successful)
@@ -116,14 +116,14 @@ MB_errcode MB_Convert1to32(MB_Image *src, MB_Image *dest)
     plines_in = src->plines;
     plines_out = dest->plines;
     
-    /* converting the 1-bit values in 8-bit values */
+    /* Converting the 1-bit values in 8-bit values */
     for(j=0; j<src->height; j++,plines_in++,plines_out++) {
         pin = (Uint32 *) (*plines_in);
         pout = (PIX32 *) (*plines_out);
         for(i=0; i<src->width; i+=32,pin++) {
             pix_reg = *pin;
             for(u=0;u<32;u++,pout++){
-                /* for all the pixels inside the pixel register */
+                /* For all the pixels inside the pixel register */
                 *pout = (pix_reg&1) ? 0xFFFFFFFF : 0;
                 pix_reg = pix_reg>>1;
             }    
@@ -135,7 +135,7 @@ MB_errcode MB_Convert1to32(MB_Image *src, MB_Image *dest)
 
 /*
  * Converts an 32-bit image to a binary image.
- * Pixels at 0xffffffff are set to True and to False otherwise
+ * Pixels at 0xffffffff are set to True and to False otherwise.
  * \param src source image
  * \param dest destination image 
  * \return An error code (MB_NO_ERR if successful)
@@ -152,14 +152,14 @@ MB_errcode MB_Convert32to1(MB_Image *src, MB_Image *dest)
     plines_in = src->plines;
     plines_out = dest->plines;
     
-    /* converting the 32-bit values in 1-bit values */
-    /* if 32-bit value is equal to 0xffffffff (white) the bit is set to 1 */
+    /* Converting the 32-bit values in 1-bit values */
+    /* If 32-bit value is equal to 0xffffffff (white) the bit is set to 1 */
     /* and 0 in all other cases */
     for(j=0; j<src->height; j++,plines_in++,plines_out++) {
         pout = (Uint32 *) (*plines_out);
         pin = (PIX32 *) (*plines_in);
         for(i=0; i<src->width; i+=32,pout++) {
-            /* building the pixel register */
+            /* Building the pixel register */
             pix_reg = 0;
             for(u=31;u>-1;u--){
                 pix_reg = (pix_reg<<1) | (pin[i+u]==0xFFFFFFFF);
@@ -191,20 +191,20 @@ MB_errcode MB_Convert32to8(MB_Image *src, MB_Image *dest)
         return err;
     }
 
-    /* if the max is below the 256 value, simply copy the lower byte */
-    /* of the 32 bit image */
+    /* If the max is below the 256 value, simply copy the lower byte */
+    /* of the 32-bit image */
     if (max<256) {
         return MB_CopyBytePlane(src, dest, 0);
     }
 
-    /* computing the multiplicator */
+    /* Computing the multiplicator */
     multiplicator = ((double) 255.0)/max;
 
     /* Setting up line pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
 
-    /* converting the 32-bit values in 8-bit values by downscaling */
+    /* Converting the 32-bit values in 8-bit values by downscaling */
     for(j=0; j<src->height; j++, plines_in++, plines_out++) {
         pin = (PIX32 *) (*plines_in);
         pout = (PIX8 *) (*plines_out);
@@ -218,14 +218,14 @@ MB_errcode MB_Convert32to8(MB_Image *src, MB_Image *dest)
 }
 
 /*
- * Converts an image of a given depth into another depth
+ * Converts an image of a given depth into another depth.
  * \param src source image
  * \param dest destination image 
  * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Convert(MB_Image *src, MB_Image *dest)
 {
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }

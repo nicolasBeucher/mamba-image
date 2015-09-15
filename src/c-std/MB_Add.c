@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Adds the 1-bit pixels of a line to the 8-bits pixels of another. 
+ * Adds the 1-bit pixels of a line to the 8-bit pixels of another. 
  * The result is put in a 8-bit pixels line (with saturation).
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -65,7 +65,7 @@ static INLINE void ADD_LINE_1_8_8(PLINE *plines_out,
 } 
 
 /*
- * Adds the 1-bit pixels of a line to the 8-bits pixels of another. 
+ * Adds the 1-bit pixels of a line to the 8-bit pixels of another. 
  * The result is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -96,7 +96,7 @@ static INLINE void ADD_LINE_1_8_32(PLINE *plines_out,
 }
 
 /*
- * Add the 8-bit pixels of a line to the 8-bits pixels of another. 
+ * Add the 8-bit pixels of a line to the 8-bit pixels of another. 
  * The result is put in a 8-bit pixels line (with saturation).
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -138,7 +138,7 @@ static INLINE void ADD_LINE_8_8_8(PLINE *plines_out,
 }
  
 /*
- * Add the 8-bit pixels of a line to the 8-bits pixels of another. 
+ * Add the 8-bit pixels of a line to the 8-bit pixels of another. 
  * The result is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -162,7 +162,7 @@ static INLINE void ADD_LINE_8_8_32(PLINE *plines_out,
 }
 
 /*
- * Add the 32-bit pixels of a line to the 32-bits pixels of another. 
+ * Add the 32-bit pixels of a line to the 32-bit pixels of another. 
  * The result is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -200,7 +200,7 @@ static INLINE void ADD_LINE_32_32_32(PLINE *plines_out,
 }
 
 /*
- * Add the 1-bit pixels of a line to the 32-bits pixels of another. 
+ * Add the 1-bit pixels of a line to the 32-bit pixels of another. 
  * The result is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -231,7 +231,7 @@ static INLINE void ADD_LINE_1_32_32(PLINE *plines_out,
 }
 
 /*
- * Add the 8-bit pixels of a line to the 32-bits pixels of another. 
+ * Add the 8-bit pixels of a line to the 32-bit pixels of another. 
  * The result is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -268,7 +268,7 @@ static INLINE void ADD_LINE_8_32_32(PLINE *plines_out,
  *      32-bit + 32-bit = 32-bit
  * \param src1 image 1
  * \param src2 image 2
- * \param dest image resulting of the addition of image 1 and 2. 
+ * \param dest image resulting of the addition of image 1 and 2 
  * \return An error code (MB_NO_ERR if successful)
  */
 MB_errcode MB_Add(MB_Image *src1, MB_Image *src2, MB_Image *dest) {
@@ -313,7 +313,7 @@ MB_errcode MB_Add(MB_Image *src1, MB_Image *src2, MB_Image *dest) {
         return MB_Or(src1, src2, dest);
         break;
     
-    /* binary + 8 bits images */
+    /* binary + 8-bit images */
     case MB_PAIR_1_8:
         if (dest->depth == 8) {
             for (i=0; i<src1->height; i++, plines_out++, plines_in1++, plines_in2++) {
@@ -327,7 +327,7 @@ MB_errcode MB_Add(MB_Image *src1, MB_Image *src2, MB_Image *dest) {
         }
         break;
 
-    /* two 8 bits images */
+    /* two 8-bit images */
     case MB_PAIR_8_8:
         if(dest->depth == 8) {
             for (i=0; i<src1->height; i++, plines_out++, plines_in1++, plines_in2++) {
@@ -341,21 +341,21 @@ MB_errcode MB_Add(MB_Image *src1, MB_Image *src2, MB_Image *dest) {
         }
         break;
 
-    /* two 32 bits images */
+    /* two 32-bit images */
     case MB_PAIR_32_32:
         for (i=0; i<src1->height; i++, plines_out++, plines_in1++, plines_in2++) {
             ADD_LINE_32_32_32(plines_out, plines_in1, plines_in2, bytes_in);
         }
         break;
 
-    /* binary image + 32 bits image */
+    /* binary image + 32-bit image */
     case MB_PAIR_1_32:
         for (i=0; i<src1->height; i++, plines_out++, plines_in1++, plines_in2++) {
             ADD_LINE_1_32_32(plines_out, plines_in1, plines_in2, bytes_in);
         }
         break;
 
-    /*8 bits image + 32 bits image*/
+    /*8-bit image + 32-bit image*/
     case MB_PAIR_8_32:
         for (i=0; i<src1->height; i++, plines_out++, plines_in1++, plines_in2++) {
             ADD_LINE_8_32_32(plines_out, plines_in1, plines_in2, bytes_in);

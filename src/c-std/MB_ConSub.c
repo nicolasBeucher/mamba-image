@@ -29,8 +29,8 @@
 #include "mambaApi_vector.h"
 
 /*
- * Subtracts a constant value to an 8-bits pixels image and places the 
- * result in an 8-bits image. 
+ * Subtracts a constant value to an 8-bit pixels image and places the 
+ * result in an 8-bit image. 
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -53,8 +53,8 @@ static INLINE void CONSUB_LINE_8_8(PLINE *plines_out,
     /* Computing the saturated value to subtract */
     /* or add if the value is negative */
     if (ubvalue<0) {
-        /* the value is negative */
-        /* we add its absolute value to the pixels */
+        /* The value is negative */
+        /* We add its absolute value to the pixels */
         if (ubvalue<-255) {
             satvalue = 255;
         } else {
@@ -70,8 +70,8 @@ static INLINE void CONSUB_LINE_8_8(PLINE *plines_out,
         }
         
     } else {
-        /* the value is positive */
-        /* we substract it to the pixels */
+        /* The value is positive */
+        /* We subtract it to the pixels */
         if (ubvalue>255) {
             satvalue = 255;
         } else {
@@ -107,8 +107,8 @@ static INLINE void CONSUB_LINE_8_8(PLINE *plines_out,
 }
 
 /*
- * Subtracts a constant value to a 32-bits pixels image and places the 
- * result in a 32-bits image.
+ * Subtracts a constant value to a 32-bit pixels image and places the 
+ * result in a 32-bit image.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -129,8 +129,8 @@ static INLINE void CONSUB_LINE_32_32(PLINE *plines_out,
 }
 
 /*
- * Subtracts a constant value to an 8-bits pixels image and places the 
- * result in a 32-bits image.
+ * Subtracts a constant value to an 8-bit pixels image and places the 
+ * result in a 32-bit image.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -163,7 +163,7 @@ MB_errcode MB_ConSub(MB_Image *src, Sint64 value, MB_Image *dest)
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -178,7 +178,7 @@ MB_errcode MB_ConSub(MB_Image *src, Sint64 value, MB_Image *dest)
     switch(MB_PROBE_PAIR(src,dest)) {
     
     case MB_PAIR_8_8:
-        /* subtraction with saturation */
+        /* Subtraction with saturation */
         for (i=0; i<src->height; i++, plines_in++, plines_out++) {
             CONSUB_LINE_8_8( plines_out, plines_in, bytes_in, (Sint16) value );
         }

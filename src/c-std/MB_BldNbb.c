@@ -250,12 +250,12 @@ MB_errcode MB_BldNbb(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *p
     PLINE *plines_mask, *plines_inout;
     NEIBFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(mask, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* grid value and possible directions are connected, grid value is the */
+    /* Grid value and possible directions are connected, grid value is the */
     /* maximum number of directions */
     if(dirnum>6 && grid==MB_HEXAGONAL_GRID) {
         return MB_ERR_BAD_DIRECTION;
@@ -271,12 +271,12 @@ MB_errcode MB_BldNbb(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint64 *p
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_mask = mask->plines;
     plines_inout = srcdest->plines;
     bytes_in = MB_LINE_COUNT(mask);
 
-    /*initial value of volume*/
+    /* Initial value of volume*/
     *pVolume = 0;
 
     /* Calling the corresponding function */

@@ -27,7 +27,7 @@
  */
 #include "mambaApi_loc.h"
 
-/* Error value interpretation*/
+/* Error value interpretation */
 char *err_str[] = {
     "No error",
     "Incompatible image sizes",

@@ -28,8 +28,8 @@
 #include "mambaApi_loc.h"
 
 /*
- * Divides a 8-bits pixels image by a constant value and places the 
- * result in an 8-bits image. 
+ * Divides a 8-bit pixels image by a constant value and places the 
+ * result in an 8-bit image. 
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -59,8 +59,8 @@ static INLINE void CONDIV_LINE_8_8(PLINE *plines_out,
 }
 
 /*
- * Divides a 32-bits pixels image by a constant value and places the 
- * result in an 32-bits image. 
+ * Divides a 32-bit pixels image by a constant value and places the 
+ * result in an 32-bit image. 
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image 1 pixel line
  * \param bytes_in number of bytes inside the line
@@ -95,7 +95,7 @@ MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -105,7 +105,7 @@ MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
     
-    /* verification over value (cannot divide by 0) */
+    /* Verification over value (cannot divide by 0) */
     if (value==0) {
         return MB_ERR_BAD_VALUE;
     }
@@ -115,7 +115,7 @@ MB_errcode MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest)
     switch(MB_PROBE_PAIR(src,dest)) {
 
     case MB_PAIR_8_8:
-        /* division with saturation */
+        /* Division with saturation */
         for (i = 0;i < src->height;i++, plines_in++, plines_out++) {
             CONDIV_LINE_8_8(plines_out, plines_in, bytes_in, value );
         }

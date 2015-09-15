@@ -52,7 +52,7 @@
 /**
  * Moves the image in the direction 1 (SQUARE GRID)
  * This means the pixels are shifted towards the top of the image.
- * we then rebuild the image part above
+ * We then rebuild the image part above
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -83,7 +83,7 @@ static void MB_QBldDir1(PLINE *plines_inout,
 /**
  * Moves the image in the direction 2 (SQUARE GRID)
  * This means the pixels are shifted towards the top right of the image.
- * we then rebuild the image part above and to the right
+ * We then rebuild the image part above and to the right
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -113,7 +113,7 @@ static void MB_QBldDir2(PLINE *plines_inout,
 /**
  * Moves the image in the direction 3 (SQUARE GRID)
  * This means the pixels are shifted towards the right of the image.
- * we then rebuild the image part to the right
+ * We then rebuild the image part to the right
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -135,7 +135,7 @@ static void MB_QBldDir3(PLINE *plines_inout,
 /**
  * Moves the image in the direction 4 (SQUARE GRID)
  * This means the pixels are shifted towards the bottom right of the image.
- * we then rebuild the image part below and to the right
+ * We then rebuild the image part below and to the right
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -161,7 +161,7 @@ static void MB_QBldDir4(PLINE *plines_inout,
 /**
  * Moves the image in the direction 5 (SQUARE GRID)
  * This means the pixels are shifted towards the bottom of the image.
- * we then rebuild the image part below
+ * We then rebuild the image part below
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -187,7 +187,7 @@ static void MB_QBldDir5(PLINE *plines_inout,
 /**
  * Moves the image in the direction 6 (SQUARE GRID)
  * This means the pixels are shifted towards the bottom left of the image.
- * we then rebuild the image part below and to the left
+ * We then rebuild the image part below and to the left
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -213,7 +213,7 @@ static void MB_QBldDir6(PLINE *plines_inout,
 /**
  * Moves the image in the direction 7 (SQUARE GRID)
  * This means the pixels are shifted towards the left of the image.
- * we then rebuild the image part to the left
+ * We then rebuild the image part to the left
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -236,7 +236,7 @@ static void MB_QBldDir7(PLINE *plines_inout,
 /**
  * Moves the image in the direction 8 (SQUARE GRID)
  * This means the pixels are shifted towards the top left of the image.
- * we then rebuild the image part above and to the left
+ * We then rebuild the image part above and to the left
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -272,7 +272,7 @@ static void MB_QBldDir8(PLINE *plines_inout,
 /**
  * Moves the image in the direction 1 (HEXAGONAL GRID)
  * This means the pixels are shifted towards the top right of the image.
- * we then rebuild the image part above and to the right
+ * We then rebuild the image part above and to the right
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -311,7 +311,7 @@ static void MB_HBldDir1(PLINE *plines_inout,
 /**
  * Moves the image in the direction 3 (HEXAGONAL GRID)
  * This means the pixels are shifted towards the bottom right of the image.
- * we then rebuild the image part below and to the right
+ * We then rebuild the image part below and to the right
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -346,7 +346,7 @@ static void MB_HBldDir3(PLINE *plines_inout,
 /**
  * Moves the image in the direction 4 (HEXAGONAL GRID)
  * This means the pixels are shifted towards the bottom left of the image.
- * we then rebuild the image part below and to the left
+ * We then rebuild the image part below and to the left
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -381,7 +381,7 @@ static void MB_HBldDir4(PLINE *plines_inout,
 /**
  * Moves the image in the direction 6 (HEXAGONAL GRID)
  * This means the pixels are shifted towards the top left of the image.
- * we then rebuild the image part above and to the left
+ * We then rebuild the image part above and to the left
  * \param plines_inout pointer on the destination image lines
  * \param plines_mask pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -468,12 +468,12 @@ typedef void (NEIBFUNC) (PLINE *plines_inout,
                          Uint64 *p_volume);
 
 /** 
- * array giving the function to use to go in a given direction with
+ * Array giving the function to use to go in a given direction with
  * regards to the grid in use (hexagonal or square).
  */
 static NEIBFUNC *SwitchTo[2][9] =
 {
-  { /* square directions */
+  { /* Square directions */
      MB_QBldDir0,
      MB_QBldDir1,
      MB_QBldDir2,
@@ -484,7 +484,7 @@ static NEIBFUNC *SwitchTo[2][9] =
      MB_QBldDir7,
      MB_QBldDir8
   },
-  { /* hexagonal directions */
+  { /* Hexagonal directions */
      MB_QBldDir0,
      MB_HBldDir1,
      MB_QBldDir3,

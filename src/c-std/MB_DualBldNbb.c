@@ -32,12 +32,12 @@
 /* Base functions                       */
 /****************************************/
 /* The functions described here realise the basic operation */
-/* needed to shift pixel in any directions */
+/* needed to shift pixel in any directions. */
 
 /* Here we used a notion called pixels register. In fact it is a MB_Vector1 value */
 /* that is holding binary pixels that we are going to use to perform computation */
 /* it is easier to call it pixels registers because the value does not represent */
-/* only one pixel but 32 or 64 depending on your computer target */
+/* only one pixel but 32 or 64 depending on your computer target. */
 
 /*
  * Used to rebuild the pixels of a line.
@@ -217,7 +217,7 @@ static INLINE void BLD_LINE_RIGHT_HORZ(PLINE *plines_germ,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* build functions */
+/* build functions. */
 #include "MB_BldDirection.h"
 
 /****************************************/
@@ -242,12 +242,12 @@ MB_errcode MB_DualBldNbb(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint6
     PLINE *plines_mask, *plines_inout;
     NEIBFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(mask, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* grid value and possible direction are connected, grid value is the */
+    /* Grid value and possible direction are connected, grid value is the */
     /* maximum number of directions */
     if(dirnum>6 && grid==MB_HEXAGONAL_GRID) {
         return MB_ERR_BAD_DIRECTION;
@@ -263,12 +263,12 @@ MB_errcode MB_DualBldNbb(MB_Image *mask, MB_Image *srcdest, Uint32 dirnum, Uint6
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_mask = mask->plines;
     plines_inout = srcdest->plines;
     bytes_in = MB_LINE_COUNT(mask);
 
-    /*initial value of volume*/
+    /* Initial value of volume*/
     *pVolume = 0;
 
     /* Calling the corresponding function */
