@@ -9,3 +9,7 @@ __pycache__/
 *.out
 *.toc
 *.pdf
+
+# tests
+test/test_run.html
+test/test_run_cov/

@@ -60,11 +60,6 @@ class _grid3D:
         # Returns the biggest distance in plane a neighbor pixel can be
         # from the central point
         return 0
-    
-    def getGridPeriod(self):
-        # Returns the periodicity of the grid stacking (number of planes
-        # between two vertically superposed planes)
-        return 0
         
     def getDirections(self, withoutZero=False):
         # Returns the available directions on the grid
@@ -148,13 +143,13 @@ class _gridFCCubic3D(_grid3D):
             extraS = (((0,0),(0,1),(1,0)),((0,0),(0,0),(0,1)),((0,0),(0,1),(0,1)))
             (sc, sh) = extraS[zindex%3][amp%3]
             nc = (amp//3 + sc) * 2
-            dirList = [(1, nc, mamba.SQUARE)]               
+            dirList = [(1, nc, mamba.SQUARE)]
             if sh <> 0:
                 if (zindex%3) == 2:
                     hd = 1
                 else:
                     hd = 6
-                dirList.append((hd, 1, mamba.HEXAGONAL))                  
+                dirList.append((hd, 1, mamba.HEXAGONAL))
         elif d < 12:
             extraS = (((0,0,0),(1,0,0),(1,1,0)),((0,0,0),(0,1,0),(0,1,1)),((0,0,0),(0,0,1),(1,0,1)))
             hdList = [self.convertFromDir(d, i)[1] for i in range(3)]
@@ -174,14 +169,11 @@ class _gridFCCubic3D(_grid3D):
                     hd = 3
                 else:
                     hd = 4
-                dirList.append((hd, 1, mamba.HEXAGONAL))        
+                dirList.append((hd, 1, mamba.HEXAGONAL))
         return dirList
     
     def getZExtension(self):
         return 1
-    
-    def getGridPeriod(self):
-        return 2
         
     def get2DGrid(self):
         return self.basegrid
@@ -268,13 +260,10 @@ class _gridCCubic3D(_grid3D):
             dh2 = self.convertFromDir(d, 1)[1]
             if dh2<>0:
                 amph2 = amp//2 + (amp%2)*(zindex%2)
-                dirList.append((dh2, amph2, mamba.SQUARE))       
+                dirList.append((dh2, amph2, mamba.SQUARE))
         return dirList
         
     def getZExtension(self):
-        return 1
-    
-    def getGridPeriod(self):
         return 1
         
     def get2DGrid(self):
@@ -355,9 +344,6 @@ class _gridCubic3D(_grid3D):
         
     def getZExtension(self):
         return 1
-    
-    def getgridPeriod(self):
-        return 0
         
     def get2DGrid(self):
         return self.basegrid
@@ -408,9 +394,6 @@ class _gridDefault3D(_grid3D):
         
     def getZExtension(self):
         return self.proxyGrid.getZExtension()
-    
-    def getGridPeriod(self):
-        return self.proxyGrid.getGridPeriod()
         
     def get2DGrid(self):
         return self.proxyGrid.get2DGrid()
