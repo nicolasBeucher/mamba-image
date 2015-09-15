@@ -63,11 +63,11 @@ extern "C" {
 # endif
 #endif
 
-/** Making sure the image size is multiple of 64 for the width */
+/** Making sure the image size is multiple of 64 for the width. */
 #define MB_ROUND_W    64
-/** Making sure the image size is multiple of 2 for the heigth */
+/** Making sure the image size is multiple of 2 for the height. */
 #define MB_ROUND_H    2
-/** Image limit size in total number of pixels
+/** Image limit size in total number of pixels.
  * When considering the limits on the image size, remember that
  * the function computing the volume which returns Uint64
  * should not overflow on the 32-bit images. (that is, max volume
@@ -85,21 +85,21 @@ extern "C" {
 /* Structures and Typedef               */
 /****************************************/
 
-/** Unsigned 8 bit value type */
+/** Unsigned 8-bit value type */
 typedef uint8_t Uint8;
-/** Unsigned 16 bit value type */
+/** Unsigned 16-bit value type */
 typedef uint16_t Uint16;
-/** Unsigned 32 bit value type*/
+/** Unsigned 32-bit value type*/
 typedef uint32_t Uint32;
-/** Unsigned 64 bit value type */
+/** Unsigned 64-bit value type */
 typedef uint64_t Uint64;
-/** Signed 8 bit value type */
+/** Signed 8-bit value type */
 typedef int8_t Sint8;
-/** Signed 16 bit value type */
+/** Signed 16-bit value type */
 typedef int16_t Sint16;
-/** Signed 32 bit value type */
+/** Signed 32-bit value type */
 typedef int32_t Sint32;
-/** Signed 64 bit value type */
+/** Signed 64-bit value type */
 typedef int64_t Sint64;
 
 /** grey-scale pixels value type */
@@ -120,7 +120,7 @@ typedef struct {
     Uint32 height;
     /** The depth of the image */
     Uint32 depth;
-    /** accesors to pixel lines */
+    /** access to pixel lines */
     PLINE *plines;
     /** pixel array */
     PIX8 *pixels;
@@ -130,11 +130,11 @@ typedef struct {
 typedef struct {
     /** The images sequence composing the 3D data */
     MB_Image **seq;
-    /** the lenght of the sequence */
+    /** the length of the sequence */
     Uint32 length;
 } MB3D_Image;
 
-/** possible grid values */
+/** Possible grid values: */
 enum MB_grid_t {
     /** Hexagonal grid */
     MB_HEXAGONAL_GRID = 1,
@@ -142,7 +142,7 @@ enum MB_grid_t {
     MB_SQUARE_GRID = 0
 };
 
-/** possible edge mode */
+/** Possible edge modes: */
 enum MB_edgemode_t {
     /** Empty edge (zero) */
     MB_EMPTY_EDGE = 0,
@@ -150,7 +150,7 @@ enum MB_edgemode_t {
     MB_FILLED_EDGE = 1
 };
 
-/** possible 3D grid values
+/** Possible 3D grid values:
  * Values are specificly chosen not to match 2D grid values.
  */
 enum MB3D_grid_t {
@@ -162,7 +162,7 @@ enum MB3D_grid_t {
     MB3D_FCC_GRID = 1025
 };
 
-/** Neighbors encoding */
+/** Neighbors encoding: */
 enum MB_Neighbors_code_t {
     MB_NEIGHBOR_0 = 0x0001,
     MB_NEIGHBOR_1 = 0x0002,

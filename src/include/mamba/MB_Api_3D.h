@@ -38,9 +38,9 @@ extern "C" {
  * Performs a watershed segmentation of the 3D image using the marker image
  * as a starting point for the flooding. The function builds the actual 
  * watershed line (idempotent) plus catchment basins (not idempotent). 
- * The result is put into the 32-bits marker image.
+ * The result is put into the 32-bit marker image.
  *
- * The segmentation is coded as follows into the 32-bits values.
+ * The segmentation is coded as follows into the 32-bit values.
  *
  * | 0     | 1     | 2     | 3      |
  * |-------|-------|-------|--------|
@@ -62,13 +62,13 @@ MB3D_Watershed(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_
 /**
  * Performs a watershed segmentation of the 3D image using the 3D marker image
  * as a starting point for the flooding. The function returns the catchment 
- * basins of the watershed but no actual watershed line. It is recommanded
- * to use this functions rather than MB_Watershed if you are only interested
+ * basins of the watershed but no actual watershed line. It is recommended
+ * to use this function rather than MB_Watershed if you are only interested
  * in catchment basins (faster).
  *
- * The result is put into a the 32-bits marker image.
+ * The result is put into the 32-bit marker image.
  *
- * The segmentation is coded as follows into the 32 bit values.
+ * The segmentation is coded as follows into the 32-bit values.
  *
  * | 0     | 1     | 2     | 3      |
  * |-------|-------|-------|--------|
@@ -78,7 +78,7 @@ MB3D_Watershed(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_
  *
  * \param src the 3D image (greyscale or 32-bit) to segment
  * \param marker the 3D marker image in which the result of segmentation will be put
- * \param max_level the maximum level reached by the water.
+ * \param max_level the maximum level reached by the water
  * \param grid the grid used (either square or hexagonal)
  * \return An error code (NO_ERR if successful)
  */
@@ -115,7 +115,7 @@ MB3D_HierarDualBld(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_grid_t grid)
  * \param dest the 32-bit 3D image where object are labelled
  * \param lblow the lowest value allowed for label on the low byte (must be inferior to lbhigh)
  * \param lbhigh the first high value NOT allowed for label on the low byte (maximum allowed is 256)
- * \param pNbobj the number of object founds
+ * \param pNbobj the number of object found
  * \param grid the grid used (either square or hexagonal)
  * \return An error code (NO_ERR if successful)
  */
@@ -126,9 +126,9 @@ MB3D_Label(MB3D_Image *src, MB3D_Image *dest,
            enum MB3D_grid_t grid);
 /**
  * Computes for each pixel the distance to the edge of the set in which the
- * pixel is found
+ * pixel is found.
  * \param src the binary source 3D image
- * \param dest the 32-bits 3D image in which the distance for each pixel is stored
+ * \param dest the 32-bit 3D image in which the distance for each pixel is stored
  * \param grid the grid used (either cubic or face_center_cubic)
  * \param edge the kind of edge to use (behavior for pixels near edge depends on it)
  * \return An error code (NO_ERR if successful)

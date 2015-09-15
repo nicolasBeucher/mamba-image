@@ -48,19 +48,19 @@ extern "C" {
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Create(MB_Image *image, Uint32 width, Uint32 height, Uint32 depth);
 /**
- * Destroys an image (memory freeing)
+ * Destroys an image (memory freeing).
  * \param image the image to be destroyed
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Destroy(MB_Image *image);
 /**
- * \return the number of image that have been allocated so far.
+ * \return the number of image that have been allocated so far
  */
 extern MB_API_ENTRY Uint32 MB_API_CALL
 MB_getImageCounter(void);
 /**
- * Loads an image data with data given in argument
+ * Loads an image data with data given in argument.
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
@@ -69,7 +69,7 @@ MB_getImageCounter(void);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Load(MB_Image *image, PIX8 *indata, Uint32 len);
 /**
- * Reads an image data contents and put it in an array
+ * Reads an image data contents and put it in an array.
  * \param image the image to read
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image
@@ -79,8 +79,8 @@ MB_Load(MB_Image *image, PIX8 *indata, Uint32 len);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Extract(MB_Image *image, PIX8 **outdata, Uint32 *len);
 /**
- * Converts an image of a given depth into another depth
- * All possible conversion are supported.
+ * Converts an image of a given depth into another depth.
+ * All possible conversions are supported.
  * \param src source image
  * \param dest destination image 
  * \return An error code (NO_ERR if successful)
@@ -88,7 +88,7 @@ MB_Extract(MB_Image *image, PIX8 **outdata, Uint32 *len);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Convert(MB_Image *src, MB_Image *dest);
 /**
- * Copies an image data contents into another image
+ * Copies an image data contents into another image.
  * This copy works with same size images.
  * \param src the source image
  * \param dest the destination image
@@ -97,7 +97,7 @@ MB_Convert(MB_Image *src, MB_Image *dest);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Copy(MB_Image *src, MB_Image *dest);
 /**
- * Copies an image line contents into another image line
+ * Copies an image line contents into another image line.
  * \param src the source image
  * \param dest the destination image
  * \param insrc_pos the position of the line copied from src
@@ -129,7 +129,7 @@ MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
                                         MB_Image *dest, Uint32 x_dest, Uint32 y_dest,
                        Uint32 w, Uint32 h);
 /**
- * Puts the pixel value inside the image at the given position
+ * Puts the pixel value inside the image at the given position.
  * \param dest the image 
  * \param pixVal the pixel value
  * \param x position in x of the pixel targeted
@@ -139,7 +139,7 @@ MB_CropCopy(MB_Image *src, Uint32 x_src, Uint32 y_src,
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_PutPixel(MB_Image *dest, Uint32 pixVal, Uint32 x, Uint32 y);
 /**
- * Gets the pixel value inside the image at the given position
+ * Gets the pixel value inside the image at the given position.
  * \param src the image 
  * \param pixVal the returned pixel value
  * \param x position in x of the pixel targeted
@@ -175,8 +175,8 @@ MB3D_Stack(MB3D_Image *image, MB_Image *stacked, Uint32 position);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB3D_Destroy(MB3D_Image *image);
 /**
- * Converts a 3D image of a given depth into another depth
- * Supported conversion are: 1->8, 8->1 and 32->8 (downscaling)
+ * Converts a 3D image of a given depth into another depth.
+ * Supported conversions are: 1->8, 8->1 and 32->8 (downscaling).
  * \param src 3D source image
  * \param dest 3D destination image 
  * \return An error code (NO_ERR if successful)

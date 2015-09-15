@@ -180,7 +180,7 @@ MB_Shift(MB_Image *src, MB_Image *dest, Uint32 dirnum, Uint32 count, Uint32 long
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_ShiftVector(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, Uint32 long_filler_pix);
 /**
- * Looks for the minimum between two images pixels (a central pixel
+ * Looks for the minimum between two image pixels (a central pixel
  * and its neighbor in the other image previously shifted by the given vector)
  *
  * \param src source image in which the neighbor are taken
@@ -208,17 +208,19 @@ MB_InfVector(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy, enum MB_edg
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_SupVector(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy, enum MB_edgemode_t edge);
 /**
- * Performs a binary Hit-or-Miss operation on image imIn using the structuring
+ * Performs a binary Hit-or-Miss operation on src image using the structuring
  * elements es0 and es1. Structuring elements are integer values coding which
  * direction must be taken into account.
- * es0 indicating which neighbor of the current pixel will be checked for 0 value.
+ * es0 indicates which neighbor of the current pixel will be checked for 0 value.
  * es1 those which will be evaluated for 1 value.
  *
  * For example, in hexagonal grid, it means that if you want to look for a
  * pattern where the neighbors in direction 6 and 1 are true while the current
  * pixel is false just as neighbors 2 and 5, you will encode this in the
  * elements es0 and es1 like this :
+ *
  *      es0 = 1+4+32
+ *
  *      es1 = 64+2
  *
  *\see MB_Neighbors_code_t for encoded structuring elements.

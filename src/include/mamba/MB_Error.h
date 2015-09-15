@@ -33,12 +33,12 @@
 extern "C" {
 #endif
 
-/** Type definition for error code */
+/** Type definition for error code. */
 typedef enum {
 /** Value returned by function when no error was encountered. */
     MB_NO_ERR,
 /** Value returned by function when an error of size inside the image was encountered.
- * For example if the width of a first image was not corresponding with the width of a
+ * For example, if the width of a first image was not corresponding with the width of a
  * second image when both are used in the same computations.
  */
     MB_ERR_BAD_SIZE,
@@ -63,15 +63,15 @@ typedef enum {
  */
     MB_ERR_BAD_IMAGE_DIMENSIONS,
 /** Value returned when the data given to a load function is incorrect 
- * (size or type)
+ * (size or type).
  */
     MB_ERR_LOAD_DATA,
-/** Value never returned (reserved for the error function) */
+/** Value never returned (reserved for the error function). */
     MB_ERR_UNKNOWN
 } MB_errcode;
 
 /**
- * Returns an explanation of the error code 
+ * Returns an explanation of the error code. 
  * \param error_nb the error code number
  */
 extern MB_API_ENTRY char * MB_API_CALL

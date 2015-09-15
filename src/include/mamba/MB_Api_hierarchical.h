@@ -63,9 +63,9 @@ MB_HierarDualBld(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid);
  * as a starting point for the flooding. The function builds the actual 
  * watershed line (idempotent) plus catchment basins (not idempotent). 
  *
- * The result is put into the 32-bits marker image.
+ * The result is put into the 32-bit marker image.
  *
- * The segmentation is coded as follows into the 32-bits values.
+ * The segmentation is coded as follows into the 32-bit values.
  *
  * | 0     | 1     | 2     | 3      |
  * |-------|-------|-------|--------|
@@ -78,7 +78,7 @@ MB_HierarDualBld(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid);
  *
  * \param src the greyscale or 32-bit image to segment
  * \param marker the marker image in which the result of segmentation will be put
- * \param max_level the maximum level reach by the water.
+ * \param max_level the maximum level reach by the water
  * \param grid the grid used (either square or hexagonal)
  * \return An error code (NO_ERR if successful)
  */
@@ -87,13 +87,13 @@ MB_Watershed(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t g
 /**
  * Performs a watershed segmentation of the image using the marker image
  * as a starting point for the flooding. The function returns the catchment 
- * basins of the watershed but no actual watershed line. It is recommanded
+ * basins of the watershed but no actual watershed line. It is recommended
  * to use this functions rather than MB_Watershed if you are only interested
  * in catchment basins (faster).
  *
- * The result is put into a the 32-bits marker image.
+ * The result is put into a the 32-bit marker image.
  *
- * The segmentation is coded as follows into the 32 bit values.
+ * The segmentation is coded as follows into the 32-bit values.
  *
  * | 0     | 1     | 2     | 3      |
  * |-------|-------|-------|--------|
@@ -103,7 +103,7 @@ MB_Watershed(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t g
  *
  * \param src the greyscale or 32-bit image to be segmented
  * \param marker the marker image in which the result of segmentation will be put
- * \param max_level the maximum level reached by the water.
+ * \param max_level the maximum level reached by the water
  * \param grid the grid used (either square or hexagonal)
  * \return An error code (NO_ERR if successful)
  */

@@ -93,7 +93,7 @@ extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Sup(MB_Image *src1, MB_Image *src2, MB_Image *dest);
 /**
  * Computes a binary image where pixels are set to 1 when the pixels of
- * image 1 have greater values than pixels of image 2 otherwise 0
+ * image 1 have greater values than pixels of image 2 otherwise 0.
  * \param src1 source image 1
  * \param src2 source image 2
  * \param dest destination image 
@@ -103,7 +103,7 @@ MB_Sup(MB_Image *src1, MB_Image *src2, MB_Image *dest);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 strict);
 /**
- * Adds the pixels of two images and put the result in the third image.
+ * Adds the pixels of two images and puts the result in the third image.
  * Depending on the format of the target image, the result may be saturated or not.
  * You can perform the following additions :
  *      - 1-bit + 1-bit = 1-bit (binary OR)
@@ -119,7 +119,7 @@ MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 strict);
  *
  * \param src1 image 1
  * \param src2 image 2
- * \param dest image resulting of the addition of image 1 and 2. 
+ * \param dest image resulting of the addition of image 1 and 2 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
@@ -162,7 +162,7 @@ MB_Sub(MB_Image *src1, MB_Image *src2, MB_Image *dest);
  *
  * \param src1 image 1
  * \param src2 image 2
- * \param dest image resulting of the multiplication of image 1 and 2. 
+ * \param dest image resulting of the multiplication of image 1 and 2 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
@@ -180,7 +180,7 @@ MB_Mul(MB_Image *src1, MB_Image *src2, MB_Image *dest);
  *
  * \param src1 image 1
  * \param src2 image 2
- * \param dest image resulting of the division of image 1 and 2 (quotient). 
+ * \param dest image resulting of the division of image 1 and 2 (quotient) 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
@@ -189,7 +189,7 @@ MB_Div(MB_Image *src1, MB_Image *src2, MB_Image *dest);
  * Computes the set difference between two images.
  * The result image pixel value is the pixel value of
  * image 1 if this value was greater than value of pixel 2
- * otherwise the minimum possible value is set for the pixel
+ * otherwise the minimum possible value is set for the pixel.
  * \param src1 source image 1
  * \param src2 source image 2
  * \param dest destination image 
@@ -201,7 +201,7 @@ MB_Diff(MB_Image *src1, MB_Image *src2, MB_Image *dest);
  * Adds a constant value to the pixels of an image.
  * \param src the source image
  * \param value the constant value to be added to the pixels
- * \param dest the image resulting of the addition of image 1 and value. 
+ * \param dest the image resulting of the addition of image 1 and value 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
@@ -210,7 +210,7 @@ MB_ConAdd(MB_Image *src, Sint64 value, MB_Image *dest);
  * Subtracts a constant value to the pixels of an image.
  * \param src the source image
  * \param value the constant value to be subtracted to the pixels
- * \param dest the image resulting of the subtraction of image 1 and value. 
+ * \param dest the image resulting of the subtraction of image 1 and value 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
@@ -219,7 +219,7 @@ MB_ConSub(MB_Image *src, Sint64 value, MB_Image *dest);
  * Multiplies a constant value to the pixels of an image.
  * \param src the source image
  * \param value the constant value to be multiplied to the pixels
- * \param dest the image resulting of the multiplication of image 1 by the value. 
+ * \param dest the image resulting of the multiplication of image 1 by the value 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
@@ -228,13 +228,13 @@ MB_ConMul(MB_Image *src, Uint32 value, MB_Image *dest);
  * Divides (quotient) the pixels of an image by a constant value.
  * \param src the source image
  * \param value the constant value used in the division
- * \param dest the image resulting of the division of image 1 by the value. 
+ * \param dest the image resulting of the division of image 1 by the value 
  * \return An error code (NO_ERR if successful)
  */
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_ConDiv(MB_Image *src, Uint32 value, MB_Image *dest);
 /**
- * Fills an image with a specific value
+ * Fills an image with a specific value.
  * \param dest the image
  * \param value the value to fill the image
  * \return An error code (NO_ERR if successful)
@@ -244,7 +244,7 @@ MB_ConSet(MB_Image *dest, Uint32 value);
 /**
  * Computes the volume of an image.
  * The volume is the sum of the pixel values (i.e. integration 
- * of the image)
+ * of the image).
  * \param src source image
  * \param pVolume pointer to the volume variable
  * \return An error code (NO_ERR if successful)
@@ -261,7 +261,7 @@ extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Check(MB_Image *src, Uint32 *isEmpty);
 /**
  * Applies the function in the lookup table to the pixels of source image.
- * A pixel value is changed to a new value accordingly with its current value
+ * A pixel value is changed to a new value accordingly with its current value.
  * \param src source image
  * \param dest destination image
  * \param ptab the lookup table pointer
@@ -290,7 +290,7 @@ MB_Histo(MB_Image *src, Uint32 *phisto);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Compare(MB_Image *src, MB_Image *cmp, MB_Image *dest, Sint32 *px, Sint32 *py);
 /**
- * Fills a binary image according to the following rules :
+ * Fills a binary image according to the following rules:
  * if pixel value lower than low or higher than high the binary pixel
  * is set to 0, in other cases the pixel is set to 1.
  * \param src source image
@@ -302,7 +302,7 @@ MB_Compare(MB_Image *src, MB_Image *cmp, MB_Image *dest, Sint32 *px, Sint32 *py)
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Thresh(MB_Image *src, MB_Image *dest, Uint32 low, Uint32 high);
 /**
- * Converts a binary image in a grey scale image (8-bits) or in a 32-bits image
+ * Converts a binary image in a grey scale image (8-bit) or in a 32-bit image
  * using value maskf to replace 0 and maskt to replace 1.
  * \param src binary source image
  * \param dest destination image 
@@ -324,7 +324,7 @@ extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Range(MB_Image *src, Uint32 *min, Uint32 *max);
 /**
  * gives the minimum and maximum possible values of the image pixels
- * given the image depth
+ * given the image depth.
  * \param src source image
  * \param min the minimum possible value of the pixels
  * \param max the maximum possible value of the pixels
@@ -333,7 +333,7 @@ MB_Range(MB_Image *src, Uint32 *min, Uint32 *max);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_depthRange(MB_Image *src, Uint32 *min, Uint32 *max);
 /**
- * Inserts or extracts the bit plane in/out an image src into 
+ * Inserts or extracts the bit plane in/out of image src into 
  * dest.
  * \param src source image
  * \param dest destination image
@@ -343,7 +343,7 @@ MB_depthRange(MB_Image *src, Uint32 *min, Uint32 *max);
 extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_CopyBitPlane(MB_Image *src, MB_Image *dest, Uint32 plane);
 /**
- * Inserts or extracts the byte plane in/out an image src into/from 
+ * Inserts or extracts the byte plane in/out of image src into 
  * dest.
  * \param src source image
  * \param dest destination image
@@ -359,7 +359,7 @@ MB_CopyBytePlane(MB_Image *src, MB_Image *dest, Uint32 plane);
  * \param dest the 32-bit image where object are labelled
  * \param lblow the lowest value allowed for label on the low byte (must be inferior to lbhigh)
  * \param lbhigh the first high value NOT allowed for label on the low byte (maximum allowed is 256)
- * \param pNbobj the number of object founds
+ * \param pNbobj the number of object found
  * \param grid the grid used (either square or hexagonal)
  * \return An error code (NO_ERR if successful)
  */
@@ -367,12 +367,12 @@ extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Label(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, Uint32 *pNbobj, enum MB_grid_t grid);
 /**
  * Computes for each pixel the distance to the edge of the set in which the
- * pixel is found
+ * pixel is found.
  *
  * The algorithm works with a list.
  *
  * \param src the binary source image
- * \param dest the 32-bits image in which the distance for each pixel is stored
+ * \param dest the 32-bit image in which the distance for each pixel is stored
  * \param grid the grid used (either hexagonal or square)
  * \param edge the kind of edge to use (behavior for pixels near edge depends on it)
  * \return An error code (NO_ERR if successful)
@@ -381,7 +381,7 @@ extern MB_API_ENTRY MB_errcode MB_API_CALL
 MB_Distanceb(MB_Image *src, MB_Image *dest, enum MB_grid_t grid, enum MB_edgemode_t edge);
 /**
  * Returns the smallest frame that contains all the pixels of image that are greater or equal to
- * the given threshold value, using the four last pointers to describe it
+ * the given threshold value, using the four last pointers to describe it.
  * \param src source image
  * \param thresval the threshold value used to compute the frame
  * \param ulx the x-coordinate of the upper left corner of the frame
