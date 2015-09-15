@@ -29,7 +29,7 @@
 #include "mambaApi_loc.h"
 #include "mambaApi_vector.h"
 
-/* functions for each depth */
+/* Functions for each depth */
 
 static INLINE MB_errcode MB_Frame1(MB_Image *src, Uint32 *ulx, Uint32 *uly, Uint32 *brx, Uint32 *bry) {
     Uint32 bytes_in;
@@ -38,8 +38,8 @@ static INLINE MB_errcode MB_Frame1(MB_Image *src, Uint32 *ulx, Uint32 *uly, Uint
     PLINE *plines;
     MB_Vector1 *pin, pixel_register;
     
-    /* default value */
-    /* this way, the first comparison will always be in */
+    /* Default value */
+    /* This way, the first comparison will always be in */
     /* favor of the pixel */
 
     *brx = 0;
@@ -52,7 +52,7 @@ static INLINE MB_errcode MB_Frame1(MB_Image *src, Uint32 *ulx, Uint32 *uly, Uint
     plines = src->plines;
     bytes_in = MB_LINE_COUNT(src);
 
-    /* proceeding line by line */
+    /* Proceeding line by line */
     for(i=0, y=0; i<src->height; y++, i++, plines++) {
         pin = (MB_Vector1 *) (*plines);
         for(j=0,x=0; j<bytes_in; j+=sizeof(MB_Vector1), pin++) {
@@ -80,8 +80,8 @@ static INLINE MB_errcode MB_Frame8(MB_Image *src, PIX8 thresval, Uint32 *ulx, Ui
     PLINE *plines;
     PLINE pin;
     
-    /* default value */
-    /* this way, the first comparison will always be in */
+    /* Default value */
+    /* This way, the first comparison will always be in */
     /* favor of the pixel */
 
     *brx = 0;
@@ -94,7 +94,7 @@ static INLINE MB_errcode MB_Frame8(MB_Image *src, PIX8 thresval, Uint32 *ulx, Ui
     plines = src->plines;
     bytes_in = MB_LINE_COUNT(src);
 
-    /* proceeding line by line */
+    /* Proceeding line by line */
     for(i=0, y=0; i < src->height; i++, y++, plines++) {
         pin = (PLINE) (*plines);
         for(j=0, x=0; j<bytes_in; j++, x++, pin++) {
@@ -117,8 +117,8 @@ static INLINE MB_errcode MB_Frame32(MB_Image *src, PIX32 thresval, Uint32 *ulx, 
     PLINE *plines;
     PIX32 *pin;
     
-    /* default value */
-    /* this way, the first comparison will always be in */
+    /* Default value */
+    /* This way, the first comparison will always be in */
     /* favor of the pixel */
 
     *brx = 0;
@@ -131,7 +131,7 @@ static INLINE MB_errcode MB_Frame32(MB_Image *src, PIX32 thresval, Uint32 *ulx, 
     plines = src->plines;
     bytes_in = MB_LINE_COUNT(src);
 
-    /* proceeding line by line */
+    /* Proceeding line by line */
     for(i=0, y=0; i < src->height; i++, y++, plines++) {
         pin = (PIX32 *) (*plines);
         for(j=0, x=0; j<bytes_in/4; j++, x++, pin++) {
@@ -149,7 +149,7 @@ static INLINE MB_errcode MB_Frame32(MB_Image *src, PIX32 thresval, Uint32 *ulx, 
 
 /*
  * Returns the smallest frame that contains all the pixels of image that are greater or equal to
- * the given threshold value, using the four last pointers to describe it
+ * the given threshold value, using the four last pointers to describe it.
  * \param src source image
  * \param thresval the threshold value used to compute the frame
  * \param ulx the x-coordinate of the upper left corner of the frame
@@ -163,7 +163,7 @@ MB_errcode MB_Frame(MB_Image *src, Uint32 thresval, Uint32 *ulx, Uint32 *uly, Ui
     /* Comparing the depth of the src and the destination */
     switch (src->depth) {
     case 1:
-        /* for binary image the threshold value is always 1*/
+        /* For binary image the threshold value is always 1*/
         return MB_Frame1(src, ulx, uly, brx, bry);
         break;
     case 8:
@@ -177,7 +177,7 @@ MB_errcode MB_Frame(MB_Image *src, Uint32 thresval, Uint32 *ulx, Uint32 *uly, Ui
         break;
     }
 
-    /* If this point is reached we can assume there was an error*/
+    /* If this point is reached, we can assume there was an error*/
     return MB_ERR_BAD_VALUE;
 }
 

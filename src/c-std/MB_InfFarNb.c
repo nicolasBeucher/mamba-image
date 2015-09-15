@@ -37,7 +37,7 @@ extern MB_errcode MB_InfFarNb32(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum,
 
 /*
  * Looks for the minimum between two image pixels (a central pixel and its 
- * far neighbor in the other image)
+ * far neighbor in the other image).
  * The neighbor depends on the grid used.
  *
  * \param src source image in which the neighbor are taken

@@ -28,7 +28,7 @@
 #include "mambaApi_loc.h"
 
 /*
- * Loads a grey scale image data with data given in argument
+ * Loads a grey scale image data with data given in argument.
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
@@ -36,11 +36,11 @@
  */
 MB_errcode MB_Load8(MB_Image *image, PIX8 *indata, Uint32 len)
 {
-    /* Only 8 bit image can be loaded */
+    /* Only 8-bit image can be loaded */
     if (image->depth!=8) {
         return MB_ERR_BAD_DEPTH;
     }
-    /* the data given must be sufficient to fill the image */
+    /* The data given must be sufficient to fill the image */
     if (len!=(image->height*image->width)) {
         return MB_ERR_LOAD_DATA;
     }
@@ -51,7 +51,7 @@ MB_errcode MB_Load8(MB_Image *image, PIX8 *indata, Uint32 len)
 }
 
 /*
- * Loads a 32-bits image data with data given in argument
+ * Loads a 32-bit image data with data given in argument.
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
@@ -59,11 +59,11 @@ MB_errcode MB_Load8(MB_Image *image, PIX8 *indata, Uint32 len)
  */
 MB_errcode MB_Load32(MB_Image *image, PIX8 *indata, Uint32 len)
 {
-    /* Only 32 bit image can be loaded */
+    /* Only 32-bit image can be loaded */
     if (image->depth!=32) {
         return MB_ERR_BAD_DEPTH;
     }
-    /* the data given must be sufficient to fill the image */
+    /* The data given must be sufficient to fill the image */
     if (len!=(image->height*image->width*4)) {
         return MB_ERR_LOAD_DATA;
     }
@@ -74,7 +74,7 @@ MB_errcode MB_Load32(MB_Image *image, PIX8 *indata, Uint32 len)
 }
 
 /*
- * Loads an image data with data given in argument
+ * Loads an image data with data given in argument.
  * \param image the image to fill
  * \param indata the data to fill the image with (complete pixels values)
  * \param len the length of data given
@@ -100,7 +100,7 @@ MB_errcode MB_Load(MB_Image *image, PIX8 *indata, Uint32 len) {
 
 
 /*
- * Reads a grey scale image data contents and put it in an array
+ * Reads a grey scale image data contents and put it in an array.
  * \param image the image to read
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image
@@ -113,10 +113,10 @@ MB_errcode MB_Extract8(MB_Image *image, PIX8 **outdata, Uint32 *len)
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* allocating the memory */
+    /* Allocating the memory */
     *outdata = MB_malloc((image->height*image->width)*sizeof(PIX8));
     if(*outdata==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     *len = image->height*image->width;
@@ -126,7 +126,7 @@ MB_errcode MB_Extract8(MB_Image *image, PIX8 **outdata, Uint32 *len)
 }
 
 /*
- * Reads a 32-bits image data contents and put it in an array
+ * Reads a 32-bits image data contents and put it in an array.
  * \param image the image to read
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image
@@ -139,10 +139,10 @@ MB_errcode MB_Extract32(MB_Image *image, PIX8 **outdata, Uint32 *len)
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* allocating the memory */
+    /* Allocating the memory */
     *outdata = MB_malloc((image->height*image->width*4)*sizeof(PIX8));
     if(*outdata==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
 
@@ -153,7 +153,7 @@ MB_errcode MB_Extract32(MB_Image *image, PIX8 **outdata, Uint32 *len)
 }
 
 /*
- * Reads an image data contents and put it in an array
+ * Reads an image data contents and put it in an array.
  * \param image the image to read
  * \param outdata pointer to the array created (malloc) and filled with the 
  * pixel data of the image

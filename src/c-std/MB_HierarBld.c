@@ -42,7 +42,7 @@ extern MB_errcode MB_HierarBld32(MB_Image *mask, MB_Image *srcdest, enum MB_grid
  */
 MB_errcode MB_HierarBld(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid) {
     
-    /* verification over depth and size */
+    /* Verification over depth and size */
     if (!MB_CHECK_SIZE_2(srcdest, mask)) {
         return MB_ERR_BAD_SIZE;
     }

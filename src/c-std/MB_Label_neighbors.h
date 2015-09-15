@@ -29,7 +29,7 @@
 /******************************************
  * Grid functions                         *
  ******************************************
- * The functions described here perform labeling depending on the grid
+ * The functions described here perform labeling depending on the grid.
  */
 
 /* SQUARE */
@@ -48,7 +48,7 @@ static void MB_QLabel(PLINE *plines_out, PLINE *plines_in,
 {
     Uint32 i;
    
-    /* do the first line */
+    /* Do the first line */
     EDGE_LINE(plines_out[0],plines_in[0],bytes_in,labels);
 
     for(i=1; i<nb_lines; i++) {
@@ -72,16 +72,16 @@ static void MB_HLabel(PLINE *plines_out, PLINE *plines_in,
 {
     Uint32 i;
    
-    /* do the first -- even -- line */
+    /* Do the first -- even -- line */
     EDGE_LINE(plines_out[0],plines_in[0],bytes_in,labels);
 
-    /* do the second -- odd -- line */
+    /* Do the second -- odd -- line */
     HLAB_LINE_ODD(plines_out,plines_in,1,bytes_in,labels);
 
     for(i=2; i<nb_lines; i+=2) {
-        /* do even line */
+        /* Do even line */
         HLAB_LINE_EVEN(plines_out,plines_in,i,bytes_in,labels);
-        /* do odd line */
+        /* Do odd line */
         HLAB_LINE_ODD(plines_out,plines_in,i+1,bytes_in,labels);
     }
 }
@@ -91,12 +91,12 @@ static void MB_HLabel(PLINE *plines_out, PLINE *plines_in,
 /***********************************************/
 
 /* 
- * array giving the function to use to go in a given direction with
+ * Array giving the function to use to go in a given direction with
  * regard to the grid in use (hexagonal or square).
  */
 static LABELGRIDFUNC *SwitchTo[2] =
-{ /* square grid */
+{ /* Square grid */
      MB_QLabel,
-  /* hexagonal grid*/
+  /* Hexagonal grid*/
      MB_HLabel
 };

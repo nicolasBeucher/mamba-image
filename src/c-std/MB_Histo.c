@@ -40,7 +40,7 @@ static INLINE void HISTO_LINE8(PLINE *plines, Uint32 bytes, Uint32 *phisto)
     PLINE pin = (PLINE) (*plines);
 
     for(i=0;i<bytes;i++,pin++){
-        /* filling the histogram information with the line data */
+        /* Filling the histogram information with the line data */
         phisto[(*pin)]++;
     }
 }
@@ -62,12 +62,12 @@ MB_errcode MB_Histo(MB_Image *src, Uint32 *phisto)
     plines = src->plines;
     bytes = MB_LINE_COUNT(src);
     
-    /* reset the histogram value */
+    /* Reset the histogram value */
     for(i = 0; i<256; i++) {
         phisto[i] = 0;
     }
 
-    /* Only 8-bits images can be processed */
+    /* Only 8-bit images can be processed */
     switch(src->depth) {
 
     case 8:
@@ -77,7 +77,7 @@ MB_errcode MB_Histo(MB_Image *src, Uint32 *phisto)
         break;
         
     default:
-        /* Cannot have histograms for 32-bits or binary images */
+        /* Cannot have histograms for 32-bit or binary images */
         return MB_ERR_BAD_DEPTH;
         break;
       }

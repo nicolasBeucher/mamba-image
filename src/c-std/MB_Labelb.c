@@ -32,10 +32,10 @@
 /* Base functions                       */
 /****************************************/
 /* The functions described here realise the basic operations */
-/* needed to label pixels */
+/* needed to label pixels. */
 
 /*
- * labeling the upper line (near the image edge)
+ * Labeling the upper line (near the image edge).
  *
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
@@ -50,14 +50,14 @@ static INLINE void EDGE_LINE(PLINE plines_out, PLINE plines_in, Uint32 bytes_in,
     MB_Vector1 *pin = (MB_Vector1 *) (plines_in);
     PIX32 *pout = (PIX32 *) (plines_out);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     previous_pix = 0;
     
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
-        /* reading a register of pixels */
+        /* Reading a register of pixels */
         pix_reg = (*pin);
         for(j=0; j<MB_vec1_size; j++,pout++) {
-            /* for all the pixels in the register */
+            /* For all the pixels in the register */
             if (pix_reg&1) {
                 /* the pixel need to be labelled */
                 if (previous_pix&1) {
@@ -75,14 +75,14 @@ static INLINE void EDGE_LINE(PLINE plines_out, PLINE plines_in, Uint32 bytes_in,
                 }
             }
             previous_pix = pix_reg;
-            /* next pixel */
+            /* Next pixel */
             pix_reg = pix_reg>>1;
         }
     }
 }
 
 /*
- * labeling the odd lines for hexagonal grid
+ * labeling the odd lines for hexagonal grid.
  * 
  * \param plines_out pointer on the current line in the destination image
  * \param plines_in pointer on the current line in the source image
@@ -102,15 +102,15 @@ static INLINE void HLAB_LINE_ODD(PLINE *plines_out, PLINE *plines_in, Uint32 ind
     PIX32 *pout = (PIX32 *) (plines_out[index]);
     PIX32 *poutpre = (PIX32 *) (plines_out[index-1]);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     previous_pix = 0;
     
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
-        /* reading a register of pixels in the two sources lines*/
+        /* Reading a register of pixels in the two sources lines*/
         pix_reg_cur = (*pin);
         pix_reg_pre = (*pinpre);
         for(j=1; j<MB_vec1_size; j++,pout++,poutpre++) {
-            /* for all the pixels in the registers */
+            /* For all the pixels in the registers */
             /* except the last one */
             if (pix_reg_cur&1) {
                 neighbor_state = (previous_pix&1) |
@@ -143,20 +143,20 @@ static INLINE void HLAB_LINE_ODD(PLINE *plines_out, PLINE *plines_in, Uint32 ind
                     if (RIGHT(poutpre) != VAL(pout))
                         labels->EQ[VAL(pout)] = MB_find_above_label(labels, RIGHT(poutpre));
                     break;
-                default: /* case 0 */
+                default: /* Case 0 */
                     VAL(pout) = (labels->current);
-                    /* no neighbors labelled we take one */
+                    /* No neighbors labelled we take one */
                     labels->EQ[labels->current] = labels->current;
                     labels->current++;
                     break;
                 }
             }
             previous_pix = pix_reg_cur;
-            /* next pixel */
+            /* Next pixel */
             pix_reg_cur = pix_reg_cur>>1;
             pix_reg_pre = pix_reg_pre>>1;
         }
-        /* the last pixel cannot be processed because one of its neighbor is not */
+        /* The last pixel cannot be processed because one of its neighbor is not */
         /* inside the previous line pixel register */
         /* to process it we then need to fetch the neighbor in the next register */
         pinpre++;
@@ -191,23 +191,23 @@ static INLINE void HLAB_LINE_ODD(PLINE *plines_out, PLINE *plines_in, Uint32 ind
                 if (RIGHT(poutpre) != VAL(pout))
                     labels->EQ[VAL(pout)] = MB_find_above_label(labels, RIGHT(poutpre));
                 break;
-            default: /* case 0 */
+            default: /* Case 0 */
                 VAL(pout) = (labels->current);
-                /* no neighbors labelled we take one */
+                /* No neighbors labelled we take one */
                 labels->EQ[labels->current] = labels->current;
                 labels->current++;
                 break;
             }
         }
         previous_pix = pix_reg_cur;
-        /* next pixel */
+        /* Next pixel */
         pout++;
         poutpre++;
     }
 }
 
 /*
- * labeling the even lines for hexagonal grid
+ * Labeling the even lines for hexagonal grid.
  * 
  * \param plines_out pointer on the current line in the destination image
  * \param plines_in pointer on the current line in the source image
@@ -227,16 +227,16 @@ static INLINE void HLAB_LINE_EVEN(PLINE *plines_out, PLINE *plines_in, Uint32 in
     PIX32 *pout = (PIX32 *) (plines_out[index]);
     PIX32 *poutpre = (PIX32 *) (plines_out[index-1]);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     previous_pix_cur = 0;
     previous_pix_pre = 0;
     
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++,pinpre++) {
-        /* reading a register of pixels in the two sources lines*/
+        /* Reading a register of pixels in the two sources lines*/
         pix_reg_cur = (*pin);
         pix_reg_pre = (*pinpre);
         for(j=0; j<MB_vec1_size; j++,pout++,poutpre++) {
-            /* for all the pixels in the registers */
+            /* For all the pixels in the registers */
             if (pix_reg_cur&1) {
                 neighbor_state = (previous_pix_cur&1) |
                                  ((previous_pix_pre&1)<<1) |
@@ -269,9 +269,9 @@ static INLINE void HLAB_LINE_EVEN(PLINE *plines_out, PLINE *plines_in, Uint32 in
                     if (VAL(poutpre) != VAL(pout))
                         labels->EQ[VAL(pout)] = MB_find_above_label(labels, VAL(poutpre));
                     break;
-                default: /* case 0 */
+                default: /* Case 0 */
                     VAL(pout) = (labels->current);
-                    /* no neighbors labelled we take one */
+                    /* No neighbors labelled we take one */
                     labels->EQ[labels->current] = labels->current;
                     labels->current++;
                     break;
@@ -279,7 +279,7 @@ static INLINE void HLAB_LINE_EVEN(PLINE *plines_out, PLINE *plines_in, Uint32 in
             }
             previous_pix_cur = pix_reg_cur;
             previous_pix_pre = pix_reg_pre;
-            /* next pixel */
+            /* Next pixel */
             pix_reg_cur = pix_reg_cur>>1;
             pix_reg_pre = pix_reg_pre>>1;
         }
@@ -287,7 +287,7 @@ static INLINE void HLAB_LINE_EVEN(PLINE *plines_out, PLINE *plines_in, Uint32 in
 }
 
 /*
- * labeling the lines for square grid
+ * Labeling the lines for square grid.
  * 
  * \param plines_out pointer on the lines in the destination image
  * \param plines_in pointer on the lines in the source image
@@ -307,16 +307,16 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
     PIX32 *pout = (PIX32 *) (plines_out[index]);
     PIX32 *poutpre = (PIX32 *) (plines_out[index-1]);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     previous_pix_cur = 0;
     previous_pix_pre = 0;
     
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
-        /* reading a register of pixels in the two sources lines*/
+        /* Reading a register of pixels in the two sources lines*/
         pix_reg_cur = (*pin);
         pix_reg_pre = (*pinpre);
         for(j=1; j<MB_vec1_size; j++,pout++,poutpre++) {
-            /* for all the pixels in the registers */
+            /* For all the pixels in the registers */
             /* except the last one */
             if (pix_reg_cur&1) {
                 neighbor_state = (previous_pix_cur&1) |
@@ -368,9 +368,9 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
                     if (RIGHT(poutpre) != VAL(pout))
                         labels->EQ[VAL(pout)] = MB_find_above_label(labels, RIGHT(poutpre));
                     break;
-                default: /* case 0 */
+                default: /* Case 0 */
                     VAL(pout) = (labels->current);
-                    /* no neighbors labelled we take one */
+                    /* No neighbors labelled we take one */
                     labels->EQ[labels->current] = labels->current;
                     labels->current++;
                     break;
@@ -378,11 +378,11 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
             }
             previous_pix_cur = pix_reg_cur;
             previous_pix_pre = pix_reg_pre;
-            /* next pixel */
+            /* Next pixel */
             pix_reg_cur = pix_reg_cur>>1;
             pix_reg_pre = pix_reg_pre>>1;
         }
-        /* the last pixel cannot be processed because one of its neighbor is not */
+        /* The last pixel cannot be processed because one of its neighbor is not */
         /* inside the previous line pixel register */
         /* to process it we then need to fetch the neighbor in the next register */
         pinpre++;
@@ -436,9 +436,9 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
                 if (RIGHT(poutpre) != VAL(pout))
                     labels->EQ[VAL(pout)] = MB_find_above_label(labels, RIGHT(poutpre));
                 break;
-            default: /* case 0 */
+            default: /* Case 0 */
                 VAL(pout) = (labels->current);
-                /* no neighbors labelled we take one */
+                /* No neighbors labelled we take one */
                 labels->EQ[labels->current] = labels->current;
                 labels->current++;
                 break;
@@ -446,7 +446,7 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
         }
         previous_pix_cur = pix_reg_cur;
         previous_pix_pre = pix_reg_pre;
-        /* next pixel */
+        /* Next pixel */
         pout++;
         poutpre++;
     }
@@ -482,22 +482,22 @@ MB_errcode MB_Labelb(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh,
     labels.maxEQ = (src->width*src->height)/4;
     labels.EQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if(labels.EQ==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if(labels.CEQ==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_free(labels.EQ);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     MB_memset(labels.EQ, 0, labels.maxEQ*sizeof(PIX32));
     MB_memset(labels.CEQ, 0, labels.maxEQ*sizeof(PIX32));
     
-    /* the label image is reset */
+    /* The label image is reset */
     MB_ConSet(dest, 0);
     
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
@@ -511,7 +511,7 @@ MB_errcode MB_Labelb(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh,
     
     *pNbobj = (Uint32) (labels.nbObjs);
     
-    /* freeing the labels arrays */
+    /* Freeing the labels arrays */
     MB_free(labels.EQ);
     MB_free(labels.CEQ);
 

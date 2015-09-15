@@ -31,10 +31,10 @@ extern MB_errcode MB_Labelb(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 
 extern MB_errcode MB_Label8(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, Uint32 *pNbobj, enum MB_grid_t grid);
 extern MB_errcode MB_Label32(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, Uint32 *pNbobj, enum MB_grid_t grid);
 
-/* function returning the corrected label to use.*/
+/* Function returning the corrected label to use.*/
 /* The corrected label have values that follow each other */
 /* along a specific rule to allow lblow and lbhml values */
-/* to exclude some value in the first byte */
+/* to exclude some value in the first byte. */
 PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow, PIX32 lbhigh)
 {
     PIX32 lbvalue;
@@ -55,7 +55,7 @@ PIX32 MB_find_correct_label(MB_Label_struct *labels, PIX32 inlabel, PIX32 lblow,
     return labels->CEQ[inlabel];
 }
 
-/* recursive function to find the root label*/
+/* Recursive function to find the root label*/
 PIX32 MB_find_above_label(MB_Label_struct *labels, PIX32 inlabel)
 {
     if (labels->EQ[inlabel]==inlabel) {
@@ -69,7 +69,7 @@ PIX32 MB_find_above_label(MB_Label_struct *labels, PIX32 inlabel)
 /****************************************
  * Tidying function                     *
  ****************************************
- * The functions tidy the label
+ * The functions tidy the label.
  */
 
 /*
@@ -112,7 +112,7 @@ void MB_TidyLabel(PLINE *plines_out,
  */
 MB_errcode MB_Label(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, Uint32 *pNbobj, enum MB_grid_t grid)
 {
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -120,7 +120,7 @@ MB_errcode MB_Label(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh, 
     if (lblow>=lbhigh) return MB_ERR_BAD_VALUE;
     if (lbhigh>256) return MB_ERR_BAD_VALUE;
     
-    /* the output is necessarly a 32-bit image */
+    /* The output is necessarly a 32-bit image */
     if (dest->depth!=32) return MB_ERR_BAD_DEPTH;
     
     /* Calling the appropriate function */

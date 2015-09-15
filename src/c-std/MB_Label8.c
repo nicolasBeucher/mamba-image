@@ -32,10 +32,10 @@
 /* Base functions                       */
 /****************************************/
 /* The functions described here realise the basic operations */
-/* needed to label pixels */
+/* needed to label pixels. */
 
 /*
- * labeling the upper line (near the image edge)
+ * labeling the upper line (near the image edge).
  *
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
@@ -50,15 +50,15 @@ static INLINE void EDGE_LINE(PLINE plines_out, PLINE plines_in, Uint32 bytes_in,
     PLINE pin = (PLINE) (plines_in);
     PIX32 *pout = (PIX32 *) (plines_out);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     previous_pix = 0;
     
     for(i=0;i<bytes_in;i++,pin++,pout++) {
-        /* reading a register of pixels */
+        /* Reading a register of pixels */
         pix = (*pin);
         if (pix>0) {
             if (pix==previous_pix) {
-                /* with the same label as its neighbor since the */
+                /* With the same label as its neighbor since the */
                 /* neighbor is set (and thus already labelled) */
                 /* (only one neighbor since the other are in the */
                 /* edge) */
@@ -76,7 +76,7 @@ static INLINE void EDGE_LINE(PLINE plines_out, PLINE plines_in, Uint32 bytes_in,
 }
 
 /*
- * labeling the odd lines for hexagonal grid
+ * labeling the odd lines for hexagonal grid.
  * 
  * \param plines_out pointer on the current line in the destination image
  * \param plines_in pointer on the current line in the source image
@@ -96,13 +96,13 @@ static INLINE void HLAB_LINE_ODD(PLINE *plines_out, PLINE *plines_in, Uint32 ind
     PIX32 *pout = (PIX32 *) (plines_out[index]);
     PIX32 *poutpre = (PIX32 *) (plines_out[index-1]);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     prev_pix = 0;
     pix_up = (*pinpre);
     pinpre++;
     next_pix_up = (*pinpre);
     for(i=0;i<bytes_in;i++,pin++,pout++,poutpre++) {
-        /* reading a register of pixels in the two sources lines*/
+        /* Reading a register of pixels in the two sources lines*/
         pix = (*pin);
         if (pix>0) {
             neighbor_state = (pix==prev_pix) |
@@ -136,15 +136,15 @@ static INLINE void HLAB_LINE_ODD(PLINE *plines_out, PLINE *plines_in, Uint32 ind
                 if (RIGHT(poutpre) != VAL(pout))
                     labels->EQ[VAL(pout)] = MB_find_above_label(labels, RIGHT(poutpre));
                 break;
-            default: /* case 0 */
+            default: /* Case 0 */
                 VAL(pout) = (labels->current);
-                /* no neighbors labelled we take one */
+                /* No neighbors labelled we take one */
                 labels->EQ[labels->current] = labels->current;
                 labels->current++;
                 break;
             }
         }
-        /* next pixel */
+        /* Next pixel */
         prev_pix = pix;
         pix_up = next_pix_up;
         pinpre++;
@@ -157,7 +157,7 @@ static INLINE void HLAB_LINE_ODD(PLINE *plines_out, PLINE *plines_in, Uint32 ind
 }
 
 /*
- * labeling the even lines for hexagonal grid
+ * Labeling the even lines for hexagonal grid.
  * 
  * \param plines_out pointer on the current line in the destination image
  * \param plines_in pointer on the current line in the source image
@@ -177,12 +177,12 @@ static INLINE void HLAB_LINE_EVEN(PLINE *plines_out, PLINE *plines_in, Uint32 in
     PIX32 *pout = (PIX32 *) (plines_out[index]);
     PIX32 *poutpre = (PIX32 *) (plines_out[index-1]);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     prev_pix = 0;
     prev_pix_up = 0;
     
     for(i=0;i<bytes_in;i++,pin++,pinpre++,pout++,poutpre++) {
-        /* reading a register of pixels in the two sources lines*/
+        /* Reading a register of pixels in the two sources lines*/
         pix = (*pin);
         pix_up = (*pinpre);
         if (pix>0) {
@@ -225,14 +225,14 @@ static INLINE void HLAB_LINE_EVEN(PLINE *plines_out, PLINE *plines_in, Uint32 in
                 break;
             }
         }
-        /* next pixel */
+        /* Next pixel */
         prev_pix = pix;
         prev_pix_up = pix_up;
     }
 }
 
 /*
- * labeling the lines for square grid
+ * Labeling the lines for square grid.
  * 
  * \param plines_out pointer on the lines in the destination image
  * \param plines_in pointer on the lines in the source image
@@ -252,7 +252,7 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
     PIX32 *pout = (PIX32 *) (plines_out[index]);
     PIX32 *poutpre = (PIX32 *) (plines_out[index-1]);
     
-    /* previous values initialisation */
+    /* Previous values initialisation */
     prev_pix = 0;
     prev_pix_up = 0;
     pix_up = (*pinpre);
@@ -260,7 +260,7 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
     next_pix_up = (*pinpre);
     
     for(i=0;i<bytes_in;i++,pin++,pout++,poutpre++) {
-        /* reading a register of pixels in the two sources lines*/
+        /* Reading a register of pixels in the two sources lines*/
         pix = (*pin);
         if (pix>0) {
             neighbor_state = ((pix==prev_pix)&1) |
@@ -313,15 +313,15 @@ static INLINE void QLAB_LINE(PLINE *plines_out, PLINE *plines_in, Uint32 index,
                 if (RIGHT(poutpre) != VAL(pout))
                     labels->EQ[VAL(pout)] = MB_find_above_label(labels, RIGHT(poutpre));
                 break;
-            default: /* case 0 */
+            default: /* Case 0 */
                 VAL(pout) = (labels->current);
-                /* no neighbors labelled we take one */
+                /* No neighbors labelled we take one */
                 labels->EQ[labels->current] = labels->current;
                 labels->current++;
                 break;
             }
         }
-        /* next pixel */
+        /* Next pixel */
         prev_pix = pix;
         prev_pix_up = pix_up;
         pix_up = next_pix_up;
@@ -364,7 +364,7 @@ MB_errcode MB_Label8(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh,
     labels.maxEQ = (src->width*src->height);
     labels.EQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if(labels.EQ==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
@@ -376,10 +376,10 @@ MB_errcode MB_Label8(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh,
     MB_memset(labels.EQ, 0, labels.maxEQ*sizeof(PIX32));
     MB_memset(labels.CEQ, 0, labels.maxEQ*sizeof(PIX32));
     
-    /* the label image is reset */
+    /* The label image is reset */
     MB_ConSet(dest, 0);
     
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
@@ -393,7 +393,7 @@ MB_errcode MB_Label8(MB_Image *src, MB_Image *dest, Uint32 lblow, Uint32 lbhigh,
     
     *pNbobj = (Uint32) (labels.nbObjs);
     
-    /* freeing the labels arrays */
+    /* Freeing the labels arrays */
     MB_free(labels.EQ);
     MB_free(labels.CEQ);
 

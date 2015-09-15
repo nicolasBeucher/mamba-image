@@ -35,7 +35,7 @@ extern MB_errcode MB_InfVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Si
 
 /*
  * Looks for the minimum between two images pixels (a central pixel
- * and its neighbor in the other image previously shifted by the given vector)
+ * and its neighbor in the other image previously shifted by the given vector).
  *
  * \param src source image in which the neighbor are taken
  * \param srcdest source of the central pixel and destination image

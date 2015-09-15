@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Determines the inferior value on 32-bits pixels.
+ * Determines the inferior value on 32-bit pixels.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -52,7 +52,7 @@ static INLINE void INF_LINE32(PLINE *plines_out,
 }
 
 /*
- * Determines the inferior value on 8-bits pixels.
+ * Determines the inferior value on 8-bit pixels.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -102,11 +102,11 @@ MB_errcode MB_Inf(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     PLINE *plines_in1, *plines_in2, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* destination image should have the depth that source image */
+    /* Destination image should have the depth that source image */
     if(dest->depth != src1->depth) {
         return MB_ERR_BAD_DEPTH;
     }

@@ -30,7 +30,7 @@
 /* Base functions                       */
 /*********************************ù******/
 /* The functions described here realise the basic operations */
-/* needed to shift pixel in any directions */
+/* needed to shift pixel in any directions. */
 
 /*
  * Used to displace a complete line in an y direction.
@@ -88,19 +88,19 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
     reg_dec = count / MB_vec1_size;
     ins_reg_dec = (MB_Vector1) count % MB_vec1_size;
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     reg_dec = reg_dec<(bytes_in/sizeof(MB_Vector1)) ? reg_dec : (bytes_in/sizeof(MB_Vector1));
 
     pin = (MB_Vector1 *) (*p_in +bytes_in - (reg_dec+1)*sizeof(MB_Vector1));
     pout = (MB_Vector1 *) (*p_out + bytes_in - sizeof(MB_Vector1));
     
     if (ins_reg_dec==0) {
-        /* no intra register shifting */
+        /* No intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin--,pout--) {
             (*pout) &= (*pin);
         }
     } else {
-        /* intra register shiffting */
+        /* Intra register shiffting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin--,pout--) {
             reg1 = (*pin);
             reg2 = (i==(bytes_in-(reg_dec+1)*sizeof(MB_Vector1))) ? fill_val : (*(pin-1));
@@ -134,19 +134,19 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
     reg_dec = count / MB_vec1_size;
     ins_reg_dec = (MB_Vector1) count % MB_vec1_size;
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     reg_dec = reg_dec<(bytes_in/sizeof(MB_Vector1)) ? reg_dec : (bytes_in/sizeof(MB_Vector1));
 
     pin = (MB_Vector1 *) (*p_in + reg_dec*sizeof(MB_Vector1));
     pout = (MB_Vector1 *) (*p_out);
     
     if (ins_reg_dec==0) {
-        /* no intra register shifting */
+        /* nN intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin++,pout++) {
             (*pout) &= (*pin);
         }
     } else {
-        /* intra register shiffting */
+        /* Intra register shiffting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin++,pout++) {
             reg1 = (*pin);
             reg2 = (i==(bytes_in-(reg_dec+1)*sizeof(MB_Vector1))) ? fill_val : (*(pin+1));
@@ -164,8 +164,8 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift functions. */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE MB_Vector1
 #include "MB_ShftVector.h"
 #undef EDGE_TYPE
@@ -176,7 +176,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
 
 /*
  * Looks for the minimum between two binary image pixels (a central pixel
- * and its neighbor in the other image previously shifted by the given vector)
+ * and its neighbor in the other image previously shifted by the given vector).
  *
  * \param src source image in which the neighbor are taken
  * \param srcdest source of the central pixel and destination image
@@ -192,8 +192,8 @@ MB_errcode MB_InfVectorb(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy,
     PLINE *plines_in, *plines_out;
     VECFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -205,7 +205,7 @@ MB_errcode MB_InfVectorb(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy,
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = srcdest->plines;
     bytes_in = MB_LINE_COUNT(src);

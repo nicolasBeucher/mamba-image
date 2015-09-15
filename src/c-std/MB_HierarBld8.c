@@ -47,11 +47,11 @@ typedef struct {
     /* The memory to hold the status of each pixel */
     Uint32 *pix_status;
     
-    /* pointer to the lines of the mask image */
+    /* Pointer to the lines of the mask image */
     PLINE *plines_mask;
-    /* pointer to the line of the source/destination image */
+    /* Pointer to the line of the source/destination image */
     PLINE *plines_srcdest;
-    /* size in byte of the image lines */
+    /* Size in byte of the image lines */
     Uint32 bytes;
     
     /* Variable indicating which level in the hierarchical list
@@ -60,7 +60,7 @@ typedef struct {
      */
     PIX8 current_water_level;
     
-    /* meta function which redirects the neighbor function according to the grid */
+    /* Meta function which redirects the neighbor function according to the grid */
     INSERTNB8 *InsertNeighbors;
 } MB_Hierarbld8_Ctx;
 
@@ -69,10 +69,10 @@ typedef struct {
  ****************************************/
 
 /*
- * Inserts a token in the hierarchical list
+ * Inserts a token in the hierarchical list.
  * This function only uses the tokens of the first half (for initialization)
  * \param local_ctx pointer to the structure holding all the information needed 
- * by the algorithm
+ * by the algorithm.
  * \param x the position in x of the concerned pixel
  * \param y the position in y of the concerned pixel
  * \param bytes number of bytes inside the line
@@ -82,14 +82,14 @@ static INLINE void MB_InsertInHierarchicalList_1(MB_Hierarbld8_Ctx *local_ctx, i
     int position;
     int lx, ly;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
-    /* the token is inserted after the last value in the list */
+    /* Insertion in the hierarchical list */
+    /* The token is inserted after the last value in the list */
     lx = local_ctx->HierarchicalList[value].lastx;
     ly = local_ctx->HierarchicalList[value].lasty;
     position = lx+ly*local_ctx->width;
@@ -110,11 +110,11 @@ static INLINE void MB_InsertInHierarchicalList_1(MB_Hierarbld8_Ctx *local_ctx, i
 }
 
 /*
- * Inserts a token in the hierarchical list
+ * Inserts a token in the hierarchical list.
  * This function only uses the tokens of the second half (for flooding).
  * The function also changes the status of the pixel to QUEUED.
  * \param local_ctx pointer to the structure holding all the information needed 
- * by the algorithm
+ * by the algorithm.
  * \param x the position in x of the concerned pixel
  * \param y the position in y of the concerned pixel
  * \param bytes number of bytes inside the line
@@ -125,21 +125,21 @@ static INLINE void MB_InsertInHierarchicalList_2(MB_Hierarbld8_Ctx *local_ctx, i
     int lposition;
     int lx, ly;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
-    /* the y is increased by local_ctx->height to make sure the second half */
+    /* The y is increased by local_ctx->height to make sure the second half */
     /* of the token is used */
     position = x + (y+local_ctx->height)*local_ctx->width;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
-    /* the token is inserted after the last value in the list */
+    /* Insertion in the hierarchical list */
+    /* The token is inserted after the last value in the list */
     lx = local_ctx->HierarchicalList[value].lastx;
     ly = local_ctx->HierarchicalList[value].lasty;
     lposition = lx+ly*local_ctx->width;
     if (lposition>=0) {
-        /*There is a last value, the list is not empty*/
+        /* There is a last value, the list is not empty*/
         local_ctx->TokensArray[lposition].nextx = x;
         local_ctx->TokensArray[lposition].nexty = y+local_ctx->height;
         local_ctx->HierarchicalList[value].lastx = x;
@@ -153,12 +153,12 @@ static INLINE void MB_InsertInHierarchicalList_2(MB_Hierarbld8_Ctx *local_ctx, i
         local_ctx->HierarchicalList[value].lasty = y+local_ctx->height;
     }
     
-    /* change the pixel status */
+    /* Change the pixel status */
     local_ctx->pix_status[x+ y*local_ctx->width] = 0x1;
 }
 
 /*
- * Initializes the hierarchical list with the marker image
+ * Initializes the hierarchical list with the marker image.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  */
@@ -208,23 +208,23 @@ static void MB_InsertNeighbors_square(void *ctx, int x, int y)
     int nbx,nby;
     MB_Hierarbld8_Ctx *local_ctx = (MB_Hierarbld8_Ctx *) ctx;
     
-    /* the pixel is processed only if it has not been already processed */
+    /* The pixel is processed only if it has not been already processed */
     if (local_ctx->pix_status[x+ y*local_ctx->width] != 0xff) {
-        /* the value of the pixel in the rebuild image */
+        /* The value of the pixel in the rebuild image */
         value = *(local_ctx->plines_srcdest[y] + x);
-        /* pixel status is now FINAL */
+        /* Pixel status is now FINAL */
         local_ctx->pix_status[x+ y*local_ctx->width] = 0xff;
         
         /* For the 8 neighbors of the pixel */
         for(i=1; i<9; i++) {
-            /* position */
+            /* Position */
             nbx = x+sqNbDir[i][0];
             nby = y+sqNbDir[i][1];
             
             /* The neighbor must be in the image */
             if (nbx>=0 && nbx<((int) local_ctx->width) && nby>=0 && nby<((int) local_ctx->height)) {
                 if (local_ctx->pix_status[nbx+ nby*local_ctx->width] == 0) {
-                    /* if the neighbor status is CANDIDATE */
+                    /* If the neighbor status is CANDIDATE */
                     /* we modified its value with the minimum between the value of the */
                     /* mask at its position and the value of the pixel currently processed */
                     pmask = *(local_ctx->plines_mask[nby] + nbx);
@@ -252,23 +252,23 @@ static void MB_InsertNeighbors_hexagonal(void *ctx, int x, int y)
     int nbx,nby;
     MB_Hierarbld8_Ctx *local_ctx = (MB_Hierarbld8_Ctx *) ctx;
     
-    /* the pixel is processed only if it has not been already processed */
+    /* The pixel is processed only if it has not been already processed */
     if (local_ctx->pix_status[x+ y*local_ctx->width] != 0xff) {
-        /* the value of the pixel in the rebuild image */
+        /* The value of the pixel in the rebuild image */
         value = *(local_ctx->plines_srcdest[y] + x);
-        /* pixel status is now FINAL */
+        /* Pixel status is now FINAL */
         local_ctx->pix_status[x+ y*local_ctx->width] = 0xff;
         
         /* For the 6 neighbors of the pixel */
         for(i=1; i<7; i++) {
-            /* position */
+            /* Position */
             nbx = x+hxNbDir[y%2][i][0];
             nby = y+hxNbDir[y%2][i][1];
             
             /* The neighbor must be in the image */
             if (nbx>=0 && nbx<((int) local_ctx->width) && nby>=0 && nby<((int) local_ctx->height)) {
                 if (local_ctx->pix_status[nbx+ nby*local_ctx->width] == 0) {
-                    /* if the neighbor status is CANDIDATE */
+                    /* If the neighbor status is CANDIDATE */
                     /* we modified its value with the minimum between the value of the */
                     /* mask at its position and the value of the pixel currently processed */
                     pmask = *(local_ctx->plines_mask[nby] + nbx);
@@ -326,18 +326,18 @@ static INLINE void MB_Flooding(MB_Hierarbld8_Ctx *local_ctx)
 MB_errcode MB_HierarBld8(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid) {
     MB_Hierarbld8_Ctx local_ctx;
     
-    /* local context initialisation */
+    /* Local context initialisation */
     local_ctx.width = srcdest->width;
     local_ctx.height = srcdest->height;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     local_ctx.plines_srcdest = srcdest->plines;
     local_ctx.plines_mask = mask->plines;
     local_ctx.bytes = MB_LINE_COUNT(mask);
     
     /* Allocating the token array */
     /* We need two token per pixel for this algorithm */
-    /* the init will use the first half and the flooding the other */
+    /* The init will use the first half and the flooding the other */
     local_ctx.TokensArray = MB_malloc(2*srcdest->width*srcdest->height*sizeof(MB_Token));
     if(local_ctx.TokensArray==NULL){
         /* in case allocation goes wrong */
@@ -346,13 +346,13 @@ MB_errcode MB_HierarBld8(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid)
     /* Allocating the pixel status array */
     local_ctx.pix_status = MB_malloc(srcdest->width*srcdest->height*sizeof(Uint32));
     if(local_ctx.pix_status==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         /* freeing the token array */
         MB_free(local_ctx.TokensArray);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* grid initialisation */
+    /* Grid initialisation */
     if (grid==MB_SQUARE_GRID) {
          local_ctx.InsertNeighbors = MB_InsertNeighbors_square;
      } else {
@@ -365,9 +365,9 @@ MB_errcode MB_HierarBld8(MB_Image *mask, MB_Image *srcdest, enum MB_grid_t grid)
     /* Actual flooding */
     MB_Flooding(&local_ctx);
     
-    /* freeing the token array */
+    /* Freeing the token array */
     MB_free(local_ctx.TokensArray);
-    /* freeing the pixel status array */
+    /* Freeing the pixel status array */
     MB_free(local_ctx.pix_status);
     
     return MB_NO_ERR;

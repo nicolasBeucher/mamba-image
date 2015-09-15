@@ -108,7 +108,7 @@ MB_errcode MB_Inv(MB_Image *src, MB_Image *dest)
     Uint32 bytes_in;
     Uint32 i;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }

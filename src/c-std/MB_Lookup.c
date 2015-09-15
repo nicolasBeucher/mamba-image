@@ -60,7 +60,7 @@ MB_errcode MB_Lookup(MB_Image *src, MB_Image *dest, Uint32 *ptab)
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -70,7 +70,7 @@ MB_errcode MB_Lookup(MB_Image *src, MB_Image *dest, Uint32 *ptab)
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
     
-    /* The two images must have 8 bits */
+    /* The two images must have 8-bit */
     /* depth */
     switch(MB_PROBE_PAIR( src, dest )) {
 
