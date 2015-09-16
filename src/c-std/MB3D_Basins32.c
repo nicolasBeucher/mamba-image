@@ -30,7 +30,7 @@ typedef void (INSERTNB32) (void *ctx, int x, int y, int z);
 
 /* Structure holding the function contextual information 
  * such as the size of the image processed, the pointer to the pixel lines
- * the array of tokens and the current flooding level
+ * the array of tokens and the current flooding level.
  */
 typedef struct {
     /* The width of the images processed */
@@ -46,11 +46,11 @@ typedef struct {
     MB3D_ListControl HierarchicalList[65536];
     MB3D_ListControl OverList;
     
-    /* image sequence for the marker */
+    /* Image sequence for the marker */
     MB_Image **seq_marker;
-    /* image sequence for the src */
+    /* Image sequence for the src */
     MB_Image **seq_src;
-    /* size in byte of the marker image lines */
+    /* Size in byte of the marker image lines */
     Uint32 bytes_marker;
     
     /* Variable indicating which level in the hierarchical list
@@ -59,16 +59,16 @@ typedef struct {
      */
     PIX32 current_water_level;
     
-    /* meta function which redirects the neighbor function according to the grid */
+    /* Meta function which redirects the neighbor function according to the grid */
     INSERTNB32 *InsertNeighbors;
 } MB3D_Basins32_Ctx;
 
-/***************************************
+/****************************************
  * Hierarchical list functions          *
  ****************************************/
 
 /*
- * Inserts a token in the hierarchical list
+ * Inserts a token in the hierarchical list.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  * \param x the position in x of the concerned pixel
@@ -83,21 +83,21 @@ static INLINE void MB3D_InsertInHierarchicalList(MB3D_Basins32_Ctx *local_ctx, i
     int lx, ly, lz;
     MB3D_ListControl *list;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width + z*local_ctx->width*local_ctx->height;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     local_ctx->TokensArray[position].nextz = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
-    /* first if the value is outside the currently supported range */
+    /* Insertion in the hierarchical list. */
+    /* First if the value is outside the currently supported range */
     /* it will be put in the overlist */
     limit = ((local_ctx->current_water_level>>16) +1)<<16;
     if (value>=limit) {
         list = &(local_ctx->OverList);
     } else {
-        /* the value is normed as we do not want to process */
+        /* The value is normed as we do not want to process */
         /* already flooded levels */
         value = (value < (local_ctx->current_water_level)) ? (local_ctx->current_water_level) : value;
         /* and we take the correct list */
@@ -105,13 +105,13 @@ static INLINE void MB3D_InsertInHierarchicalList(MB3D_Basins32_Ctx *local_ctx, i
         list = &(local_ctx->HierarchicalList[hvalue]);
     }
     
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = list->lastx;
     ly = list->lasty;
     lz = list->lastz;
     position = lx+ly*local_ctx->width + lz*local_ctx->width*local_ctx->height;
     if (position>=0) {
-        /*There is a last value, the list is not empty*/
+        /* There is a last value, the list is not empty*/
         local_ctx->TokensArray[position].nextx = x;
         local_ctx->TokensArray[position].nexty = y;
         local_ctx->TokensArray[position].nextz = z;
@@ -131,7 +131,7 @@ static INLINE void MB3D_InsertInHierarchicalList(MB3D_Basins32_Ctx *local_ctx, i
 }
 
 /*
- * Initializes the hierarchical list with the marker image
+ * Initializes the hierarchical list with the marker image.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  */
@@ -141,7 +141,7 @@ static INLINE void MB3D_HierarchyInit(MB3D_Basins32_Ctx *local_ctx)
     PIX32 *p;
     MB_Image *im;
     
-    /*All the controls are reset */
+    /* All the controls are reset */
     for(i=0;i<65536;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
@@ -181,12 +181,12 @@ static INLINE Uint32 MB3D_HandlesOverList(MB3D_Basins32_Ctx *local_ctx)
     int pos;
     MB_Image *im;
     
-    /* over list handles */
+    /* Over list handles */
     fx = local_ctx->OverList.firstx;
     fy = local_ctx->OverList.firsty;
     fz = local_ctx->OverList.firstz;
     
-    /* resetting the hierarchical lists */
+    /* Resetting the hierarchical lists */
     for(i=0;i<65536;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
@@ -196,7 +196,7 @@ static INLINE Uint32 MB3D_HandlesOverList(MB3D_Basins32_Ctx *local_ctx)
     local_ctx->OverList.firsty = local_ctx->OverList.lasty = MB_LIST_END;
     local_ctx->OverList.firstz = local_ctx->OverList.lastz = MB_LIST_END;
     
-    /* emptying the over list */
+    /* Emptying the over list */
     while(fx>=0) {
         done = 0;
         pos = fx+fy*local_ctx->width + fz*local_ctx->width*local_ctx->height;
@@ -238,14 +238,14 @@ static void MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
     MB_Image *im;
     MB3D_Basins32_Ctx *local_ctx = (MB3D_Basins32_Ctx *) ctx;
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     im = local_ctx->seq_marker[z];
     pix = (PIX32 *) (im->plines[y] + x*4);
     *pix &= 0x00FFFFFF;
     
     /* For the 26 neighbors of the pixel */
     for(neighbor=1; neighbor<27; neighbor++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+cubeNbDir[neighbor][0];
         nby = y+cubeNbDir[neighbor][1];
         nbz = z+cubeNbDir[neighbor][2];
@@ -258,7 +258,7 @@ static void MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
             p = (PIX32 *) (im->plines[nby] + nbx*4);
             
             if ((*p)==0x01000000) {
-                /* the neighbor is not tagged yet */
+                /* The neighbor is not tagged yet */
                 im = local_ctx->seq_src[nbz];
                 value = *((PIX32 *) (im->plines[nby] + nbx*4));
                 MB3D_InsertInHierarchicalList(local_ctx, nbx, nby, nbz, value);
@@ -291,14 +291,14 @@ static void MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
     /* pixel */
     dirSelect = ((z%3)<<1)+(y%2);
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     im = local_ctx->seq_marker[z];
     pix = (PIX32 *) (im->plines[y] + x*4);
     *pix &= 0x00FFFFFF;
     
     /* For the 12 neighbors of the pixel */
     for(neighbor=1; neighbor<13; neighbor++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+fccNbDir[dirSelect][neighbor][0];
         nby = y+fccNbDir[dirSelect][neighbor][1];
         nbz = z+fccNbDir[dirSelect][neighbor][2];
@@ -311,7 +311,7 @@ static void MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
             p = (PIX32 *) (im->plines[nby] + nbx*4);
             
             if ((*p)==0x01000000) {
-                /* the neighbor is not tagged yet */
+                /* The neighbor is not tagged yet */
                 im = local_ctx->seq_src[nbz];
                 value = *((PIX32 *) (im->plines[nby] + nbx));
                 MB3D_InsertInHierarchicalList(local_ctx, nbx, nby, nbz, value);
@@ -371,7 +371,7 @@ static INLINE void MB3D_Flooding(MB3D_Basins32_Ctx *local_ctx, Uint32 max_level)
  * basins of the watershed but no actual watershed line. It is recommanded
  * to use this functions rather than MB_Watershed if you are only interested
  * in catchment basins (faster).
- * The result is put into a the 32-bits marker image.
+ * The result is put into a the 32-bit marker image.
  *
  * The segmentation is coded as follows into the 32 bit values.
  * | 0      | 1      | 2      | 3      |
@@ -391,16 +391,16 @@ MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, 
     
     local_ctx = (MB3D_Basins32_Ctx *)MB_malloc(sizeof(MB3D_Basins32_Ctx));
     if(local_ctx==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* local context initialisation */
+    /* Local context initialisation */
     local_ctx->width = src->seq[0]->width;
     local_ctx->height = src->seq[0]->height;
     local_ctx->length = src->length;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     local_ctx->seq_src = &src->seq[0];
     local_ctx->seq_marker = &marker->seq[0];
     local_ctx->bytes_marker = MB_LINE_COUNT(marker->seq[0]);
@@ -408,12 +408,12 @@ MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, 
     /* Allocating the token array */
     local_ctx->TokensArray = MB_malloc(local_ctx->width*local_ctx->height*local_ctx->length*sizeof(MB3D_Token));
     if(local_ctx->TokensArray==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_free(local_ctx);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     
-    /* grid initialisation */
+    /* Grid initialisation */
     if (grid==MB3D_CUBIC_GRID) {
         local_ctx->InsertNeighbors = MB3D_InsertNeighbors_cube;
     } else {
@@ -426,9 +426,9 @@ MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, 
     /* Actual flooding */
     MB3D_Flooding(local_ctx, max_level);
     
-    /* freeing the token array */
+    /* Freeing the token array */
     MB_free(local_ctx->TokensArray);
-    /* freeing the context */
+    /* Freeing the context */
     MB_free(local_ctx);
     
     return MB_NO_ERR;

@@ -47,14 +47,14 @@ MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
         allmax = max>allmax ? max : allmax;
     }
 
-    /* if the max is below the 256 value, simply copy the lower byte */
-    /* of the 32 bit image */
+    /* If the max is below the 256 value, simply copy the lower byte */
+    /* of the 32-bit image */
     if (allmax<256) {
         for(z=0; z<src->length && err==MB_NO_ERR; z++) {
             err = MB_CopyBytePlane(src->seq[z], dest->seq[z], 0);
         }
     } else {
-        /* computing the multiplicator */
+        /* Computing the multiplicator */
         multiplicator = ((double) 255.0)/allmax;
 
         for(z=0; z<src->length && err==MB_NO_ERR; z++) {
@@ -63,7 +63,7 @@ MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
             plines_in = si->plines;
             plines_out = dest->seq[z]->plines;
 
-            /* converting the 32-bit values in 8-bit values by downscaling */
+            /* Converting the 32-bit values in 8-bit values by downscaling */
             for(j=0; j<si->height; j++, plines_in++, plines_out++) {
                 pin = (PIX32 *) (*plines_in);
                 pout = (PIX8 *) (*plines_out);
@@ -79,7 +79,7 @@ MB_errcode MB3D_Convert32to8(MB3D_Image *src, MB3D_Image *dest)
 }
 
 /*
- * Converts a 3D image of a given depth into another depth
+ * Converts a 3D image of a given depth into another depth.
  * \param src 3D source image
  * \param dest 3D destination image 
  * \return An error code (MB_NO_ERR if successful)
@@ -89,7 +89,7 @@ MB_errcode MB3D_Convert(MB3D_Image *src, MB3D_Image *dest)
     Uint32 z;
     MB_errcode err = MB_NO_ERR;
 
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB3D_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }

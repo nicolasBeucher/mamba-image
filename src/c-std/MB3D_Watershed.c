@@ -57,7 +57,7 @@ const int fccNbDir[6][13][3] = {
  * Performs a watershed segmentation of the 3D image using the marker image
  * as a starting point for the flooding. The function builds the actual 
  * watershed line (idempotent) plus catchment basins (not idempotent). 
- * The result is put into the 32-bits marker image.
+ * The result is put into the 32-bit marker image.
  *
  * The segmentation is coded as follows into the 32-bits values.
  * | 0      | 1      | 2      | 3      |
@@ -75,12 +75,12 @@ const int fccNbDir[6][13][3] = {
  */
 MB_errcode MB3D_Watershed(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_grid_t grid) {
 
-    /* verification over depth and size */
+    /* Verification over depth and size */
     if (!MB3D_CHECK_SIZE_2(src, marker)) {
         return MB_ERR_BAD_SIZE;
     }
 
-    /* invalid grid case */
+    /* Invalid grid case */
     if (grid==MB3D_INVALID_GRID)
         return MB_ERR_BAD_PARAMETER;
     

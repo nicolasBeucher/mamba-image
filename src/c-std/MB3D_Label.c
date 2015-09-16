@@ -102,18 +102,18 @@ MB_errcode MB3D_Label(MB3D_Image *src, MB3D_Image *dest,
                       Uint32 *pNbobj,
                       enum MB3D_grid_t grid)
 {
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB3D_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
     /* Verification over parameter given in entry*/
     if (lblow>=lbhigh) return MB_ERR_BAD_VALUE;
     if (lbhigh>256) return MB_ERR_BAD_VALUE;
-    /* invalid grid case */
+    /* Invalid grid case */
     if (grid==MB3D_INVALID_GRID)
         return MB_ERR_BAD_PARAMETER;
     
-    /* the output is necessarly a 32-bit image */
+    /* The output is necessarly a 32-bit image */
     if ((dest->seq[0]->depth)!=32) return MB_ERR_BAD_DEPTH;
     
     /* Calling the appropriate function */

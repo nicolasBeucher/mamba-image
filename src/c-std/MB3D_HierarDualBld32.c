@@ -30,7 +30,7 @@ typedef void (INSERTNB32) (void *ctx, int x, int y, int z);
 
 /* Structure holding the function contextual information 
  * such as the size of the processed image, the pointer to the pixel lines,
- * the array of tokens and the current flooding level
+ * the array of tokens and the current flooding level.
  */
 typedef struct {
     /* The width of the processed images */
@@ -49,11 +49,11 @@ typedef struct {
     /* The memory to hold the status of each pixel */
     Uint32 *pix_status;
     
-    /* image sequence for the marker */
+    /* Image sequence for the marker */
     MB_Image **seq_mask;
-    /* image sequence for the source/destination */
+    /* Image sequence for the source/destination */
     MB_Image **seq_srcdest;
-    /* size in byte of the image lines */
+    /* Size in byte of the image lines */
     Uint32 bytes;
     
     /* Variable indicating which level in the hierarchical list
@@ -63,7 +63,7 @@ typedef struct {
     int current_water_range;
     int max_water_range;
     
-    /* meta function which redirects the neighbor function according to the grid */
+    /* Meta function which redirects the neighbor function according to the grid */
     INSERTNB32 *InsertNeighbors;
 } MB3D_Hierardualbld32_Ctx;
 
@@ -89,23 +89,23 @@ static INLINE void MB3D_InsertInHierarchicalList_1(
     int lx, ly, lz;
     MB3D_ListControl *list;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width + z*local_ctx->width*local_ctx->height;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     local_ctx->TokensArray[position].nextz = MB_LIST_END;
     
-    /* insertion in the over list corresponding */
+    /* Insertion in the over list corresponding */
     list = &(local_ctx->OverLists[value>>16]);
     
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = list->lastx;
     ly = list->lasty;
     lz = list->lastz;
     position = lx+ly*local_ctx->width+lz*local_ctx->width*local_ctx->height;
     if (position>=0) {
-        /*There is a last value, the list is not empty*/
+        /* There is a last value, the list is not empty*/
         local_ctx->TokensArray[position].nextx = x;
         local_ctx->TokensArray[position].nexty = y;
         local_ctx->TokensArray[position].nextz = z;
@@ -125,7 +125,7 @@ static INLINE void MB3D_InsertInHierarchicalList_1(
 }
 
 /*
- * Inserts a token in the hierarchical list
+ * Inserts a token in the hierarchical list.
  * This function only uses the tokens of the second half (for flooding).
  * The function also changes the status of the pixel to QUEUED.
  * \param local_ctx pointer to the structure holding all the information needed 
@@ -144,33 +144,33 @@ static INLINE void MB3D_InsertInHierarchicalList_2(
     int lx, ly, lz;
     MB3D_ListControl *list;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
-    /* the y is increased by local_ctx->height to make sure the second half */
+    /* The y is increased by local_ctx->height to make sure the second half */
     /* of the token is used */
     position = x + y*local_ctx->width + (z+local_ctx->length)*local_ctx->width*local_ctx->height;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     local_ctx->TokensArray[position].nextz = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
-    /* first if the value is outside the currently supported range */
+    /* Insertion in the hierarchical list */
+    /* First if the value is outside the currently supported range */
     /* it will be put in the corresponding overlist */
     if ((value>>16)!=local_ctx->current_water_range) {
         list = &(local_ctx->OverLists[value>>16]);
     } else {
-        /* we take the correct list */
+        /* We take the correct list */
         hvalue = value&0xffff;
         list = &(local_ctx->HierarchicalList[hvalue]);
     }
     
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = list->lastx;
     ly = list->lasty;
     lz = list->lastz;
     position = lx+ly*local_ctx->width+lz*local_ctx->width*local_ctx->height;;
     if (position>=0) {
-        /*There is a last value, the list is not empty*/
+        /* There is a last value, the list is not empty*/
         local_ctx->TokensArray[position].nextx = x;
         local_ctx->TokensArray[position].nexty = y;
         local_ctx->TokensArray[position].nextz = z+local_ctx->length;
@@ -188,12 +188,12 @@ static INLINE void MB3D_InsertInHierarchicalList_2(
         list->lastz = z+local_ctx->length;
     }
     
-    /* change the pixel status */
+    /* Change the pixel status */
     local_ctx->pix_status[x+y*local_ctx->width+z*local_ctx->width*local_ctx->height] = 0x1;
 }
 
 /*
- * Initializes the hierarchical list with the marker image
+ * Initializes the hierarchical list with the marker image.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  */
@@ -204,7 +204,7 @@ static INLINE void MB3D_HierarchyInit(MB3D_Hierardualbld32_Ctx *local_ctx)
     PIX32 *pvalue, *pmask;
     PIX32 max;
     
-    /*All the control are reset */
+    /* All the control are reset */
     for(i=0;i<65536;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
@@ -257,17 +257,17 @@ static void MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
     int nbx,nby,nbz;
     MB3D_Hierardualbld32_Ctx *local_ctx = (MB3D_Hierardualbld32_Ctx *) ctx;
     
-    /* the pixel is processed only if it has not been already processed */
+    /* The pixel is processed only if it has not been already processed */
     if (local_ctx->pix_status[x+y*local_ctx->width+z*local_ctx->width*local_ctx->height] != 0xff) {
-        /* the value of the pixel in the rebuild image */
+        /* The value of the pixel in the rebuild image */
         srcdest = local_ctx->seq_srcdest[z];
         value = *((PIX32 *)(srcdest->plines[y] + x*4));
-        /* pixel status is now FINAL */
+        /* Pixel status is now FINAL */
         local_ctx->pix_status[x+y*local_ctx->width+z*local_ctx->width*local_ctx->height] = 0xff;
         
         /* For the 26 neighbors of the pixel */
         for(i=1; i<27; i++) {
-            /* position */
+            /* Position */
             nbx = x+cubeNbDir[i][0];
             nby = y+cubeNbDir[i][1];
             nbz = z+cubeNbDir[i][2];
@@ -277,7 +277,7 @@ static void MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
                 nby>=0 && nby<((int) local_ctx->height) &&
                 nbz>=0 && nbz<((int) local_ctx->length) ) {
                 if (local_ctx->pix_status[nbx+nby*local_ctx->width+nbz*local_ctx->width*local_ctx->height] == 0) {
-                    /* if the neighbor status is CANDIDATE */
+                    /* If the neighbor status is CANDIDATE */
                     /* we modified its value with the minimum between the value of the */
                     /* mask at its position and the value of the pixel currently processed */
                     mask = local_ctx->seq_mask[nbz];
@@ -309,12 +309,12 @@ static void MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
     int nbx,nby,nbz,dirSelect;
     MB3D_Hierardualbld32_Ctx *local_ctx = (MB3D_Hierardualbld32_Ctx *) ctx;
     
-    /* the pixel is processed only if it has not been already processed */
+    /* The pixel is processed only if it has not been already processed */
     if (local_ctx->pix_status[x+y*local_ctx->width+z*local_ctx->width*local_ctx->height] != 0xff) {
-        /* the value of the pixel in the rebuild image */
+        /* The value of the pixel in the rebuild image */
         srcdest = local_ctx->seq_srcdest[z];
         value = *((PIX32 *)(srcdest->plines[y] + x*4));
-        /* pixel status is now FINAL */
+        /* Pixel status is now FINAL */
         local_ctx->pix_status[x+y*local_ctx->width+z*local_ctx->width*local_ctx->height] = 0xff;
     
         /* Computing the directions to use depending on the y and z of the */
@@ -323,7 +323,7 @@ static void MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
         
         /* For the 12 neighbors of the pixel */
         for(i=1; i<13; i++) {
-            /* position */
+            /* Position */
             nbx = x+fccNbDir[dirSelect][i][0];
             nby = y+fccNbDir[dirSelect][i][1];
             nbz = z+fccNbDir[dirSelect][i][2];
@@ -333,7 +333,7 @@ static void MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
                 nby>=0 && nby<((int) local_ctx->height) &&
                 nbz>=0 && nbz<((int) local_ctx->length) ) {
                 if (local_ctx->pix_status[nbx+nby*local_ctx->width+nbz*local_ctx->width*local_ctx->height] == 0) {
-                    /* if the neighbor status is CANDIDATE */
+                    /* If the neighbor status is CANDIDATE */
                     /* we modified its value with the minimum between the value of the */
                     /* mask at its position and the value of the pixel currently processed */
                     mask = local_ctx->seq_mask[nbz];
@@ -365,14 +365,14 @@ static INLINE void MB3D_HandlesOverList(MB3D_Hierardualbld32_Ctx *local_ctx)
     MB3D_ListControl *list;
     MB3D_Token *token;
     
-    /* resetting the hierarchical lists */
+    /* Resetting the hierarchical lists */
     for(i=0;i<65536;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
         local_ctx->HierarchicalList[i].firstz = local_ctx->HierarchicalList[i].lastz = MB_LIST_END;
     }
     
-    /* over list handles */
+    /* Over list handles */
     fx = local_ctx->OverLists[local_ctx->current_water_range].firstx;
     fy = local_ctx->OverLists[local_ctx->current_water_range].firsty;
     fz = local_ctx->OverLists[local_ctx->current_water_range].firstz;
@@ -383,7 +383,7 @@ static INLINE void MB3D_HandlesOverList(MB3D_Hierardualbld32_Ctx *local_ctx)
         fz = local_ctx->OverLists[local_ctx->current_water_range].firstz;
     }
     
-    /* emptying the over list */
+    /* Emptying the over list */
     while(fx>=0) {
         position = fx+fy*local_ctx->width+fz*local_ctx->width*local_ctx->height;
         token = &local_ctx->TokensArray[position];
@@ -400,13 +400,13 @@ static INLINE void MB3D_HandlesOverList(MB3D_Hierardualbld32_Ctx *local_ctx)
         token->nextz = MB_LIST_END;
         
         list = &(local_ctx->HierarchicalList[value&0xffff]);
-        /* the token is inserted after the last value in the list */
+        /* The token is inserted after the last value in the list */
         lx = list->lastx;
         ly = list->lasty;
         lz = list->lastz;
         position = lx+ly*local_ctx->width+lz*local_ctx->width*local_ctx->height;
         if (position>=0) {
-            /*There is a last value, the list is not empty*/
+            /* There is a last value, the list is not empty*/
             local_ctx->TokensArray[position].nextx = cfx;
             local_ctx->TokensArray[position].nexty = cfy;
             local_ctx->TokensArray[position].nextz = cfz;
@@ -477,16 +477,16 @@ MB_errcode MB3D_HierarDualBld32(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D
 
     local_ctx = (MB3D_Hierardualbld32_Ctx *)MB_malloc(sizeof(MB3D_Hierardualbld32_Ctx));
     if(local_ctx==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* local context initialisation */
+    /* Local context initialisation */
     local_ctx->width = srcdest->seq[0]->width;
     local_ctx->height = srcdest->seq[0]->height;
     local_ctx->length = srcdest->length;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     local_ctx->seq_srcdest = &srcdest->seq[0];
     local_ctx->seq_mask = &mask->seq[0];
     local_ctx->bytes = MB_LINE_COUNT(mask->seq[0]);
@@ -496,20 +496,20 @@ MB_errcode MB3D_HierarDualBld32(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D
     /* the init will use the first half and the flooding the other */
     local_ctx->TokensArray = MB_malloc(2*local_ctx->width*local_ctx->height*local_ctx->length*sizeof(MB3D_Token));
     if(local_ctx->TokensArray==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_free(local_ctx);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     /* Allocating the pixel status array */
     local_ctx->pix_status = MB_malloc(local_ctx->width*local_ctx->height*local_ctx->length*sizeof(Uint32));
     if(local_ctx->pix_status==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_free(local_ctx->TokensArray);
         MB_free(local_ctx);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     
-    /* grid initialisation */
+    /* Grid initialisation */
     if (grid==MB3D_CUBIC_GRID) {
         local_ctx->InsertNeighbors = MB3D_InsertNeighbors_cube;
     } else {
@@ -522,11 +522,11 @@ MB_errcode MB3D_HierarDualBld32(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D
     /* Actual flooding */
     MB3D_Flooding(local_ctx);
     
-    /* freeing the token array */
+    /* Freeing the token array */
     MB_free(local_ctx->TokensArray);
-    /* freeing the pixel status array */
+    /* Freeing the pixel status array */
     MB_free(local_ctx->pix_status);
-    /* freeing the context */
+    /* Freeing the context */
     MB_free(local_ctx);
     
     return MB_NO_ERR;

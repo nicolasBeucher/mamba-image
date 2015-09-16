@@ -40,12 +40,12 @@ extern MB_errcode MB3D_HierarDualBld32(MB3D_Image *mask, MB3D_Image *srcdest, en
  */
 MB_errcode MB3D_HierarDualBld(MB3D_Image *mask, MB3D_Image *srcdest, enum MB3D_grid_t grid) {
 
-    /* verification over depth and size */
+    /* Verification over depth and size */
     if (!MB3D_CHECK_SIZE_2(srcdest, mask)) {
         return MB_ERR_BAD_SIZE;
     }
     
-    /* invalid grid case */
+    /* Invalid grid case */
     if (grid==MB3D_INVALID_GRID)
         return MB_ERR_BAD_PARAMETER;
 

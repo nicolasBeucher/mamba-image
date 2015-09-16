@@ -31,7 +31,7 @@
 /* The functions described here realise the basic operations */
 /* needed to label pixels */
 
-/* this functions gives the value of the pixel inside the image */
+/* This function gives the value of the pixel inside the image */
 /* with its position */
 static PIX32 GET_VAL(MB3D_Image *im, int x, int y, int z)
 {
@@ -52,7 +52,7 @@ static PIX32 GET_VAL(MB3D_Image *im, int x, int y, int z)
     return value;
 }
 
-/* this function verify if the neighbor pixel is of the same value */
+/* This function verifies if the neighbor pixel is of the same value */
 /* as the current pixel */
 static int IS_SAME_VALUE(MB3D_Image *im,
                          int x, int y, int z,
@@ -79,7 +79,7 @@ static int IS_SAME_VALUE(MB3D_Image *im,
     return value;
 }
 
-/* function returning the corrected label for a pixel at a given position */
+/* Function returning the corrected label for a pixel at a given position */
 /* in cubic grid */
 static PIX32 GET_CUBIC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct *labels, int x, int y, int z)
 {
@@ -96,12 +96,12 @@ static PIX32 GET_CUBIC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct 
             value = GET_VAL(dest, nx, ny, nz);
             rlab = MB_find_above_label(labels, value);
             if (rlab!=0) {
-                /* when the neighbor pixel has a label we take it */
+                /* When the neighbor pixel has a label we take it */
                 if (label==0) {
                     /* No label yet for the position x,y,z */
                     label = rlab;
                 } else {
-                    /* our pixel already has a label */
+                    /* Our pixel already has a label */
                     /* we must then put a correspondance between those two */
                     labels->EQ[rlab] = label;
                 }
@@ -110,7 +110,7 @@ static PIX32 GET_CUBIC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct 
     }
     
     if (label==0) {
-        /* no neighbors labelled we take one */
+        /* No neighbors labelled we take one */
         label = (labels->current);
         labels->EQ[label] = label;
         labels->current++;
@@ -119,7 +119,7 @@ static PIX32 GET_CUBIC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct 
     return label;
 }
 
-/* function returning the corrected label for a pixel at a given position */
+/* Function returning the corrected label for a pixel at a given position */
 /* in cubic grid */
 static PIX32 GET_FCC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct *labels, int x, int y, int z)
 {
@@ -140,12 +140,12 @@ static PIX32 GET_FCC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct *l
             value = GET_VAL(dest, nx, ny, nz);
             rlab = MB_find_above_label(labels, value);
             if (rlab!=0) {
-                /* when the neighbor pixel has a label we take it */
+                /* When the neighbor pixel has a label we take it */
                 if (label==0) {
                     /* No label yet for the position x,y,z */
                     label = rlab;
                 } else {
-                    /* our pixel already has a label */
+                    /* Our pixel already has a label */
                     /* we must then put a correspondance between those two */
                     labels->EQ[rlab] = label;
                 }
@@ -154,7 +154,7 @@ static PIX32 GET_FCC_LABEL(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct *l
     }
     
     if (label==0) {
-        /* no neighbors labelled we take one */
+        /* No neighbors labelled we take one */
         label = (labels->current);
         labels->EQ[label] = label;
         labels->current++;
@@ -191,7 +191,7 @@ static void MB3D_cubeLabel32(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct 
             pin = (PIX32 *) (imSrc->plines[y]);
             for(x=0; x<(int) (imDest->width); x++, pin++, pout++) {
                 if (*pin>0) {
-                    /* if the pixel in the src binary register is not */
+                    /* If the pixel in the src binary register is not */
                     /* empty then we label it in the dest image */
                     *pout = GET_CUBIC_LABEL(dest,src,labels,x,y,z);
                 }
@@ -222,7 +222,7 @@ static void MB3D_fccLabel32(MB3D_Image *dest, MB3D_Image *src, MB_Label_struct *
             pin = (PIX32 *) (imSrc->plines[y]);
             for(x=0; x<(int) (imDest->width); x++, pin++, pout++) {
                 if (*pin>0) {
-                    /* if the pixel in the src binary register is not */
+                    /* If the pixel in the src binary register is not */
                     /* empty then we label it in the dest image */
                     *pout = GET_FCC_LABEL(dest,src,labels,x,y,z);
                 }
@@ -262,19 +262,19 @@ MB_errcode MB3D_Label32(MB3D_Image *src, MB3D_Image *dest,
     labels.EQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if (labels.EQ==NULL) {
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     }
     labels.CEQ = MB_malloc(labels.maxEQ*sizeof(PIX32));
     if (labels.CEQ==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         MB_free(labels.EQ);
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     MB_memset(labels.EQ, 0, labels.maxEQ*sizeof(PIX32));
     MB_memset(labels.CEQ, 0, labels.maxEQ*sizeof(PIX32));
     
-    /* the label image is reset */
+    /* The label image is reset */
     for(z=0; z<dest->length; z++) {
         MB_ConSet(dest->seq[z], 0);
     }
@@ -297,7 +297,7 @@ MB_errcode MB3D_Label32(MB3D_Image *src, MB3D_Image *dest,
     
     *pNbobj = (Uint32) (labels.nbObjs);
     
-    /* freeing the labels arrays */
+    /* Freeing the labels arrays */
     MB_free(labels.EQ);
     MB_free(labels.CEQ);
 

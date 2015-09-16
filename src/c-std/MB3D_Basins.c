@@ -29,7 +29,7 @@ extern MB_errcode MB3D_Basins8(MB3D_Image *src, MB3D_Image *marker, Uint32 max_l
 extern MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_grid_t grid);
 
 /***********************************************/
-/*High level function and global variables      */
+/* High level function and global variables     */
 /***********************************************/
 
 /*
@@ -38,9 +38,9 @@ extern MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_
  * basins of the watershed but no actual watershed line. It is recommanded
  * to use this functions rather than MB_Watershed if you are only interested
  * in catchment basins (faster).
- * The result is put into a the 32-bits marker image.
+ * The result is put into a the 32-bit marker image.
  *
- * The segmentation is coded as follows into the 32 bit values.
+ * The segmentation is coded as follows into the 32-bit values.
  * | 0      | 1      | 2      | 3      |
  * |--------|--------|--------|--------|
  * | Segment label            | Unused |
@@ -54,12 +54,12 @@ extern MB_errcode MB3D_Basins32(MB3D_Image *src, MB3D_Image *marker, Uint32 max_
  */
 MB_errcode MB3D_Basins(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_grid_t grid) {
     
-    /* verification over depth and size */
+    /* Verification over depth and size */
     if (!MB3D_CHECK_SIZE_2(src, marker)) {
         return MB_ERR_BAD_SIZE;
     }
 
-    /* invalid grid case */
+    /* Invalid grid case */
     if (grid==MB3D_INVALID_GRID)
         return MB_ERR_BAD_PARAMETER;
     

@@ -30,7 +30,7 @@ typedef MB3D_Token (INSERTNB8) (void *ctx, int x, int y, int z);
 
 /* Structure holding the function contextual information 
  * such as the size of the processed image, the pointer to the pixel lines,
- * the array of tokens and the current flooding level
+ * the array of tokens and the current flooding level.
  */
 typedef struct {
     /* The width of the processed images */
@@ -51,11 +51,11 @@ typedef struct {
      */
     MB3D_ListControl toreinsertList;
     
-    /* image sequence for the marker */
+    /* Image sequence for the marker */
     MB_Image **seq_marker;
-    /* image sequence for the src */
+    /* Image sequence for the src */
     MB_Image **seq_src;
-    /* size in byte of the marker image lines */
+    /* Size in byte of the marker image lines */
     Uint32 bytes_marker;
     
     /* Variable indicating which level in the hierarchical list
@@ -64,7 +64,7 @@ typedef struct {
      */
     PIX8 current_water_level;
     
-    /* meta function which redirects the neighbor function according to the grid */
+    /* Meta function which redirects the neighbor function according to the grid */
     INSERTNB8 *InsertNeighbors;
 } MB3D_Watershed8_Ctx;
 
@@ -73,7 +73,7 @@ typedef struct {
  ****************************************/
 
 /*
- * Inserts a token in the hierarchical list
+ * Inserts a token in the hierarchical list.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  * \param x the position in x of the concerned pixel
@@ -91,25 +91,25 @@ static INLINE void MB3D_InsertInHierarchicalList(
     int lx, ly, lz;
     MB_Image *im;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width + z*local_ctx->width*local_ctx->height;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     local_ctx->TokensArray[position].nextz = MB_LIST_END;
     
-    /* insertion in the hierarchical list */
-    /* the value is normed as we do not want to process */
+    /* Insertion in the hierarchical list */
+    /* The value is normed as we do not want to process */
     /* already flooded level */
     value = (value < (local_ctx->current_water_level)) ? (local_ctx->current_water_level) : value;
     
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = local_ctx->HierarchicalList[value].lastx;
     ly = local_ctx->HierarchicalList[value].lasty;
     lz = local_ctx->HierarchicalList[value].lastz;
     position = lx+ly*local_ctx->width+lz*local_ctx->width*local_ctx->height;
     if (position>=0) {
-        /*There is a last value, the list is not empty*/
+        /* There is a last value, the list is not empty*/
         local_ctx->TokensArray[position].nextx = x;
         local_ctx->TokensArray[position].nexty = y;
         local_ctx->TokensArray[position].nextz = z;
@@ -134,7 +134,7 @@ static INLINE void MB3D_InsertInHierarchicalList(
 }
 
 /*
- * Initializes the hierarchical list with the marker image
+ * Initializes the hierarchical list with the marker image.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  */
@@ -144,7 +144,7 @@ static INLINE void MB3D_HierarchyInit(MB3D_Watershed8_Ctx *local_ctx)
     PIX32 *p;
     MB_Image *im;
     
-    /*All the control are reset */
+    /* All the control are reset */
     for(i=0;i<256;i++) {
         local_ctx->HierarchicalList[i].firstx = local_ctx->HierarchicalList[i].lastx = MB_LIST_END;
         local_ctx->HierarchicalList[i].firsty = local_ctx->HierarchicalList[i].lasty = MB_LIST_END;
@@ -173,7 +173,7 @@ static INLINE void MB3D_HierarchyInit(MB3D_Watershed8_Ctx *local_ctx)
  ****************************************/
  
 /*
- * Clears the reinsert list
+ * Clears the reinsert list.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  */
@@ -185,7 +185,7 @@ static INLINE void MB3D_ClearReinsertList(MB3D_Watershed8_Ctx *local_ctx)
 }
 
 /*
- * Inserts in the reinsert list the pixel
+ * Inserts in the reinsert list the pixel.
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  * \param x the position in x of the concerned pixel
@@ -198,20 +198,20 @@ static INLINE void MB3D_InsertInReinsertList(
     int position;
     int lx, ly, lz;
     
-    /* the token corresponding to the pixel process is */
+    /* The token corresponding to the pixel process is */
     /* updated/created. */
     position = x + y*local_ctx->width + z*local_ctx->width*local_ctx->height;
     local_ctx->TokensArray[position].nextx = MB_LIST_END;
     local_ctx->TokensArray[position].nexty = MB_LIST_END;
     local_ctx->TokensArray[position].nextz = MB_LIST_END;
     
-    /* the token is inserted after the last value in the list */
+    /* The token is inserted after the last value in the list */
     lx = local_ctx->toreinsertList.lastx;
     ly = local_ctx->toreinsertList.lasty;
     lz = local_ctx->toreinsertList.lastz;
     position = lx+ly*local_ctx->width+lz*local_ctx->width*local_ctx->height;
     if (position>=0) {
-        /*There is a last value, the list is not empty*/
+        /* There is a last value, the list is not empty*/
         local_ctx->TokensArray[position].nextx = x;
         local_ctx->TokensArray[position].nexty = y;
         local_ctx->TokensArray[position].nextz = z;
@@ -250,11 +250,11 @@ static INLINE void MB3D_ReinsertFromList(MB3D_Watershed8_Ctx *local_ctx)
         /* The next token is evaluated first since reinsertion will destroy the info */
         pos = x+y*local_ctx->width+z*local_ctx->width*local_ctx->height;
         next_token = local_ctx->TokensArray[pos];
-        /* the pixel is inserted into the hierarchical list */
+        /* The pixel is inserted into the hierarchical list */
         im = local_ctx->seq_src[z];
         value = *(im->plines[y] + x);
         MB3D_InsertInHierarchicalList(local_ctx, x, y, z, value);
-        /* the next pixel is extracted */
+        /* The next pixel is extracted */
         x = next_token.nextx;
         y = next_token.nexty;
         z = next_token.nextz;
@@ -269,7 +269,7 @@ static INLINE void MB3D_ReinsertFromList(MB3D_Watershed8_Ctx *local_ctx)
  * Inserts the neighbors of pixel (x,y,z) in the hierarchical list so that they
  * can be flooded when the water reaches their level (CUBE GRID). Also
  * evaluates to which basin the pixel belongs or if it is a point of the 
- * watershed
+ * watershed.
  * \param ctx pointer to the structure holding all the information needed 
  * by the algorithm
  * \param x the x position of the pixel processed
@@ -286,23 +286,23 @@ static MB3D_Token MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
     MB_Image *im;
     MB3D_Watershed8_Ctx *local_ctx = (MB3D_Watershed8_Ctx *) ctx;
     
-    /* the tag value is the value of the marker image in x,y,z */
+    /* The tag value is the value of the marker image in x,y,z */
     im = local_ctx->seq_marker[z];
     pix = (PIX32 *) (im->plines[y] + x*4);
     *pix = SET_STATUS(pix,RG_LAB);
     
-    /* we will then look at its neighbors and it will help us decide to which */
+    /* We will then look at its neighbors and it will help us decide to which */
     /* marker the pixel belongs and also evaluates if the pixel might be in */
     /* the watershed. The neighbors not yet processed or inserted will be put */
     /* in the reinsert list to insert them later if the pixel is taggued at the */
-    /* end */
+    /* end. */
     
     /* The reinsert list is emptied */
     MB3D_ClearReinsertList(local_ctx);
     
     /* For the 26 neighbors of the pixel */
     for(neighbor=1; neighbor<27; neighbor++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+cubeNbDir[neighbor][0];
         nby = y+cubeNbDir[neighbor][1];
         nbz = z+cubeNbDir[neighbor][2];
@@ -315,11 +315,11 @@ static MB3D_Token MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
             p = (PIX32 *) (im->plines[nby] + nbx*4);
             
             if( IS_PIXEL(p, CANDIDATE) ) {
-                /* the neighbor is not inserted into the list yet */
+                /* The neighbor is not inserted into the list yet */
                 /* For the time being it is only put into the reinsert list */
                 MB3D_InsertInReinsertList(local_ctx, nbx, nby, nbz);
             } else if ( IS_PIXEL(p, RG_LAB) ) {
-                /* the neighbor has already been processed and tagged */
+                /* The neighbor has already been processed and tagged */
                 tag = READ_LABEL(pix);
                 if (tag==0) {
                     /* First neighbor we met with a tag, we take it */
@@ -332,18 +332,18 @@ static MB3D_Token MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
                     *pix = SET_STATUS(pix,WTS_LAB);
                 } 
             }
-            /* other case means that the neighbor is in the list but not processed */
+            /* Other case means that the neighbor is in the list but not processed */
         }
     }
     
-    /* At this point if the pixel does not belong to the watershed */
+    /* At this point, if the pixel does not belong to the watershed */
     /* we insert its unprocessed and unlisted neighbor into the */
     /* hierarchical list */
     if( !IS_PIXEL(pix, WTS_LAB) ) {
         MB3D_ReinsertFromList(local_ctx);
     }
 
-    /* what is the next token to process */
+    /* wWat is the next token to process */
     pos = x+y*local_ctx->width+z*local_ctx->width*local_ctx->height;
     return local_ctx->TokensArray[pos];
 }
@@ -352,7 +352,7 @@ static MB3D_Token MB3D_InsertNeighbors_cube(void *ctx, int x, int y, int z)
  * Inserts the neighbors of pixel (x,y,z) in the hierarchical list so that they
  * can be flooded when the water reaches their level (FACE CENTERED CUBIC 
  * GRID). Also evaluates to which basin the pixel belongs or if it is a point
- * of the watershed
+ * of the watershed.
  * \param ctx pointer to the structure holding all the information needed 
  * by the algorithm
  * \param x the x position of the pixel processed
@@ -373,23 +373,23 @@ static MB3D_Token MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
     /* pixel */
     dirSelect = ((z%3)<<1)+(y%2);
     
-    /* the tag value is the value of the marker image in x,y */
+    /* The tag value is the value of the marker image in x,y */
     im = local_ctx->seq_marker[z];
     pix = (PIX32 *) (im->plines[y] + x*4);
     *pix = SET_STATUS(pix,RG_LAB);
     
-    /* we will then look at its neighbors and it will help us decide to which */
+    /* We will then look at its neighbors and it will help us decide to which */
     /* marker the pixel belongs and also evaluates if the pixel might be in */
     /* the watershed. The neighbors not yet processed or inserted will be put */
     /* in the reinsert list to insert them later if the pixel is taggued at the */
-    /* end */
+    /* end. */
     
     /* The reinsert list is emptied */
     MB3D_ClearReinsertList(local_ctx);
     
     /* For the 12 neighbors of the pixel */
     for(neighbor=1; neighbor<13; neighbor++) {
-        /*position and value in the marker image */
+        /* Position and value in the marker image */
         nbx = x+fccNbDir[dirSelect][neighbor][0];
         nby = y+fccNbDir[dirSelect][neighbor][1];
         nbz = z+fccNbDir[dirSelect][neighbor][2];
@@ -402,11 +402,11 @@ static MB3D_Token MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
             p = (PIX32 *) (im->plines[nby] + nbx*4);
             
             if( IS_PIXEL(p, CANDIDATE) ) {
-                /* the neighbor is not inserted into the list yet */
+                /* The neighbor is not inserted into the list yet */
                 /* For the time being it is only put into the reinsert list */
                 MB3D_InsertInReinsertList(local_ctx, nbx, nby, nbz);
             } else if ( IS_PIXEL(p, RG_LAB) ) {
-                /* the neighbor has already been processed and tagged */
+                /* The neighbor has already been processed and tagged */
                 tag = READ_LABEL(pix);
                 if (tag==0) {
                     /* First neighbor we met with a tag, we take it */
@@ -419,18 +419,18 @@ static MB3D_Token MB3D_InsertNeighbors_fcc(void *ctx, int x, int y, int z)
                     *pix = SET_STATUS(pix,WTS_LAB);
                 } 
             }
-            /* other case means that the neighbor is in the list but not processed */
+            /* Other case means that the neighbor is in the list but not processed */
         }
     }
     
-    /* At this point if the pixel does not belong to the watershed */
+    /* At this point, if the pixel does not belong to the watershed */
     /* we insert its unprocessed and unlisted neighbor into the */
     /* hierarchical list */
     if( !IS_PIXEL(pix, WTS_LAB) ) {
         MB3D_ReinsertFromList(local_ctx);
     }
 
-    /* what is the next token to process */
+    /* What is the next token to process */
     pos = x+y*local_ctx->width+z*local_ctx->width*local_ctx->height;
     return local_ctx->TokensArray[pos];
 }
@@ -469,7 +469,7 @@ static INLINE void MB3D_Flooding(MB3D_Watershed8_Ctx *local_ctx, Uint32 max_leve
 /*
  * Controls that all the pixels are tagged and if not tags them as being part of 
  * the watershed (at this point, untagged pixels are pixels completely surrounded
- * by watershed pixels)
+ * by watershed pixels).
  * \param local_ctx pointer to the structure holding all the information needed 
  * by the algorithm
  */
@@ -525,17 +525,17 @@ static INLINE void MB3D_ControlPass(MB3D_Watershed8_Ctx *local_ctx)
 MB_errcode MB3D_Watershed8(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level, enum MB3D_grid_t grid) {
     MB3D_Watershed8_Ctx local_ctx;
     
-    /* maximum level for flood cannot be greater than 256 */
+    /* Maximum level for flood cannot be greater than 256 */
     if (max_level>256)
         return MB_ERR_BAD_VALUE;
     if (max_level==0) max_level=256;
         
-    /* local context initialisation */
+    /* Local context initialisation */
     local_ctx.width = src->seq[0]->width;
     local_ctx.height = src->seq[0]->height;
     local_ctx.length = src->length;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     local_ctx.seq_src = &src->seq[0];
     local_ctx.seq_marker = &marker->seq[0];
     local_ctx.bytes_marker = MB_LINE_COUNT(marker->seq[0]);
@@ -543,11 +543,11 @@ MB_errcode MB3D_Watershed8(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level
     /* Allocating the token array */
     local_ctx.TokensArray = MB_malloc(local_ctx.width*local_ctx.height*local_ctx.length*sizeof(MB3D_Token));
     if(local_ctx.TokensArray==NULL){
-        /* in case allocation goes wrong */
+        /* In case allocation goes wrong */
         return MB_ERR_CANT_ALLOCATE_MEMORY;
     } 
     
-    /* grid initialisation */
+    /* Grid initialisation */
     if (grid==MB3D_CUBIC_GRID) {
         local_ctx.InsertNeighbors = MB3D_InsertNeighbors_cube;
     } else {
@@ -564,7 +564,7 @@ MB_errcode MB3D_Watershed8(MB3D_Image *src, MB3D_Image *marker, Uint32 max_level
     if (max_level==256) 
         MB3D_ControlPass(&local_ctx);
     
-    /* freeing the token array */
+    /* Freeing the token array */
     MB_free(local_ctx.TokensArray);
     
     return MB_NO_ERR;
