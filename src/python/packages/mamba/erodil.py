@@ -3,7 +3,7 @@ Erosion and dilation operators.
 
 This module provides a set of functions and class to perform erosions and
 dilations. The module contains basic and complex operators that are based
-on neighbor comparisons. In particular it defines the structuring element
+on neighbor comparisons. In particular, it defines the structuring element
 class which serve as the base for these operators. The module also contains
 distance functions based on erosion.
 """
@@ -86,7 +86,7 @@ class structuringElement:
     def getDirections(self, withoutZero=False):
         """
         Returns a copy of the directions used by the structuring element.
-        if 'withoutZero' is set to True the returned direction list will
+        If 'withoutZero' is set to True the returned direction list will
         not include direction 0 (useful for some operators, such as erode
         or dilate, where direction 0 modifies the initial conditions).
         
@@ -213,6 +213,9 @@ def diffNeighbor(imIn, imInout, nb, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
     
     'imIn' and 'imOut' can be 1-bit, 8-bit and 32-bit images of same size
     and depth.
+    
+    'nb' contains the coding of all the selected neighbor points. See the User Manual
+    for details.
     """
     err = core.MB_DiffNb(imIn.mbIm, imInout.mbIm, nb, grid.id, edge.id)
     mamba.raiseExceptionOnError(err)
@@ -233,6 +236,9 @@ def infNeighbor(imIn, imInout, nb, grid=mamba.DEFAULT_GRID, edge=mamba.FILLED):
     image.
     
     'imIn' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same size and depth.
+    
+    'nb' contains the coding of all the selected neighbor points. See the User Manual
+    for details.
     """
     err = core.MB_InfNb(imIn.mbIm, imInout.mbIm, nb, grid.id, edge.id)
     mamba.raiseExceptionOnError(err)
@@ -253,6 +259,9 @@ def supNeighbor(imIn, imInout, nb, grid=mamba.DEFAULT_GRID, edge=mamba.EMPTY):
     image.
     
     'imIn' and 'imOut' can be 1-bit, 8-bit or 32-bit images of same size and depth.
+    
+    'nb' contains the coding of all the selected neighbor points. See the User Manual
+    for details.
     """
     err = core.MB_SupNb(imIn.mbIm, imInout.mbIm, nb, grid.id, edge.id)
     mamba.raiseExceptionOnError(err)

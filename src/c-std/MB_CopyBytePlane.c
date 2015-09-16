@@ -140,7 +140,7 @@ MB_errcode MB_CopyBytePlane(MB_Image *src, MB_Image *dest, Uint32 plane) {
         return MB_ERR_BAD_SIZE;
     }
 
-    /* The plane index must be between 0 and 7 included */
+    /* The plane index must be between 0 and 3 included */
     if (plane>3) 
         return MB_ERR_BAD_PARAMETER;
 

@@ -112,7 +112,7 @@ def rotateDirection(d, step=1, grid=DEFAULT_GRID):
     """
     Calculates the value of the new direction starting from direction 'd' after 
     'step' rotations (default value 1). If 'step' is positive, rotations are 
-    performed clockwise. They are counterclockwise if 'sterp' is negative.
+    performed clockwise. They are counterclockwise if 'step' is negative.
     Calculation is made according to the grid. Direction 0 is taken into account 
     (and always unchanged).
     """

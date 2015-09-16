@@ -2,7 +2,7 @@
 Filtering operators.
 
 This module provides a set of functions to perform morphological filtering 
-operations such as alternate filter.
+operations such as alternate filters.
 """
 
 import mamba

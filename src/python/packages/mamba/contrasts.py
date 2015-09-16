@@ -7,7 +7,7 @@ operators such as gradient, top-hat transform, ....
 
 import mamba
 
-# contributors: Serge BEUCHER, Nicolas BEUCHER
+# Contributors: Serge BEUCHER, Nicolas BEUCHER
 
 def gradient(imIn, imOut, n=1, se=mamba.DEFAULT_SE):
     """

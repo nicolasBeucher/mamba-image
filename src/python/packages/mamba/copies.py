@@ -54,11 +54,12 @@ def copyBitPlane(imIn, plane, imOut):
     """
     Inserts or extracts a bit plane.
     If 'imIn' is a binary image, it is inserted at 'plane' position in 
-    greyscale 'imOut'.
-    If 'imIn' is a greyscale image, its bit plane at 'plane' position is 
+    greyscale or 32-bit image 'imOut'.
+    If 'imIn' is a greyscale or 32-bit image, its bit plane at 'plane' position is 
     extracted and put into binary image 'imOut'.
     
-    Plane values are from 0 (LSB) to 7 (MSB).
+    Plane values are from 0 (LSB) to 7 (MSB) for 8-bit images or from 0 (LSB) to
+    31 (MSB) for 32-bit images.
     """ 
     err = core.MB_CopyBitPlane(imIn.mbIm,imOut.mbIm, plane)
     mamba.raiseExceptionOnError(err)

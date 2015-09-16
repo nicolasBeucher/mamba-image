@@ -63,15 +63,13 @@ This document is the Mamba library Python reference.
 It applies to version %s.
 
 It gives information regarding all the classes, functions and exceptions defined
-in the Python part of the Mamba library. This extends to all the basic functions
-found in Mamba but also to all the modules found in the mambaComposed and mamba3D
-packages.
+in the Python part of the Mamba library. This extends to all the functions
+defined in the mamba and mamba3D packages.
 
-The document also gives information regarding peripheral modules such as 
-mambaDraw.
+The document also gives information regarding the mambaDisplay peripheral module.
 
 This document is intended for reference only. To learn more about Mamba, start
-with the Mamba user manual.
+with the Mamba User Manual.
 """
 
 end = "\\end{document}"

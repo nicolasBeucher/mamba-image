@@ -6,11 +6,7 @@ They use the label operator now available for sets and for grey images.
 # Contributor: Serge BEUCHER
 
 import mamba
-
-# Note that the above area labelling can also be obtained by the following operation:
-# measureLabelling(imIn, imin, imOut)
-# (See below).
-   
+  
 def partitionLabel(imIn, imOut):
     """
     This procedure labels each cell of image 'imIn' and puts the result in
@@ -64,7 +60,7 @@ def measureLabelling(imIn, imMeasure, imOut):
     # Converting the imMeasure image to 8-bit.
     mamba.convert(imMeasure, imWrk4)
     while nbParticles > 0:
-        # particles with labels between 1 and 255 are extracted.
+        # Particles with labels between 1 and 255 are extracted.
         mamba.threshold(imWrk1, imWrk2, 0, 255)
         mamba.convert(imWrk2, imWrk3)
         mamba.copyBytePlane(imWrk1, 0, imWrk5)
@@ -85,7 +81,7 @@ def measureLabelling(imIn, imMeasure, imOut):
                 outLuts[j][i] = value / n
                 value = value % n
                 j -= 1
-        # each LUT is used to label each byte plane of a temporary image with the
+        # Each LUT is used to label each byte plane of a temporary image with the
         # corresponding value.
         for i in range(4):
             mamba.lookup(imWrk3, imWrk5, outLuts[i])
@@ -225,7 +221,7 @@ def volumeLabelling(imIn1, imIn2, imOut):
             mamba.add(imOut, imWrk2, imOut)
     else:
         for j in range(4):
-            # each byte plane is treated.
+            # Each byte plane is treated.
             mamba.copyBytePlane(imIn2, j, imWrk3)
             for i in range(8):
                 mamba.copyBitPlane(imWrk3, i, imWrk1)

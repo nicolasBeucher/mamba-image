@@ -221,11 +221,11 @@ class imageMb:
         
     def loadRaw(self, dataOrPath, preprocfunc=None):
         """
-        Load raw data inside the 3D image. You can give a filename or 
+        Loads raw data inside the 3D image. You can give a filename or 
         data directly through 'dataOrPath'.
         the data length must match the image size :
             width * height * (depth/8)
-        If needed you can preprocess the data using the optional argument
+        If needed, you can preprocess the data using the optional argument
         'preprocfunc' which will be called on the data before loading it.
         The preprocfunc must have the following prototype :
             outdata = preprocfunc(indata)

@@ -101,7 +101,7 @@ def shiftVector(imIn, imOut, vector, fill):
 
 def multiSuperpose(imInout, *imIns):
     """
-    Superpose multiple binary images ('imIns') to the greyscale image
+    Superposes multiple binary images ('imIns') to the greyscale image
     'imInout'. The binary images are put above the greyscale. The
     result is meant to be seen with an appropriate color palette.
     """

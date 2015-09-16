@@ -1,9 +1,9 @@
 """
 Arithmetic and logical operators.
 
-This module provides arithmetic operators such as addition, substraction,
-multiplication and division between images and logical operators
-(and, or, not, xor ...).
+This module provides arithmetic operators such as addition, subtraction,
+multiplication and division between images together with logical operators
+(and, or, not, xor ...) between these images.
 """
 
 import mamba
@@ -84,9 +84,9 @@ def div(imIn1, imIn2, imOut):
     
     imOut = imIn1 / imIn2
 
-    Greyscale or 32-bit images can be used. You can mix formats in the multiply operation.
+    Greyscale or 32-bit images can be used. You can mix formats in the divide operation.
     However you must ensure that the output image is as deep as 'imIn1'.
-    
+    께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께�
     In order to avoid errors due to divisions by zero, each time a pixel in 'imIn2' is equal
     to zero, the result is set to the maximum value corresponding to the depth of the image. 
     """
@@ -225,7 +225,7 @@ def ceilingAdd(imIn1, imIn2, imOut):
     imIn1 + imIn2 is larger than the maximal possible value in imOut, the result
     is truncated and limited to this maximal value.
     
-    Altough it is possible to use a 8-bit image for imIn2, it is recommended to
+    Although it is possible to use a 8-bit image for imIn2, it is recommended to
     use the same depth for all the images.
     
     Note that this operator is mainly useful for 32-bit images, as the result
@@ -260,11 +260,11 @@ def floorSub(imIn1, imIn2, imOut):
     Subtracts image 'imIn2' from image 'imIn1' and puts the result in 'imOut'.
     If imIn1 - imIn2 is negative, the result is truncated and limited to 0.
     
-    Altough it is possible to use a 8-bit image for imIn2, it is recommended to
+    Although it is possible to use a 8-bit image for imIn2, it is recommended to
     use the same depth for all the images.
     
     Note that this operator is mainly useful for 32-bit images, as the result
-    of the subtractiontion is always truncated for 8-bit images.
+    of the subtraction is always truncated for 8-bit images.
     """
     
     imMask = mamba.imageMb(imIn1, 1)

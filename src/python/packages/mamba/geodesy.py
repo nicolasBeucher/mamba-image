@@ -12,7 +12,7 @@ import mamba.core as core
 
 def upperGeodesicDilate(imIn, imMask, imOut, n=1, se=mamba.DEFAULT_SE):
     """
-    Performs a upper geodesic dilation of image 'imIn' above 'imMask'.
+    Performs an upper geodesic dilation of image 'imIn' above 'imMask'.
     The result is put inside 'imOut', 'n' controls the size of the dilation.
     'se' specifies the type of structuring element used to perform the 
     computation (DEFAULT_SE by default). 
@@ -189,7 +189,7 @@ def dualBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
 def hierarBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
     """
     Builds image 'imInout' using 'imMask' as a mask. This function only
-    works with greyscale images and uses a hierarchical queue algorithm to
+    works with greyscale and 32-bit images and uses a hierarchical queue algorithm to
     compute the result.
     
     'grid' will set the number of neighbors considered by the algorithm 
@@ -211,7 +211,7 @@ def hierarDualBuild(imMask, imInout, grid=mamba.DEFAULT_GRID):
     'grid' will set the number of neighbors considered by the algorithm 
     (HEXAGONAL is 6-Neighbors and SQUARE is 8-Neighbors).
     
-    This function is identical to build but it is faster.
+    This function is identical to dualBuild but it is faster.
     """
     
     err = core.MB_HierarDualBld(imMask.mbIm, imInout.mbIm, grid.id)

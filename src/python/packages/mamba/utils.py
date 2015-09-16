@@ -58,8 +58,8 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
         rgb2l = tuple(rgb2l) + (0,)
         
     # Mode management
-    # By default, the image depth is 8bit
-    # 32 bit images are extracted from I and F modes
+    # By default, the image depth is 8-bit
+    # 32-bit images are extracted from I and F modes
     depth = 8
     if pilim.mode == 'RGB':
         pilim = pilim.convert("L", rgb2l)
@@ -123,7 +123,7 @@ def loadFromPILFormat(pilim, size=None, rgb2l = None):
     s = pilim.tobytes()
     if depth==32:
         # For 32-bit image, the pil image format may not be exacty the
-        # desired format (unsigned 32 bit value). The data are converted
+        # desired format (unsigned 32-bit value). The data are converted
         # into the appropriate format.
         bypd = struct.calcsize(fmt)
         unpack_data = struct.unpack(end+wc*hc*fmt, s)
@@ -181,7 +181,7 @@ def convertToPILFormat(im_in):
         # Creating the PIL image 
         pilim = Image.frombytes("I",(w,h),s)
     elif im_in.depth==1:
-        # binary images
+        # Binary images
         im = create(im_in.width, im_in.height, 8)
         err = core.MB_Convert(im_in,im)
         raiseExceptionOnError(err)
@@ -190,7 +190,7 @@ def convertToPILFormat(im_in):
         # Creating the PIL image 
         pilim = Image.frombytes("L",(w,h),s)
     else:
-        # greyscale images
+        # Greyscale images
         err,s = core.MB_Extract(im_in)
         raiseExceptionOnError(err)
         # Creating the PIL image 

@@ -102,7 +102,7 @@ def largeHexagonalErode(imIn, imOut, size, edge=mamba.FILLED):
     imWrk1 = mamba.imageMb(imIn)
     imWrk2 = mamba.imageMb(imIn)
     sizemax = min(imIn.getSize())//2
-    # if size larger than sizemax, the operation must be iterated to prevent edge effects.
+    # If size larger than sizemax, the operation must be iterated to prevent edge effects.
     n = size
     mamba.copy(imIn, imOut)
     while n > 0:
@@ -135,7 +135,7 @@ def largeHexagonalDilate(imIn, imOut, size, edge=mamba.EMPTY):
     imWrk1 = mamba.imageMb(imIn)
     imWrk2 = mamba.imageMb(imIn)
     sizemax = min(imIn.getSize())//2
-    # if size larger than sizemax, the operation must be iterated to prevent edge effects.
+    # If size larger than sizemax, the operation must be iterated to prevent edge effects.
     n = size
     mamba.copy(imIn, imOut)
     while n >  0:
@@ -182,7 +182,7 @@ def largeSquareDilate(imIn, imOut, size, edge=mamba.EMPTY):
     largeLinearDilate(imOut, imOut, 5, size, grid=mamba.SQUARE, edge=edge)
     largeLinearDilate(imOut, imOut, 7, size, grid=mamba.SQUARE, edge=edge)
 
-# operations with large dodecagons
+# Operations with large dodecagons
 def _sparseConjugateHexagonErode(imIn, imOut, size, edge=mamba.FILLED):
     """
     Erosion by a conjugate hexagon. The structuring element used by this operation
@@ -265,7 +265,7 @@ def largeDodecagonalDilate(imIn, imOut, size, edge=mamba.EMPTY):
     _sparseConjugateHexagonDilate(imIn, imOut, n2, edge=edge)   
     largeHexagonalDilate(imOut, imOut, n1, edge=edge)   
 
-# operations with large octogons    
+# Operations with large octogons    
 def _sparseDiamondDilate(imIn, imOut, size, edge=mamba.EMPTY):
     """
     Dilation by a large diamond (conjugate square) on square grid. This diamond
