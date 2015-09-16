@@ -18,11 +18,11 @@ import unittest
 class TestErodilLarge3D(unittest.TestCase):
 
     def setUp(self):
-        self.im8_1 = image3DMb(8)
-        self.im8_2 = image3DMb(8)
-        self.im8_3 = image3DMb(8)
-        self.im8_4 = image3DMb(8)
-        self.im8_5 = image3DMb(8)
+        self.im8_1 = image3DMb(64,64,64,8)
+        self.im8_2 = image3DMb(64,64,64,8)
+        self.im8_3 = image3DMb(64,64,64,8)
+        self.im8_4 = image3DMb(64,64,64,8)
+        self.im8_5 = image3DMb(64,64,64,8)
         
     def tearDown(self):
         del(self.im8_1)
@@ -38,7 +38,7 @@ class TestErodilLarge3D(unittest.TestCase):
         self.im8_1.setPixel(200, (w//2, h//2, l//2))
         for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
             for d in getDirections3D(grid3D, withoutZero=True):
-                for amp in [1, 37, 67]:
+                for amp in [1, 17, 29]:
                     linearDilate3D(self.im8_1, self.im8_2, d, amp-1, grid3D)
                     linearDilate3D(self.im8_2, self.im8_3, d, 1, grid3D)
                     diff3D(self.im8_3, self.im8_2, self.im8_3)
@@ -55,7 +55,7 @@ class TestErodilLarge3D(unittest.TestCase):
         self.im8_1.setPixel(200, (w//2, h//2, l//2))
         for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
             for d in getDirections3D(grid3D, withoutZero=True):
-                for amp in [1, 37, 67]:
+                for amp in [1, 17, 29]:
                     linearDilate3D(self.im8_1, self.im8_2, d, amp-1, grid3D)
                     linearDilate3D(self.im8_2, self.im8_3, d, 1, grid3D)
                     diff3D(self.im8_3, self.im8_2, self.im8_3)
@@ -73,7 +73,7 @@ class TestErodilLarge3D(unittest.TestCase):
         self.im8_1.setPixel(200, (w//2, h//2, l//2))
         for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
             for d in getDirections3D(grid3D, withoutZero=True):
-                for amp in [1, 37, 67]:
+                for amp in [1, 17, 29]:
                     linearDilate3D(self.im8_1, self.im8_2, d, amp, grid3D)
                     largeLinearDilate3D(self.im8_1, self.im8_3, d, amp, grid3D)
                     (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_4)
@@ -86,7 +86,7 @@ class TestErodilLarge3D(unittest.TestCase):
         self.im8_1.setPixel(50, (w//2, h//2, l//2))
         for grid3D in (FACE_CENTER_CUBIC, CENTER_CUBIC, CUBIC):
             for d in getDirections3D(grid3D, withoutZero=True):
-                for amp in [1, 37, 67]:
+                for amp in [1, 17, 29]:
                     linearErode3D(self.im8_1, self.im8_2, d, amp, grid3D)
                     largeLinearErode3D(self.im8_1, self.im8_3, d, amp, grid3D)
                     (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_4)
@@ -97,7 +97,7 @@ class TestErodilLarge3D(unittest.TestCase):
         (w, h, l) = self.im8_1.getSize()
         self.im8_1.reset()
         self.im8_1.setPixel(200, (w//2, h//2, l//2))
-        for amp in [10, 23, 47, 67]:
+        for amp in [10, 17, 28]:
             largeCubeDilate(self.im8_1, self.im8_2, amp)
             cube = (w//2 - amp, h//2 -amp, l//2 + amp, w//2 + amp, h//2 + amp, l//2 - amp)
             drawCube(self.im8_3, cube, 200)
@@ -109,7 +109,7 @@ class TestErodilLarge3D(unittest.TestCase):
         (w, h, l) = self.im8_1.getSize()
         self.im8_1.fill(255)
         self.im8_1.setPixel(50, (w//2, h//2, l//2))
-        for amp in [10, 23, 47, 67]:
+        for amp in [10, 17, 27]:
             largeCubeErode(self.im8_1, self.im8_2, amp)
             self.im8_3.fill(255)
             cube = (w//2 - amp, h//2 -amp, l//2 + amp, w//2 + amp, h//2 + amp, l//2 - amp)
