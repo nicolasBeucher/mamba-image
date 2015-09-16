@@ -230,7 +230,7 @@ static void MB_comp_neighbors_hexagonal(
 
     /* MIDDLE LINES */
     for(y=1; y<height-1; y+=2) {
-        /* odd line */
+        /* Odd line */
         in7 = edge;
         pina = (DATA_TYPE*) (plines_in[y-1]);
         pinb = (DATA_TYPE*) (plines_in[y]);
@@ -269,7 +269,7 @@ static void MB_comp_neighbors_hexagonal(
             in5 = in4;
         }
 
-        /* even line */
+        /* Even line */
         in8 = edge;
         in7 = edge;
         in6 = edge;

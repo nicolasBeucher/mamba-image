@@ -31,7 +31,7 @@
 /* Base functions            */
 /****************************************/
 /* The functions described here realise the basic operations */
-/* needed to shift pixel in any directions */
+/* needed to shift pixel in any directions. */
 
 /*
  * Used to displace a complete line in an y direction.
@@ -85,7 +85,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PIX32 *pin = (PIX32 *) (*p_in + 4*count);
     PIX32 *pout = (PIX32 *) (*p_out);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) (bytes_in/4)) ? count : bytes_in/4;
     
     for(i=0; i<((Sint32) bytes_in)-(4*count); i+=4,pin++,pout++) {
@@ -112,7 +112,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PIX32 *pin = (PIX32 *) (*p_in + bytes_in -4*(count+1));
     PIX32 *pout = (PIX32 *) (*p_out + bytes_in -4);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) (bytes_in/4)) ? count : bytes_in/4;
     
     for(i=0;i<((Sint32) bytes_in)-(4*count);i+=4,pin--,pout--) {
@@ -127,8 +127,8 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift functions. */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE PIX32
 #include "MB_ShftDirection.h"
 #undef EDGE_TYPE
@@ -139,7 +139,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 
 /*
  * Looks for the maximum between two 32-bits image pixels (a central pixel and its 
- * far neighbor in the other image)
+ * far neighbor in the other image).
  * The neighbor depends on the grid used (see MB_ngh.h).
  *
  * \param src source image in which the neighbor are taken
@@ -158,12 +158,12 @@ MB_errcode MB_SupFarNb32(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32
     SHIFTFUNC *fn;
     Uint32 neighbors_nb, tran_dir;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* grid value and possible neighbors are connected, grid value is the */
+    /* Grid value and possible neighbors are connected, grid value is the */
     /* maximum number of directions */
     if(nbrnum>6 && grid==MB_HEXAGONAL_GRID) {
         return MB_ERR_BAD_DIRECTION;
@@ -179,7 +179,7 @@ MB_errcode MB_SupFarNb32(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32
         return MB_ERR_BAD_DEPTH;
     }
     
-    /* if count is to zero it amounts to a simple copy of src into dest */
+    /* If count is to zero it amounts to a simple copy of src into dest */
     /* otherwise its a shift */
     if (count==0) {
         return MB_Sup(src, srcdest, srcdest);
@@ -188,11 +188,11 @@ MB_errcode MB_SupFarNb32(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32
     /* As the function used are direction function we need to transpose the */
     /* neighbor value into the direction of the shift to perfom so that the */
     /* central pixel and the far neighbor pixel face each other (the neighbor */
-    /* image is the one that is shifted) */
+    /* image is the one that is shifted). */
     neighbors_nb = grid==MB_HEXAGONAL_GRID ? 6 : 8;
     tran_dir = nbrnum==0 ? 0 : (nbrnum+neighbors_nb/2-1)%neighbors_nb + 1;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = srcdest->plines;
     bytes_in = MB_LINE_COUNT(src);

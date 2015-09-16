@@ -29,7 +29,7 @@
 /* Base functions                       */
 /****************************************/
 /* The functions described here realise the basic operations */
-/* needed to shift pixel in any directions */
+/* needed to shift pixel in any directions. */
 
 /*
  * Used to displace a complete line in an y direction.
@@ -83,7 +83,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PIX32 *pin = (PIX32 *) (*p_in + 4*count);
     PIX32 *pout = (PIX32 *) (*p_out);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) (bytes_in/4)) ? count : bytes_in/4;
     
     for(i=0; i<((Sint32) bytes_in)-(4*count); i+=4,pin++,pout++) {
@@ -110,7 +110,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PIX32 *pin = (PIX32 *) (*p_in + bytes_in -4*(count+1));
     PIX32 *pout = (PIX32 *) (*p_out + bytes_in -4);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) (bytes_in/4)) ? count : bytes_in/4;
     
     for(i=0;i<((Sint32) bytes_in)-(4*count);i+=4,pin--,pout--) {
@@ -125,8 +125,8 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift functions. */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE PIX32
 #include "MB_ShftVector.h"
 #undef EDGE_TYPE
@@ -137,7 +137,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 
 /*
  * Looks for the maximum between two 32-bits image pixels (a central pixel
- * and its neighbor in the other image previously shifted by the given vector)
+ * and its neighbor in the other image previously shifted by the given vector).
  *
  * \param src source image in which the neighbor are taken
  * \param srcdest source of the central pixel and destination image
@@ -153,8 +153,8 @@ MB_errcode MB_SupVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy
     PLINE *plines_in, *plines_out;
     VECFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -166,7 +166,7 @@ MB_errcode MB_SupVector32(MB_Image *src, MB_Image *srcdest, Sint32 dx, Sint32 dy
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = srcdest->plines;
     bytes_in = MB_LINE_COUNT(src);

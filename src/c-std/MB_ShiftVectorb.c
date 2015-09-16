@@ -30,7 +30,7 @@
 /* Base functions            */
 /*****************************/
 /* The functions described here realised the basic operation */
-/* needed to shift pixel in any directions */
+/* needed to shift pixel in any directions. */
 
 /*
  * Used to displace a complete line in an y direction.
@@ -75,19 +75,19 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     reg_dec = count / MB_vec1_size;
     ins_reg_dec = (MB_Vector1) count % MB_vec1_size;
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     reg_dec = reg_dec<(bytes_in/sizeof(MB_Vector1)) ? reg_dec : (bytes_in/sizeof(MB_Vector1));
 
     pin = (MB_Vector1 *) (*p_in + bytes_in - (reg_dec+1)*sizeof(MB_Vector1));
     pout = (MB_Vector1 *) (*p_out + bytes_in - sizeof(MB_Vector1));
     
     if (ins_reg_dec==0) {
-        /* no intra register shifting */
+        /* No intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin--,pout--) {
             (*pout) = (*pin);
         }
     } else {
-        /* intra register shiffting */
+        /* Intra register shiffting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin--,pout--) {
             reg1 = (*pin);
             reg2 = (i==(bytes_in-(reg_dec+1)*sizeof(MB_Vector1))) ? fill_val : (*(pin-1));
@@ -121,19 +121,19 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     reg_dec = count / MB_vec1_size;
     ins_reg_dec = (MB_Vector1) count % MB_vec1_size;
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     reg_dec = reg_dec<(bytes_in/sizeof(MB_Vector1)) ? reg_dec : (bytes_in/sizeof(MB_Vector1));
 
     pin = (MB_Vector1 *) (*p_in + reg_dec*sizeof(MB_Vector1));
     pout = (MB_Vector1 *) (*p_out);
     
     if (ins_reg_dec==0) {
-        /* no intra register shifting */
+        /* No intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin++,pout++) {
             (*pout) = (*pin);
         }
     } else {
-        /* intra register shiffting */
+        /* Intra register shiffting */
         for(i=0;i<(bytes_in-reg_dec*sizeof(MB_Vector1));i+=sizeof(MB_Vector1),pin++,pout++) {
             reg1 = (*pin);
             reg2 = (i==(bytes_in-(reg_dec+1)*sizeof(MB_Vector1))) ? fill_val : (*(pin+1));
@@ -151,8 +151,8 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 /* Direction functions                  */
 /***************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift functions. */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE MB_Vector1
 #include "MB_ShftVector.h"
 #undef EDGE_TYPE
@@ -180,8 +180,8 @@ MB_errcode MB_ShiftVectorb(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, 
     PLINE *plines_in, *plines_out;
     VECFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -193,14 +193,14 @@ MB_errcode MB_ShiftVectorb(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, 
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
 
-    /* creating the fill_value (a MB_Vector1 element) which size can vary from */
-    /* 32bit to 64bit depending on the machine on which the code is executed */
-    /* we create an array of two 32bit values filled with the fill pattern */
+    /* Creating the fill_value (a MB_Vector1 element) which size can vary from */
+    /* 32-bit to 64-bit depending on the machine on which the code is executed. */
+    /* We create an array of two 32bit values filled with the fill pattern */
     /* the array pointer is cast into a MB_Vector1 to make sure the correct */
     /* value is used */
     lf_value = (long_filler_pix==0) ? 0 : 0xffffffff;

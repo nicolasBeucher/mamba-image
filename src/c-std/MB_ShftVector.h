@@ -46,12 +46,12 @@
  * Vector functions                     *
  ****************************************
  * The functions described here shift the pixels by a given 
- * vector using base functions
+ * vector using base functions.
  */
  
 
 /**
- * Moves Up and computes the image
+ * Moves Up and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -70,7 +70,7 @@ static void MB_ShiftVectUp(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* count cannot exceed the number of lines */
+    /* Count cannot exceed the number of lines */
     hcount = (-dy)>nb_lines ? nb_lines : (-dy);
     
     p_in = &plines_in[hcount];
@@ -85,7 +85,7 @@ static void MB_ShiftVectUp(PLINE *plines_out, PLINE *plines_in,
 } 
 
 /**
- * Moves Up and Right and computes the image
+ * Moves Up and Right and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -104,7 +104,7 @@ static void MB_ShiftVectUpRight(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = (-dy)>nb_lines ? nb_lines : (-dy);
     
     p_in = &plines_in[hcount];
@@ -119,7 +119,7 @@ static void MB_ShiftVectUpRight(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves Right and computes the image
+ * Moves Right and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -146,7 +146,7 @@ static void MB_ShiftVectRight(PLINE *plines_out, PLINE *plines_in,
 } 
 
 /**
- * Moves Down and right computes the image
+ * Moves Down and right computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -165,7 +165,7 @@ static void MB_ShiftVectDownRight(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = dy>nb_lines ? nb_lines : dy;
     
     p_in = &plines_in[nb_lines-1-hcount];
@@ -180,7 +180,7 @@ static void MB_ShiftVectDownRight(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves Down and computes the image
+ * Moves Down and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -199,7 +199,7 @@ static void MB_ShiftVectDown(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = dy>nb_lines ? nb_lines : dy;
     
     p_in = &plines_in[nb_lines-1-hcount];
@@ -214,7 +214,7 @@ static void MB_ShiftVectDown(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves Down and Left and computes the image
+ * Moves Down and Left and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -233,7 +233,7 @@ static void MB_ShiftVectDownLeft(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = dy>nb_lines ? nb_lines : dy;
 
     p_in = &plines_in[nb_lines-1-hcount];
@@ -248,7 +248,7 @@ static void MB_ShiftVectDownLeft(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves Left and computes the image
+ * Moves Left and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -275,7 +275,7 @@ static void MB_ShiftVectLeft(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves Up and Left and computes the image
+ * Moves Up and Left and computes the image.
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -294,7 +294,7 @@ static void MB_ShiftVectUpLeft(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = (-dy)>nb_lines ? nb_lines : (-dy);
     
     p_in = &plines_in[hcount];
@@ -309,7 +309,7 @@ static void MB_ShiftVectUpLeft(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Computes the image (no move)
+ * Computes the image (no move).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -355,12 +355,12 @@ typedef void (VECFUNC) (PLINE *plines_out, PLINE *plines_in,
                           Uint32 bytes_in, Sint32 nb_lines,
                           Sint32 dx, Sint32 dy, EDGE_TYPE edge_val);
 
-/** Encore the vector orientation */
+/** Encode the vector orientation */
 #define CODE_ORIENTATION(dx,dy) \
     (((dx>0)<<3)|((dx<0)<<2)|((dy>0)<<1)|(dy<0))
 
 /** 
- * array giving the function to use depending on the vector orientation
+ * Array giving the function to use depending on the vector orientation
  */
 static VECFUNC *orientationFunc[16] =
 {

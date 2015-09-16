@@ -27,7 +27,7 @@
  */
 #include "mambaApi_loc.h"
 
-/*Array containing the number of pixel set to True in a byte*/
+/* Array containing the number of pixel set to True in a byte*/
 const Uint64 MB_VolumePerByte[256] = {
     00,01,01,02,01,02,02,03,01,02,02,03,02,03,03,04,
     01,02,02,03,02,03,03,04,02,03,03,04,03,04,04,05,
@@ -65,7 +65,7 @@ static INLINE void VOLUME_LINE_1(PLINE *plines, Uint32 bytes, Uint64 *volume)
 } 
 
 /*
- * Computes the volume of a line of an 8-bits image.
+ * Computes the volume of a line of an 8-bit image.
  * \param plines pointer on the source image pixel line
  * \param bytes number of bytes inside the line
  * \param volume pointer to the variable holding the computed volume of the image
@@ -82,7 +82,7 @@ static INLINE void VOLUME_LINE_8(PLINE *plines, Uint32 bytes, Uint64 *volume)
 } 
 
 /*
- * Computes the volume of a line of an 32-bits image.
+ * Computes the volume of a line of an 32-bit image.
  * \param plines pointer on the source image pixel line
  * \param bytes number of bytes inside the line
  * \param volume pointer to the variable holding the computed volume of the image
@@ -116,10 +116,10 @@ MB_errcode MB_Volume(MB_Image *src, Uint64 *pVolume) {
     plines = src->plines;
     bytes = MB_LINE_COUNT(src);
 
-    /* init volume variable */
+    /* Init volume variable */
     volume = 0;
 
-    /* volume computation depends on the depth of the image */
+    /* Volume computation depends on the depth of the image */
     switch(src->depth) {
     case 1:
         for(i=0; i<src->height; i++, plines++) {
@@ -143,7 +143,7 @@ MB_errcode MB_Volume(MB_Image *src, Uint64 *pVolume) {
         break;
     }
 
-    /* returns of volume */
+    /* Returns of volume */
     *pVolume = volume;
 
     return MB_NO_ERR;

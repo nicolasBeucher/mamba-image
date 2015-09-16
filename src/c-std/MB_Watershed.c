@@ -31,13 +31,13 @@ extern MB_errcode MB_Watershed8(MB_Image *src, MB_Image *marker, Uint32 max_leve
 extern MB_errcode MB_Watershed32(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t grid);
 
 
-/* Table giving the offset for the neighbor in square grid (x and y) */ 
+/* Table giving the offset for the neighbor in square grid (x and y). */ 
 const int sqNbDir[9][2] = {
     {0,0},{0,-1},{1,-1},{1,0},{1,1},{0,1},{-1,1},{-1,0},{-1,-1}
 };
 
-/* Table giving the offset for the neighbor in hexagonal grid (x and y) */
-/* the direction depends on the oddness/evenness of the line */
+/* Table giving the offset for the neighbor in hexagonal grid (x and y). */
+/* The direction depends on the oddness/evenness of the line. */
 const int hxNbDir[2][7][2] = {
     {{0,0},{0,-1},{1,0},{0,1},{-1,1},{-1,0},{-1,-1}},
     {{0,0},{1,-1},{1,0},{1,1},{0,1},{-1,0},{0,-1}}
@@ -69,7 +69,7 @@ const int hxNbDir[2][7][2] = {
  */
 MB_errcode MB_Watershed(MB_Image *src, MB_Image *marker, Uint32 max_level, enum MB_grid_t grid) {
     
-    /* verification over depth and size */
+    /* Verification over depth and size */
     if (!MB_CHECK_SIZE_2(src, marker)) {
         return MB_ERR_BAD_SIZE;
     }

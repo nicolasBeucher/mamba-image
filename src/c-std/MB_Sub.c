@@ -29,8 +29,8 @@
 #include "mambaApi_vector.h"
 
 /*
- * Subtracts the 1-bit pixels of a line to the 8-bits pixels of another. 
- * The results is put in a 8-bits pixels line.
+ * Subtracts the 1-bit pixels of a line to the 8-bit pixels of another. 
+ * The results is put in a 8-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
  * \param plines_in2 pointer on the source image 8-bit pixel line
@@ -58,14 +58,14 @@ static INLINE void SUB_LINE_8_1_8(PLINE *plines_out,
             } else {
                 *pout = (PIX8) prov;
             }
-            /* next pixel in the register */
+            /* Next pixel in the register */
             pix_reg = pix_reg>>1;
         }
     }
 }
 
 /*
- * Subtracts the 8-bits pixels of a line to the 8-bits pixels of another. 
+ * Subtracts the 8-bit pixels of a line to the 8-bit pixels of another. 
  * The results is put in a 8-bits pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -110,7 +110,7 @@ static INLINE void SUB_LINE_8_8_8(PLINE *plines_out,
 } 
 
 /*
- * Subtracts the 8-bits pixels of a line to the 8-bits pixels of another. 
+ * Subtracts the 8-bit pixels of a line to the 8-bit pixels of another. 
  * The results is put in a 32-bits pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -134,8 +134,8 @@ static INLINE void SUB_LINE_8_8_32(PLINE *plines_out,
 }
 
 /*
- * Subtracts the 32-bits pixels of a line to the 32-bits pixels of another. 
- * The results is put in a 32-bits pixels line.
+ * Subtracts the 32-bit pixels of a line to the 32-bit pixels of another. 
+ * The results is put in a 32-bit pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
  * \param plines_in2 pointer on the source image 8-bit pixel line
@@ -172,7 +172,7 @@ static INLINE void SUB_LINE_32_32_32(PLINE *plines_out,
 }
 
 /*
- * Subtracts the 8-bits pixels of a line to the 32-bits pixels of another. 
+ * Subtracts the 8-bit pixels of a line to the 32-bit pixels of another. 
  * The results is put in a 32-bits pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -196,7 +196,7 @@ static INLINE void SUB_LINE_8_32_32(PLINE *plines_out,
 }
 
 /*
- * Subtracts the 32-bits pixels of a line to the 8-bits pixels of another. 
+ * Subtracts the 32-bit pixels of a line to the 8-bit pixels of another. 
  * The results is put in a 32-bits pixels line.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1-bit pixel line
@@ -233,7 +233,7 @@ MB_errcode MB_Sub(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     Uint32 bytes_in;
     Uint32 i;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -251,12 +251,12 @@ MB_errcode MB_Sub(MB_Image *src1, MB_Image *src2, MB_Image *dest)
     
     switch(MB_PROBE_PAIR(src1,src2)) {
     
-    /* subtracting a binary image to binary image amounts to a set difference*/
+    /* Subtracting a binary image to binary image amounts to a set difference*/
     case MB_PAIR_1_1:
         return MB_Diff(src1, src2, dest);
         break;
     
-    /* subtracting a binary image to an 8-bit image */
+    /* Subtracting a binary image to an 8-bit image */
     case MB_PAIR_8_1:
         if(dest->depth !=8)
             return MB_ERR_BAD_DEPTH;

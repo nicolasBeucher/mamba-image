@@ -64,7 +64,7 @@ MB_errcode MB_Xor(MB_Image *src1, MB_Image *src2, MB_Image *dest) {
     PLINE *plines_in1, *plines_in2, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
         return MB_ERR_BAD_SIZE;
     }

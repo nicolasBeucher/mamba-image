@@ -50,7 +50,7 @@ static INLINE void PUT_PIXEL_1(PLINE pline, Uint32 x, MB_Vector1 value)
 }
 
 /*
- * Puts the pixel value inside a 8-bits line.
+ * Puts the pixel value inside a 8-bit line.
  * \param pline pointer on the source image pixel line
  * \param x the position in the line
  * \param value the value of the pixel (0 to 255)
@@ -62,7 +62,7 @@ static INLINE void PUT_PIXEL_8(PLINE pline, Uint32 x, PIX8 value)
 }
 
 /*
- * Puts the pixel value inside a 32-bits line.
+ * Puts the pixel value inside a 32-bit line.
  * \param pline pointer on the source image pixel line
  * \param x the position in the line
  * \param value the value of the pixel
@@ -86,7 +86,7 @@ MB_errcode MB_PutPixel(MB_Image *dest, Uint32 pixVal, Uint32 x, Uint32 y)
     PLINE pline;
     MB_Vector1 v;
 
-    /* verification over the size */
+    /* Verification over the size */
     if (x>=dest->width || y>=dest->height) {
         return MB_ERR_BAD_SIZE;
     }
@@ -133,7 +133,7 @@ static INLINE void GET_PIXEL_1(PLINE pline, Uint32 x, Uint32 *value)
 }
 
 /*
- * Gets the pixel value from a 8-bits line.
+ * Gets the pixel value from a 8-bit line.
  * \param plines pointer on the source image pixel line
  * \param x the position in the line
  * \param value the value of the pixel (0 to 255)
@@ -145,7 +145,7 @@ static INLINE void GET_PIXEL_8(PLINE pline, Uint32 x, Uint32 *value)
 }
 
 /*
- * Gets the pixel value inside a 32-bits line.
+ * Gets the pixel value inside a 32-bit line.
  * \param plines pointer on the source image pixel line
  * \param x the position in the line
  * \param value the value of the pixel
@@ -168,7 +168,7 @@ MB_errcode MB_GetPixel(MB_Image *src, Uint32 *pixVal, Uint32 x, Uint32 y)
 {
     PLINE pline;
 
-    /* verification over the size */
+    /* Verification over the size */
     if (x>=src->width || y>=src->height) {
         return MB_ERR_BAD_SIZE;
     }

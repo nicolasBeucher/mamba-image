@@ -32,7 +32,7 @@
 /* Base functions                       */
 /****************************************/
 /* The functions described here realise the basic operations */
-/* needed to shift pixels in any directions */
+/* needed to shift pixels in any directions. */
 
 /*
  * Used to displace a complete line in an y direction.
@@ -120,7 +120,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
     MB_Vector8 reg1, reg2;
     MB_Vector8 edge, *pin, *pout;
 
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     reg_dec = ((Uint32) count)<bytes_in ? count/MB_vec8_size : bytes_in/MB_vec8_size;
     ins_reg_dec = count % MB_vec8_size;
 
@@ -129,7 +129,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
     pout = (MB_Vector8 *) (*p_out);
     
     if (ins_reg_dec==0) {
-        /* no intra register shifting */
+        /* No intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*MB_vec8_size);i+=sizeof(MB_Vector8),pin++,pout++) {
             reg1 = MB_vec8_load(pin);
             reg2 = MB_vec8_load(pout);
@@ -137,7 +137,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
             MB_vec8_store(pout,reg2);
         }
     } else {
-        /* intra register shifting */
+        /* Intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*MB_vec8_size);i+=sizeof(MB_Vector8),pin++,pout++) {
             reg1 = MB_vec8_load(pin);
             reg2 = (i==(bytes_in-(reg_dec+1)*MB_vec8_size)) ? edge : MB_vec8_load(pin+1);
@@ -180,7 +180,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in,
 #else
     PLINE pin, pout;
 
-    /* count cannot exceed the number of pixels in a line */
+    /* Count cannot exceed the number of pixels in a line */
     count = ((Uint32) count)<bytes_in ? count : bytes_in;
     
     pin = (PLINE) (*p_in + count);
@@ -220,7 +220,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
     MB_Vector8 reg1, reg2;
     MB_Vector8 edge, *pin, *pout;
 
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     reg_dec = ((Uint32) count)<bytes_in ? count/MB_vec8_size : bytes_in/MB_vec8_size;
     ins_reg_dec = count % MB_vec8_size;
 
@@ -229,7 +229,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
     pout = (MB_Vector8 *) (*p_out + bytes_in - sizeof(MB_Vector8));
     
     if (ins_reg_dec==0) {
-        /* no intra register shifting */
+        /* No intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*MB_vec8_size);i+=sizeof(MB_Vector8),pin--,pout--) {
             reg1 = MB_vec8_load(pin);
             reg2 = MB_vec8_load(pout);
@@ -237,7 +237,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
             MB_vec8_store(pout,reg2);
         }
     } else {
-        /* intra register shifting */
+        /* Intra register shifting */
         for(i=0;i<(bytes_in-reg_dec*MB_vec8_size);i+=sizeof(MB_Vector8),pin--,pout--) {
             reg1 = MB_vec8_load(pin);
             reg2 = (i==(bytes_in-(reg_dec+1)*MB_vec8_size)) ? edge : MB_vec8_load(pin-1);
@@ -280,7 +280,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
 #else
     PLINE pin, pout;
 
-    /* count cannot exceed the number of pixels in a line */
+    /* Count cannot exceed the number of pixels in a line */
     count = ((Uint32) count)<bytes_in ? count : bytes_in;
     
     pin = (PLINE) (*p_in + bytes_in -1 - count);
@@ -300,8 +300,8 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift . */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE Uint32
 #include "MB_ShftDirection.h"
 #undef EDGE_TYPE
@@ -312,7 +312,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in,
 
 /*
  * Looks for the maximum between two grey scale image pixels (a central pixel and its 
- * far neighbor in the other image)
+ * far neighbor in the other image).
  * The neighbor depends on the grid used (see MB_ngh.h).
  *
  * \param src source image in which the neighbor are taken
@@ -331,12 +331,12 @@ MB_errcode MB_SupFarNb8(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32 
     SHIFTFUNC *fn;
     Uint32 neighbors_nb, tran_dir;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* grid value and possible neighbors are connected, grid value is the */
+    /* Grid value and possible neighbors are connected, grid value is the */
     /* maximum number of directions */
     if(nbrnum>6 && grid==MB_HEXAGONAL_GRID) {
         return MB_ERR_BAD_DIRECTION;
@@ -352,7 +352,7 @@ MB_errcode MB_SupFarNb8(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32 
         return MB_ERR_BAD_DEPTH;
     }
     
-    /* if count is to zero it amounts to a simple copy of src into dest */
+    /* If count is to zero it amounts to a simple copy of src into dest */
     /* otherwise its a shift */
     if (count==0) {
         return MB_Sup(src, srcdest, srcdest);
@@ -361,11 +361,11 @@ MB_errcode MB_SupFarNb8(MB_Image *src, MB_Image *srcdest, Uint32 nbrnum, Uint32 
     /* As the function used are direction function we need to transpose the */
     /* neighbor value into the direction of the shift to perfom so that the */
     /* central pixel and the far neighbor pixel face each other (the neighbor */
-    /* image is the one that is shifted) */
+    /* image is the one that is shifted). */
     neighbors_nb = grid==MB_HEXAGONAL_GRID ? 6 : 8;
     tran_dir = nbrnum==0 ? 0 : (nbrnum+neighbors_nb/2-1)%neighbors_nb + 1;
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = srcdest->plines;
     bytes_in = MB_LINE_COUNT(src);

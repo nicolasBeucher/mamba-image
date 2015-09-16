@@ -37,7 +37,7 @@ extern MB_errcode MB_SupNb32(MB_Image *src, MB_Image *srcdest, Uint32 neighbors,
 
 /*
  * Looks for the maximum between two image pixels (a central pixel
- * and its neighbors in the other image)
+ * and its neighbors in the other image).
  * The neighbor depends on the grid used. Neighbors are
  * described using a pattern (see enum MB_Neighbors_code_t). If no neighbor
  * is defined, the function will leave silently doing nothing.

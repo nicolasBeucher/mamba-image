@@ -29,7 +29,7 @@
  * Base functions                       *
  ****************************************
  * 
- * The functions described here realise the basic operations for shifting
+ * The functions described here realise the basic operations for shifting.
  */
 
 
@@ -70,7 +70,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PLINE pin = (PLINE) (*p_in + count);
     PLINE pout = (PLINE) (*p_out );
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) bytes_in) ? count : bytes_in;
     
     MB_memcpy(pout,pin,bytes_in-count);
@@ -93,7 +93,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PLINE pin = (PLINE) (*p_in + bytes_in -1 - count);
     PLINE pout = (PLINE) (*p_out + bytes_in -1);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) bytes_in) ? count : bytes_in;
     
     for(i=0;i<((Sint32) bytes_in)-count;i++,pin--,pout--) {
@@ -108,8 +108,8 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift functions. */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE Uint32
 #include "MB_ShftVector.h"
 #undef EDGE_TYPE
@@ -135,8 +135,8 @@ MB_errcode MB_ShiftVector8(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, 
     PLINE *plines_in, *plines_out;
     VECFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -148,7 +148,7 @@ MB_errcode MB_ShiftVector8(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy, 
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);

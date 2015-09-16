@@ -28,7 +28,7 @@
 #include "mambaApi_loc.h"
 #include "mambaApi_vector.h"
 
-/* functions for each depth */
+/* Functions for each depth */
 
 static INLINE MB_errcode MB_Range1(MB_Image *src, Uint32 *min, Uint32 *max)
 {
@@ -37,8 +37,8 @@ static INLINE MB_errcode MB_Range1(MB_Image *src, Uint32 *min, Uint32 *max)
     PLINE *plines;
     Uint32 *p;
     
-    /* default value */
-    /* this way, the first comparison will always be in */
+    /* Default value */
+    /* This way, the first comparison will always be in */
     /* favor of the pixel */
 
     *max = 0;
@@ -49,7 +49,7 @@ static INLINE MB_errcode MB_Range1(MB_Image *src, Uint32 *min, Uint32 *max)
     plines = src->plines;
     bytes_in = MB_LINE_COUNT(src);
 
-    /* proceeding line by line */
+    /* Proceeding line by line */
     for (i = 0; i < src->height; i++, plines++) {
         p = (Uint32 *) (*plines);
         for(j = 0; j < bytes_in; j+=4, p++) {
@@ -60,7 +60,7 @@ static INLINE MB_errcode MB_Range1(MB_Image *src, Uint32 *min, Uint32 *max)
                 *max = 1;
             }
             if ( (*max == 1) &&(*min == 0) ) {
-                /* if this is the case they will no longer */
+                /* If this is the case they will no longer */
                 /* change so better stop here ;-) */
                 return MB_NO_ERR;
             }
@@ -75,14 +75,14 @@ static INLINE MB_errcode MB_Range8(MB_Image *src, Uint32 *min, Uint32 *max)
     Uint32 i;
     PIX8 *p;
     
-    /* default value */
-    /* this way, the first comparison will always be in */
+    /* Default value */
+    /* This way, the first comparison will always be in */
     /* favor of the pixel */
     *min = UINT8_MAX;
     *max = 0;
 
     p = src->pixels;
-    /* proceeding pixels by pixels */
+    /* Proceeding pixels by pixels */
     for (i = 0; i < src->height*src->width; i++, p++) {
         if (*p < *min ) {
             *min = (Uint32) *p;
@@ -100,14 +100,14 @@ static INLINE MB_errcode MB_Range32(MB_Image *src,Uint32 *min, Uint32 *max)
     Uint32 i;
     PIX32 *p;
     
-    /* default value */
-    /* this way, the first comparison will always be in */
+    /* Default value */
+    /* This way, the first comparison will always be in */
     /* favor of the pixel */
     *min = UINT32_MAX;
     *max = 0;
 
     p = (PIX32 *) src->pixels;
-    /* proceeding pixels by pixels */
+    /* Proceeding pixels by pixels */
     for (i = 0; i < src->height*src->width; i++, p++) {
         if (*p < *min ) {
             *min = *p;
@@ -121,7 +121,7 @@ static INLINE MB_errcode MB_Range32(MB_Image *src,Uint32 *min, Uint32 *max)
 }
 
 /*
- * gives the minimum and maximum values of the image pixels
+ * Gives the minimum and maximum values of the image pixels
  * i.e its range.
  * \param src source image
  * \param min the minimum value of the pixels
@@ -151,8 +151,8 @@ MB_errcode MB_Range(MB_Image *src, Uint32 *min, Uint32 *max)
 }
 
 /*
- * gives the minimum and maximum possible values of the image pixels
- * given the image depth
+ * Gives the minimum and maximum possible values of the image pixels
+ * given the image depth.
  * \param src source image
  * \param min the minimum possible value of the pixels
  * \param max the maximum possible value of the pixels

@@ -29,7 +29,7 @@
  * Base functions                       *
  ****************************************
  * 
- * The functions described here realise the basic operations for shifting
+ * The functions described here realise the basic operations for shifting.
  */
 
 
@@ -72,7 +72,7 @@ static INLINE void SHIFT_LINE_LEFT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PIX32 *pin = (PIX32 *) (*p_in + 4*count);
     PIX32 *pout = (PIX32 *) (*p_out);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) (bytes_in/4)) ? count : bytes_in/4;
     
     for(i=0; i<((Sint32) bytes_in)-(4*count); i+=4,pin++,pout++) {
@@ -99,7 +99,7 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
     PIX32 *pin = (PIX32 *) (*p_in + bytes_in -4*(count+1));
     PIX32 *pout = (PIX32 *) (*p_out + bytes_in -4);
     
-    /* count cannot exceed the number of pixel in a line */
+    /* Count cannot exceed the number of pixel in a line */
     count = count<((Sint32) (bytes_in/4)) ? count : bytes_in/4;
     
     for(i=0;i<((Sint32) bytes_in)-(4*count);i+=4,pin--,pout--) {
@@ -114,8 +114,8 @@ static INLINE void SHIFT_LINE_RIGHT(PLINE *p_out, PLINE *p_in, Uint32 bytes_in,
 /* Direction functions                  */
 /****************************************/
 /* The functions are described in a separate file to communalize with other */
-/* shift functions */
-/* Data type of the value used to represent the edge */
+/* shift functions. */
+/* Data type of the value used to represent the edge. */
 #define EDGE_TYPE PIX32
 #include "MB_ShftVector.h"
 #undef EDGE_TYPE
@@ -141,12 +141,12 @@ MB_errcode MB_ShiftVector32(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy,
     PLINE *plines_in, *plines_out;
     VECFUNC *fn;
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
-    /* Only 32bit images can be processed */
+    /* Only 32-bit images can be processed */
     switch (MB_PROBE_PAIR(src, dest)) {
     case MB_PAIR_32_32:
         break;
@@ -154,7 +154,7 @@ MB_errcode MB_ShiftVector32(MB_Image *src, MB_Image *dest, Sint32 dx, Sint32 dy,
         return MB_ERR_BAD_DEPTH;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);

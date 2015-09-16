@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Converts a binary image line in a grey scale image (8-bits) line using
+ * Converts a binary image line in a grey scale image (8-bit) line using
  * value maskf to replace 0 and maskt to replace 1.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
@@ -49,16 +49,16 @@
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
         pix_reg = *pin;
         for(u=0;u<MB_vec1_size;u++,pout++){
-            /* for all the pixels in the register */
+            /* For all the pixels in the register */
             *pout = (pix_reg&1) ? maskt : maskf;
-            /* next pixel */
+            /* Next pixel */
             pix_reg = pix_reg>>1;
         }    
     }
 }
 
 /*
- * Converts a binary image line in a 32-bits image line using
+ * Converts a binary image line in a 32-bit image line using
  * value maskf to replace 0 and maskt to replace 1.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in pointer on the source image pixel line
@@ -78,16 +78,16 @@
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pin++) {
         pix_reg = *pin;
         for(u=0;u<MB_vec1_size;u++,pout++){
-            /* for all the pixels in the register */
+            /* For all the pixels in the register */
             *pout = (pix_reg&1) ? maskt : maskf;
-            /* next pixel */
+            /* Next pixel */
             pix_reg = pix_reg>>1;
         }    
     }
 }
 
 /*
- * Converts a binary image in a grey scale image (8-bits) or in a 32-bits image
+ * Converts a binary image in a grey scale image (8-bit) or in a 32-bit image
  * using value maskf to replace 0 and maskt to replace 1.
  * \param src binary source image
  * \param dest destination image 
@@ -100,7 +100,7 @@ MB_errcode MB_Mask(MB_Image *src, MB_Image *dest, Uint32 maskf, Uint32 maskt) {
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -110,16 +110,16 @@ MB_errcode MB_Mask(MB_Image *src, MB_Image *dest, Uint32 maskf, Uint32 maskt) {
     plines_out = dest->plines;
     bytes_in = MB_LINE_COUNT(src);
 
-    /* verification to ensure depth coherency with function purpose */
+    /* Verification to ensure depth coherency with function purpose */
     switch(MB_PROBE_PAIR(src, dest)) {
         case MB_PAIR_1_8:
-            /* converting the 1-bit values in 8-bit values */
+            /* Converting the 1-bit values in 8-bit values */
             for(i=0;i<src->height;i++,plines_in++,plines_out++) {
                 MASK_LINE8(plines_out, plines_in, bytes_in, (PIX8) maskf, (PIX8) maskt);
             }
             break;
         case MB_PAIR_1_32:
-            /* converting the 1-bit values in 32-bit values */
+            /* Converting the 1-bit values in 32-bit values */
             for(i=0;i<src->height;i++,plines_in++,plines_out++) {
                 MASK_LINE32(plines_out, plines_in, bytes_in, (PIX32) maskf, (PIX32) maskt);
             }

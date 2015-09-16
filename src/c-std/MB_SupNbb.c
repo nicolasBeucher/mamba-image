@@ -79,7 +79,7 @@
 
 /*
  * Looks for the maximum between two binary image pixels (a central pixel
- * and its neighbors in the other image)
+ * and its neighbors in the other image).
  * The neighbor depends on the grid used (see mambaCommon.h). Neighbors are
  * described using a pattern (see enum MB_Neighbors_code_t). If no neighbor
  * is defined, the function will leave silently doing nothing.
@@ -100,8 +100,8 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
     MB_errcode err;
     MB_Vector1 edge_val = BIN_FILL_VALUE(edge);
 
-    /* error management */
-    /* verification over image size compatibility */
+    /* Error management */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, srcdest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -132,7 +132,7 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
         temp = src;
     }
 
-    /* setting up pointers */
+    /* Setting up pointers */
     plines_in = temp->plines;
     plines_inout = srcdest->plines;
     bytes_in = MB_LINE_COUNT(src);
@@ -154,7 +154,7 @@ MB_errcode MB_SupNbb(MB_Image *src, MB_Image *srcdest, Uint32 neighbors, enum MB
                                     neighbors, edge_val);
     }
 
-    /* destroying the temporary image if one was created */
+    /* Destroying the temporary image if one was created */
     if (src==srcdest) {
         MB_Destroy(temp);
     }

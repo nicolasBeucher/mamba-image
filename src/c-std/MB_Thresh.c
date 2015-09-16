@@ -47,12 +47,12 @@ static INLINE void THRESH_LINE_8_1(PLINE *plines_out, PLINE *plines_in,
     MB_Vector1 *pout = (MB_Vector1 *) (*plines_out);
 
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pout++){
-        /* the output binary pixel (bit) are all set to zero first */
+        /* The output binary pixel (bit) are all set to zero first */
         bin_pixels = 0;
-        /* pixel2bin represent the first pixel (LSB) */
+        /* Pixel2bin represents the first pixel (LSB) */
         pixel2bin = 1;
         for(j=0; j<MB_vec1_size; j++, pin++) {
-            /* if the read value on pin is in range, the pixel bit is set to 1 */
+            /* If the read value on pin is in range, the pixel bit is set to 1 */
             if (((*pin)>=ublow) && ((*pin)<=ubhigh)) {
                 bin_pixels|=pixel2bin;
             }
@@ -82,12 +82,12 @@ static INLINE void THRESH_LINE_32_1(PLINE *plines_out, PLINE *plines_in,
     MB_Vector1 *pout = (MB_Vector1 *) (*plines_out);
 
     for(i=0;i<bytes_in;i+=sizeof(MB_Vector1),pout++){
-        /* the output binary pixel (bit) are all set to zero first */
+        /* The output binary pixels (bit) are all set to zero first */
         bin_pixels = 0;
-        /* pixel2bin represent the first pixel (LSB) */
+        /* Pixel2bin represents the first pixel (LSB) */
         pixel2bin = 1;
         for(j=0; j<MB_vec1_size; j++, pin++) {
-            /* if the read value on pin is in range, the pixel bit is set to 1 */
+            /* If the read value on pin is in range, the pixel bit is set to 1 */
             if (((*pin)>=low) && ((*pin)<=high)) {
                 bin_pixels|=pixel2bin;
             }
@@ -114,12 +114,12 @@ MB_errcode MB_Thresh(MB_Image *src, MB_Image *dest, Uint32 low, Uint32 high)
     PLINE *plines_in, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_2(src, dest)) {
         return MB_ERR_BAD_SIZE;
     }
     
-    /* checking input parameters value */
+    /* Checking input parameters value */
     if (low>high) {
         return MB_ERR_BAD_VALUE;
     }
@@ -127,7 +127,7 @@ MB_errcode MB_Thresh(MB_Image *src, MB_Image *dest, Uint32 low, Uint32 high)
     /* Setting up line pointers */
     plines_in = src->plines;
     plines_out = dest->plines;
-    /* for this function the number of bytes is the number of */
+    /* For this function the number of bytes is the number of */
     /* the binary image */
     bytes_in = MB_LINE_COUNT(dest);
 

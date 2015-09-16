@@ -26,9 +26,9 @@
  * THE SOFTWARE.
  */
 
-/* This file is used to describes the way to perform shift for each 
- * direction and each grid. To work they must be included inside each file 
- * performing directionnal shift operations such as :
+/* This file is used to describe the way to perform shift for each 
+ * direction and each grid. To work, they must be included inside each file 
+ * performing directional shift operations such as :
  *    MB_Shift32.c
  *    MB_Shift8.c
  *    MB_Shift1.c
@@ -44,13 +44,13 @@
  * Direction functions                  *
  ****************************************
  * The functions described here shift the pixels in a given 
- * direction using base functions
+ * direction using base functions.
  */
  
 /* SQUARE */
 
 /**
- * Moves and computes the image in direction 1 (SQUARE GRID)
+ * Moves and computes the image in direction 1 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -68,7 +68,7 @@ static void MB_QShiftDir1(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* count cannot exceed the number of lines */
+    /* Count cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
     
     p_in = &plines_in[hcount];
@@ -83,7 +83,7 @@ static void MB_QShiftDir1(PLINE *plines_out, PLINE *plines_in,
 } 
 
 /**
- * Moves and computes the image in direction 2 (SQUARE GRID)
+ * Moves and computes the image in direction 2 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -101,7 +101,7 @@ static void MB_QShiftDir2(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
     
     p_in = &plines_in[hcount];
@@ -116,7 +116,7 @@ static void MB_QShiftDir2(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves and computes the image in direction 3 (SQUARE GRID)
+ * Moves and computes the image in direction 3 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -142,7 +142,7 @@ static void MB_QShiftDir3(PLINE *plines_out, PLINE *plines_in,
 } 
 
 /**
- * Moves and computes the image in direction 4 (SQUARE GRID)
+ * Moves and computes the image in direction 4 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -160,7 +160,7 @@ static void MB_QShiftDir4(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
     
     p_in = &plines_in[nb_lines-1-hcount];
@@ -175,7 +175,7 @@ static void MB_QShiftDir4(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves and computes the image in direction 5 (SQUARE GRID)
+ * Moves and computes the image in direction 5 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -193,7 +193,7 @@ static void MB_QShiftDir5(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
     
     p_in = &plines_in[nb_lines-1-hcount];
@@ -208,7 +208,7 @@ static void MB_QShiftDir5(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves and computes the image in direction 6 (SQUARE GRID)
+ * Moves and computes the image in direction 6 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -226,7 +226,7 @@ static void MB_QShiftDir6(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
 
     p_in = &plines_in[nb_lines-1-hcount];
@@ -241,7 +241,7 @@ static void MB_QShiftDir6(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves and computes the image in direction 7 (SQUARE GRID)
+ * Moves and computes the image in direction 7 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -267,7 +267,7 @@ static void MB_QShiftDir7(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves and computes the image in direction 8 (SQUARE GRID)
+ * Moves and computes the image in direction 8 (SQUARE GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -285,7 +285,7 @@ static void MB_QShiftDir8(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
     
     p_in = &plines_in[hcount];
@@ -306,7 +306,7 @@ static void MB_QShiftDir8(PLINE *plines_out, PLINE *plines_in,
  */
 
 /**
- * Moves the image in direction 1 (HEXAGONAL GRID)
+ * Moves the image in direction 1 (HEXAGONAL GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -325,9 +325,9 @@ static void MB_HShiftDir1(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
-    /* wcount depends on odd and even lines */
+    /* Wcount depends on odd and even lines */
     wcount[0] = (hcount%2)==1 ? hcount/2 + 1 : hcount/2;
     wcount[1] = hcount/2;
     
@@ -343,7 +343,7 @@ static void MB_HShiftDir1(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves the image in direction 3 (HEXAGONAL GRID)
+ * Moves the image in direction 3 (HEXAGONAL GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -362,9 +362,9 @@ static void MB_HShiftDir3(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
-    /* wcount depends on odd and even lines */
+    /* Wcount depends on odd and even lines */
     wcount[0] = hcount/2;
     wcount[1] = (hcount%2)==1 ? hcount/2 + 1 : hcount/2;
     
@@ -380,7 +380,7 @@ static void MB_HShiftDir3(PLINE *plines_out, PLINE *plines_in,
 } 
  
 /**
- * Moves and computes the image in direction 4 (HEXAGONAL GRID)
+ * Moves and computes the image in direction 4 (HEXAGONAL GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -399,9 +399,9 @@ static void MB_HShiftDir4(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
-    /* wcount depends on odd and even lines */
+    /* Wcount depends on odd and even lines */
     wcount[0] = (hcount%2)==1 ? hcount/2 + 1 : hcount/2;
     wcount[1] = hcount/2;
     
@@ -417,7 +417,7 @@ static void MB_HShiftDir4(PLINE *plines_out, PLINE *plines_in,
 }
 
 /**
- * Moves and computes the image in direction 6 (HEXAGONAL GRID)
+ * Moves and computes the image in direction 6 (HEXAGONAL GRID).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -436,9 +436,9 @@ static void MB_HShiftDir6(PLINE *plines_out, PLINE *plines_in,
     
     Sint32 i;
     
-    /* hcount cannot exceed the number of lines */
+    /* Hcount cannot exceed the number of lines */
     hcount = count>nb_lines ? nb_lines : count;
-    /* wcount depends on odd and even lines */
+    /* Wcount depends on odd and even lines */
     wcount[0] = hcount/2;
     wcount[1] = (hcount%2)==1 ? hcount/2 + 1 : hcount/2;
     
@@ -456,7 +456,7 @@ static void MB_HShiftDir6(PLINE *plines_out, PLINE *plines_in,
 /* SPECIAL */
 
 /**
- * Computes the image in direction 0 (no move)
+ * Computes the image in direction 0 (no move).
  * \param plines_out pointer on the destination image lines
  * \param plines_in pointer on the source image that is shifted pixel lines
  * \param bytes_in number of bytes inside the line
@@ -501,12 +501,12 @@ typedef void (SHIFTFUNC) (PLINE *plines_out, PLINE *plines_in,
                           Sint32 count, EDGE_TYPE edge_val);
 
 /** 
- * array giving the function to use to go in a given direction with
+ * Array giving the function to use to go in a given direction with
  * regard to the grid in use (hexagonal or square).
  */
 static SHIFTFUNC *SwitchTo[2][9] =
 {
-  { /* square directions */
+  { /* Square directions */
      MB_QShiftDir0, /* No movement, so simple copy */
      MB_QShiftDir1,
      MB_QShiftDir2,
@@ -517,13 +517,13 @@ static SHIFTFUNC *SwitchTo[2][9] =
      MB_QShiftDir7,
      MB_QShiftDir8
   },
-  { /* hexagonal directions */
+  { /* Hexagonal directions */
      MB_QShiftDir0, /* No movement, so simple copy */
      MB_HShiftDir1,
-     MB_QShiftDir3, /*hexagonal direction 2 is similar to square direction 3*/ 
+     MB_QShiftDir3, /* Hexagonal direction 2 is similar to square direction 3*/ 
      MB_HShiftDir3,
      MB_HShiftDir4,
-     MB_QShiftDir7, /*hexagonal direction 5 is similar to square direction 7*/ 
+     MB_QShiftDir7, /* Hexagonal direction 5 is similar to square direction 7*/ 
      MB_HShiftDir6,
      MB_Stub,
      MB_Stub

@@ -29,7 +29,7 @@
 #include "mambaApi_vector.h"
 
 /*
- * Computes the superior mask (strict) for 32-bits images
+ * Computes the superior mask (strict) for 32-bit images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -52,11 +52,11 @@ static INLINE void STRICT_SUPMASK_LINE_32_32(PLINE *plines_out,
         pix_reg_out = 0;
         pix_value = 1;
         for(u=0; u<MB_vec1_size; u++, pin1++, pin2++) {
-            /* for each pixel determines if its value is 0 or 1 */
+            /* For each pixel determines if its value is 0 or 1 */
             if ((*pin1)>(*pin2)) {
                 pix_reg_out |= pix_value;
             }
-            /* next pixel */
+            /* Next pixel */
             pix_value=pix_value<<1;
         }
         *pout = pix_reg_out;
@@ -64,7 +64,7 @@ static INLINE void STRICT_SUPMASK_LINE_32_32(PLINE *plines_out,
 }
 
 /*
- * Computes the superior or equal mask for 32-bits images
+ * Computes the superior or equal mask for 32-bits images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -87,11 +87,11 @@ static INLINE void SUPMASK_LINE_32_32(PLINE *plines_out,
         pix_reg_out = 0;
         pix_value = 1;
         for(u=0; u<MB_vec1_size; u++, pin1++, pin2++) {
-            /* for each pixel determines if its value is 0 or 1 */
+            /* For each pixel, determines if its value is 0 or 1 */
             if ((*pin1)>=(*pin2)) {
                 pix_reg_out |= pix_value;
             }
-            /* next pixel */
+            /* Next pixel */
             pix_value=pix_value<<1;
         }
         *pout = pix_reg_out;
@@ -99,7 +99,7 @@ static INLINE void SUPMASK_LINE_32_32(PLINE *plines_out,
 }
 
 /*
- * Computes the superior mask (strict) for grey scale images
+ * Computes the superior mask (strict) for grey scale images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -122,18 +122,18 @@ static INLINE void STRICT_SUPMASK_LINE_8_8(PLINE *plines_out,
         pix_reg_out = 0;
         pix_value = 1;
         for(u=0; u<MB_vec1_size; u++, pin1++, pin2++) {
-            /* for each pixel determines if its value is 0 or 1 */
+            /* For each pixel determines if its value is 0 or 1 */
             if ((*pin1)>(*pin2)) {
                 pix_reg_out |= pix_value;
             }
-            /* next pixel */
+            /* Next pixel */
             pix_value=pix_value<<1;
         }
         *pout = pix_reg_out;
     }
 }
 /*
- * Computes the superior or equal mask for grey scale images
+ * Computes the superior or equal mask for grey scale images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -156,11 +156,11 @@ static INLINE void SUPMASK_LINE_8_8(PLINE *plines_out,
         pix_reg_out = 0;
         pix_value = 1;
         for(u=0; u<MB_vec1_size; u++, pin1++, pin2++) {
-            /* for each pixel determines if its value is 0 or 1 */
+            /* For each pixel determines if its value is 0 or 1 */
             if ((*pin1)>=(*pin2)) {
                 pix_reg_out |= pix_value;
             }
-            /* next pixel */
+            /* Next pixel */
             pix_value=pix_value<<1;
         }
         *pout = pix_reg_out;
@@ -169,7 +169,7 @@ static INLINE void SUPMASK_LINE_8_8(PLINE *plines_out,
 
 
 /*
- * Computes the superior mask (strict) for binary images
+ * Computes the superior mask (strict) for binary images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -191,7 +191,7 @@ static INLINE void STRICT_SUPMASK_LINE_1_1(PLINE *plines_out,
     }
 }
 /*
- * Computes the superior or equal mask for binary images
+ * Computes the superior or equal mask for binary images.
  * \param plines_out pointer on the destination image pixel line
  * \param plines_in1 pointer on the source image 1 pixel line
  * \param plines_in2 pointer on the source image 2 pixel line
@@ -216,7 +216,7 @@ static INLINE void SUPMASK_LINE_1_1(PLINE *plines_out,
 
 /*
  * Computes a binary image where pixels are set to 1 when the pixels of
- * image 1 have greater values than pixels of image 2 otherwise 0
+ * image 1 have greater values than pixels of image 2 otherwise 0.
  * \param src1 source image 1
  * \param src2 source image 2
  * \param dest destination image 
@@ -229,7 +229,7 @@ MB_errcode MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 str
     PLINE *plines_in1, *plines_in2, *plines_out;
     Uint32 bytes_in;
     
-    /* verification over image size compatibility */
+    /* Verification over image size compatibility */
     if (!MB_CHECK_SIZE_3(src1, src2, dest)) {
         return MB_ERR_BAD_SIZE;
     }
@@ -238,11 +238,11 @@ MB_errcode MB_SupMask(MB_Image *src1, MB_Image *src2, MB_Image *dest, Uint32 str
     plines_in1 = src1->plines;
     plines_in2 = src2->plines;
     plines_out = dest->plines;
-    /* for this function the number of bytes is the number of */
+    /* For this function the number of bytes is the number of */
     /* the binary image */
     bytes_in = MB_LINE_COUNT(dest);
 
-    /* dest image must be binary */
+    /* Dest image must be binary */
     if(dest->depth!=1)
         return MB_ERR_BAD_DEPTH;
 

@@ -29,7 +29,7 @@
 
 /*
  * This file redefines some basic OS and memory functions that are used in the 
- * mamba API so that they could be modified or replaced in needed
+ * mamba API so that they could be modified or replaced in needed.
  */
 
 /*
