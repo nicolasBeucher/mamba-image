@@ -227,6 +227,6 @@ texOutput += "\\end{document}\n"
 f = open("mamba-examples.tex","w")
 f.write(texOutput)
 f.close()
-#creating the pdf
+#Creating the pdf
 for i in range(3):
     os.system('pdflatex mamba-examples.tex')

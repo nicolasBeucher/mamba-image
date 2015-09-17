@@ -236,7 +236,7 @@ Each pixel of the cubic grid is surrounded by 26 neighbors, associated to 26 dir
 central pixel (8 directions) and the two sections below and above it (9 directions each). See the Mamba Image User Manual [\ref{art:MIUman}]
 for the encoding of these directions.
 
-Three interesting methods come with 3D grids: \textbf{getEncodedDirs} and \textbf{convertFromDir}.
+Three interesting methods come with 3D grids: \textbf{getEncodedDirs}, \textbf{convertFromDir} and \textbf{getShiftDirsList}.
 
 \textbf{getEncodedDirs} is mainly used with 3D structuring elements. It allows to decompose any elementary 3D structuring element (defined
 by a list of directions) into three 2D structuring elements corresponding to the three sections of the initial 3D structuring
@@ -275,7 +275,7 @@ the 2D grid on which this 2D shift will be performed. Let us illustrate this thr
 \end{lstlisting}
  
 A shift of size 23 in direction 11 on the cubic grid for the image section 49 corresponds to an horizontal shift of size 23 in
-direction 2. So, a shift of section 49 is performed by an horizontal shift of size 23 in dirction 2. The shifted 2D image is then stored
+direction 2. So, a shift of section 49 is performed by an horizontal shift of size 23 in direction 2. The shifted 2D image is then stored
 in section 26 (49 - 23, it is a downwards shift) of the output 3D image. In the case of the cubic grid, the operation is straightforward.
 But it is not the case with the other 3D grids (see sections \ref{cha:CCgrid} and \ref{cha:FCCgrid}). It may also seem strange to
 indicate which 2D grid is used to perform the horizontal shift. Here again, on the cubic grid, this information is redundant. But

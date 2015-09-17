@@ -1,6 +1,6 @@
 # Python API quick reference generating script
 #
-# This script generates the python API quick reference for the Mamba library
+# This script generates the python API quick reference for the Mamba library.
 # It produces a tex file which is then compiled by pdflatex to produce a PDF
 # document.
 #

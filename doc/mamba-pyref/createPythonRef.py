@@ -1,6 +1,6 @@
 # Python API reference generating script
 #
-# This script generates the python API reference for the Mamba library
+# This script generates the python API reference for the Mamba library.
 # It produces a tex file which is then compiled by pdflatex to produce a PDF
 # document.
 #
@@ -115,7 +115,7 @@ class func:
         
 def adaptAndtidyDesc(desc):
     # Will replace the line begining with a * by an itemize list
-    # will replace the example using a Python lstset
+    # Will replace the example using a Python lstset
     tidy_desc = ""
     lines = desc.split('\n')
     
@@ -185,13 +185,13 @@ def extractModule(path):
                 in_section = l
             else:
                 if in_section=="NAME" and not sections["NAME"]:
-                    # sections NAME can contain name and short description
+                    # Sections NAME can contain name and short description
                     names = l[4:].split(' - ')
                     sections[in_section] = names[0]
                     if len(names)>1:
                         sections["SHORT_DESCRIPTION"] = names[1].replace('_','\\_')
                 elif in_section=="FILE":
-                    # section FILE contains only one information
+                    # Section FILE contains only one information
                     sections[in_section] = l[4:]
                 elif in_section=="DESCRIPTION":
                     # The DESCRIPTION can be spreaded along multiple lines
@@ -290,7 +290,7 @@ mod_mb3D.sort()
 os.chdir(cwd)
 # The file to document
 pyfile_list = mod_mb + mod_mb3D
-# getting the version
+# Getting the version
 os.system('%s -c "import mamba; print(mamba.VERSION)" > %s' %(sys.executable, PROVDOC) )
 VERSION = open(PROVDOC).readlines()[0].strip()
 # Creating the tex file (all the lines)
@@ -307,10 +307,10 @@ lines.append(end)
 print cwd
 # Removing byproducts
 os.remove(PROVDOC)
-# writing the final tex file
+# Writing the final tex file
 f = open(OUTDOC,'w')
 f.writelines(lines)
 f.close()
-#creating the pdf
+#Creating the pdf
 for i in range(5):
     os.system('pdflatex '+OUTDOC)

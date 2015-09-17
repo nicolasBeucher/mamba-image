@@ -14,6 +14,7 @@ Python functions:
 from mamba import *
 from mamba3D import *
 import unittest
+import random
 
 class TestErodilLarge3D(unittest.TestCase):
 
