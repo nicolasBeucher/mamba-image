@@ -202,7 +202,7 @@ class planeFrame(ttk.LabelFrame):
         else:
             self.canvas_vb.grid()
     def getZoom(self):
-        # returns the value of zoom
+        # Returns the value of zoom
         return self.zoom
             
     def drawImage(self):
@@ -224,7 +224,7 @@ class planeFrame(ttk.LabelFrame):
         self.drawImage()
         
     def drawTarget(self, x, y):
-        # Draw the target when the user moves the mouse while hold ctrl
+        # Draws the target when the user moves the mouse while hold ctrl
         self.eraseTarget()
         esize = max(self.csize, self.dsize)
         x = (x*self.dsize[0])//self.osize[0] + max((self.csize[0]-self.dsize[0])//2,0)
@@ -235,7 +235,7 @@ class planeFrame(ttk.LabelFrame):
         self.targetid.append(id)
         
     def eraseTarget(self):
-        # Erase the target upon releasing the ctrl button
+        # Erases the target upon releasing the ctrl button
         for id in self.targetid:
             self.canvas.delete(id)
         self.targetid = []
@@ -304,7 +304,7 @@ class Display3D_Proj(tk.Frame):
     # Display methods ##########################################################
     
     def setImagePlaneZ(self):
-        # Extract the image for plane Z
+        # Extracts the image for plane Z
         start = self.z*self.W*self.H
         stop = (self.z+1)*self.W*self.H
         im = Image.frombytes("L", (self.W,self.H), self.raw[start:stop])
@@ -314,7 +314,7 @@ class Display3D_Proj(tk.Frame):
         self.planez.drawTarget(self.x, self.y)
         
     def setImagePlaneY(self):
-        # Extract the image for plane Y
+        # Extracts the image for plane Y
         data = b""
         for i in range(self.L):
             start = self.W*(self.y+self.H*i)
@@ -326,7 +326,7 @@ class Display3D_Proj(tk.Frame):
         self.planey.drawTarget(self.x, self.z)
         
     def setImagePlaneX(self):
-        # Extract the image for plane X
+        # Extracts the image for plane X
         im = Image.frombytes("L", (self.H,self.L), self.raw[self.x::self.W])
         im = im.transpose(Image.FLIP_TOP_BOTTOM)
         im = im.transpose(Image.ROTATE_270)
@@ -373,7 +373,7 @@ class Display3D_Proj(tk.Frame):
         self.planeLabel.grid(row=2, column=0, sticky=tk.W)
         
     def updateim(self):
-        # Update the display (perform a rendering)
+        # Updates the display (perform a rendering)
         depth = self.im_ref().getDepth()
         volume = 0
         if depth==1:

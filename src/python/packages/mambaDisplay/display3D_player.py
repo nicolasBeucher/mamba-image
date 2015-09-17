@@ -183,7 +183,7 @@ class Display3D_Player(tk.Frame):
         self.planeLabel.grid(row=4, column=0, columnspan=3, sticky=tk.W)
         
     def updateim(self):
-        # Update the display (perform a rendering)
+        # Updates the display (perform a rendering)
         volume = m3D.computeVolume3D(self.im_ref())
         if self.im_ref().getDepth()==32:
             immb = mamba.imageMb(self.im_ref()[self.z], 8)

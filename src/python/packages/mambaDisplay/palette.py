@@ -1,4 +1,5 @@
 """
+Palette definitions.
 Basic users can use it to list and use existing palettes and build new ones
 through the provided functions.
 """

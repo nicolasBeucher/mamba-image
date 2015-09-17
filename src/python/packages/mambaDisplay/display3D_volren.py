@@ -197,7 +197,7 @@ class Display3D_VolRen(tk.Frame):
         
     # Functions associated with the control widgets
     def changeBg(self, event):
-        # Change the background color
+        # Changes the background color
         new_color = colorchooser.askcolor(event.widget.cget("bg"))
         if new_color[0]==None:
             return
@@ -206,7 +206,7 @@ class Display3D_VolRen(tk.Frame):
         self._ren.SetBackground(*bg)
         self.updateim()
     def changeOpa(self, event):
-        # Change the opacity function
+        # Changes the opacity function
         v = self.opaCan.canvasx(event.x)
         self.opaTF.RemoveAllPoints()
         self.opaTF.AddPoint(0, 0.0)

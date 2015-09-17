@@ -2,7 +2,7 @@
 Extra displays.
 
 This module defines specific extra displays that are meant to be used
-interactively with the users. This module is not loaded by default with
+interactively with the user. This module is not loaded by default with
 mambaDisplay.
 """
 
@@ -153,7 +153,7 @@ class _imageThreshold(tk.Toplevel):
     def keyboardEvent(self, event):
         # Handles keyboard events
         
-        #zoom
+        #Zoom
         if event.char == "z":
             # ZOOM IN
             if self.zoom<=0.25:
@@ -169,7 +169,7 @@ class _imageThreshold(tk.Toplevel):
             else:
                 self.setZoom(self.zoom-0.25)
                 
-        # threshold change
+        # Threshold change
         elif event.char == "q":
             self.low = min(self.low+1, self.high)
             self.thresholdInfos.set("threshold - low : "+str(self.low)+" - high : "+str(self.high))
@@ -457,7 +457,7 @@ class _imageSegment(tk.Toplevel):
             
     def undoEvent(self, event):
         # Called when the user press Ctrl-Z
-        # Remove the last marker
+        # Removes the last marker
         if self.markers:
             self.markers = self.markers[:-1]
             self.updateim()
@@ -976,7 +976,7 @@ class _imageSuperpose(tk.Toplevel):
             self.legendCols[2][1].grid_remove()
             
         else:
-            # Neither image are binary
+            # Neither image is binary
             if self.currentIm==0:
                 endimage = self.Im2
                 self.legendCols[0][1].config(text="displayed : "+self.Im2.getName())

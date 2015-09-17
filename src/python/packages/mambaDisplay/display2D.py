@@ -263,7 +263,7 @@ class Display2D(tk.Toplevel):
             self.freeze()
     
     def restoreEvent(self, event):
-        # Restore original size event
+        # Restores original size event
         # The window size and parameter are reset.
         self.canvas_hb.grid_remove()
         self.canvas_vb.grid_remove()
@@ -388,7 +388,7 @@ class Display2D(tk.Toplevel):
     # Public interface functions ###############################################
     
     def freeze(self):
-        # freezes the display so that update has no effect
+        # Freezes the display so that update has no effect
         self.frozen = True
         self.title((self.frozen and "Frozen - " or "") + 
                    self.im_ref().getName() +
@@ -444,7 +444,7 @@ class Display2D(tk.Toplevel):
         self.canvas.config(width=imsize[0],height=imsize[1],
                            scrollregion=(0,0,imsize[0]-1,imsize[1]-1))
         
-        # PIL image and icon
+        # PIL/PILLOW image and icon
         m = max(self.osize)
         self.icon_size = ((constants._icon_max_size*self.osize[0])//m,(constants._icon_max_size*self.osize[1])//m)
         

@@ -148,7 +148,7 @@ class Display3D(tk.Toplevel):
         self.updateim()
         
     def updateim(self):
-        # Update the display (perform a rendering)
+        # Updates the display (perform a rendering)
         if self.im_ref() and self.state()=="normal" and not self.frozen:
             self.title((self.frozen and "Frozen - " or "") +
                        self.im_ref().getName() + 
@@ -156,11 +156,11 @@ class Display3D(tk.Toplevel):
             self.selectedFrame.updateim()
         
     def hide(self):
-        # Hide the display
+        # Hides the display
         self.withdraw()
         
     def show(self, **options):
-        # Show the display
+        # Shows the display
         if self.state()!="normal":
             self.deiconify()
         if "palette" in options:
