@@ -20,7 +20,7 @@ def convert3D(imIn, imOut):
     in 'imOut'.
     
     Greyscale or 32-bit to binary and binary to greyscale or 32-bit conversions are supported.
-    Value 255 is in a greyscale image or 2**32-1 in a 32-bit image is considered as 1 in a
+    Value 255 in a greyscale image or 2**32-1 in a 32-bit image are considered as 1 in a
 	binary one. All other values are transformed to 0. The reverse convention applies.
 
     This function can also be used to downscale 32-bit images into greyscale

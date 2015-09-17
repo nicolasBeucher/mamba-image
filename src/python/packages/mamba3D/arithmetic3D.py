@@ -1,8 +1,8 @@
 """
 Arithmetic and logical 3D operators.
 
-This module provides arithmetic operators such as addition, substraction,
-multiplication and division between images and logical operators
+This module provides arithmetic operators such as addition, subtraction,
+multiplication, division and logical operators between 3D images.
 (and, or, not, xor ...).
 """
 
@@ -93,7 +93,7 @@ def div3D(imIn1, imIn2, imOut):
     
     imOut = imIn1 / imIn2
 
-    You can mix formats in the multiply operation.
+    You can mix formats in the divide operation.
     However you must ensure that the output image is as deep as 'imIn1'.
     
 	In order to avoid divisions by zero, the result of the operation is set to
@@ -291,7 +291,7 @@ def ceilingAdd3D(imIn1, imIn2, imOut):
     imIn1 + imIn2 is larger than the maximal possible value in imOut, the result
     is truncated and limited to this maximal value.
     
-    Altough it is possible to use a 8-bit image for imIn2, it is recommended to
+    Although it is possible to use a 8-bit image for imIn2, it is recommended to
     use the same depth for all the images.
     
     Note that this operator is mainly useful for 32-bit images, as the result
@@ -327,7 +327,7 @@ def floorSub3D(imIn1, imIn2, imOut):
     subtracts image 'imIn2' from image 'imIn1' and puts the result in 'imOut'.
     If imIn1 - imIn2 is negative, the result is truncated and limited to 0.
     
-    Altough it is possible to use a 8-bit image for imIn2, it is recommended to
+    Although it is possible to use a 8-bit image for imIn2, it is recommended to
     use the same depth for all the images.
     
     Note that this operator is mainly useful for 32-bit images, as the result

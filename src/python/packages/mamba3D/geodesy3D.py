@@ -12,11 +12,11 @@ import mamba
 import mamba.core as core
 
 ################################################################################
-# Private functions to cover all the depth case for build and dualbuild 
+# Private functions to cover all the depth cases for build and dualbuild 
 # functions
 
 def _build3D_1(imMask, imInout, grid):
-    # build function for binary 3D images
+    # Build function for binary 3D images
     if imMask.getDepth()!=1:
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imMask_8 = m3D.image3DMb(imMask, 8)
@@ -29,7 +29,7 @@ def _build3D_1(imMask, imInout, grid):
     m3D.convert3D(imInout_8, imInout)
 
 def _dualBuild3D_1(imMask, imInout, grid):
-    # build function for binary 3D images
+    # Build function for binary 3D images
     if imMask.getDepth()!=1:
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_DEPTH)
     imMask_8 = m3D.image3DMb(imMask, 8)

@@ -3,7 +3,7 @@ Thinning and thickening 3D operators.
 
 This module contains morphological thinning and thickening operators based on
 the Hit-or-Miss transformation. The module also defines the double 3D
-structuring element class which serve as a base for these operators.
+structuring element class which serves as a base for these operators.
 """
 
 # Contributor: Nicolas BEUCHER
@@ -123,7 +123,7 @@ def hitOrMiss3D(imIn, imOut, dse, edge=mamba.EMPTY):
         else:
             imOut.fill(1)
 
-    # Others directions
+    # Other directions
     dirs = m3D.getDirections3D(dse.getGrid(), True)
     dirs0 = dse.se0.getDirections()
     dirs1 = dse.se1.getDirections()

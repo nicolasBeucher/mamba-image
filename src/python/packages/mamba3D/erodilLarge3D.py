@@ -2,7 +2,7 @@
 Erosion and dilation 3D operators for large structuring elements.
 
 This module provides a set of functions and class to perform erosions and
-dilations with large structuring elements.
+dilations with large structuring elements on 3D images.
 """
 
 # Contributors : Serge BEUCHER

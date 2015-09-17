@@ -33,7 +33,7 @@ def label3D(imIn, imOut, lblow=0, lbhigh=256, grid=m3D.DEFAULT_GRID3D):
 
 def watershedSegment3D(imIn, imMarker, grid=m3D.DEFAULT_GRID3D, max_level=0):
     """
-    Segments greyscale 3D image 'imIn' using the watershed algorithm.
+    Segments greyscale or 32-bit 3D image 'imIn' using the watershed algorithm.
     'imMarker' is used both as the marker image (the wells from which the
     flooding proceeds) and as the output image. It is a 32-bit 3D image.
     'max_level' can be used to limit the flooding process to a specific
@@ -78,7 +78,7 @@ def basinSegment3D(imIn, imMarker, grid=m3D.DEFAULT_GRID3D, max_level=0):
 
 def markerControlledWatershed3D(imIn, imMarkers, imOut, grid=m3D.DEFAULT_GRID3D):
     """
-    Marker-controlled watershed transform of greytone 3D image 'imIn'.
+    Marker-controlled watershed transform of greyscale or 32-bit 3D image 'imIn'.
     The binary 3D image 'imMarkers' contains the markers which control the
     flooding process. 'imOut' contains the valued watershed.
     """
@@ -92,7 +92,7 @@ def markerControlledWatershed3D(imIn, imMarkers, imOut, grid=m3D.DEFAULT_GRID3D)
 
 def valuedWatershed3D(imIn, imOut, grid=m3D.DEFAULT_GRID3D):
     """
-    Returns the valued watershed of greyscale 3D image 'imIn' into greyscale
+    Returns the valued watershed of greyscale or 32-bit 3D image 'imIn' into greyscale
     3D image 'imOut'. Each pixel of the watershed lines is given its
     corresponding value in initial image 'imIn'.
     """

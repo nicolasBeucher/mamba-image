@@ -35,7 +35,7 @@ class image3DMb:
         """
         Constructor for a mamba 3D image.
         A 3D image is a stack of images defined by width, height and length
-        (the number of images in it).
+        (the number of 2D images in it).
         
         There is a wide range of possibilities :
             * image3DMb() : without arguments will create an empty greyscale 3D
@@ -134,7 +134,7 @@ class image3DMb:
             mamba.raiseExceptionOnError(err)
             
     def _createSeq(self, w, h, d, l):
-        # Create the sequence according to the parameters
+        # Creates the sequence according to the parameters
         self.length = l
         self.seq = []
         for i in range(self.length):
@@ -255,7 +255,7 @@ class image3DMb:
         files_keys = sorted(files_dict.keys())
         
         if self.seq == []:
-            # there no image yet in the sequence
+            # There is no image yet in the sequence
             self.length = len(files_keys)
             im = mamba.imageMb(files_dict[files_keys[0]], self.depth, rgbfilter=rgbfilter)
             self.width = im.mbIm.width
@@ -266,7 +266,7 @@ class image3DMb:
                 self.seq[i].load(files_dict[files_keys[i]], rgbfilter=rgbfilter)
         else:
             l = min(len(files_keys),self.length)
-            # the sequence is overloaded 
+            # The sequence is overloaded 
             for i in range(l):
                 self.seq[i].load(files_dict[files_keys[i]], rgbfilter=rgbfilter)
      
@@ -334,7 +334,7 @@ class image3DMb:
 
     def reset(self):
         """
-        Reset the 3D image (all the pixels are put to 0).
+        Resets the 3D image (all the pixels are put to 0).
         """
         
         for im in self.seq:
@@ -390,7 +390,7 @@ class image3DMb:
         """
         Called when the display associated to the image must be updated 
         (Contrary to mamba.imageMb, display is not automatically updated after
-        any operation on your image due to performance).
+        any operation on your image due to loss of performance).
         You can update the display by hitting key F5 in the display window.
         """
         if self.displayId != '':
