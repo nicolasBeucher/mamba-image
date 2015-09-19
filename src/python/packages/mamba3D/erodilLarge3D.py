@@ -48,7 +48,7 @@ def supFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
         startPlane, endPlane, scanDir = 0, length - amp, 1
         startFill, endFill = max(length - amp, 0), length
     else:
-        startPlane, endPlane, scanDir = length - 1, amp, -1
+        startPlane, endPlane, scanDir = length - 1, amp - 1, -1
         startFill, endFill = 0, min(amp, length)    
     # Performing the shift operations given by the getShiftDirList method.
     if edge == mamba.EMPTY:
@@ -90,7 +90,7 @@ def infFarNeighbor3D(imIn, imInOut, nb, amp, grid=m3D.DEFAULT_GRID3D, edge=mamba
         startPlane, endPlane, scanDir = 0, length - amp, 1
         startFill, endFill = max(length - amp, 0), length
     else:
-        startPlane, endPlane, scanDir = length - 1, amp, -1
+        startPlane, endPlane, scanDir = length - 1, amp - 1, -1
         startFill, endFill = 0, min(amp, length)    
     # Performing the shift operations given by the getShiftDirList method.
     if edge == mamba.EMPTY:
