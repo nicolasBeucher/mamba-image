@@ -24,6 +24,7 @@ class TestErodilLarge3D(unittest.TestCase):
         self.im8_3 = image3DMb(64,64,64,8)
         self.im8_4 = image3DMb(64,64,64,8)
         self.im8_5 = image3DMb(64,64,64,8)
+        self.im8_6 = image3DMb(128,128,128,8)
         
     def tearDown(self):
         del(self.im8_1)
@@ -31,6 +32,12 @@ class TestErodilLarge3D(unittest.TestCase):
         del(self.im8_3)
         del(self.im8_4)
         del(self.im8_5)
+        del(self.im8_6)
+        
+    def testSizeCheck(self):
+        """Verifies that the functions check the size of the image"""
+        self.assertRaises(MambaError,supFarNeighbor3D, self.im8_6, self.im8_2, 1,1)
+        self.assertRaises(MambaError,infFarNeighbor3D, self.im8_6, self.im8_2, 1,1)
         
     def testSupFarNeighbor3D(self):
         """Verifies the supFarNeighbor3D operator"""
@@ -47,10 +54,16 @@ class TestErodilLarge3D(unittest.TestCase):
                     supFarNeighbor3D(self.im8_1, self.im8_2, d, amp, grid3D)
                     (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_4)
                     self.assertLess(x, 0, "grid3D %s, dir %d : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
-                    
+                # Test of filled edge (size 1 only because edges for other sizes are different)
+                linearDilate3D(self.im8_1, self.im8_2, d, 1, grid3D, FILLED)
+                diff3D(self.im8_2, self.im8_1, self.im8_2)
+                self.im8_3.reset()
+                supFarNeighbor3D(self.im8_1, self.im8_3, d, 1, grid3D, FILLED)
+                (x,y,z) = compare3D(self.im8_2, self.im8_3, self.im8_4)
+                self.assertLess(x, 0, "grid3D %s, dir %d, filled edge : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
+        
     def testInfFarNeighbor3D(self):
-        """Verifies the infFarNeighbor3D operator"""
-    
+        """Verifies the infFarNeighbor3D operator"""   
         (w, h, l) = self.im8_1.getSize()
         self.im8_1.reset()
         self.im8_1.setPixel(200, (w//2, h//2, l//2))
@@ -66,7 +79,16 @@ class TestErodilLarge3D(unittest.TestCase):
                     infFarNeighbor3D(self.im8_2, self.im8_4, d, amp, grid3D)
                     (x,y,z) = compare3D(self.im8_4, self.im8_3, self.im8_5)
                     self.assertLess(x, 0, "grid3D %s, dir %d : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
-    
+                # Test of empty edge (size 1)
+                negate3D(self.im8_1, self.im8_2)
+                linearErode3D(self.im8_2, self.im8_3, d, 1, grid3D, EMPTY)
+                self.im8_3.setPixel(255, (w//2, h//2, l//2))
+                self.im8_4.fill(255)
+                infFarNeighbor3D(self.im8_2, self.im8_4, d, 1, grid3D, EMPTY)
+                (x,y,z) = compare3D(self.im8_4, self.im8_3, self.im8_5)
+                self.assertLess(x, 0, "grid3D %s, dir %d, empty edge : diff in (%d,%d,%d)"%(repr(grid3D),d,x,y,z))
+        
+        
     def testLargeLinearDilate3D(self):
         """Tests the large linear 3D Dilation"""
         (w, h, l) = self.im8_1.getSize()
