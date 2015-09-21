@@ -32,13 +32,6 @@ python createPythonQuickRef.py
 copy mamba-pyquickref.pdf ..
 popd
 
-Rem STANDARD
-pushd mamba-std
-pdflatex mamba-std.tex
-pdflatex mamba-std.tex
-copy mamba-std.pdf ..
-popd
-
 rem IMAGE CHARACTERISTICS AND SETTINGS
 pushd mamba-ics
 pdflatex mamba-ics.tex
