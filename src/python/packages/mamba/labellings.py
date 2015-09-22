@@ -121,8 +121,6 @@ def diameterLabelling(imIn, imOut, dir, grid=mamba.DEFAULT_GRID):
     imWrk2 = mamba.imageMb(imIn)
     
     ed = 1 << ((dir - 1)%(mamba.gridNeighbors(grid)/2)) +1
-    # The intercept points in direction 'dir' are stored in imWrk2.
-    # mamba.copy(imIn, imWrk2)
     if imIn.getDepth() == 1:
         mamba.copy(imIn, imWrk1)
         mamba.diffNeighbor(imIn, imWrk1, ed, grid=grid)
@@ -152,7 +150,7 @@ def feretDiameterLabelling(imIn, imOut, direc):
     elif direc == "vertical":
         dir = 1
     else:
-        dir = -1
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_DIRECTION)
         # The above statement generates an error ('direc' is not horizontal or 
         # vertical.
     # An horizontal or vertical distance function is generated.
