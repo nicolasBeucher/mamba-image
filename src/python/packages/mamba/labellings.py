@@ -33,7 +33,6 @@ def partitionLabel(imIn, imOut):
     mamba.logic(imOut, imWrk2, imOut, "inf")
     return nb1 + nb2
     
-# The measure labelling procedure is defined.
 def measureLabelling(imIn, imMeasure, imOut):
     """
     Labelling each particle of the binary image or each cell of the partition 'imIn'
@@ -90,7 +89,7 @@ def measureLabelling(imIn, imMeasure, imOut):
         mamba.logic(imOut, imWrk6, imOut, "sup")
         # 255 is subtracted from the initial labelled image in order to process
         # the next 255 particles.
-        floorSubConst(imWrk1, 255, imWrk1)
+        mamba.floorSubConst(imWrk1, 255, imWrk1)
         nbParticles -= 255
  
 def areaLabelling(imIn, imOut):
@@ -108,11 +107,12 @@ def areaLabelling(imIn, imOut):
         imWrk.fill(1)
     measureLabelling(imIn, imWrk, imOut)
 	
-# The diameter labelling procedure is defined.
 def diameterLabelling(imIn, imOut, dir, grid=mamba.DEFAULT_GRID):
     """
     Labels each connected component of the binary image 'imIn' with its diameter in 
     direction 'dir'. The labelled image is stored in the 32-bit image 'imOut'.
+    If 'imIn' is a 8-bit or 32-bit image, this function works too. However, the
+    0-valued connected components are labelled with 0.
     This procedure works on hexagonal or square grid.
     'dir' can be any strictly positive integer value.
     """
