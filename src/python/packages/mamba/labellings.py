@@ -6,6 +6,7 @@ They use the label operator now available for sets and for grey images.
 # Contributor: Serge BEUCHER
 
 import mamba
+import mamba.core as core
   
 def partitionLabel(imIn, imOut):
     """
