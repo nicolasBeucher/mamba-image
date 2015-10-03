@@ -66,21 +66,23 @@ begin = """\\documentclass[a4paper,10pt,oneside]{article}
 \\section{Introduction}
 
 The Mamba Realtime module is an extension to the Mamba library for Python that 
-allowss you to test your algorithms in realtime. Images can be acquired dynamically
+allows you to test your algorithms in realtime. Images can be acquired dynamically
 from your webcam (or any video capture device supported) using the directshow 
 API on Windows or Video4Linux2 (with possible support for V4L) on Linux.
 Alternatively you can use mambaRealtime to read any supported movie file and
 process it with your algorithm. The module then displays the result on your 
 screen using the SDL library.
 
-This document gives you the Python function reference along with the list of
+This document gives you the Python functions reference along with the list of
 dynamic commands available in the realtime window.
 
-Be warned that although we tried to make the functions system independent,there
+Be warned that, although we tried to make the functions system independent, there
 are still some differences between Windows and Linux implementations of this
 module (mainly with the initializing function). Make sure the documentation you
 are currently reading refers to the system you planned to target, the title 
 should provide this information.
+
+See also the restrictions for Windows of this module (does not work on Win64 environment).
 
 This document applies to version %s.
 
@@ -143,7 +145,7 @@ launchRealtime("/path/to/your/movie", AVC)
 start_tutinit_win = """
 On Windows, any directshow API compatible device will be supported. The 
 directshow API is part of directX and should be present by default
-on any modern updated Windows (XP, Vista, ...). Supported movie files are extremely
+on any modern updated 32-bit Windows (XP, Vista, ...). Supported movie files are extremely
 various but the most commons are likely to be supported.
 
 To initialize your directshow device:
@@ -184,7 +186,7 @@ what your device is actually acquiring such as your smiling face (come on!) in
 front of your webcam.
 
 As you can see, there is no color. By default the mambaRealtime module
-acquires and displays greyscale image. If activated the color option will
+acquires and displays greyscale images. If activated, the color option will
 enable the module to acquire and display color images.
 
 Once the realtime is active, you can specify a process to apply to the acquired
@@ -195,7 +197,7 @@ examples work on greyscale image):
 
 \\lstset{language=Python}
 \\begin{lstlisting}
-# first import the gradient function
+# First import the gradient function
 from mambaComposed import gradient
 
 # Setting up a simple gradient as the realtime process
@@ -253,7 +255,7 @@ print(getErrorRealtime())
 \\end{lstlisting}
 
 Eventually, you can close the realtime module by either pressing escape inside
-the display windows or by calling the function:
+the display window or by calling the function:
 
 \\lstset{language=Python}
 \\begin{lstlisting}
@@ -261,7 +263,7 @@ the display windows or by calling the function:
 deactivateRealtime()
 \\end{lstlisting}
 
-At this point you can call back the launch function with other parameters or
+At this point, you can call back the launch function with other parameters or
 acquisition devices/files and it will start again.
 
 There is a bunch of other functions, for recording, palette display and so on.
@@ -278,9 +280,9 @@ you to close the window.
 
 \\begin{itemize}
 
-\\item \\textbf{<esc>} closes the realtime acquisition. Once pressed you must 
+\\item \\textbf{<esc>} closes the realtime acquisition. Once pressed, you must 
 reinitialize and reactivate it with the correct functions. If you are
-displaying in fullscreen this command will only leaves the fullscreen mode.
+displaying in fullscreen, this command will only leaves the fullscreen mode.
 
 \\item \\textbf{p} toggles the color palette. You should first specify one using
 the appropriate function.
@@ -381,7 +383,7 @@ def adaptAndtidyDesc(desc):
         else:
             tidy_desc += ls + '\n'
             
-    # last line was in an example
+    # Last line was in an example
     if in_example:
         tidy_desc += "\\end{lstlisting}\n\n"
         
@@ -414,11 +416,11 @@ def extractModule(path):
                 in_section = l
             else:
                 if in_section=="NAME" or in_section=="FILE":
-                    # sections NAME and FILE contains only one information
+                    # Sections NAME and FILE contains only one information
                     sections[in_section] = l[4:]
                 elif in_section=="DESCRIPTION":
                     # The DESCRIPTION can be spreaded along multiple lines
-                    # here we concatened all of them
+                    # here we concatenated all of them
                     sections[in_section] = sections[in_section]+' '+l[4:]
                 elif in_section=="CLASSES":
                     # The CLASSES section lists all the classes and their methods
@@ -508,7 +510,7 @@ else:
 pyfile_list = ['mambaRealtime/realtime.py']
 # Setting up the python path to find mamba.py
 os.environ["PYTHONPATH"] = glob.glob(cwd+'/../../src/mambaApi/build/lib*/')[0]
-# getting the version
+# Getting the version
 os.system('%s -c "import mambaRealtime; print(mambaRealtime.VERSION)" > %s' %(sys.executable, PROVDOC) )
 VERSION = open(PROVDOC).readlines()[0].strip()
 # Creating the tex file (all the lines)
@@ -521,10 +523,10 @@ lines.append(end)
 os.remove(PROVDOC)
 del(os.environ["PYTHONPATH"])
 os.chdir(cwd)
-# writing the final tex file
+# Writing the final tex file
 f = open(OUTDOC,'w')
 f.writelines(lines)
 f.close()
-#creating the pdf
+# Creating the pdf
 for i in range(5):
     os.system('pdflatex '+OUTDOC)
