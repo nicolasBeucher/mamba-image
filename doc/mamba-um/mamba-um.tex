@@ -29,7 +29,7 @@ provides a wide set of functions needed to perform common operations used in
 mathematical morphology like erosion, dilation, etc... but also more complex ones
 (geodesic operators, watershed transformations...).
 
-Before reading this document, make sure you have basic knowledge of Python
+Before reading this document, make sure you have a basic knowledge of the Python
 programming language (see the Python tutorial at 
 \url{http://docs.python.org/tutorial/}) and that you know the basics of 
 mathematical morphology (online courses are available at 
@@ -191,7 +191,7 @@ you a small example using the created images above.
 # 1 - Computing the gradient of image im and putting the result in im1
 gradient(im, im1)
 # 2 - Computing a small opening of image im and putting the result in im2
-opening(im, im1)
+opening(im, im2)
 # 3 - Computing the gradient of im2 and putting the result in im2
 gradient(im2, im2)
 # 4 - Converting im1 into binary and putting the result in im3
@@ -231,7 +231,7 @@ harness its capabilities. However, hopefully now you have a basic understanding
 of how the library works. For more precision, read section \ref{cha:using_library}.
 Also note that this document does not list the functions offered in Mamba, you
 will need to refer to the Python reference document or to the Python API
-quick reference for a list and explanations.
+quick reference (see section \ref{cha:other_docs}) for a list and explanations.
 
 \pagebreak
 
@@ -248,15 +248,18 @@ address your mathematical morphology problems while not waiting all night long
 for your result to come out or worse not come out because you made a mistake, 
 then Mamba is meant for you. However, if you are looking for a library to perform
 image processing tasks like convolutions, contrast enhancers or likewise, you 
-had better not using it (try Pillow instead). And by the way, Mamba does not make 
-coffee (sorry about that...).
+had better not using it (try Pillow or openCV instead). In fact, as Python bindings exist
+for openCV, numpy/scipy, matplotlib and many other valuable libraries, you can
+use them in conjonction with Mamba to solve your image analysis applications (see the
+examples manual to see how images can be exchanged between Mamba and some of these libraries).
+And by the way, Mamba does not make coffee (sorry about that...).
 
 To do as intended, Mamba low level library is coded in C with performance through
 simplicity in mind. The Python wrapper purpose is to give you an interface to 
-that library which is fast to code and easy to play with (no compilation required 
+that library which is fast to code and easy to play (with no compilation required 
 and interactive help). Another objective regarding Mamba code is to be as 
-portable as possible. This means that if you need to port your algorithm to a 
-specific system you can easily adapt the C code to it.
+portable as possible. This means that, if you need to port your algorithm to a 
+specific system, you can easily adapt the C code to it.
 
 Regarding licensing, Mamba is released under X11 license (also known as MIT 
 license), see section \ref{cha:License} for more information.
@@ -309,7 +312,7 @@ THE SOFTWARE. }%
 
 \warnBox{
 Please note that this license does \textbf{\textsc{not}} cover documentation and
-images found in source packages. Some restrictions also apply to addon packages.
+images found in source packages. Some restrictions also apply to add-on packages.
 }
 
 \pagebreak
@@ -325,11 +328,15 @@ are not sure, install the version of Mamba without SSE2, please note this versio
 is very slow. See \url{http://en.wikipedia.org/wiki/SSE2#CPUs_supporting_SSE2}
 for a list of compatible CPUs.
 \item Python version 2.7 or later (Python 3 is supported).
-\item Python Imaging library (Pillow) for your current version of Python.
+\item Python Imaging Library (Pillow) for your current version of Python.
 \item Tkinter (normally comes with Python on Windows systems but you may need to
 install it on Linux systems).
 \item VTK (optional, see \url{http://www.vtk.org/} for more info) with Python
-bindings if you want to use the mamba3D integrated display based on it.
+bindings if you want to use the mamba3D integrated display based on it. The Windows
+binaries for the VTK Python extension package can be found at
+\url{http://www.lfd.ucl.edu/~gohlke/pythonlibs/} (Wheels file, see
+\url{http://python-packaging-user-guide.readthedocs.org/en/latest/installing/} to
+know how to install it)
 \end{itemize}
 
 \warnBox{
@@ -353,7 +360,7 @@ optimal experience with it (see section \ref{cha:perfo3D} for more information).
 
 If you are only interested in installing and don't want to go through the bother
 of compiling it, just pick up the installer on the website. Select the appropriate
-installer corresponding to your version of Python (2 or 3, 32bit or 64bit), 
+installer corresponding to your version of Python (2 or 3, 32-bit or 64-bit), 
 launch it and follow the instructions.
 
 If you actually are interested in compiling the installers, here is the tools
@@ -364,9 +371,14 @@ you will need:
 \item SWIG version 2.0 or later (see \url{http://www.swig.org/}).
 \item CMake version 2.8 or later (see \url{http://www.cmake.org/}) for the 
 compilation process.
-\item Microsoft Visual C++ (compilation was realized on Express 2008 for 32bit
-and Express 2013 for 64bit).
+\item Microsoft Visual C++ (compilation was realized on Express 2008 for 32-bit
+and Express 2013 for 64-bit).
 \end{itemize}
+
+\warnBox{
+Mamba2 has not been tested on Windows 10. however, it should work properly, provided that
+all the software used by Mamba2 (Python, Pillow, VTK, etc.) work with Windows 10.
+}
 
 Make sure you have correctly installed the required tools and that they appear
 in your PATH environment variable. In particular, make sure that SWIG binary
@@ -381,8 +393,8 @@ another visual C++ compiler.
 
 Get the source code of Mamba from the website. It comes in a zip that once
 extracted will create a directory \textbf{Mamba.X.X}. Alternatively you can
-checkout the latest version for the subversion repository in 
-\url{https://code.google.com/p/mamba-image/source/checkout}.
+find the latest version in the GitHub repository at 
+\url{https://github.com/nicolasBeucher/mamba-image}.
 
 Launch CMake.
 
@@ -437,7 +449,8 @@ If everything went OK, you should find in the \textbf{mamba\_build} directory
 the following files:
 \begin{itemize}
 \item the Python stand alone installer, Mamba Image-X.X.winYY-pyZ.Z.exe: in python/dist subdirectory.
-\item C core library DLL (not needed for Python): mamba.dll, mamba.def, mamba.lib in lib/Release subdirectory and include files in include subdirectory.
+\item C core library DLL (not needed for Python): mamba.dll, mamba.def, mamba.lib in lib/Release subdirectory
+and include files in include subdirectory.
 \end{itemize}
 
 We strongly recommand you to verify the generated installer by installing it on
@@ -510,7 +523,7 @@ guarantee this, it will return an error.
 
 Regarding the mamba3D package, evrything was created to reuse as much as
 possible the basic C operators from Mamba to perform the 3D computations so
-as to avoid rewriting them (Apart from hierarchical and labelling operators
+as to avoid rewriting them (apart from hierarchical and labelling operators,
 this was actually possible). Functions and classes are created with the same
 "look and feel" as their counterpart in 2D.
 
@@ -524,7 +537,7 @@ code and work versus objective ratio.
 
 Version 2 of Mamba introduced a lot of changes, made for performance and
 easiness improvement, that \emph{will} break your scripts written for previous
-versions (1.x). However we believe this should not present too much of a
+versions (1.x). However, we believe this should not present too much of a
 challenge to upgrade your scripts to the newest version.
 
 The list of changes is quite long and we tried our best to not forget
@@ -535,7 +548,7 @@ mambaDisplay.py and package mambaComposed) have been regrouped inside two packag
 mamba and mambaDisplay. Functions and operators have also been reorganized
 by families inside this package mainly for documentation purposes. This makes old
 imports of Mamba incompatible. The mamba3D package, previously available as an
-addon, has been merged in the main library (both C and Python code). image3DMb 
+add-on, has been merged in the main library (both C and Python code). image3DMb 
 now longer inherits from sequenceMb (other way around in Mamba 2).
 \item The source reorganisation also impacts display with the creation of
 the package mambaDisplay to contain both 2D and 3D displays. New displays were
@@ -555,7 +568,7 @@ have been modified to gain performance. The corresponding Python functions are
 also impacted. Support for hierarchical algorithms (watershed and build) on
 32-bit images was added in C with removal of the specific Python functions
 (namely watershedSegment32, basinSegment32, hierarBuild32 and hierarDualBuild32).
-The operators are accessible through the standard functions (watershedSgement,
+The operators are accessible through the standard functions (watershedSegment,
 basinSegment, hierarBuild and hierarDualBuild).
 \item Mamba is now compatible with Python 3. This may have impact on the
 behavior of some functions (getDirections, for example, is based upon range
@@ -575,7 +588,8 @@ of Pillow.
 \item Vectorisation in the C code was changed (see mambaApi\_vector.h).
 \item The documentation was modified : directory containing doc in source renamed,
 better use of doxygen to generate the C API doc, merge of the 2D and 3D doc,
-separation of user manual and examples, change in the mamba style.
+separation of user manual and examples, change in the mamba style. Conversely,
+some documents have been merged into the user manual.
 \item The new version also means reorganisation of the source directory, of the
 examples, of the tests.
 \end{itemize}
@@ -587,14 +601,14 @@ library.
 
 The Python Mamba library is composed of four packages:
 \begin{itemize}
-\item mamba : which is the main package of Mamba and contains all the operators
+\item \textbf{mamba}, which is the main package of Mamba and contains all the operators
 (from the most basic to quite advanced ones) to perform mathematical morphology
 computations on 2D images.
-\item mamba3D : which contains the same operators (except some of them without
+\item  \textbf{mamba3D}, which contains the same operators (except some of them without
 equivalent in a three dimensional context) working on 3D images.
-\item mambaDisplay : which contains all the code related to image displays for
+\item  \textbf{mambaDisplay}, which contains all the code related to image displays for
 both 2D and 3D.
-\item mambaShell : which is a container for functions and modules that are
+\item  \textbf{mambaShell}, which is a container for functions and modules that are
 needed to create and operate an appropriate shell for Mamba. In particular, it
 contains demo presentations.
 \end{itemize}
@@ -639,7 +653,7 @@ extra displays.
 Grid and edge are important notions in mathematical morphology. Let us explain
 how they are handled in Mamba. 
 
-\paragraph{Edge}
+\subsubsection{Edge}
 
 The edge defines the status of all the pixels which are not in the image. Let us 
 explain what this assertion means. Obviously, any image is made of a finite set 
@@ -653,9 +667,31 @@ is assuming that external world surrounding
 the image is made of virtual pixels at value 0 (the edge is set to 0) whereas 
 the \textbf{FILLED} edge assumes an external world completely filled 
 (the edge is set to the maximum possible value of a pixel according to the image 
-depth). This notion applies to both 2D and 3D operators.
+depth). This notion applies to both 2D and 3D operators. See section \ref{cha:rules} for
+further explanations on edge settings for 2D images.
 
-\paragraph{Grids 2D}
+Edge management for 3D images is a combination of two approaches as edges in a 3D image
+are twofold. 3D images being made of a pile of 2D images, the edges parallel to the
+\emph{z} axis are defined by the edges of the corresponding 2D images. These edges are
+therefore virtual and their management is controlled by the \textit{edge} argument
+(set to EMPTY or FILLED) of the 2D images. But two other edges must be defined. They correspond
+to the floor and the ceiling (along the \emph{z} axis) of the 3D volume of data formed by a
+3D image. Contrary to the 2D edges, these two ones are real and are built by adding two
+supplementary 2D images set to 0 or to the maximum value (1, 255 or $2^{32} - 1$) depending
+on the status (FILLED or EMPTY) of the 2D edge (figure \ref{fig:3D_edges}).
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.6]{figures/3D_edges.pdf}
+\caption{Edges in a 3D image}
+\label{fig:3D_edges}
+\end{figure}
+
+So, it is up to you, when defining operators where the edge status is relevant, to properly
+manage this status. As an example, have a look on the definition of the erosions and dilations for 3D images.
+
+\subsubsection{Grids 2D}
+\label{cha:grid2D}
 
 The grid defines the neighbourhood of each pixel in an image.
 
@@ -684,16 +720,34 @@ in figure \ref{fig:sqgriddir}.
 
 \end{itemize}
 
+2D grids are built-in grids. There is no way to modify them (that is to modify the neighborhood
+relationships) under Python. These grids are straightforward and you can see the coding of the directions
+defined on these grids in the documentation (Mamba Image Library Python Reference and Mamba API
+Quick Reference manual), see section \ref{cha:other_docs}.
+
+On the hexagonal grid, an image contains even lines (vertical coordinate multiple of 2) and odd lines. Even lines
+are shifted to the left in relation to the odd lines, see figure \ref{fig:hex_grid}.
+ 
+\begin{figure}
+\centering
+\includegraphics[scale=0.3]{figures/hex_grid.pdf}
+\caption{Odd and even lines in the hexagonal grid}
+\label{fig:hex_grid}
+\end{figure}
+
 As you will see later in this document, some functions need a direction or a 
 neighbor as input. Figures \ref{fig:hxgriddir} and \ref{fig:sqgriddir} give you
 the direction/neighbor encoding depending on the grid in use. The directions
 are numbered from 0 to 6 or 8.
 
-\paragraph{Grids 3D}
+Some public operators are available with 2D grids (which are instances of a class \textbf{\_grid}). They are self
+explanatory. See the documentation on the directions encoding for further details.
+
+\subsubsection{Grids 3D}
 
 There are three possible grids in 3D. They are a bit more
-difficult to represent thus we will try to give you an overview
-of what they look like. Also they have some limitations that we think you
+difficult to represent. Thus we will try to give you an overview
+of what they look like. They also have some limitations that we think you
 should be aware of.
 
 As a foreword, we would like to explain how 3D grids are built.
@@ -705,20 +759,68 @@ to a 3D structure (e.g. hierarchical queues operators). As they work using the
 grid, we defined some grids in low-level C but not all of them (too much work).
 So some operators may not work with the grid you selected. Be warned !
 
+A 3D grid is defined by providing two settings:
+
+\begin{itemize}
+\item The 2D grid (hexagonal or square) which is used with the 2D image sections of the 3D image.
+\item The way these 2D images are stacked, this stacking defining the neighborhood relationships in the 3D grid.
+\end{itemize}
+
 \tipBox{
 Grids in Mamba3D are strongly influenced by crystallography. For example,
 the face centered cubic grid is describing the way carbon atoms are 
-crystallized to form diamonds and centered cubic (also named body centered
+crystallized to form diamonds and the centered cubic one (also named body centered
 cubic) is a structure by which iron atoms organise themselves. Of course, there
 is a lot of other structures in crystals that are not represented in Mamba3D.
 }
 
-Here are the Mamba3D grids (they are represented by means of top views and perspective views,
+Three grids are defined in Mamba3D (they are represented by means of top views and perspective views,
 with the coreesponding directions/neighbors numbers):
 
 \begin{itemize}
-\item \textbf{CUBIC}: The very basic cubic grid, built by stacking square
+\item \textbf{CUBIC (C)}: The very basic cubic grid, built by stacking square
 grids one on the other. See figures \ref{fig:cubic_grid} and \ref{fig:cubic_grid_3D}.
+\item \textbf{FACE\_CENTER\_CUBIC (FCC)}: A face centered cubic grid. It is in fact
+built by stacking hexagonal grids one on the other with a slight shift. See
+figures \ref{fig:fcc_grid} and \ref{fig:fcc_grid_3D}.
+\item \textbf{CENTER\_CUBIC (CC)}: Also known as body centered cubic, this grid is
+built by stacking square grids with a half shift in the two directions. See
+figures \ref{fig:ccubic_grid} and \ref{fig:ccubic_grid_3D}. This grid is not
+supported by low-level C operators.
+\end{itemize}
+
+These grids are instances of a \textbf{\_grid3D} class. Each grid comes with various
+methods to handle it. Some of them are similar to the operators provided with 2D grids.
+However, some others are specific and are more complex.
+
+For each 3D grid, The 2D grid on which it is based is given by the method \textbf{get2DGrid}.
+
+In addition, three specific methods come with 3D grids: \textbf{getEncodedDirs}, \textbf{convertFromDir}
+and \textbf{getShiftDirsList}.
+
+\begin{itemize}
+\item \textbf{getEncodedDirs} is mainly used with 3D structuring elements. It allows to
+decompose any elementary 3D structuring element (defined by a list of directions) into
+three 2D structuring elements corresponding to the three sections of the initial 3D structuring
+element, see section \ref{cha:structelem} for further explanations.
+\item \textbf{convertFromDir} requires two parameters: a 3D direction and the \emph{z} coordinate
+of the pixel. It returns a tuple containing the section (-1 if below, 0 if current and 1 if above)
+and the 2D direction in this section corresponding to the 3D direction and to the \emph{z} position of the
+pixel. This method is quite useful to increase the computation speed of some 3D operators like shiftings as it
+provides directly the \emph{z} offset and the corresponding horizontal direction (at least for the cubic
+grid - for the others, it is a bit more complex) of this shifting.
+\item \textbf{getShiftDirsList} is a more complex method mainly used in the 3D shift operator (shift3D) and
+in the infFarNeighbor3D and supFarNeighbor3D operators. This method requires three parameters: a 3D
+direction \emph{d}, the amplitude (size) \emph{amp} of the shift applied in this direction and the
+z coordinate of the pixel (or the section) which will be shifted, \emph{zindex}. It returns
+a list (of variable length) containing tuples (dh, amph, grid2D), each one providing the horizontal
+direction \emph{dh}, the horizontal amplitude \emph{amph} of the corresponding horizontal shift which
+will be applied on each section. \emph{grid2D} indicates the 2D grid on which this 2D shift will be performed.
+\end{itemize}
+
+These methods will be explicited below for the different grids.
+
+\paragraph{Cubic grid\\}
 
 \begin{figure}
 \centering
@@ -734,28 +836,48 @@ grids one on the other. See figures \ref{fig:cubic_grid} and \ref{fig:cubic_grid
 \label{fig:cubic_grid_3D}
 \end{figure}
 
-\item \textbf{FACE\_CENTER\_CUBIC}: A face centered cubic grid. It is in fact
-built by stacking hexagonal grids one on the other with a slight shift. See
-figures \ref{fig:fcc_grid} and \ref{fig:fcc_grid_3D}.
 
-\begin{figure}
-\centering
-\includegraphics[width=0.55\textwidth]{figures/fcc_grid.pdf}
-\caption{Face centered cubic grid, top view}
-\label{fig:fcc_grid}
-\end{figure}
+This grid (named CUBIC) is made by stacking 2D images defined with a square grid (figures \ref{fig:cubic_grid} and \ref{fig:cubic_grid_3D}).
 
-\begin{figure}
-\centering
-\includegraphics[width=0.5\textwidth]{figures/Fccubic_grid_3D.pdf}
-\caption{Face centered cubic grid, perspective view}
-\label{fig:fcc_grid_3D}
-\end{figure}
+\lstset{language=Python}
+\begin{lstlisting}
+>>> CUBIC.get2DGrid()
+SQUARE
+\end{lstlisting}
 
-\item \textbf{CENTER\_CUBIC}: Known as the body centered cubic, this grid is
-built by stacking square grids with a half shift in the two directions. See
-figures \ref{fig:ccubic_grid} and \ref{fig:ccubic_grid_3D}. This grid is not
-supported by low-level C operators.
+Each pixel of the cubic grid is surrounded by 26 neighbors, associated to 26 directions scattered among the section containing the
+central pixel (8 directions) and the two sections below and above it (9 directions each).
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> CUBIC.convertFromDir(12, 5)
+(-1, 3)
+\end{lstlisting}
+
+The direction 12 in the cubic grid corresponds to the direction 3 in the section below section 5.
+
+Note that, for the cubic grid, the result is the same whatever \emph{z} because all the 2D images are stacked without shifting. It is
+not the case for the other grids (see below).
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> CUBIC.getShiftDirsList(11, 23, 49)
+[(2, 23, SQUARE)]
+\end{lstlisting}
+ 
+A shift of size 23 in direction 11 on the cubic grid for the image section 49 corresponds to an horizontal shift of size 23 in
+direction 2. So, a shift of section 49 is performed by an horizontal shift of size 23 in direction 2. The shifted 2D image is then stored
+in section 26 (49 - 23, it is a downwards shift) of the output 3D image. In the case of the cubic grid, the operation is straightforward.
+But it is not the case with the other 3D grids. It may also seem strange to
+indicate which 2D grid is used to perform the horizontal shift. Here again, on the cubic grid, this information is redundant. But
+we shall see, for the FCC grid, that this information is necessary to cope with edge effects.
+  
+\paragraph{Centered cubic grid\\}
+
+Here again, this grid (named CENTER\_CUBIC) is defined by stacking 2D images defined with a square grid. But the odd sections
+are shifted compared to the even sections just below so that the pixels be placed in the middle of the 2x2 squares of the below
+section, hence the name "centered cubic (figures \ref{fig:ccubic_grid} and \ref{fig:ccubic_grid_3D}). Therefore, this grid is
+made of an assembly of two shifted square grids which is repeated all along the \emph{z} axis.
 
 \begin{figure}
 \centering
@@ -771,12 +893,119 @@ supported by low-level C operators.
 \label{fig:ccubic_grid_3D}
 \end{figure}
 
-\end{itemize}
+Figure \ref{fig:CC_grid} shows the relative arrangement of the odd and even planes.
 
-Regarding the FACE\_CENTER\_CUBIC, you can notice on figure \ref{fig:fcc_grid_3D}
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{figures/CC_grid.pdf}
+\caption{Planes arrangement in the centered cubic grid}
+\label{fig:CC_grid}
+\end{figure}
+
+Therefore, the \textbf{convertFromDir} operator returns a result which depends on the parity of the \emph{z} coordinate of the pixels:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> CENTER_CUBIC.convertFromdir(15, 0)
+(1, 0)
+>>> CENTER_CUBIC.convertFromdir(15, 1)
+(1, 4)
+\end{lstlisting}
+
+Calculating the horizontal offsets in shifting operations is then more complicated as it depends of the relative parities
+of the starting and ending planes.
+
+On this grid, \textbf{getShiftDirsList} returns a list of horizontal shifting directions and amplitudes which strongly depend
+on the 3D amplitudes and on the parity of the z index. We have for instance:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> CENTER_CUBIC.getShiftDirsList(14, 10, 4)
+[(1, 5, SQUARE), (3, 5, SQUARE)]
+>>> CENTER_CUBIC.getShiftDirsList(14, 11, 5)
+[(1, 5, SQUARE), (3, 6, SQUARE)]
+>>> CENTER_CUBIC.getShiftDirsList(14, 11, 6)
+[(1, 6, SQUARE), (3, 5, SQUARE)]
+\end{lstlisting}
+
+Some directions only need one shift:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> CENTER_CUBIC.getShiftDirsList(9, 11, 4)
+[(4, 5, SQUARE)]
+\end{lstlisting}
+
+\paragraph{Face centered cubic grid\\}
+
+The face centered cubic grid (named FACE\_CENTER\_CUBIC) is the most complex grid defined in Mamba3D. The 2D base grid is hexagonal
+and the 3D grid is obtained by piling and shifting these 2D hexagonal grids (figures \ref{fig:fcc_grid} and \ref{fig:fcc_grid_3D}).
+
+\begin{figure}
+\centering
+\includegraphics[width=0.55\textwidth]{figures/fcc_grid.pdf}
+\caption{Face centered cubic grid, top view}
+\label{fig:fcc_grid}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{figures/Fccubic_grid_3D.pdf}
+\caption{Face centered cubic grid, perspective view}
+\label{fig:fcc_grid_3D}
+\end{figure}
+
+In this case, three 2D hexagonal grids are used and shifted according to the scheme given in figure \ref{fig:FCC_grid_piling}.
+Then, this configuration is repeated along the \emph{z} axis.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{figures/FCC_grid_piling.pdf}
+\caption{Planes arrangement in the face centered cubic grid}
+\label{fig:FCC_grid_piling}
+\end{figure}
+
+You can notice on figure \ref{fig:fcc_grid_3D}
 that the triangles drawn by below directions (blue) and above directions (red)
-do not point the same way. This is very important to be able to draw a 
-cuboctahedron instead of an anti-cuboctahedron.
+do not point the same way. Stacking and shifting 3 planes (instead of 2 as for
+the centered cubic grid) allows to define symmetrical structuring elements (cuboctahedrons).
+Shifting only two planes would produce another grid structure named \textit{hexagonal
+closed packed} structure. Unfortunately, the structuring elements defined on this grid
+are not symmetrical (we have in particular anticuboctahedrons).
+
+The \textbf{convertFromDir} operator provides different results according to the
+congruence modulo 3 of the \emph{z} coordinate with the values 0, 1 and 2:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> FACE_CENTER_CUBIC.convertFromdir(10, 0)
+(1, 6)
+>>> FACE_CENTER_CUBIC.convertFromdir(10, 1)
+(1, 5)
+>>> FACE_CENTER_CUBIC.convertFromDir(10, 2)
+(1, 0)
+\end{lstlisting}
+
+On this FCC grid, \textbf{getShiftDirsList} returns horizontal directions on the hexagonal grid corresponding to 3D directions. For instance:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> FACE_CENTER_CUBIC.getShiftDirsList(10, 11, 4)
+[(6, 3, HEXAGONAL), (5, 4, HEXAGONAL)]
+\end{lstlisting}
+
+However, in directions 9 and 12, one direction is defined on the square grid:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> FACE_CENTER_CUBIC.getShiftDirsList(9, 11, 5)
+[(1, 6, SQUARE), (1, 1, HEXAGONAL)]
+\end{lstlisting}
+
+This trick allows to avoid edge effects which would happen if the hexagonal grid was used. Indeed, in this case, the first shift would
+likely send a shifted pixel close to the edge outside of the image window with no possibility to recover it with the second shift.
+ 
+\subsubsection{More on 2D and 3D grids}
 
 As it is, we could have added a lot more grids in Mamba3D. For example,
 we could have built a grid stacking without any shifted hexagonal grids.
@@ -784,16 +1013,14 @@ We chose not to do it, but it does not mean you can't, although we doubt very
 much you find such grids useful. In this event, we encourage you to look
 at section \ref{cha:create_grid3D}.
 
-\paragraph{More on grids}
-
 Be aware that the grid is never an image attribute, but a structuring element 
 attribute. A structuring element is always defined on a given grid. Therefore, 
 when performing a transformation with a given structuring element, the corresponding 
-grid will be used with the image. Changing the grid of an image can be seen as a 
+grid will be used with the image. Changing the grid of a 2D image can be seen as a 
 simple shift of the even lines of the image versus the odd ones so that the pixels 
 belonging to an even line are between the pixels of the following odd line. The even 
 lines are shifted to the right compared to the odd ones (the first line is numbered 0, 
-it is therefore an even one).
+it is therefore an even one). See section \ref{cha:grid2D} for further details.
 
 By default, when it is launched, Mamba uses the \textbf{HEXAGONAL} grid (through 
 the DEFAULT\_GRID variable). Mamba3D uses the \textbf{FACE\_CENTER\_CUBIC} grid
@@ -815,7 +1042,7 @@ setDefaultGrid(HEXAGONAL)
 setDefaultGrid(SQUARE)
 \end{lstlisting}
 
-or you can change the grid used when calling the operator.
+You can change the grid used when calling the operator.
 
 You can get a list of all the available directions of a grid
 by calling the function getDirections (getDirections3D for Mamba3D).
@@ -831,46 +1058,116 @@ directions = getDirections(HEXAGONAL)
 \end{lstlisting}
 
 There are other utilities functions that are provided by Mamba and Mamba3D to
-handle  directions/neighbors. Refer to the Python API reference.
+handle  directions/neighbors. Refer to the Python API reference manual.
 
 \subsection{Creating and manipulating images}
 \label{cha:create_im}
 
-\subsubsection{Creating 2D images}
+\subsubsection{2D images}
 
-To handle images, a Python class named imageMb has been created. This class will allow
+To handle images, a Python class named \textbf{imageMb} has been created. This class will allow
 you to create, load, save and perform standard operations on your images.
+
+An image is basically an array of pixels. Each pixel is referred by its coordinates (x,y), see
+figure \ref{fig:image_coord}. Each pixel can take a 1-bit (binary), 8-bit (greyscale) or 32-bit value.
+This parameter is called \textit{depth} of the image. If you want to process 16-bit images, you will have to
+load them in a 32-bit Mamba image (which is actually not at all a problem).
+
+\textit{Width} w and \textit{heighth} are the two other parameters (attributes) of an image. \textit{width} is the number of
+pixels per line in the horizontal direction, \textit{height} the number of lines (or the number of pixels in
+the vertical direction), see figure \ref{fig:image_coord}.
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.7]{figures/image_coord.pdf}
+\caption{Image pixels coordinates}
+\label{fig:image_coord}
+\end{figure}
 
 The imageMb constructor offers a wide range of possibilities to create an image. 
 Here is the list of all these possibilities:
 
 \begin{itemize}
-\item \texttt{\textbf{imageMb()}}: without arguments will create an empty 
-greyscale image.
-\item \texttt{\textbf{imageMb(im)}}: will create an image using the same size 
+\item \texttt{\textbf{imageMb()}}, without arguments, will create an empty 
+256x256 greyscale image.
+\item \texttt{\textbf{imageMb(im)}} will create an image using the same size 
 and depth than 'im'.
-\item \texttt{\textbf{imageMb(depth)}}: will create an image with the desired
+\item \texttt{\textbf{imageMb(depth)}} will create an image with the desired
 'depth' (1, 8 or 32).
-\item \texttt{\textbf{imageMb(path)}}: will load the image located in 'path'.
-\item \texttt{\textbf{imageMb(im, depth)}}: will create an image using the same 
+\item \texttt{\textbf{imageMb(path)}} will load the image located in 'path'.
+\item \texttt{\textbf{imageMb(im, depth)}} will create an image using the same 
 size than 'im' and the specified 'depth'.
-\item \texttt{\textbf{imageMb(path, depth)}}: will load the image located in 
+\item \texttt{\textbf{imageMb(path, depth)}} will load the image located in 
 'path' and convert it to the specified 'depth'.
-\item \texttt{\textbf{imageMb(width, height)}}: will create an image with size 
+\item \texttt{\textbf{imageMb(width, height)}} will create an image with size 
 'width'x'height'.
-\item \texttt{\textbf{imageMb(width, height, depth)}}: will create an image with
+\item \texttt{\textbf{imageMb(width, height, depth)}} will create an image with
 size 'width'x'height' and 'depth'.
 \end{itemize}
 
 When not specified, the width and height of the image will be set to 
 256x256. The default depth is 8 (greyscale).
 
-For performance sake, Mamba works only with images that have a width multiple of
+2D images can be defined with any positive w and h values. However, Mamba
+works only with images that have a width multiple of
 64 and a height multiple of 2. It means that if you requested the creation of
-an image of size 360x201, Mamba will actually create an image of size 384x202. 
+an image of size 747x621, Mamba will actually create an image of size 768x622. 
 The actual image is always larger than or equal to the defined size.
 
-There is a size limitation when you define images. This limitation is given by
+\lstset{language=Python}
+\begin{lstlisting}
+>>> im = imageMb(747, 621)
+>>> im.getSize()
+(768, 622) 
+\end{lstlisting}
+
+Two factors explain this particularity:
+
+\begin{itemize}
+\item In order to increase the processing speed, pixel values are stored in words and these
+words may be 64 bits long if your OS allows it. By this means, 64 pixels of a binary image
+are stored in a single word and then processed in parallel. The result is a dramatic increase
+of the computation speed. So, if the horizontal size of the image is not multiple of 64, this could
+deeply deteriorate the performance, as each end of line should be processed differently. 
+\item Similarly, if the height is not even, a supplementary line is added to the image. The
+reason is that the image can be processed on an hexagonal grid (see section \ref{cha:grid2D}). In this case and to
+avoid again to increase the complexity of the operators, the number of even lines must be equal to
+the number of odd ones.
+\end{itemize}
+
+The pixels added to the image are set to 0. This procedure is called padding. Padding may seem confusing
+because it adds strips of black pixels on the right and bottom of the image. Therefore, processing such an
+image leads to unwanted edge effects. The erosions for instance increase the size of the black strips
+but many other operators are also concerned.
+
+A better solution consists in cropping the image, that is cutting it in order to let it fit to the image size.
+However, padding has been preferred to cropping because it allows the user not to lose any pixel of the image
+and to choose at the end the part of it which will be discarded by cropping.
+
+Nevertheless, cropping can be performed by two means:
+
+\begin{itemize}
+\item \textbf{cropCopy} can be used to extract from the padded image the part which interests you. Note that
+\textbf{cropCopy} does not clear the destination image, it simply replace the cropped part (see the Mamba
+Image Examples manual (section \ref{cha:other_docs}).
+\item The size of the destination image can also be set before loading the image file:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> im = imageMb(256, 256)
+>>> im.load("myimage.png")
+\end{lstlisting}
+
+"myimage.png" is a (300x300) image stored in the Python working directory. This solution however does not allow you
+to choose the part of the image which will be loaded: it is always the upper left part.
+\end{itemize}
+
+\tipBox{
+Mamba allows you to create images with different sizes but not to perform
+computations between them. If you want to do so, you will have to use the
+cropCopy() function to extract the part of the images you want to match.
+}
+There is also a size limitation when you define images. This limitation is given by
 the number of pixels in the image which must be lower than or equal to $2^{32}$.
 This is a really huge value which allows you to define 65536x65536 images for instance.
 A 200000x10000 image is also allowed (number of pixels lower than the limit).
@@ -878,24 +1175,44 @@ Note however that, in practice, the real allowed maximum size is smaller as you 
 need a fairly huge amount of memory to handle these images in Mamba. So, be sure
 that your memory space is sufficient if you intend to use big images.
 
-\tipBox{
-Mamba allows you to create images with different sizes but not to perform
-computations between them. If you want to do so, you will have to use the
-cropCopy() function to extract the part of the images you want to match.
-}
+\subsubsection{3D images}
 
-\subsubsection{Creating 3D images}
-
-The basic data model used in Mamba3D is the image3DMb image class. This is the
-complete equivalent to the imageMb class for 3D images.
+The basic data model used in Mamba3D is the \textbf{image3DMb} image class. This class is the
+complete equivalent to the imageMb class for 3D images and it inherits its attributes and methods.
+New attributes and methods are defined to deal with these images.
 
 You should know that this class is actually a stack of standard Mamba images
 (imageMb object) with all the same size and depth. The dimension of a 3D image
-is thus given by the size of the mamba images inside the stack and by its
-length. This choice may seem strange because it differentiates one direction
+is thus given by the size of the Mamba images inside the stack and by its
+length. Contrary to the two other dimensions, there is no restriction
+on the value of \textit{length}.. This choice may seem strange because it differentiates one direction
 (supposedly z-axis) in the data structure from the other two (x-axis and
 y-axis) but it was dictated by the need to reuse as much as possible the 
-basic C functions of Mamba which work with imageMb low-level structure.
+basic C functions of Mamba which work with the imageMb low-level structure.
+
+A 3D image is in fact a list of 2D images. Therefore, each 2D image at position \emph{i}
+(the indexing starts at 0) composing the 3D image im3D can
+be accessed by:
+
+\lstset{language=Python}
+\begin{lstlisting}
+im3D[i]
+\end{lstlisting}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{figures/image3D_coord.pdf}
+\caption{Image 3D pixels coordinates}
+\label{fig:image3D_coord}
+\end{figure}
+
+Figure \ref{fig:image3D_coord} shows the coordinates arrangement of a 3D Mamba image. The length of the pile of 2D images (the third
+dimension of the 3D image) corresponds to the length of the im3D list:
+
+\lstset{language=Python}
+\begin{lstlisting}
+imLength = len(im3D)
+\end{lstlisting}
 
 There is a wide range of possibilities to create a 3D image object :
 \begin{itemize}
@@ -923,14 +1240,17 @@ greyscale 3D image with 'width', 'height' and 'length'.
 a 3D image with the given parameters.
 \end{itemize}
 
-Mamba3D also defines an alias named sequenceMb to this class for compatibility
-purposes.
+In the new release of Mamba (2.x), the \textbf{sequenceMb} class is simply an alias of the \textbf{image3DMb} class.
+Indeed, a sequence is simply a list of 2D images. It can be considered as a special case of 3D image where
+the third dimension is time.
 
 \subsubsection{Saving and loading images}
 
+\paragraph{2D images\\}
+
 Upon creation of after you created an image you can load it with the data
 contained inside a file. Loading an image, either at construction or
-with the load method, make use of the Pillow library. Any image format supported
+with the load method, makes use of the Pillow library. Any image format supported
 by this library will then be supported by Mamba.
 
 You can proceed like this:
@@ -974,7 +1294,7 @@ rgbfilter=<your\_filter> to the argument of the constructor (see Pillow
 documentation for examples of filters).
 
 With the load method, when the loaded Mamba image depth is not the depth
-of the destination image it is converted to the correct depth.
+of the destination image, it is converted to the correct depth.
 
 Once you have created an image and performed some operations on it, you may want 
 to save it into a file. The imageMb class provides the method save() to do so:
@@ -1007,15 +1327,38 @@ If you want to preserve the image unmodified to reuse it later, make sure to
 select a format that supports the mode of the Pillow image (such as TIFF for
 "I" mode) and that the format does not compress data (such as BMP).
 
-You can also save your image for display purpose, in that case you can use the
-additional parameter of the save function, palette.
+You can also save your image for display purpose. In that case you can use the
+additional parameter of the save function, palette (see section \ref{cha:pal}).
 
-On 3D images, the load and save methods will work on any directory containing
-a sequence of images. A sequence is a set of files named using number (such
-as "001.png", "002.png" ...). We advise you to look at the methods documentation
-for further information.
+\paragraph{3D images\\}
 
-You can also use the loadRaw and extractRaw method to load data inside your
+Contrary to 2D images where a lot of formats are available, most of them being efficiently addressed by the
+Pillow library, there is not such standard formats in 3D. Many of them are proprietary. So, in Mamba 3D, there
+exists only two ways to load a 3D image:
+
+\begin{itemize}
+\item By using the \textbf{loadRaw} method, where raw data are stored in the 3D image. Note that a preprocessing can
+be performed on the data before loading them in the 3D image. See
+the Mamba Image Library Python Reference manual (section \ref{cha:other_docs} ) for further details. 
+\item By using the \textbf{load} operator which reads a 3D image from a directory containing the corresponding pile
+of 2D images.
+\end{itemize}
+
+Similarly, there are two procedures for saving 3D images:
+
+\begin{itemize}
+\item \textbf{extractRaw} extracts raw data from an image and stores them in a string. Then this string can be
+written in a file.  
+\item \textbf{save} stores all the 2D sections of the 3D image in a directory. This directory will contain 2D images
+stored in a standard format.
+\end{itemize}
+
+The \textbf{load} and \textbf{save} methods will work on any directory containing
+a sequence of images. A sequence is a set of files named using numbers (such
+as "001.png", "002.png" ...). We advise you to look at the Mamba Image Python Reference
+manual for further information.
+
+You can also use the \textbf{loadRaw} and \textbf{extractRaw} methods to load data inside your
 image or extract it and save it. The loadRaw method accepts either a path to a
 file containing the raw data or the raw data (byte string) itself.
 
@@ -1029,15 +1372,15 @@ im1.loadRaw(raw_data)
 Of course the data size (given on argument or read from the file) must fit the
 image size.
 
-\subsubsection{Other imageMb methods}
+\subsubsection{Other imageMb and image3DMb methods}
 
 Besides creating, loading or saving your image, a range of other functionalities
 are accessible using specific methods.
 
 If you need to convert an image into another format (another depth), use the 
-convert() method. All conversions are supported. convert() takes the required
+\textbf{convert()} method. All conversions are supported. convert() takes the required
 depth as argument. This method is here for convenient purposes, there are more
-elaborated ways to convert an image provided inside Mamba.
+elaborated ways to convert an image available inside Mamba.
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -1050,7 +1393,7 @@ binary = imageMb(depth=1)
 binary.convert(8)
 \end{lstlisting}
 
-If you want to erase an image, you can use the reset() method. 
+If you want to erase an image, you can use the \textbf{reset()} method. 
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -1058,7 +1401,7 @@ If you want to erase an image, you can use the reset() method.
 im1.reset()
 \end{lstlisting}
 
-The fill() method allows you to set all the pixels of an image to a given value.
+The \textbf{fill()} method allows you to set all the pixels of an image to a given value.
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -1118,7 +1461,7 @@ im.show()
 
 After this call, for 2D image (i.e. imageMb class) every modification on the
 image will be shown inside the opened window. This operation is known to be
-very demanding on performance. For 3D image the display is not updated
+very demanding on performance. For 3D image, the display is not updated
 automatically for this reason. You can update the display with the method:
 
 \lstset{language=Python}
@@ -1156,15 +1499,15 @@ im.unfreeze()
 
 Of course all the displays come with integrated controls. There are two ways to control
 the display. The first one is achieved with the show() command with some arguments
-added. These arguments are described in  we describe them in \ref{cha:dis_arguments}. This
+added. These arguments are described in section \ref{cha:dis_arguments}. This
 first possibility allows you to control the displays inside scripts. The second way
-consists inusing interactive controls. They are described in \ref{cha:dis_shortcuts}.
+consists in using interactive controls. They are described in section \ref{cha:dis_shortcuts}.
 
 \subsubsection{2D display}
 
 The 2D display, see figure \ref{fig:dis2D}, is a standard window with the image
 in the center. It also gives information regarding the image volume, the position of
-the mouse inside the image (and the pixel value associated).
+the mouse inside the image (and the associated pixel value).
 
 \begin{figure}
 \centering
@@ -1262,7 +1605,7 @@ the ray of light accordingly to their color and transparency.
 \item \textbf{Isosurface}: the result shows only pixels with a given
 value. It also uses shading to allow a better visualisation of the volume.
 \item \textbf{Maximum Intensity Pixel (MIP)}: the result is the color and
-transparency of the pixel with the highest value that the light ray hit.
+transparency of the pixel with the highest value that the light ray hits.
 \end{itemize}
 You can see the results of the 3 different methods in figure 
 \ref{fig:dis3D_volren_method}.
@@ -1366,7 +1709,7 @@ scroll bars of the display window). Both arguments can be used simultaneously:
 im.show(zoom=2, at=(50,60))
 \end{lstlisting}
 
-When displaying 32bit images, the plane argument allows to select the byte plane among the
+When displaying 32-bit images, the plane argument allows to select the byte plane (from 0 to 3) among the
 four ones which will be displayed:
 
 \lstset{language=Python}
@@ -1391,7 +1734,7 @@ by using the mode argument:
 im32.show(mode="VOLUME")
 \end{lstlisting}
 
-Any string other than the three mentioned above enables the default display(PROJECTION).
+Any string other than the three mentioned above enables the default display (PROJECTION).
 
 \subsubsection{Display shortcuts}
 \label{cha:dis_shortcuts}
@@ -1411,10 +1754,10 @@ method.
 zoom value.
 \item \textbf{Control-V}: will copy any image stored inside the clipboard 
 in your image (only works on 2D images on Windows platforms).
-\item \textbf{F1}: on a 3D image display, will switch to mode PROJECTION.
-\item \textbf{F2}: on a 3D image display, will switch to mode VOLUME
-RENDERING if you have VTK Python bindings available on your computer.
-\item \textbf{F3}: on a 3D image display, will switch to mode PLAYER.
+\item \textbf{F1}: on a 3D image display, will switch to PROJECTION mode.
+\item \textbf{F2}: on a 3D image display, will switch to VOLUME mode
+if you have VTK Python bindings available on your computer.
+\item \textbf{F3}: on a 3D image display, will switch to PLAYER mode.
 \item \textbf{F5}: on a 3D image display, will update the display with
 the image content. Similar to the method update.
 \item \textbf{Space} : will start/stop the player in the 3D image display
@@ -1435,9 +1778,10 @@ in the 3D image display PROJECTION mode.
 \end{itemize}
 
 \subsubsection{Palettes and other display functions}
+\label{cha:pal}
 
 As you have seen above, you can activate palette through shortcut P when displaying
-images. Mamba comes with four preintegrated palette : "rainbow", "inverted rainbow",
+images. Mamba comes with four preintegrated palettes : "rainbow", "inverted rainbow",
 "patchwork" and "heat view".
 
 You can create your own palette using the functions offered in package
@@ -1455,7 +1799,7 @@ mambaDisplay.tagOneColorPalette(255, (255,0,0))
 
 # You can also add your own palette
 mambaDisplay.addPalette("my own palette", my_own_palette)
-# where my_own_palette is a tuple containing 256*3 value (r0,g0,b0,r1,g1,b1 ...)
+# where my_own_palette is a tuple containing 256*3 values (r0,g0,b0,r1,g1,b1 ...)
 \end{lstlisting}
 
 Palette can also be used with the save method to colorize the saved image.
@@ -1473,9 +1817,9 @@ title making it easier to know what is represented by the display:
 im.setName('result')
 \end{lstlisting}
 
-When the screen gets filled with lots of displays it can be excruciatingly
+When the screen gets filled with lots of displays, it can be excruciatingly
 boring and slow to order all of them so that they don't overlap. To make sure 
-displays are properly and automatically organised you can call the following 
+displays are properly and automatically organised, you can call the following 
 function in the mambaDisplay package:
 
 \lstset{language=Python}
@@ -1529,11 +1873,97 @@ image (threshold value can then be modified on the fly by the user).
 This module is not automatically imported and needed to be imported manually if
 you want to use it.
 
+\lstset{language=Python}
+\begin{lstlisting}
+# Importing the mambaDisplay.extra module
+from mambaDisplay.extra import *
+\end{lstlisting}
+
+A greyscale or 32-bit image can be thresholded interactively with the
+\textbf{dynamicThreshold} operator. This operator opens a window (figure \ref{fig:inter_thresh})
+displaying the binary thresholded image. The threshold values can be modified by hitting
+Q, W, S and X on the keyboard. See the documentation for further details.
+
+\begin{figure}
+\centering
+\begin{tabular}{cc}
+\includegraphics[width=0.4\textwidth]{images/burner.png} & 
+\includegraphics[width=0.4\textwidth]{images/thresholder.png} \\ 
+Original &
+Threshold \\ 
+\end{tabular}
+\caption{Interactive thresholding of the left Burner image}
+\label{fig:inter_thresh}
+\end{figure}
+
+On exit (when hitting the close button), the operator returns a list containing the
+threshold values.
+
+\lstset{language=Python}
+\begin{lstlisting}
+# Interactive thresholding
+from mambaDisplay.extra import *
+im.loadimage("Burner.png")
+dynamicThreshold(im)
+# When exiting, we get:
+[139, 192]
+\end{lstlisting}
+
+The \textbf{superpose} operator, when launched, displays, superposed in the same window, either
+a greyscale or 32-bit image and a binary one, or two binary images. The color of the
+binary displays can be modified by clicking the color buttons (figure \ref{fig:superpose}). 
+
+\begin{figure}
+\centering
+\begin{tabular}{cc}
+\includegraphics[width=0.4\textwidth]{images/superposer.png} & 
+\includegraphics[width=0.4\textwidth]{images/binsuperposer.png} \\ 
+Greyscale and binary image &
+Two binary images \\ 
+\end{tabular}
+\caption{Superposing a greyscale and a binary image (left) or two binary images (right)}
+\label{fig:superpose}
+\end{figure}
+
+The \textbf{interactiveSegment} operator allows to interactively segment a 8-bit or 32-bit
+image with the watershed transform by injecting manually markers on it. Each new marker modifies
+the segmentation (figure \ref{fig:inter_segment}). On exit, this operator returns a list of markers
+coordinates.
+
+\lstset{language=Python}
+\begin{lstlisting}
+# Launching interactive segmentation
+from mambaDisplay.extra import *
+interactiveSegment(im, im32)
+\end{lstlisting}
+
+The 32-bit im32 image contains the watershed segmentation.
+
+\begin{figure}
+\centering
+\includegraphics[scale=1.0]{images/interactiveSegment.png}
+\caption{Interactive segmentation}
+\label{fig:inter_segment}
+\end{figure}
+
 \subsection{Structuring elements}
 
+ \subsubsection{Defining structuring elements}
+ 
 Two of the most important operations of mathematical morphology: erosion and
 dilation (functions erode and dilate and their 3D counterpart respectively)
 are based on a structuring element which controls the behavior of the operator.
+
+\label{cha:structelem}
+2D structuring elements are instances of the \textbf{structuringElement} class,
+while 3D ones are instances of the \textbf{structuringElement3D}
+class. Remember also that a \textbf{doubleStructuringElement} and a
+\textbf{doubleStructuringElement3D} classes exist. They are used with
+the thinning and thickening operators.
+
+Each structuring element is associated to a grid. It is defined by the neighbors
+of the central point it contains. Its origin is always
+the central point, even when this point does not belong to the structuring element.
 
 The class structuringElement allows you to describe a structuring element to
 be used with the erode and dilate functions. This class can only describe
@@ -1570,10 +2000,10 @@ structuring element class for performance or feasability reasons.
 }
 
 \warnBox{
-Be also aware that when you are combining operations using a structuring element
-and operations using a grid you may have discrepancies between the structuring
-element internal grid and the grid you used as an argument (or the default). To
-prevent this, use the getGrid() method of the structuring element class.
+Be also aware that, when you are combining operations using a structuring element
+and operations using a grid, you may have discrepancies between the internal grid used
+in the structuring element and the grid you used as an argument (or the default). To
+prevent this, use the getGrid() method of the structuring element class. See also section \ref{cha:rules}.
 }
 
 Mamba3D predefined five structuring elements to be used with the appropriate
@@ -1631,6 +2061,51 @@ pyramid2 = structuringElement3D([0,9,10,11,12], CENTER_CUBIC)
 tetrahedron2 = structuringElement3D([0,7,8,9], FACE_CENTER_CUBIC)
 \end{lstlisting}
 
+\subsubsection{Structuring element methods}
+
+ Different methods exist to deal with these 2D and
+3D structuring elements: \textbf{getGrid} returns the grid associated with the structuring element, \textbf{getDirections} returns the
+directions used by the structuring element (with or without direction 0), \textbf{hasZero} indicates if the structuring element contains
+or not the central point, etc.
+In 2D, a major difference between Mamba 1.x and Mamba 2.x lies in the way directions are defined and used in the \textbf{infNeighbor}, \textbf{supNeighbor}
+and \textbf{diffNeighbor} operators. It is now possible to use several directions at the same time. These directions, however, must be coded.
+This coding is performed by the \textbf{getEncodedDirections} method. All the directions \emph{i} of the structuring element \emph{se} are used to define a
+number \emph{nb} equal to:
+
+\begin{displaymath}
+nb = \sum_{i \in se} 2^i
+\end{displaymath}
+
+which is actually used by the operators. The main advantage of this approach is a dramatic increase of the computation speed of the basic
+morphological transforms (erosion, dilation). Here are examples of direction encoding for some common structuring elements:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> HEXAGON.getEncodedDirections()
+127
+>>> HEXAGON.getEncodedDirections(withoutZero=True)
+126
+>>> TRIANGLE.getEncodedDirections()
+25
+\end{lstlisting}
+
+In 3D, the same encoding is needed. But, as the structuring elements can be defined on three 2D layers, this encoding is performed on each
+one so that the basic 3D erosions and dilations can be obtained rapidly by performing partial operations on each plane of the 3D image and by
+combining these partial results. This encoding is performed by the \textbf{getEncodedDirs} method which returns a dictionnary containing the 2D
+structuring elements encodings for the three sections of a given 3D structuring element. The result obviously depends of the \emph{z} position of the
+structuring element:
+
+\lstset{language=Python}
+\begin{lstlisting}
+>>> dirs = CUBOCTAHEDRON1.getDirections()
+>>> CUBOCTAHEDRON1.grid.getEncodedDirs(dirs, 0)
+{0: 127, 1: 67, -1: 97}
+>>> CUBOCTAHEDRON1.grid.getEncodedDirs(dirs, 1)
+{0: 127, 1: 49, -1: 25}
+>>> CUBOCTAHEDRON1.grid.getEncodedDirs(dirs, 2)
+{0: 127, 1: 13, -1: 7}
+\end{lstlisting}
+
 \subsection{Mamba Shell}
 \label{cha:mamba_shell}
 
@@ -1678,9 +2153,9 @@ found in the mamba package is appropriate to perform this operation and
 is as fast as possible if it has to work with all image depths indiscriminately.
 This operator uses the build function which works with any image
 depth. However, there exists a faster reconstruction operator,
-hierarBuild, which works with non binary images (8-bit or 32-bit). Therefore, If you know that you are
-only using greyscale images, it might be a good idea to create your own openByBuild
-function like this:
+hierarBuild, which works with non binary images (8-bit or 32-bit). Therefore, if you
+know that you are only using greyscale or 32-bit images, it might be a good idea to create
+your own openByBuild function like this:
 
 \lstset{language=Python}
 \begin{lstlisting}
@@ -1691,7 +2166,7 @@ def openByBuild_greyscale(imIn, imOut, n=1, se=mamba.DEFAULT_SE):
     Performs an opening by reconstruction operation on image 'imIn' and puts the
     result in 'imOut'. 'n' controls the size of the opening.
     
-    This function only works for greyscale image and is an optimization of
+    This function only works for greyscale or 32-bit images and is an optimization of
     openByBuild.
     """
     
@@ -1799,7 +2274,7 @@ and thickenings in particular), it is unlikely that they will be translated, as
 this would be a really difficult challenge.
 
 \begin{itemize}
-\item Most of the operators in mamba module thinthick.
+\item Most of the operators in mamba module thinthick (except the basic ones).
 \item Some operators in mamba module largeErodil, especially those using 3D Steiner polyhedra (except
 for the cube).
 \item All the operators in mamba module residues.
@@ -1857,6 +2332,12 @@ the same license. Currently this module is under GPL. Consult the appropriate
 documentation for more information.
 }
 
+\warnBox{
+Note also that the Mamba Realtime module is \textbf{NOT} does not work properly on 
+any 64-bit Windows environment. Therefore, we advise you to use Linux if you
+intend to use this add-on.
+}
+
 For more information regarding this add-on, refer to the appropriate document.
 
 \pagebreak
@@ -1912,7 +2393,7 @@ work fine with any other library.
 
 \pagebreak
 
-\section{Other documents}
+\section{Other documents and references}
 \label{cha:other_docs}
 
 Mamba documentation is pretty large and covers C API, Python API, user manual 
@@ -1936,14 +2417,8 @@ possible number of pages plus some of the more useful pieces of information you
 might need. This quick reference is meant to help you quickly remember function
 name and arguments but it can also be useful to get to know all the functions
 implemented in Mamba.
-\item \textbf{\textsc{Mamba Image Library Coding Rules and Standards}}: This
-document describes various rules which should be enforced when programming new
-functions and operators in Mamba. It indicates also some good practices that
-should avoid problems in your daily use of Mamba. Obviously, these rules are not
-compulsory. However, we strongly advise you to follow them if you intend to share
-your operators and functions with others.
 \item \textbf{\textsc{Mamba Image Examples}}: This document describes various
-examples regarding how to use Mamba and the kind of result you can expect.
+examples regarding how to use Mamba and the kind of results you can expect.
 \end{itemize}
 
 \pagebreak
@@ -2009,7 +2484,7 @@ greyscale images using the hierarchical lists.
 for greyscale images using the hierarchical lists.
 \end{itemize}
 
-\subsection{Labeling}
+\subsection{Labelings}
 
 The labeling algorithm implemented in Mamba employs a version of the union-find 
 algorithm.
@@ -2022,7 +2497,16 @@ Available at \url{http://en.wikipedia.org/wiki/Connected\_Component\_Labeling}, 
 \end{enumerate}
 
 The code source implementing this algorithm can be found in the C core library
-in file \textbf{MB\_Label.c}
+in file \textbf{MB\_Label.c}.
+
+Other labeling operators can be found in the labelling.py module. They are described in \ref{art:beucher4}.
+
+\begin{enumerate}
+\setcounter{enumi}{3}
+\item \label{art:beucher4} Serge Beucher,
+\emph{Labelling Operators},
+Available at \url{http://cmm.ensmp.fr/\~beucher/Mamba\_documentation.html}, 2014
+\end{enumerate}
 
 \subsection{Large erosions and dilations}
 \label{cha:opt_ero_dil}
@@ -2031,7 +2515,7 @@ Erosion and dilation are quite common in mathematical morphology and thus Mamba
 implements many variations of them to give you access to the most powerful ones.
 
 \begin{enumerate}
-\setcounter{enumi}{3}
+\setcounter{enumi}{4}
 \item \label{art:beucher1} Serge Beucher,
 \emph{Fast implementation of large erosions and dilations in Mamba},
 Available at \url{http://cmm.ensmp.fr/\~beucher/Mamba\_documentation.html}, 2010
@@ -2041,7 +2525,8 @@ Available at \url{http://cmm.ensmp.fr/\~beucher/Mamba\_documentation.html}, 2010
 dilations faster than with the standard method by repeating over a simple
 operator. These algorithms are implemented in the large erosion and dilation
 functions in Mamba. You can found them in module \textbf{erodilLarge.py} of
-the mamba package.
+the mamba package and a reduced set of them adapted to 3D images in the
+\textbf{erodilLarge3D.py} module.
 
 \subsection{Hierarchical segmentations}
 \label{cha:hierar_seg}
@@ -2050,7 +2535,7 @@ Mamba implements multiple algorithms performing segmentations based on
 a hierarchization of an initial watershed.
 
 \begin{enumerate}
-\setcounter{enumi}{4}
+\setcounter{enumi}{5}
 \item \label{art:marcotegui_beucher} Serge Beucher, Beatriz Marcotegui
 \emph{P algorithm, a dramatic enhancement of the waterfall transformation},
 Available at \url{http://cmm.ensmp.fr/~beucher/publi.html}, 2009
@@ -2072,7 +2557,7 @@ of a graph: each cell of the partition corresponds to a node of the graph and ac
 (it is sometimes called a super-pixel).
 
 \begin{enumerate}
-\setcounter{enumi}{6}
+\setcounter{enumi}{7}
 \item \label{art:beucher4} Serge Beucher
 \emph{Basic Morphological Operators Applied On Partitions},
 Available at \url{http://cmm.ensmp.fr/~beucher/publi.html}, 2013
@@ -2089,7 +2574,7 @@ Mamba is open-source so, if you want to modify/extend it, you are welcome. The
 following section will present some aspects you might find useful in this
 prospect. This section intended audience is advanced users who want to go 
 further with Mamba. If you want to share your extensions of Mamba with other users,
-have a look to the coding rules and standards in section \ref{cha:other_docs}. 
+have a look to the coding rules and standards in appendix \ref{cha:rules}. 
 
 \subsection{Library architecture and design}
 \label{cha:lib_arch}
@@ -2199,13 +2684,13 @@ to prevent any unwanted regressions or to verify your modification did not break
 the library.
 
 Tests are located in the directory test of the sources. You can run the complete
-set of test by typing the following command in a terminal:
+set of tests by typing the following command in a terminal:
 
 \texttt{python runTest.py -c -o test\_run.html -v 2}
 
 Once the tests are done, you will find an HTML report with all the results in it.
 
-The test runner make use of coverage (see \url{https://pypi.python.org/pypi/coverage/3.7.1})
+The test runner makes use of coverage (see \url{https://pypi.python.org/pypi/coverage/3.7.1})
 package to generate coverage information for the Python packages.
 
 If you want more information regarding the test runner, you can type:
@@ -2258,15 +2743,17 @@ libraries:
 
 \begin{itemize}
 \item \textsc{\textbf{Fulguro}}: A free library, released under LGPL, implementing
-mathematical morphology and images processing functions. Coded in C with wrappers
+mathematical morphology and image processing functions. Coded in C with wrappers
 for Python and Ruby. You can find it at \url{http://fulguro.sourceforge.net/}.
 \item \textsc{\textbf{Morph-M}}: A proprietary library developed by the Centre
 de Morphologie Math\'{e}matique. Morph-M is coded in C++ with a wrapper for
 Python. More information can be found at \url{http://cmm.ensmp.fr/Morph-M/index_en.html}.
 \end{itemize}
 
+\pagebreak
 
 \section{Coding rules and standards}
+\label{rules}
 
 Mamba is an open-source library and any contribution is welcome. In
 order to help programmers, users and would be contributors, this appendix
@@ -2409,6 +2896,7 @@ you should also include your algorithm in standard C code (even if
 that means it's excruciatingly slow).
 
 \subsubsection{Rules for Python}
+\label{cha:rules}
 
 When coding in Python, you must take great care to make your code and the
 various functionnalities you are implementing as simple to use as possible.
@@ -2549,7 +3037,7 @@ def myOperator(imIn, imOut, grid=mamba.DEFAULT_GRID)
 If you do not define explicitely the structuring element used by the erosion, 
 DEFAULT\_SE will be used. However, you have no idea of  the status of this 
 default structuring element (it could be DIAMOND for instance whereas the grid 
-in use is hexagonal....).
+in use is hexagonal...).
 
 You may argue that the definition of HEXAGON or SQUARE3X3 may also be changed by 
 the user. This is true and this is the reason why it is not wise to modify the 
@@ -2851,32 +3339,8 @@ tests to verify them.
 For code contribution, make sure your work is licensed under a similar
 license than the one covering Mamba. Here is a reminder of the license:
 
-%\begin{minipage}{0.8\textwidth}
-%\small
-%Copyright (c) <2009>, <Your name here>
-%\vspace{0.5cm}
-%Permission is hereby granted, free of charge, to any person
-%obtaining a copy of this software and associated documentation files
-%(the \textquotedbl{}Software\textquotedbl{}), to deal in the Software
-%without restriction, including without limitation the rights to use,
-%copy, modify, merge, publish, distribute, sublicense, and/or sell
-%copies of the Software, and to permit persons to whom the Software
-%is furnished to do so, subject to the following conditions: The above
-%copyright notice and this permission notice shall be included in all
-%copies or substantial portions of the Software.
-%\vspace{0.5cm}
-%THE SOFTWARE IS PROVIDED \textquotedbl{}AS IS\textquotedbl{},
-%WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-%LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-%PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-%HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-%IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF
-%OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-%THE SOFTWARE.
-%\vspace{1cm}
-%\end{minipage}
+\vspace{0.5cm}
 
-%
 \begin{minipage}[c]{0.8\textwidth}%
  {\small Copyright (c) <2009>, <Your name here>}{\small \vspace{0.5cm} \par}
 
@@ -2927,3 +3391,4 @@ Any comment, criticism or suggestion is welcome and will be taken
 into consideration (as long as it does not infringe our policy).
 
 \end{document}
+
