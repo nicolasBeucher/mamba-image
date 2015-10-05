@@ -74,7 +74,7 @@ class TestGeodesy3D(unittest.TestCase):
         self.assertRaises(MambaError, dualBuild3D, self.im8_1, self.im32_2)
         self.assertRaises(MambaError, dualBuild3D, self.im32_1, self.im1_2)
         self.assertRaises(MambaError, dualBuild3D, self.im32_1, self.im8_2)
-
+        
     def testGridAcceptation(self):
         """Tests that incorrect grid raises an exception"""
         self.assertRaises(MambaError, build3D, self.im8_1, self.im8_2, grid=CENTER_CUBIC)
@@ -87,7 +87,13 @@ class TestGeodesy3D(unittest.TestCase):
         self.assertRaises(MambaError, build3D, self.im32_5, self.im32_2)
         self.assertRaises(MambaError, dualBuild3D, self.im8_6, self.im8_2)
         self.assertRaises(MambaError, dualBuild3D, self.im1_5, self.im1_2)
-        self.assertRaises(MambaError, dualBuild3D, self.im32_5, self.im32_2)
+        self.assertRaises(MambaError, dualBuild3D, self.im32_5, self.im32_2)    
+        self.assertRaises(MambaError, buildNeighbor3D, self.im8_6, self.im8_2, 1)
+        self.assertRaises(MambaError, buildNeighbor3D, self.im1_5, self.im1_2, 1)
+        self.assertRaises(MambaError, buildNeighbor3D, self.im32_5, self.im32_2, 1)
+        self.assertRaises(MambaError, dualbuildNeighbor3D, self.im8_6, self.im8_2, 1)
+        self.assertRaises(MambaError, dualbuildNeighbor3D, self.im1_5, self.im1_2, 1)
+        self.assertRaises(MambaError, dualbuildNeighbor3D, self.im32_5, self.im32_2, 1)       
         self.assertRaises(MambaError, upperGeodesicDilate3D, self.im8_6, self.im8_2, self.im8_3)
         self.assertRaises(MambaError, lowerGeodesicDilate3D, self.im8_6, self.im8_2, self.im8_3)
         self.assertRaises(MambaError, geodesicDilate3D, self.im8_6, self.im8_2, self.im8_3)
