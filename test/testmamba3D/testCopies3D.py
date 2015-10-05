@@ -6,6 +6,7 @@ Python functions:
     copy3D
     copyBitPlane3D
     copyBytePlane3D
+    cropCopy3D
 """
 
 from mamba import *
@@ -26,6 +27,8 @@ class TestConversion3D(unittest.TestCase):
         self.im8_3 = image3DMb(64,64,64,8)
         self.im8_4 = image3DMb(64,64,64,8)
         self.im8_5 = image3DMb(128,128,128,8)
+        self.im8_6 = image3DMb(128,128,128,8)
+        self.im8_7 = image3DMb(128,128,128,8)
         self.im32_1 = image3DMb(64,64,64,32)
         self.im32_2 = image3DMb(64,64,64,32)
         self.im32_3 = image3DMb(64,64,64,32)
@@ -43,6 +46,8 @@ class TestConversion3D(unittest.TestCase):
         del(self.im8_3)
         del(self.im8_4)
         del(self.im8_5)
+        del(self.im8_6)
+        del(self.im8_7)
         del(self.im32_1)
         del(self.im32_2)
         del(self.im32_3)
@@ -53,6 +58,7 @@ class TestConversion3D(unittest.TestCase):
         """Verifies that the functions check the size of the image"""
         self.assertRaises(MambaError,copyBitPlane3D, self.im1_3, 0, self.im8_5)
         self.assertRaises(MambaError,copyBytePlane3D, self.im8_5, 0, self.im32_3)
+        self.assertRaises(MambaError,cropCopy3D, self.im8_1,(0,0,64), self.im8_5, (0,0,0),(64,64,64))
         
     def _drawValueByPlane(self, im):
         im.reset()
@@ -95,3 +101,21 @@ class TestConversion3D(unittest.TestCase):
         copyBytePlane3D(self.im8_1, 2, self.im32_1)
         (x,y,z) = compare3D(self.im32_1, self.im32_2, self.im32_1)
         self.assertLess(x, 0, "diff in (%d,%d,%d)"%(x,y,z))
+        
+    def testCropCopy3D(self):
+        """Test the crop copy operator on 3D images"""
+        (w,h, l) = self.im8_1.getSize()
+        for i in range(10):
+            vi = random.randint(0,255)
+            self.im8_1.fill(vi)
+            xi = random.randint(0,w-1)
+            yi = random.randint(0,h-1)
+            z1 = random.randint(0,l-1)
+            self.im8_5.reset()
+            drawCube(self.im8_5,[xi,yi,z1,xi+w-1,yi+h-1,z1+l-1],vi)
+            self.im8_6.reset()
+            cropCopy3D(self.im8_1,(0,0,0), self.im8_6, (xi,yi,z1), (w,h,l))
+            (x,y,z) = compare3D(self.im8_6, self.im8_5, self.im8_7)
+            self.assertLess(x, 0)
+            
+            
