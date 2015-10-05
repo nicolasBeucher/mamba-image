@@ -28,6 +28,7 @@ class TestGrids3D(unittest.TestCase):
         
         self.assertEqual(grid.getEncodedDirs([], 1), {-1:0,0:0,1:0})
         self.assertEqual(grid.convertFromDir(1, 1), (0,0))
+        self.assertEqual(grid.getShiftDirsList(1, 1, 1), (1, 1, SQUARE))
         self.assertEqual(grid.get2DGrid(), HEXAGONAL)
         self.assertEqual(grid.getTranDir(15), 15)
         self.assertEqual(grid.getZExtension(), 0)
@@ -44,6 +45,7 @@ class TestGrids3D(unittest.TestCase):
         self.assertEqual(grid.getEncodedDirs(range(13), 1), {-1:0x19,0:0x7f,1:0x31})
         self.assertEqual(grid.getEncodedDirs(range(13), 2), {-1:0x7,0:0x7f,1:0xd})
         self.assertRaises(MambaError,grid.getEncodedDirs,[14],0)
+        self.assertRaises(MambaError,grid.getShiftDirsList,13,1,1)
         self.assertEqual(grid.convertFromDir(1, 0), (0,1))
         self.assertEqual(grid.convertFromDir(1, 1), (0,1))
         self.assertEqual(grid.convertFromDir(1, 2), (0,1))
@@ -76,6 +78,7 @@ class TestGrids3D(unittest.TestCase):
         self.assertEqual(grid.convertFromDir(9, 1), (-1,4))
         self.assertEqual(grid.convertFromDir(9, 2), (-1,0))
         self.assertRaises(MambaError,grid.convertFromDir,17,0)
+        self.assertRaises(MambaError,grid.getShiftDirsList,17,1,1)
         self.assertEqual(grid.get2DGrid(), SQUARE)
         self.assertEqual(grid.getTranDir(0), 0)
         self.assertEqual(grid.getTranDir(1), 5)
@@ -152,7 +155,9 @@ class TestGrids3D(unittest.TestCase):
         self.assertFalse(grid!=CUBIC)
         self.assertTrue(grid!=CENTER_CUBIC)
         self.assertTrue(grid!=FACE_CENTER_CUBIC)
-        
+        self.assertEqual(grid.getShiftDirsList(1,1,1), [(1,1,SQUARE)])
+        self.assertEqual(grid.getShiftDirsList(10,1,1), [(1,1,SQUARE)])
+        self.assertEqual(grid.getShiftDirsList(19,1,1), [(1,1,SQUARE)])
         self.assertEqual(grid.getEncodedDirs(range(27), 0), {-1:0x1ff,0:0x1ff,1:0x1ff})
         self.assertRaises(MambaError,grid.getEncodedDirs,[27],0)
         for i in range(27):
