@@ -68,12 +68,11 @@ def cropCopy3D(imIn, posin, imOut, posout, size):
     """
 	
     if (len(imIn) <= posin[2]) or (len(imOut) <= posout[2]):
-        mamba.raiseExceptionError(core.MB_ERR_BAD_VALUE)
+        mamba.raiseExceptionOnError(core.MB_ERR_BAD_VALUE)
 	
     nbPlanes = min(size[2], len(imIn) - posin[2], len(imOut) - posout[2])
     for i in range(nbPlanes):
-        mamba.cropCopy(imIn[posin[2] + i], posin[0:2], imOut[posout[2] + i], posout[0:2],
-                       size[0:2])
+        mamba.cropCopy(imIn[posin[2] + i], posin[0:2], imOut[posout[2] + i], posout[0:2], size[0:2])
 	
 	
 	
