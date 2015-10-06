@@ -86,7 +86,7 @@ def div(imIn1, imIn2, imOut):
 
     Greyscale or 32-bit images can be used. You can mix formats in the divide operation.
     However you must ensure that the output image is as deep as 'imIn1'.
-    께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께께�
+    
     In order to avoid errors due to divisions by zero, each time a pixel in 'imIn2' is equal
     to zero, the result is set to the maximum value corresponding to the depth of the image. 
     """
