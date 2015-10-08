@@ -50,8 +50,7 @@ def extremities(imIn, imOut, innerParticles=False, grid=DEFAULT_GRID):
     if not(innerParticles):
         removeEdgeParticles(imWrk1, imWrk1, grid=grid)
     # The extremities are given their corresponding distance to the center.
-    imWrk1.convert(8)
-    copyBytePlane(imWrk1, 0, imWrk2)
+    convert(imWrk1, imWrk2)
     logic(imOut, imWrk2, imOut, "inf")
     
 # The procedure is applied on two different images    
