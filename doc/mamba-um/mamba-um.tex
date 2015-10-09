@@ -462,11 +462,13 @@ As for Windows, you will have to create a directory where you will proceed with
 the compilation and installation. Open a terminal and cd your way to this 
 directory. Once there, type the following commands to compile and install on Linux:
 
-\texttt{cmake -C path/to/Mamba.X.X/src}\\
-\texttt{cmake -D CMAKE\_BUILD\_TYPE:STRING=Release -D CMAKE\_INSTALL\_PREFIX:STRING=/usr .}\\
-\texttt{cmake -G "Unix Makefiles" .}\\
-\texttt{make}\\
-\texttt{su -c "make install python\_install"}
+\begin{itemize}
+\item \texttt{cmake -C path/to/Mamba.X.X/src}\\
+\item \texttt{cmake -D CMAKE\_BUILD\_TYPE:STRING=Release -D CMAKE\_INSTALL\_PREFIX:STRING=/usr .}\\
+\item \texttt{cmake -G "Unix Makefiles" .}\\
+\item \texttt{make}\\
+\item \texttt{su -c "make install python\_install"}
+\end{itemize}
 
 Of course you can use the CMake GUI to perform the first three operations.
 
@@ -2499,11 +2501,11 @@ Available at \url{http://en.wikipedia.org/wiki/Connected\_Component\_Labeling}, 
 The code source implementing this algorithm can be found in the C core library
 in file \textbf{MB\_Label.c}.
 
-Other labeling operators can be found in the labelling.py module. They are described in \ref{art:beucher4}.
+Other labeling operators can be found in the labelling.py module. They are described in \ref{art:beucher5}.
 
 \begin{enumerate}
 \setcounter{enumi}{3}
-\item \label{art:beucher4} Serge Beucher,
+\item \label{art:beucher5} Serge Beucher,
 \emph{Labelling Operators},
 Available at \url{http://cmm.ensmp.fr/\~beucher/Mamba\_documentation.html}, 2014
 \end{enumerate}
