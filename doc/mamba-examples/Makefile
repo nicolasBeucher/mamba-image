@@ -1,3 +1,6 @@
+
+.PHONY: clean examples
+
 all: examples
 
 clean:

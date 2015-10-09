@@ -39,5 +39,6 @@ doxygen mamba.cfg
 cd latex
 pdflatex refman.tex
 pdflatex refman.tex
+pdflatex refman.tex
 copy refman.pdf ..\..\mambaapi_ref.pdf
 popd

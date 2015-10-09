@@ -1,5 +1,7 @@
 DOX = doxygen
 
+.PHONY: clean doc doc_pdf
+
 all: doc doc_pdf
 
 clean:
@@ -10,14 +12,8 @@ doc_pdf: doc
 	@cd latex; \
 	pdflatex refman.tex; \
 	pdflatex refman.tex; \
-	latex_count=5 ; \
-	while egrep -s 'Rerun (LaTeX|to get cross-references right)' refman.log && [ $$latex_count -gt 0 ] ;\
-	    do \
-	      echo "Rerunning latex...." ;\
-	      pdflatex refman.tex ;\
-	      latex_count=`expr $$latex_count - 1` ;\
-	    done; \
+	pdflatex refman.tex; \
 	cp refman.pdf ../../mamba-cref.pdf
-	
-doc: 
+
+doc:
 	$(DOX) mamba.cfg

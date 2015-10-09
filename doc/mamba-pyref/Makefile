@@ -1,3 +1,6 @@
+
+.PHONY: clean doc
+
 all: doc
 
 clean:

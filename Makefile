@@ -2,7 +2,7 @@
 # Mamba make file
 ################################################################
 
-.PHONY: clean doc test
+.PHONY: clean doc test test3
 
 all: clean doc test
 
