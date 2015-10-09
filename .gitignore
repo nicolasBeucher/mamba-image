@@ -8,8 +8,24 @@ __pycache__/
 *.log
 *.out
 *.toc
-*.pdf
 
 # tests
 test/test_run.html
 test/test_run_cov/
+
+# docs
+doc/mamba-cref.pdf
+doc/mamba-cref/html/
+doc/mamba-cref/latex/
+doc/mamba-examples.pdf
+doc/mamba-examples/mamba-examples.pdf
+doc/mamba-examples/mamba-examples.tex
+doc/mamba-pyquickref.pdf
+doc/mamba-pyref.pdf
+doc/mamba-pyref/mamba-pyquickref.pdf
+doc/mamba-pyref/mamba-pyquickref.tex
+doc/mamba-pyref/mamba-pyref.pdf
+doc/mamba-pyref/mamba-pyref.tex
+doc/mamba-um.pdf
+doc/mamba-um/mamba-um.pdf
+
