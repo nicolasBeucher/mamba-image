@@ -1,3 +1,6 @@
+
+.PHONY: clean play play3
+
 all: clean play
 
 all3: clean play3

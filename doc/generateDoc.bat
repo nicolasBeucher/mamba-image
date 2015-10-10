@@ -32,19 +32,12 @@ python createPythonQuickRef.py
 copy mamba-pyquickref.pdf ..
 popd
 
-rem IMAGE CHARACTERISTICS AND SETTINGS
-+rem This doc has been included in the User Manual
-+rem pushd mamba-ics
-+rem pdflatex mamba-ics.tex
-+rem pdflatex mamba-ics.tex
-+rem copy mamba-ics.pdf ..
-+rem popd
-
 Rem API REFERENCE
 Rem This batch works with doxygen 1.8.6 (errors with the latest release)
 pushd mamba-cref
 doxygen mamba.cfg
 cd latex
+pdflatex refman.tex
 pdflatex refman.tex
 pdflatex refman.tex
 copy refman.pdf ..\..\mambaapi_ref.pdf

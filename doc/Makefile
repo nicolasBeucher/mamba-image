@@ -1,3 +1,6 @@
+
+.PHONY: clean docs
+
 all: docs
 
 DOCS = $(shell ls -d mamba*/)
