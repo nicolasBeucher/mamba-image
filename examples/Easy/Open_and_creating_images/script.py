@@ -1,5 +1,6 @@
 # exampleE1.py
 # IN snake.png
+# OUT show.png
 
 ## TITLE #######################################################################
 # Opening and creating images

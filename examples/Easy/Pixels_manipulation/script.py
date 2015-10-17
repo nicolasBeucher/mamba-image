@@ -1,4 +1,5 @@
 # exampleE5.py
+# OUT pixels.png
 
 ## TITLE #######################################################################
 # Pixels manipulation

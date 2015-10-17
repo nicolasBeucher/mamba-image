@@ -1,5 +1,6 @@
 # exampleE2.py
 # IN snake.png
+# OUT display.png
 
 ## TITLE #######################################################################
 # Messing about with display, part 1 : activation

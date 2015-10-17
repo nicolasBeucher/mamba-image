@@ -1,5 +1,6 @@
 # exampleE4.py
 # IN snake.png
+# OUT measure.png
 
 ## TITLE #######################################################################
 # Image properties
