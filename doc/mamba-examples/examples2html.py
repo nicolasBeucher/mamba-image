@@ -64,10 +64,11 @@ class ExampleInfo:
                     "continue", "exec", "import", "pass", "yield",
                     "def", "finally", "in", "print"]
 
-    def __init__(self, name):
-        self.name = name
-        self.id = self.name.split(".")[0]
-        self.difficulty = dif_dict[name[7]]
+    def __init__(self, path):
+        self.path = os.path.dirname(path)
+        sp = os.path.split(self.path)
+        self.name = sp[1].replace("_"," ")
+        self.id = sp[1]
         self.title = ""
         self.desc = ""
         self.src = ""
@@ -334,12 +335,9 @@ function showInfos()
 <div id="menu">
    <ul>
       <li><a id="index" href="./index.html"></a></li>
-      <li><a href="./news.html">News</a></li>
       <li><a href="./examples.html">Examples</a></li>
       <li><a href="./doc.html">Documentation</a></li>
       <li><a href="./download.html">Download</a></li>
-      <li><a href="./about.html">About</a></li>
-      <li><a href="./participate.html">Participate</a></li>
    </ul>
 </div> <!-- menu -->
 
@@ -352,6 +350,7 @@ function showInfos()
        point for coding your own applications.<br />
        To understand them, we strongly recommand you to read the user manual which
        is available in the <a href="/doc.html">documentation page</a>.</p>
+    <p>Examples can also be downloaded in <a href="/docs/2.0/mamba-examples.pdf">pdf format</a>.</p>
     <p>There are three types of examples :</p>
     <ul>
         <li> <b>Easy</b>: These are mainly intended for beginners so they could refer
@@ -412,52 +411,59 @@ selectExample(-1);
 # Main script
 ################################################################################
 # Getting the example files list
-exampleListEasy = glob.glob('../../examples/exampleE*.py')
+exampleListEasy = glob.glob('../../examples/Easy/*/*.py')
 exampleListEasy.sort(key=alphanum_key)
-exampleListMod = glob.glob('../../examples/exampleM*.py')
+exampleListMod = glob.glob('../../examples/Moderate/*/*.py')
 exampleListMod.sort(key=alphanum_key)
-exampleListAdv = glob.glob('../../examples/exampleA*.py')
+exampleListAdv = glob.glob('../../examples/Advanced/*/*.py')
 exampleListAdv.sort(key=alphanum_key)
-exampleList = exampleListEasy + exampleListMod + exampleListAdv
+examples = [
+    ("Easy", exampleListEasy),
+    ("Moderate", exampleListMod),
+    ("Advanced", exampleListAdv)
+]
 
 # For each example, reading its header info
 #  - Title
 #  - Description
 #  - Images IN and OUT if there are ones
 exaInfList = []
-for example in exampleList:
-    exaInf = ExampleInfo(os.path.basename(example))
-    exaf = open(example)
-    lines = exaf.readlines()
-    exaf.close()
-    inDesc = False
-    inSrc = False
-    inTitle = False
-    for l in lines:
-        lc = l.replace('\n','').strip()
-        if lc=="" and not inSrc:
-            inDesc = False
-            inSrc = False
-            inTitle = False
-        elif inTitle:
-            exaInf.setTitle(lc[2:])
-        elif inDesc:
-            exaInf.setDesc(l[2:])
-        elif inSrc:
-            exaInf.setSrc(l)
-        elif lc[:4]=="# IN":
-            for im in lc.split(' ')[2:]:
-                exaInf.inImage(im)
-        elif lc[:5]=="# OUT":
-            for im in lc.split(' ')[2:]:
-                exaInf.outImage(im)
-        elif lc[:8]=="## TITLE":
-            inTitle = True
-        elif lc[:14]=="## DESCRIPTION":
-            inDesc = True
-        elif lc[:9]=="## SCRIPT":
-            inSrc = True
-    exaInfList.append(exaInf)
+for diff,exampleList in examples:
+    for example in exampleList:
+        print(example)
+        exaInf = ExampleInfo(example)
+        exaInf.difficulty = diff
+        exaf = open(example)
+        lines = exaf.readlines()
+        exaf.close()
+        inDesc = False
+        inSrc = False
+        inTitle = False
+        for l in lines:
+            lc = l.replace('\n','').strip()
+            if lc=="" and not inSrc:
+                inDesc = False
+                inSrc = False
+                inTitle = False
+            elif inTitle:
+                exaInf.setTitle(lc[2:])
+            elif inDesc:
+                exaInf.setDesc(l[2:])
+            elif inSrc:
+                exaInf.setSrc(l)
+            elif lc[:4]=="# IN":
+                for im in lc.split(' ')[2:]:
+                    exaInf.inImage(im)
+            elif lc[:5]=="# OUT":
+                for im in lc.split(' ')[2:]:
+                    exaInf.outImage(im)
+            elif lc[:8]=="## TITLE":
+                inTitle = True
+            elif lc[:14]=="## DESCRIPTION":
+                inDesc = True
+            elif lc[:9]=="## SCRIPT":
+                inSrc = True
+        exaInfList.append(exaInf)
     
 # Generating the list of examples and the icon images
 try:
@@ -468,15 +474,11 @@ except:
 diff_level = {"Easy" : 0, "Moderate":1, "Advanced":2}
 jsdata= []
 for exaInf in exaInfList:
-    if exaInf.outIm:
-        im = Image.open('../../examples/'+exaInf.outIm[-1])
-        im = im.resize((100,100), Image.ANTIALIAS)
-        im.save("examples_icons/"+exaInf.id+".jpg")
-        jsdata.append([diff_level[exaInf.difficulty], exaInf.id, exaInf.title, "examples_icons/"+exaInf.id+".jpg"])
-    else:
-        jsdata.append([diff_level[exaInf.difficulty], exaInf.id, exaInf.title, ''])
-        
-    
+    im = Image.open(os.path.join(exaInf.path,exaInf.outIm[-1]))
+    im = im.resize((100,100), Image.ANTIALIAS)
+    im.save("examples_icons/"+exaInf.id+".jpg")
+    jsdata.append([diff_level[exaInf.difficulty], exaInf.id, exaInf.title, "examples_icons/"+exaInf.id+".jpg"])
+
 # the output files
 # html
 htmlOutput = _html_header
