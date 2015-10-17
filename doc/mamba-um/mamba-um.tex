@@ -68,7 +68,7 @@ any image analysis problem you may have (see our examples to see the
 possibilities offered by such a tool).
 
 To get started with Mamba, you need to install some software on your PC. The 
-most obvious one is Python. You can find Python at \url{http://www.Python.org}. 
+most obvious one is Python. You can find Python at \url{http://www.python.org}. 
 Download version 2.7 or 3.4 and install it. Once Python is installed, you will
 need to download the lastest version of the Python Imaging Library fork, Pillow
 (standard PIL may not work, we do test Mamba only with Pillow) at 
@@ -458,6 +458,17 @@ your computer and running the tests (see section \ref{cha:testing_mamba}).
 
 \subsection{Linux}
 
+On linux, you will need the following tools and libraries:
+
+\begin{itemize}
+\item Python version 2.7 or later with the distutils package.
+\item Python development headers for your python version.
+\item SWIG version 2.0 or later (see \url{http://www.swig.org/}).
+\item CMake version 2.8 or later (see \url{http://www.cmake.org/}) for the 
+compilation process.
+\item GCC.
+\end{itemize}
+
 As for Windows, you will have to create a directory where you will proceed with
 the compilation and installation. Open a terminal and cd your way to this 
 directory. Once there, type the following commands to compile and install on Linux:
@@ -478,7 +489,7 @@ variable to select the appropriate Python executable.
 
 \subsection{Other platforms}
 
-If you are not running one the afore-mentionned systems but still want to try
+If you are not running one of the afore-mentionned systems but still want to try
 Mamba, you will need to find how to do it on your own. Currently, we have only access to
 these kind of systems and thus cannot provide you with instructions on how to do
 it with others. However, the basic requirements and instructions will likely apply.
@@ -523,7 +534,7 @@ When functions accept input and output images, you can safely use the same image
 for both and you will obtain the expected result. If the function cannot 
 guarantee this, it will return an error.
 
-Regarding the mamba3D package, evrything was created to reuse as much as
+Regarding the mamba3D package, everything was created to reuse as much as
 possible the basic C operators from Mamba to perform the 3D computations so
 as to avoid rewriting them (apart from hierarchical and labelling operators,
 this was actually possible). Functions and classes are created with the same
@@ -660,7 +671,7 @@ how they are handled in Mamba.
 The edge defines the status of all the pixels which are not in the image. Let us 
 explain what this assertion means. Obviously, any image is made of a finite set 
 of pixels. However, mathematical morphology operations, which are neighbourhood 
-operations, need that the status of the neighbour points of the pixels which are at 
+operations, need that the status of the neighbours of the pixels found at 
 the edge of the image be defined, otherwise it would not be possible to define the 
 transformation. This is the purpose of the edge attribute. The edge defines the 
 virtual pixels which are outside the image. The edge (remember, it is the outside 
@@ -671,16 +682,6 @@ the \textbf{FILLED} edge assumes an external world completely filled
 (the edge is set to the maximum possible value of a pixel according to the image 
 depth). This notion applies to both 2D and 3D operators. See section \ref{cha:rules} for
 further explanations on edge settings for 2D images.
-
-Edge management for 3D images is a combination of two approaches as edges in a 3D image
-are twofold. 3D images being made of a pile of 2D images, the edges parallel to the
-\emph{z} axis are defined by the edges of the corresponding 2D images. These edges are
-therefore virtual and their management is controlled by the \textit{edge} argument
-(set to EMPTY or FILLED) of the 2D images. But two other edges must be defined. They correspond
-to the floor and the ceiling (along the \emph{z} axis) of the 3D volume of data formed by a
-3D image. Contrary to the 2D edges, these two ones are real and are built by adding two
-supplementary 2D images set to 0 or to the maximum value (1, 255 or $2^{32} - 1$) depending
-on the status (FILLED or EMPTY) of the 2D edge (figure \ref{fig:3D_edges}).
 
 \begin{figure}
 \centering
@@ -1075,8 +1076,9 @@ figure \ref{fig:image_coord}. Each pixel can take a 1-bit (binary), 8-bit (greys
 This parameter is called \textit{depth} of the image. If you want to process 16-bit images, you will have to
 load them in a 32-bit Mamba image (which is actually not at all a problem).
 
-\textit{Width} w and \textit{heighth} are the two other parameters (attributes) of an image. \textit{width} is the number of
-pixels per line in the horizontal direction, \textit{height} the number of lines (or the number of pixels in
+\textit{Width} w and \textit{height} h are the two other parameters (attributes)
+of an image. \textit{width} is the number of pixels per line in the horizontal
+direction, \textit{height} the number of lines (or the number of pixels in
 the vertical direction), see figure \ref{fig:image_coord}.
 
 \begin{figure}
@@ -1169,13 +1171,6 @@ Mamba allows you to create images with different sizes but not to perform
 computations between them. If you want to do so, you will have to use the
 cropCopy() function to extract the part of the images you want to match.
 }
-There is also a size limitation when you define images. This limitation is given by
-the number of pixels in the image which must be lower than or equal to $2^{32}$.
-This is a really huge value which allows you to define 65536x65536 images for instance.
-A 200000x10000 image is also allowed (number of pixels lower than the limit).
-Note however that, in practice, the real allowed maximum size is smaller as you would
-need a fairly huge amount of memory to handle these images in Mamba. So, be sure
-that your memory space is sufficient if you intend to use big images.
 
 \subsubsection{3D images}
 
@@ -1568,7 +1563,7 @@ image at any given time.
 
 This display, see figure \ref{fig:dis3D_volren}, is ensured through the VTK
 library and thus is only available if you have this library installed with
-the Python bindings. Remind also that VTK is currently not available with Python 3. 
+the Python bindings. Also remember that VTK is currently not available with Python 3. 
 You can select this display by pressing key F2 on your keyboard.
 
 \begin{figure}
