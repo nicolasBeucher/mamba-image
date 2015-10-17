@@ -65,8 +65,9 @@ class ExampleInfo:
                     "def", "finally", "in", "print"]
 
     def __init__(self, path):
-        self.path = os.path.dirname(path)
-        sp = os.path.split(self.path)
+        self.file = os.path.basename(path)
+        self.dir = os.path.relpath(os.path.dirname(path),"../../examples")
+        sp = os.path.split(self.dir)
         self.name = sp[1].replace("_"," ")
         self.id = sp[1]
         self.title = ""
@@ -181,18 +182,18 @@ class ExampleInfo:
         return outLine
         
     def generateHTML(self):
-        s  = '<h1>'+self.title+'\n'
-        s += '<a href="Javascript:showInfos()"><img alt="top" src="images/top.gif" /></a></h1>\n'
+        s  = '<h1>'+self.title+'</h1>\n'
         s += '<p>'+self.desc+' '
-        s += '(<a href="./examples/'+self.name+'">script</a>)</p>\n'
+        sp = os.path.join(self.dir,self.file)
+        s += '(<a href="./examples/'+sp+'">script</a>)</p>\n'
         if self.inIm:
             s += '<table class="images_in">\n'
             tl1 = '<tr>\n'
             tl2 = '<tr>\n'
             for im in self.inIm:
-                tl1 += '    <td><a href="Javascript:showImage(\''+im+'\')">'
-                tl1 += '<img class="img_ex_in" alt="input image for example '
-                tl1 += self.name+'" src="examples/'+im+'" /></a></td>\n'
+                imp = os.path.join(self.dir,im)
+                tl1 += '    <td><a href="./examples/'+imp+'">'
+                tl1 += '    <img class="img_ex_in" alt="'+self.name+'" src="./examples/'+imp+'" /></a></td>\n'
                 tl2 += '    <td class="legend">'+im+'</td>\n'
             s += tl1+'</tr>\n'+tl2+'</tr>\n</table>\n'
         if self.outIm:
@@ -200,9 +201,9 @@ class ExampleInfo:
             tl1 = '<tr>\n'
             tl2 = '<tr>\n'
             for index, im in enumerate(self.outIm):
-                tl1 += '    <td><a href="Javascript:showImage(\''+im+'\')">'
-                tl1 += '<img class="img_ex_out" alt="output image for example '
-                tl1 += self.name+'" src="examples/'+im+'" /></a></td>\n'
+                imp = os.path.join(self.dir,im)
+                tl1 += '    <td><a href="./examples/'+imp+'">'
+                tl1 += '<img class="img_ex_out" alt="'+self.name+'" src="./examples/'+imp+'" /></a></td>\n'
                 tl2 += '    <td class="legend">'+im+'</td>\n'
                 if index%3==2:
                     s += tl1+'</tr>\n'+tl2+'</tr>\n'
@@ -211,7 +212,6 @@ class ExampleInfo:
             if index%3!=2:
                 s += tl1+'</tr>\n'+tl2+'</tr>\n'
             s += '</table>\n'
-        s += '<div id="imbox" class="imdispay"></div>\n'
         s += '<div class="python">\n'
         s += '<pre>\n'
         lines = self.src.split('\n')
@@ -233,8 +233,7 @@ _html_header = """
     <title>Mamba Image : Examples</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="./mamba.css" />
-    <script src="javascripts/prototype.js" type="text/javascript"></script>
-    <script src="javascripts/scriptaculous.js?load=effects" type="text/javascript"></script>
+    <script src="./javascripts/jquery.js" type="text/javascript"></script>
     
 <script language="JavaScript" type="text/javascript">
 <!--
@@ -245,14 +244,13 @@ _html_body = """
 function selectExample(level)
 {
     var j=0;
-    var exlist = document.getElementById('exlist');
     
     s = "<table><tr>";
     for(var i=0; i<exampleList.length; i++) {
         
         if ((exampleList[i][0]==level) || (level<0)) {
             j++;
-            s = s + '<td><a href="Javascript:requestExample(\\''+exampleList[i][1]+'\\')">';
+            s = s + '<td><a class="Erequest" id="'+exampleList[i][1]+'">';
             if (exampleList[i][3]!='') {
                 s = s + '<img class="expreview" title="'
                 s = s + exampleList[i][2]
@@ -270,56 +268,40 @@ function selectExample(level)
     }
     s = s + '</tr></table>';
     
-    exlist.innerHTML = s;
-}
-
-function showImage(im)
-{
-    imbox = document.getElementById("imbox");
-    s  = '<center><a href="Javascript:hideImage()">'
-    s += '<img style="max-width: 90%;" alt="'+im;
-    s += '" src="examples/'+im+'" /></a></center>';
-    imbox.innerHTML = s;
-    imbox.style.display = 'block';
-}
-function hideImage(im)
-{
-    imbox = document.getElementById("imbox")
-    imbox.style.display = 'none';
-    imbox.innerHTML = "";
-}
-
-function findPos(obj) {
-    var curtop = 0;
-    if (obj.offsetParent) {
-        do {
-            curtop += obj.offsetTop;
-        } while (obj = obj.offsetParent);
-    }
-    return curtop;
-}
-
-function displayExample(transport) {
-    var response = transport.responseText || "no example";
-    var exbox = document.getElementById("exbox")
-    exbox.innerHTML = response
-    window.scroll(0,findPos(exbox)-40);
+    $( "#exlist" ).html( s );
 }
 
 function requestExample(exname) {
-    new Ajax.Request('./examples_list.php?example='+exname,
-      {
-        method:'get',
-        onSuccess: displayExample,
-        onFailure: function(){ alert('Something went wrong...') }
+    var jqxhr = $.ajax( "./examples_list.php?example="+exname )
+      .done(function( msg ) {
+        $( "#exbox" ).html(msg);
+        $( "html,body" ).animate({scrollTop: $("#exbox").offset().top}, 'slow');
+      })
+      .fail(function() {
+      })
+      .always(function() {
       });
 }
 
-function showInfos()
-{
-    var exbox = document.getElementById("exbox")
-    exbox.innerHTML = ""
-}
+$( document ).ready(function() {
+    $( "#exmenu").html("<ul><li><a id='EX'>Easy</a></li><li><a id='MX'>Moderate</a></li><li><a id='AX'>Advanced</a></li><li><a id='ALL'>All</a></li></ul>");
+    $( "a#EX" ).click(function() {
+        selectExample(0);
+    });
+    $( "a#MX" ).click(function() {
+        selectExample(1);
+    });
+    $( "a#AX" ).click(function() {
+        selectExample(2);
+    });
+    $( "a#ALL" ).click(function() {
+        selectExample(-1);
+    });
+    selectExample(-1);
+    $( "a.Erequest" ).click(function() {
+        requestExample($(this).attr("id"));
+    });
+});
 
 // -->
 </script>
@@ -349,8 +331,8 @@ function showInfos()
        possibilities given by the Mamba Library. They can be used as a starting 
        point for coding your own applications.<br />
        To understand them, we strongly recommand you to read the user manual which
-       is available in the <a href="/doc.html">documentation page</a>.</p>
-    <p>Examples can also be downloaded in <a href="/docs/2.0/mamba-examples.pdf">pdf format</a>.</p>
+       is available in the <a href="./doc.html">documentation page</a>.</p>
+    <p>Examples can also be downloaded in <a href="./docs/2.0/mamba-examples.pdf">pdf format</a>.</p>
     <p>There are three types of examples :</p>
     <ul>
         <li> <b>Easy</b>: These are mainly intended for beginners so they could refer
@@ -372,14 +354,6 @@ function showInfos()
 </div>
 
 <div id="exmenu">
-    <script type="text/javascript"> 
-    //<!--
-    document.write("<ul><li><a href='Javascript:selectExample(0)'>Easy</a></li>")
-    document.write("<li><a href='Javascript:selectExample(1)'>Moderate</a></li>")
-    document.write("<li><a href='Javascript:selectExample(2)'>Advanced</a></li>")
-    document.write("<li><a href='Javascript:selectExample(-1)'>All</a></li></ul>")
-    // -->
-    </script>
     <noscript>
     <p>To be able to see the examples, you must have javascript enabled in your
        browser.
@@ -393,14 +367,6 @@ function showInfos()
 <div id="exbox" class="example"></div>
 
 </div> <!-- main -->
-
-<!-- launching the script to list all the tests-->
-<script language="JavaScript" type="text/javascript">
-<!--
-selectExample(-1);
--->
-</script>
-
 
 </div> <!-- content -->
 </body>
@@ -474,10 +440,10 @@ except:
 diff_level = {"Easy" : 0, "Moderate":1, "Advanced":2}
 jsdata= []
 for exaInf in exaInfList:
-    im = Image.open(os.path.join(exaInf.path,exaInf.outIm[-1]))
+    im = Image.open(os.path.join("..","..","examples",exaInf.dir,exaInf.outIm[-1]))
     im = im.resize((100,100), Image.ANTIALIAS)
     im.save("examples_icons/"+exaInf.id+".jpg")
-    jsdata.append([diff_level[exaInf.difficulty], exaInf.id, exaInf.title, "examples_icons/"+exaInf.id+".jpg"])
+    jsdata.append([diff_level[exaInf.difficulty], exaInf.id, exaInf.title, "./examples_icons/"+exaInf.id+".jpg"])
 
 # the output files
 # html
