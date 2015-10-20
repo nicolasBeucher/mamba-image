@@ -667,6 +667,7 @@ Grid and edge are important notions in mathematical morphology. Let us explain
 how they are handled in Mamba. 
 
 \subsubsection{Edge}
+\label{cha:edge}
 
 The edge defines the status of all the pixels which are not in the image. Let us 
 explain what this assertion means. Obviously, any image is made of a finite set 
@@ -681,17 +682,7 @@ the image is made of virtual pixels at value 0 (the edge is set to 0) whereas
 the \textbf{FILLED} edge assumes an external world completely filled 
 (the edge is set to the maximum possible value of a pixel according to the image 
 depth). This notion applies to both 2D and 3D operators. See section \ref{cha:rules} for
-further explanations on edge settings for 2D images.
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.6]{figures/3D_edges.pdf}
-\caption{Edges in a 3D image}
-\label{fig:3D_edges}
-\end{figure}
-
-So, it is up to you, when defining operators where the edge status is relevant, to properly
-manage this status. As an example, have a look on the definition of the erosions and dilations for 3D images.
+further explanations on edge settings for 2D and 3D images.
 
 \subsubsection{Grids 2D}
 \label{cha:grid2D}
@@ -3257,6 +3248,36 @@ basic morphological operators: dilations, erosions, openings, closings,
 thinnings and thickenings. So, when defining another implementation of these 
 basic transforms (this is perfectly allowed), it is nevertheless wise (if not 
 compulsory) to pass 'edge' in the operator argument list.
+
+\par
+
+\textbf{Specific edge management for 3D images}
+As already mentioned in section \ref{cha:edge}, edge management is the same for 2D and 3D
+images and the 'EMPTY' and 'FILLED' options apply for both types. However, if
+you intend to define your own basic 3D transforms by manipulating the 2D sections
+of a 3D image, you must know how edges are effectively defined in a 3D image.
+
+Edge management for 3D images is a combination of two approaches as edges in a
+3D image are twofold. 3D images being made of a pile of 2D images, the edges
+parallel to the \emph{z} axis are defined by the edges of the corresponding
+2D images. These edges are therefore virtual and their management is controlled by
+the \textit{edge} argument (set to EMPTY or FILLED) of the 2D images. But two
+other edges must be defined. They correspond to the floor and the ceiling
+(along the \emph{z} axis) of the 3D volume of data formed by a 3D image.
+Contrary to the 2D edges, these two ones are real and are built by adding two
+ supplementary 2D images set to 0 or to the maximum value (1, 255 or $2^{32} - 1$)
+depending on the status (FILLED or EMPTY) of the 2D edge (figure \ref{fig:3D_edges}).
+
+So, it is up to you, when defining operators where the edge status is relevant, to properly
+manage this status. As an example, have a look on the definition of the erosions
+and dilations for 3D images.\par
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.6]{figures/3D_edges.pdf}
+\caption{Edges in a 3D image}
+\label{fig:3D_edges}
+\end{figure}
 
 \subsection{Documentation}
 
