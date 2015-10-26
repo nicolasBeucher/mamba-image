@@ -230,7 +230,7 @@ def buildNeighbor3D(imMask, imInOut, d, grid=m3D.DEFAULT_GRID3D):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     grid2D = grid.get2DGrid()
     scan = grid.convertFromDir(d,0)[0]
-    volume = 0L
+    volume = 0
     if scan == 0:
         for i in range(length):
             vol = mamba.buildNeighbor(imMask[i], imInOut[i], d, grid2D)
@@ -268,7 +268,7 @@ def dualbuildNeighbor3D(imMask, imInOut, d, grid=m3D.DEFAULT_GRID3D):
         mamba.raiseExceptionOnError(core.MB_ERR_BAD_SIZE)
     grid2D = grid.get2DGrid()
     scan = grid.convertFromDir(d,0)[0]
-    volume = 0L
+    volume = 0
     if scan == 0:
         for i in range(length):
             vol = mamba.dualbuildNeighbor(imMask[i], imInOut[i], d, grid2D)

@@ -144,7 +144,7 @@ class _gridFCCubic3D(_grid3D):
             (sc, sh) = extraS[zindex%3][amp%3]
             nc = (amp//3 + sc) * 2
             dirList = [(1, nc, mamba.SQUARE)]
-            if sh <> 0:
+            if sh != 0:
                 if (zindex%3) == 2:
                     hd = 1
                 else:
@@ -164,7 +164,7 @@ class _gridFCCubic3D(_grid3D):
             (sc, sh) = extraS[zindex%3][amp%3]
             nc = (amp//3 + sc) * 2
             dirList = [(5, nc, mamba.SQUARE)]
-            if sh <> 0:
+            if sh != 0:
                 if (zindex%3) == 2:
                     hd = 3
                 else:
@@ -254,11 +254,11 @@ class _gridCCubic3D(_grid3D):
         else:
             dirList =[]
             dh1 = self.convertFromDir(d, 0)[1]
-            if dh1<>0:
+            if dh1!=0:
                 amph1 = amp//2 + (amp%2)*(1 - zindex%2)
                 dirList.append((dh1, amph1, mamba.SQUARE))
             dh2 = self.convertFromDir(d, 1)[1]
-            if dh2<>0:
+            if dh2!=0:
                 amph2 = amp//2 + (amp%2)*(zindex%2)
                 dirList.append((dh2, amph2, mamba.SQUARE))
         return dirList

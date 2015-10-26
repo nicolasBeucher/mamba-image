@@ -78,7 +78,7 @@ def measureLabelling(imIn, imMeasure, imOut):
             # output LUTs.
             while j >= 0:
                 n = 2 ** (8 * j)
-                outLuts[j][i] = value / n
+                outLuts[j][i] = value // n
                 value = value % n
                 j -= 1
         # Each LUT is used to label each byte plane of a temporary image with the
@@ -121,7 +121,7 @@ def diameterLabelling(imIn, imOut, dir, grid=mamba.DEFAULT_GRID):
     imWrk1 = mamba.imageMb(imIn, 1)
     imWrk2 = mamba.imageMb(imIn)
     
-    ed = 1 << ((dir - 1)%(mamba.gridNeighbors(grid)/2)) +1
+    ed = 1 << ((dir - 1)%(mamba.gridNeighbors(grid)//2)) +1
     if imIn.getDepth() == 1:
         mamba.copy(imIn, imWrk1)
         mamba.diffNeighbor(imIn, imWrk1, ed, grid=grid)
