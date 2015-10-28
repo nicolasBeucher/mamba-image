@@ -37,9 +37,11 @@ class TestMiscellaneous3D(unittest.TestCase):
         del(self.im8_2)
         del(self.im8_3)
         del(self.im8_4)
+        del(self.im8_5)
         del(self.im32_1)
         del(self.im32_2)
         del(self.im32_3)
+        del(self.im32_4)
         
     def _drawValueByPlane(self, im):
         im.reset()

@@ -39,6 +39,7 @@ class TestErodil3D(unittest.TestCase):
         del(self.im1_1)
         del(self.im1_2)
         del(self.im1_3)
+        del(self.im1_4)
         del(self.im8_1)
         del(self.im8_2)
         del(self.im8_3)
@@ -46,6 +47,7 @@ class TestErodil3D(unittest.TestCase):
         del(self.im32_1)
         del(self.im32_2)
         del(self.im32_3)
+        del(self.im32_4)
         
 
     def testDepthAcceptation(self):

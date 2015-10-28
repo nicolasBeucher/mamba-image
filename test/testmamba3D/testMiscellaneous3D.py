@@ -50,6 +50,7 @@ class TestMiscellaneous3D(unittest.TestCase):
         del(self.im32_1)
         del(self.im32_2)
         del(self.im32_3)
+        del(self.im32_4)
         
     def testSizeCheck(self):
         """Verifies that the functions check the size of the image"""
