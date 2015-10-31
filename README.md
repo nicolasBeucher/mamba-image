@@ -11,7 +11,3 @@ Mamba was created and is updated with the following philosophy:
 * **Free** (through free licensing, see the about page)
 
 This project contains the source code for the version 2 of the library.
-
-*THIS IS STILL A WORK IN PROGRESS AND MAY NOT WORK*
-
-Code for previous version cannot be found here (visit our website).
