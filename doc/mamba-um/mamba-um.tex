@@ -371,7 +371,7 @@ you will need:
 \item CMake version 2.8 or later (see \url{http://www.cmake.org/}) for the 
 compilation process.
 \item Microsoft Visual C++ (compilation was realized on Express 2008 for Python 2.7 32-bit
-only and Express 2013 for the other 32/64-bit releases).
+only and Express 2010 for the other 32/64-bit releases).
 \end{itemize}
 
 Make sure you have correctly installed the required tools and that they appear
@@ -381,10 +381,13 @@ script.
 
 Because Python is not compiled with the same Visual C++ version you may need
 to add some environment variables to link to your version. With Python 2.7
-and visual C++ 2013 express, you need to add variable VS90COMNTOOLS with
-value set to \%VS120COMNTOOLS\%. With Python 3.4, set the VS100COMNTOOLS
-variable to \%VS120COMNTOOLS\%. This may change if you are using
+and visual C++ 2010 express, you need to add variable VS90COMNTOOLS with
+value set to \%VS100COMNTOOLS\%. This may change if you are using
 another visual C++ compiler.
+We deeply recommend to use the C++ compiler adapted to the Python version in use.
+For Python 2.7, use VC+2008, for Python 3.4, use VC++2010. Although using other VIsual
+C++ versions may also work, you may experience errors depending on your computer
+environment.
 
 Get the source code of Mamba from the website. It comes in a zip that once
 extracted will create a directory \textbf{Mamba.X.X}. Alternatively you can
