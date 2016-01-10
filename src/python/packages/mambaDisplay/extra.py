@@ -13,10 +13,14 @@ import mamba
 try:
     import tkinter as tk
     import tkinter.ttk as ttk
+    import tkinter.filedialog as filedialog
+    import tkinter.colorchooser as colorchooser   
 except ImportError:
     try:
         import Tkinter as tk
         import ttk
+        import tkFileDialog as filedialog
+        import tkColorChooser as colorchooser
     except ImportError:
         print("Missing Tkinter library")
         raise
@@ -307,9 +311,8 @@ class _imageThreshold(tk.Toplevel):
         
     def saveImage(self):
         # Saves the displayed image in a specified location
-        import tkFileDialog
         filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("all files","*")]
-        f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
+        f_name = filedialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
         if f_name:
             self.pilImage.convert("RGB").save(f_name)
 
@@ -890,8 +893,7 @@ class _imageSuperpose(tk.Toplevel):
         
     def colorChangeEvent(self, event):
         # Color change in the legend
-        import tkColorChooser
-        new_color = tkColorChooser.askcolor(event.widget.cget("bg"))
+        new_color = colorchooser.askcolor(event.widget.cget("bg"))
         if new_color[0]==None:
             return
 
@@ -899,7 +901,7 @@ class _imageSuperpose(tk.Toplevel):
             event.widget.config(bg=new_color[1])
             event.widget.color_tuple = new_color[0]
             palette = (0,0,0)
-            for c in self.legendCols:
+            for c,l in self.legendCols:
                 palette = palette + c.color_tuple
             palette = palette+252*(0,0,0)
         elif self.Im1.getDepth()==1:
@@ -1014,9 +1016,8 @@ class _imageSuperpose(tk.Toplevel):
         
     def saveImage(self):
         # Saves the displayed image in a specified location
-        import tkFileDialog
         filetypes=[("JPEG", "*.jpg"),("PNG", "*.png"),("all files","*")]
-        f_name = tkFileDialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
+        f_name = filedialog.asksaveasfilename(defaultextension='.jpg', filetypes=filetypes)
         if f_name:
             self.pilImage.convert("RGB").save(f_name)
 
