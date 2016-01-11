@@ -893,10 +893,11 @@ class _imageSuperpose(tk.Toplevel):
         
     def colorChangeEvent(self, event):
         # Color change in the legend
-        new_color = colorchooser.askcolor(event.widget.cget("bg"))
-        if new_color[0]==None:
+        (c, l) = colorchooser.askcolor(event.widget.cget("bg"))
+        if c==None:
             return
-
+        # Ugly patch to correct a bug in tkinter askcolor with Python 3
+        new_color = ((int(c[0]), int(c[1]), int(c[2])), l)
         if self.Im1.getDepth()==1 and self.Im2.getDepth()==1:
             event.widget.config(bg=new_color[1])
             event.widget.color_tuple = new_color[0]
