@@ -274,8 +274,8 @@ class Display2D(tk.Toplevel):
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             self.zoom = self.zoom/2
         self.csize = imsize[:]
         self.dsize = imsize[:]
@@ -436,8 +436,8 @@ class Display2D(tk.Toplevel):
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             self.zoom = self.zoom/2
         self.csize = imsize[:]
         self.dsize = imsize[:]

@@ -153,8 +153,8 @@ class Display3D_Player(tk.Frame):
             imsize[1] = imsize[1]*2
             zoom = zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             zoom = zoom/2
         self.columnconfigure(0, weight=1 )
         self.rowconfigure(0, weight=1 )
@@ -217,8 +217,8 @@ class Display3D_Player(tk.Frame):
             imsize[1] = imsize[1]*2
             zoom = zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             zoom = zoom/2
         self.planez.setZoom(zoom)
 

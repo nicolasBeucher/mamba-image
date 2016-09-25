@@ -74,8 +74,8 @@ class _imageThreshold(tk.Toplevel):
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
         while imsize > [constants._MAX, constants._MAX]:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             self.zoom = self.zoom/2
         
         self.title('thresholder - %d%%' % (int(self.zoom*100)))
@@ -388,8 +388,8 @@ class _imageSegment(tk.Toplevel):
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
         while imsize > [constants._MAX, constants._MAX]:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             self.zoom = self.zoom/2
         
         self.title('interactive segment - %d%%' % (int(self.zoom*100)))
@@ -719,8 +719,8 @@ class _imageSuperpose(tk.Toplevel):
             imsize[1] = imsize[1]*2
             self.zoom = self.zoom*2
         while imsize > [constants._MAX, constants._MAX]:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
             self.zoom = self.zoom/2
         self.csize = imsize[:]
         self.dsize = imsize[:]

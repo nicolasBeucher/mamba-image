@@ -349,9 +349,9 @@ class Display3D_Proj(tk.Frame):
             imsize[2] = imsize[2]*2
             zoom = zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX or imsize[2]>constants._MAX:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
-            imsize[2] = imsize[2]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
+            imsize[2] = imsize[2]//2
             zoom = zoom/2
         self.columnconfigure(0, weight=int(100*(self.W/float(self.W+self.L))) )
         self.rowconfigure(0, weight=int(100*(self.L/float(self.W+self.L))) )
@@ -429,9 +429,9 @@ class Display3D_Proj(tk.Frame):
             imsize[2] = imsize[2]*2
             zoom = zoom*2
         while imsize[0]>constants._MAX or imsize[1]>constants._MAX or imsize[2]>constants._MAX:
-            imsize[0] = imsize[0]/2
-            imsize[1] = imsize[1]/2
-            imsize[2] = imsize[2]/2
+            imsize[0] = imsize[0]//2
+            imsize[1] = imsize[1]//2
+            imsize[2] = imsize[2]//2
             zoom = zoom/2
         self.planez.setZoom(zoom)
         self.planey.setZoom(zoom)
