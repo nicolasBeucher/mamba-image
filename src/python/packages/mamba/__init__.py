@@ -3,7 +3,7 @@ The mamba package contains all the mathematical morphology operators
 defined in mamba that apply to 2D images.
 """
 
-VERSION = "2.0.1"
+VERSION = "2.0.2"
 
 # importing all the modules
 from .error import *
