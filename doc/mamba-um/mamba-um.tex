@@ -472,9 +472,8 @@ the compilation and installation. Open a terminal and cd your way to this
 directory. Once there, type the following commands to compile and install on Linux:
 
 \begin{itemize}
-\item \texttt{cmake -C path/to/Mamba.X.X/src}\\
+\item \texttt{cmake path/to/Mamba.X.X/src -G "Unix Makefiles"}\\
 \item \texttt{cmake -D CMAKE\_BUILD\_TYPE:STRING=Release -D CMAKE\_INSTALL\_PREFIX:STRING=/usr .}\\
-\item \texttt{cmake -G "Unix Makefiles" .}\\
 \item \texttt{make}\\
 \item \texttt{su -c "make install python\_install"}
 \end{itemize}
